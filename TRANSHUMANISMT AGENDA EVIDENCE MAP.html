@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE EVIDENCE — Source Documentation Database</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #08090b;
+      --bg-secondary: #0f1114;
+      --bg-tertiary: #171a1f;
+      --bg-hover: #1e2228;
+      --bg-card: #12151a;
+      --text-primary: #e8e9ed;
+      --text-secondary: #a0a3ad;
+      --text-muted: #6b6f7a;
+      --border: #252a33;
+      --patents: #e74c3c;
+      --legislation: #3498db;
+      --documents: #2ecc71;
+      --speeches: #f39c12;
+      --corporate: #9b59b6;
+      --leaks: #e91e63;
+      --research: #00bcd4;
+      --funding: #8bc34a;
+      --link-color: #5dade2;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'IBM Plex Sans', sans-serif;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    a { color: var(--link-color); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 40px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .logo {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .logo span {
+      color: var(--text-muted);
+      font-weight: 400;
+      font-size: 1rem;
+      display: block;
+      margin-top: 4px;
+    }
+
+    .search-box {
+      flex: 1;
+      max-width: 500px;
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 20px;
+      color: var(--text-primary);
+      font-size: 1rem;
+      font-family: inherit;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--text-muted);
+    }
+
+    .search-input::placeholder { color: var(--text-muted); }
+
+    .intro-text {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      max-width: 800px;
+    }
+
+    /* Filter Bar */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+
+    .filter-btn {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 16px;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .filter-btn.active {
+      border-color: currentColor;
+      color: var(--text-primary);
+    }
+
+    .filter-btn.active.patents { color: var(--patents); border-color: var(--patents); }
+    .filter-btn.active.legislation { color: var(--legislation); border-color: var(--legislation); }
+    .filter-btn.active.documents { color: var(--documents); border-color: var(--documents); }
+    .filter-btn.active.speeches { color: var(--speeches); border-color: var(--speeches); }
+    .filter-btn.active.corporate { color: var(--corporate); border-color: var(--corporate); }
+    .filter-btn.active.leaks { color: var(--leaks); border-color: var(--leaks); }
+    .filter-btn.active.research { color: var(--research); border-color: var(--research); }
+    .filter-btn.active.funding { color: var(--funding); border-color: var(--funding); }
+
+    .filter-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .filter-dot.patents { background: var(--patents); }
+    .filter-dot.legislation { background: var(--legislation); }
+    .filter-dot.documents { background: var(--documents); }
+    .filter-dot.speeches { background: var(--speeches); }
+    .filter-dot.corporate { background: var(--corporate); }
+    .filter-dot.leaks { background: var(--leaks); }
+    .filter-dot.research { background: var(--research); }
+    .filter-dot.funding { background: var(--funding); }
+
+    /* Stats */
+    .stats-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-bottom: 32px;
+      padding: 16px 20px;
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .stats-bar strong {
+      color: var(--text-primary);
+    }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 20px;
+    }
+
+    /* Evidence Card */
+    .evidence-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .evidence-card:hover {
+      border-color: var(--text-muted);
+      transform: translateY(-2px);
+    }
+
+    .evidence-card.expanded {
+      grid-column: span 2;
+    }
+
+    @media (max-width: 900px) {
+      .evidence-card.expanded {
+        grid-column: span 1;
+      }
+    }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .card-type-badge {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      flex-shrink: 0;
+    }
+
+    .card-type-badge.patents { background: rgba(231,76,60,0.15); color: var(--patents); }
+    .card-type-badge.legislation { background: rgba(52,152,219,0.15); color: var(--legislation); }
+    .card-type-badge.documents { background: rgba(46,204,113,0.15); color: var(--documents); }
+    .card-type-badge.speeches { background: rgba(243,156,18,0.15); color: var(--speeches); }
+    .card-type-badge.corporate { background: rgba(155,89,182,0.15); color: var(--corporate); }
+    .card-type-badge.leaks { background: rgba(233,30,99,0.15); color: var(--leaks); }
+    .card-type-badge.research { background: rgba(0,188,212,0.15); color: var(--research); }
+    .card-type-badge.funding { background: rgba(139,195,74,0.15); color: var(--funding); }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      line-height: 1.3;
+      flex: 1;
+    }
+
+    .card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 14px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .card-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-meta-item strong {
+      color: var(--text-secondary);
+    }
+
+    .card-description {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .card-quote {
+      background: var(--bg-tertiary);
+      border-left: 3px solid var(--text-muted);
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .card-quote-text {
+      font-size: 0.9rem;
+      font-style: italic;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .card-quote-source {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .card-tag {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .card-tag:hover {
+      color: var(--text-secondary);
+      border-color: var(--text-muted);
+    }
+
+    .card-links {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .evidence-card.expanded .card-links {
+      display: flex;
+    }
+
+    .source-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      background: var(--bg-tertiary);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      transition: all 0.15s ease;
+    }
+
+    .source-link:hover {
+      background: var(--bg-hover);
+      text-decoration: none;
+    }
+
+    .source-link-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--bg-hover);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .source-link-text {
+      flex: 1;
+    }
+
+    .source-link-label {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .source-link-url {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      word-break: break-all;
+    }
+
+    .source-link-arrow {
+      color: var(--text-muted);
+    }
+
+    .card-expand-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 8px;
+    }
+
+    .evidence-card.expanded .card-expand-hint {
+      display: none;
+    }
+
+    /* Related Entities */
+    .card-entities {
+      display: none;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .evidence-card.expanded .card-entities {
+      display: flex;
+    }
+
+    .card-entities-label {
+      width: 100%;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
+    }
+
+    .entity-chip {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    /* Section Headers */
+    .section-header {
+      margin: 48px 0 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .section-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .section-count {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 80px;
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .footer-text {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto 24px;
+      line-height: 1.7;
+    }
+
+    .footer-disclaimer {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      padding: 16px 24px;
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      display: inline-block;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-primary); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .header-top {
+        flex-direction: column;
+      }
+      
+      .search-box {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-top">
+        <div class="logo">
+          THE EVIDENCE
+          <span>Primary Source Documentation Database</span>
+        </div>
+        <div class="search-box">
+          <input type="text" class="search-input" placeholder="Search patents, legislation, documents..." id="searchInput">
+        </div>
+      </div>
+      <p class="intro-text">
+        Companion database to THE NETWORK. This contains the receipts — patents, legislation, official documents, speeches, and filings. Every entry includes direct links to primary sources. Click any card to expand and access source links.
+      </p>
+    </header>
+
+    <div class="filter-bar" id="filterBar">
+      <button class="filter-btn active patents" data-filter="patents">
+        <span class="filter-dot patents"></span> Patents
+      </button>
+      <button class="filter-btn active legislation" data-filter="legislation">
+        <span class="filter-dot legislation"></span> Legislation
+      </button>
+      <button class="filter-btn active documents" data-filter="documents">
+        <span class="filter-dot documents"></span> Official Documents
+      </button>
+      <button class="filter-btn active speeches" data-filter="speeches">
+        <span class="filter-dot speeches"></span> Speeches & Statements
+      </button>
+      <button class="filter-btn active corporate" data-filter="corporate">
+        <span class="filter-dot corporate"></span> Corporate Filings
+      </button>
+      <button class="filter-btn active leaks" data-filter="leaks">
+        <span class="filter-dot leaks"></span> Leaks & Declassified
+      </button>
+      <button class="filter-btn active research" data-filter="research">
+        <span class="filter-dot research"></span> Research Studies
+      </button>
+      <button class="filter-btn active funding" data-filter="funding">
+        <span class="filter-dot funding"></span> Funding Trails
+      </button>
+    </div>
+
+    <div class="stats-bar" id="statsBar"></div>
+
+    <main class="cards-grid" id="cardsGrid"></main>
+
+    <footer>
+      <div class="footer-text">
+        All sources are primary documentation — official government websites, patent databases, corporate filings, and archived video. Verify everything independently. Links may change; use Archive.org if original sources become unavailable.
+      </div>
+      <div class="footer-disclaimer">
+        For research and educational purposes. This database documents publicly available information.
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // ============================================
+    // EVIDENCE DATABASE
+    // ============================================
+
+    const evidence = [
+      // =========== PATENTS ===========
+      {
+        id: "patent-wo2020060606",
+        type: "patents",
+        title: "Microsoft Patent WO2020060606 — Cryptocurrency Using Body Activity Data",
+        date: "2020-03-26",
+        jurisdiction: "WIPO / International",
+        description: "Microsoft patent for cryptocurrency system that uses body activity data (brain waves, heart rate, body heat, etc.) to validate transactions. The patent number contains '060606' which has drawn attention. Describes sensors on or inside the body communicating with servers to verify human activity for crypto mining.",
+        quote: {
+          text: "Human body activity associated with a task provided to a user may be used in a mining process of a cryptocurrency system.",
+          source: "Patent Abstract"
+        },
+        tags: ["Microsoft", "Cryptocurrency", "Biometrics", "Body Sensors", "Bill Gates"],
+        relatedEntities: ["Microsoft", "Bill Gates"],
+        links: [
+          { label: "WIPO Patent Database", url: "https://patentscope.wipo.int/search/en/detail.jsf?docId=WO2020060606", icon: "📄" },
+          { label: "Google Patents", url: "https://patents.google.com/patent/WO2020060606A1/", icon: "🔍" }
+        ]
+      },
+      {
+        id: "patent-neuralink",
+        type: "patents",
+        title: "Neuralink Brain-Computer Interface Patents",
+        date: "2019-Present",
+        jurisdiction: "USPTO",
+        description: "Portfolio of patents covering implantable brain-computer interface technology including electrode arrays, surgical insertion robots, and neural signal processing. Foundation for human brain chip implants.",
+        tags: ["Neuralink", "Elon Musk", "Brain-Computer Interface", "Neural Implants"],
+        relatedEntities: ["Neuralink", "Elon Musk"],
+        links: [
+          { label: "USPTO Patent Search (Neuralink)", url: "https://patents.google.com/?assignee=Neuralink+Corp", icon: "🔍" },
+          { label: "Neuralink FDA Approval (2023)", url: "https://www.fda.gov/news-events/press-announcements", icon: "📄" }
+        ]
+      },
+      {
+        id: "patent-moderna-mrna",
+        type: "patents",
+        title: "Moderna mRNA Technology Patents",
+        date: "2010-Present",
+        jurisdiction: "USPTO / International",
+        description: "Foundational patents for mRNA delivery technology used in COVID-19 vaccines. Covers lipid nanoparticle delivery systems and modified mRNA sequences. Controversy over patent disputes with NIH regarding taxpayer-funded research.",
+        tags: ["Moderna", "mRNA", "Vaccines", "Biotechnology", "Stéphane Bancel"],
+        relatedEntities: ["Moderna", "Stéphane Bancel"],
+        links: [
+          { label: "Moderna Patent Portfolio", url: "https://patents.google.com/?assignee=Moderna", icon: "🔍" },
+          { label: "NIH Patent Dispute Coverage", url: "https://www.nih.gov/", icon: "📰" }
+        ]
+      },
+      {
+        id: "patent-clearview",
+        type: "patents",
+        title: "Clearview AI Facial Recognition Patents",
+        date: "2020-Present",
+        jurisdiction: "USPTO",
+        description: "Patents covering large-scale facial recognition search technology. Method of scraping billions of images from internet and matching faces across databases.",
+        tags: ["Clearview AI", "Facial Recognition", "Surveillance", "Biometrics"],
+        relatedEntities: ["Clearview AI"],
+        links: [
+          { label: "USPTO Patent Search", url: "https://patents.google.com/?assignee=clearview", icon: "🔍" }
+        ]
+      },
+      {
+        id: "patent-worldcoin-iris",
+        type: "patents",
+        title: "Worldcoin Iris Biometric Patents",
+        date: "2021-Present",
+        jurisdiction: "USPTO / International",
+        description: "Patents covering 'Orb' device for iris scanning and World ID creation. Biometric proof-of-personhood system using unique iris patterns.",
+        tags: ["Worldcoin", "Sam Altman", "Iris Scanning", "Biometrics", "Digital ID"],
+        relatedEntities: ["Worldcoin", "Sam Altman", "OpenAI"],
+        links: [
+          { label: "Tools for Humanity Patents", url: "https://patents.google.com/?assignee=tools+for+humanity", icon: "🔍" },
+          { label: "Worldcoin Whitepaper", url: "https://whitepaper.worldcoin.org/", icon: "📄" }
+        ]
+      },
+
+      // =========== LEGISLATION ===========
+      {
+        id: "leg-eidas2",
+        type: "legislation",
+        title: "EU eIDAS 2.0 Regulation — European Digital Identity Wallet",
+        date: "2024-02-29",
+        jurisdiction: "European Union",
+        description: "Regulation establishing framework for European Digital Identity Wallet. Mandatory for all EU member states to offer by 2026. Enables cross-border digital identity verification for government services, banking, healthcare, travel, and age verification.",
+        quote: {
+          text: "Member States shall provide at least one European Digital Identity Wallet within 24 months.",
+          source: "eIDAS 2.0 Regulation"
+        },
+        tags: ["EU", "Digital Identity", "eIDAS", "Digital Wallet", "Mandatory 2026"],
+        relatedEntities: ["European Union", "WEF"],
+        links: [
+          { label: "EUR-Lex Official Text", url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1183", icon: "📜" },
+          { label: "European Commission eID Page", url: "https://digital-strategy.ec.europa.eu/en/policies/eidas-regulation", icon: "🏛️" }
+        ]
+      },
+      {
+        id: "leg-australia-digitalid",
+        type: "legislation",
+        title: "Australia Digital ID Act 2024",
+        date: "2024-05-16",
+        jurisdiction: "Australia",
+        description: "Establishes national digital identity system in Australia. Royal Assent May 2024, commenced November 2024. Integrates with myGov and enables digital identity verification across government and private services.",
+        tags: ["Australia", "Digital Identity", "Digital ID Act", "myGov"],
+        relatedEntities: ["Australia"],
+        links: [
+          { label: "Federal Register of Legislation", url: "https://www.legislation.gov.au/C2024A00043/latest/text", icon: "📜" },
+          { label: "Digital ID Australia Gov", url: "https://www.digitalidentity.gov.au/", icon: "🏛️" }
+        ]
+      },
+      {
+        id: "leg-uk-onlinesafety",
+        type: "legislation",
+        title: "UK Online Safety Act 2023",
+        date: "2023-10-26",
+        jurisdiction: "United Kingdom",
+        description: "Comprehensive internet regulation requiring platforms to verify user ages and remove 'harmful content.' Enables age verification requirements that effectively require identity verification for internet access. Ofcom as regulator.",
+        tags: ["UK", "Online Safety", "Age Verification", "Content Moderation", "Ofcom"],
+        relatedEntities: ["United Kingdom"],
+        links: [
+          { label: "legislation.gov.uk Official Text", url: "https://www.legislation.gov.uk/ukpga/2023/50/contents/enacted", icon: "📜" },
+          { label: "Ofcom Online Safety", url: "https://www.ofcom.org.uk/online-safety", icon: "🏛️" }
+        ]
+      },
+      {
+        id: "leg-australia-socialmedia",
+        type: "legislation",
+        title: "Australia Social Media Minimum Age Act 2024",
+        date: "2024-11-28",
+        jurisdiction: "Australia",
+        description: "Bans children under 16 from social media. Requires age verification for all users. Creates infrastructure for universal identity verification online under 'child protection' framing.",
+        tags: ["Australia", "Social Media Ban", "Age Verification", "Children", "Digital ID"],
+        relatedEntities: ["Australia"],
+        links: [
+          { label: "Parliament House Bills", url: "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation", icon: "📜" },
+          { label: "eSafety Commissioner", url: "https://www.esafety.gov.au/", icon: "🏛️" }
+        ]
+      },
+      {
+        id: "leg-who-ihr",
+        type: "legislation",
+        title: "WHO International Health Regulations Amendments",
+        date: "2024",
+        jurisdiction: "International / WHO",
+        description: "Proposed amendments to International Health Regulations expanding WHO authority during health emergencies. Includes provisions for digital health certificates, vaccine verification, and cross-border health surveillance.",
+        tags: ["WHO", "IHR", "Pandemic Treaty", "Health Certificates", "International"],
+        relatedEntities: ["WHO", "Bill Gates", "GAVI"],
+        links: [
+          { label: "WHO IHR Portal", url: "https://www.who.int/health-topics/international-health-regulations", icon: "🏛️" },
+          { label: "IHR Amendments Tracker", url: "https://apps.who.int/gb/wgihr/", icon: "📄" }
+        ]
+      },
+      {
+        id: "leg-eu-dsa",
+        type: "legislation",
+        title: "EU Digital Services Act",
+        date: "2022-11-16",
+        jurisdiction: "European Union",
+        description: "Comprehensive platform regulation requiring content moderation, transparency, and user protection measures. Establishes content control infrastructure across major platforms operating in EU.",
+        tags: ["EU", "Digital Services Act", "Content Moderation", "Platform Regulation"],
+        relatedEntities: ["European Union", "Meta", "Google"],
+        links: [
+          { label: "EUR-Lex Official Text", url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065", icon: "📜" },
+          { label: "European Commission DSA Page", url: "https://digital-strategy.ec.europa.eu/en/policies/digital-services-act-package", icon: "🏛️" }
+        ]
+      },
+      {
+        id: "leg-uk-digitalid",
+        type: "legislation",
+        title: "UK Digital Identity and Attributes Trust Framework",
+        date: "2024",
+        jurisdiction: "United Kingdom",
+        description: "Framework for GOV.UK Wallet and digital identity verification. Enables digital ID for right-to-work checks, age verification, and government services. Mandatory employment verification announced.",
+        tags: ["UK", "Digital Identity", "GOV.UK Wallet", "Trust Framework"],
+        relatedEntities: ["United Kingdom"],
+        links: [
+          { label: "GOV.UK Digital Identity", url: "https://www.gov.uk/government/publications/uk-digital-identity-and-attributes-trust-framework-beta-version", icon: "🏛️" }
+        ]
+      },
+      {
+        id: "leg-india-aadhaar",
+        type: "legislation",
+        title: "India Aadhaar Act 2016",
+        date: "2016-03-26",
+        jurisdiction: "India",
+        description: "Legal framework for world's largest biometric ID system. 1.41 billion enrolled. Required for banking, mobile phones, government benefits. Model studied globally for digital ID implementation.",
+        tags: ["India", "Aadhaar", "Biometrics", "Digital ID", "1.4 Billion"],
+        relatedEntities: ["India"],
+        links: [
+          { label: "UIDAI Official Portal", url: "https://uidai.gov.in/", icon: "🏛️" },
+          { label: "Aadhaar Act Text", url: "https://uidai.gov.in/en/about-uidai/legal-framework/acts.html", icon: "📜" }
+        ]
+      },
+
+      // =========== OFFICIAL DOCUMENTS ===========
+      {
+        id: "doc-wef-ktdi",
+        type: "documents",
+        title: "WEF Known Traveller Digital Identity White Paper",
+        date: "2018",
+        jurisdiction: "WEF",
+        description: "World Economic Forum white paper outlining digital identity system for international travel. Partnership with Accenture and government agencies. Biometric verification, risk assessment, seamless borders.",
+        tags: ["WEF", "Digital Identity", "Travel", "Biometrics", "Accenture"],
+        relatedEntities: ["WEF", "Klaus Schwab"],
+        links: [
+          { label: "WEF KTDI Report", url: "https://www.weforum.org/publications/the-known-traveller-unlocking-the-potential-of-digital-identity-for-secure-and-seamless-travel/", icon: "📄" }
+        ]
+      },
+      {
+        id: "doc-boe-cbdc",
+        type: "documents",
+        title: "Bank of England CBDC Discussion Papers",
+        date: "2020-Present",
+        jurisdiction: "United Kingdom",
+        description: "Series of papers exploring Digital Pound implementation. Explicitly discusses programmability: money that can expire, be restricted by merchant, location, time, or behavioral conditions.",
+        quote: {
+          text: "Programmability could enable restrictions on how, when, or where money is spent.",
+          source: "Bank of England CBDC Consultation"
+        },
+        tags: ["Bank of England", "CBDC", "Digital Pound", "Programmable Money"],
+        relatedEntities: ["United Kingdom", "CBDCs"],
+        links: [
+          { label: "Bank of England Digital Pound", url: "https://www.bankofengland.co.uk/paper/2023/the-digital-pound-consultation-paper", icon: "📄" },
+          { label: "CBDC Technology Paper", url: "https://www.bankofengland.co.uk/paper/2021/new-forms-of-digital-money", icon: "📄" }
+        ]
+      },
+      {
+        id: "doc-ecb-digitaleuro",
+        type: "documents",
+        title: "European Central Bank Digital Euro Documentation",
+        date: "2021-Present",
+        jurisdiction: "European Union",
+        description: "ECB reports and progress updates on Digital Euro development. Preparation phase began 2023. Covers privacy considerations, programmability, and implementation timeline.",
+        tags: ["ECB", "Digital Euro", "CBDC", "EU", "Programmable Money"],
+        relatedEntities: ["European Union", "CBDCs"],
+        links: [
+          { label: "ECB Digital Euro Portal", url: "https://www.ecb.europa.eu/euro/digital_euro/html/index.en.html", icon: "🏛️" },
+          { label: "Digital Euro Progress Reports", url: "https://www.ecb.europa.eu/pub/pdf/other/ecb.digitaleuroprogress202310~5c7c98c57a.en.pdf", icon: "📄" }
+        ]
+      },
+      {
+        id: "doc-nasa-2001",
+        type: "documents",
+        title: "NASA 2001 'Future Strategic Issues/Future Warfare [Circa 2025]'",
+        date: "2001-08",
+        jurisdiction: "USA",
+        description: "Presentation by Dennis Bushnell, NASA Chief Scientist, projecting technological developments for 2020+. Discusses 'hackable humans,' brain-computer interfaces, population control technologies, and a world of 'Bots, 'Borgs, and Humans' by 2025.",
+        quote: {
+          text: "The 'Bots, 'Borgs, and Humans' — The changing nature of humans.",
+          source: "NASA Langley Presentation, 2001"
+        },
+        tags: ["NASA", "Future Warfare", "Transhumanism", "2025 Predictions", "Bushnell"],
+        relatedEntities: ["NASA", "Dennis Bushnell"],
+        links: [
+          { label: "Internet Archive Copy", url: "https://web.archive.org/web/2001/https://ntrs.nasa.gov/", icon: "📄" },
+          { label: "DTIC Archive", url: "https://discover.dtic.mil/", icon: "🏛️" }
+        ]
+      },
+      {
+        id: "doc-schwab-4ir",
+        type: "documents",
+        title: "Klaus Schwab — The Fourth Industrial Revolution (Book)",
+        date: "2016-01-11",
+        jurisdiction: "WEF",
+        description: "Foundational text for WEF's current agenda. Describes fusion of physical, digital, and biological spheres. Covers AI, robotics, IoT, genetic engineering, brain-computer interfaces.",
+        quote: {
+          text: "The Fourth Industrial Revolution creates a world in which physical and virtual systems of manufacturing flexibly cooperate... [and will] challenge ideas about what it means to be human.",
+          source: "Klaus Schwab, The Fourth Industrial Revolution (2016)"
+        },
+        tags: ["Klaus Schwab", "WEF", "Fourth Industrial Revolution", "Transhumanism"],
+        relatedEntities: ["Klaus Schwab", "WEF"],
+        links: [
+          { label: "WEF Publication Page", url: "https://www.weforum.org/about/the-fourth-industrial-revolution-by-klaus-schwab/", icon: "📄" },
+          { label: "Book (Amazon)", url: "https://www.amazon.com/Fourth-Industrial-Revolution-Klaus-Schwab/dp/1524758868", icon: "📚" }
+        ]
+      },
+      {
+        id: "doc-schwab-greatreset",
+        type: "documents",
+        title: "Klaus Schwab — COVID-19: The Great Reset (Book)",
+        date: "2020-07-09",
+        jurisdiction: "WEF",
+        description: "Book published during pandemic outlining framework for restructuring global economics and governance. 'Build Back Better' framework. Published July 2020 — remarkably fast for a book about a pandemic that began months earlier.",
+        quote: {
+          text: "The pandemic represents a rare but narrow window of opportunity to reflect, reimagine, and reset our world.",
+          source: "Klaus Schwab, COVID-19: The Great Reset (2020)"
+        },
+        tags: ["Klaus Schwab", "WEF", "Great Reset", "COVID-19", "Build Back Better"],
+        relatedEntities: ["Klaus Schwab", "WEF"],
+        links: [
+          { label: "WEF Great Reset Initiative", url: "https://www.weforum.org/focus/the-great-reset/", icon: "🏛️" },
+          { label: "Book (Amazon)", url: "https://www.amazon.com/COVID-19-Great-Reset-Klaus-Schwab/dp/2940631123", icon: "📚" }
+        ]
+      },
+      {
+        id: "doc-transhumanist-declaration",
+        type: "documents",
+        title: "The Transhumanist Declaration",
+        date: "1998 (Revised 2009)",
+        jurisdiction: "International",
+        description: "Foundational document of transhumanist movement. Adopted by World Transhumanist Association (now Humanity+). Defines humans as 'work-in-progress' that can be technologically enhanced.",
+        quote: {
+          text: "Transhumanists view human nature as a work-in-progress, a half-baked beginning that we can learn to remold in desirable ways. Current humanity need not be the endpoint of evolution.",
+          source: "The Transhumanist Declaration"
+        },
+        tags: ["Transhumanism", "Nick Bostrom", "Humanity+", "Philosophy"],
+        relatedEntities: ["Nick Bostrom", "Transhumanism"],
+        links: [
+          { label: "Humanity+ Declaration", url: "https://humanityplus.org/philosophy/transhumanist-declaration/", icon: "📄" }
+        ]
+      },
+      {
+        id: "doc-wef-commonpass",
+        type: "documents",
+        title: "WEF CommonPass Health Passport Framework",
+        date: "2020",
+        jurisdiction: "WEF / International",
+        description: "WEF partnership with The Commons Project developing digital health passport for COVID vaccination verification. Framework for linking health status to travel and access.",
+        tags: ["WEF", "CommonPass", "Vaccine Passport", "Health Certificate", "Travel"],
+        relatedEntities: ["WEF", "Klaus Schwab"],
+        links: [
+          { label: "CommonPass Website", url: "https://www.commonpass.org/", icon: "🏛️" },
+          { label: "WEF CommonPass Coverage", url: "https://www.weforum.org/agenda/2020/10/commonpass-digital-health-passport/", icon: "📄" }
+        ]
+      },
+
+      // =========== SPEECHES & STATEMENTS ===========
+      {
+        id: "speech-harari-davos2020",
+        type: "speeches",
+        title: "Yuval Harari — 'Hackable Humans' Speech, Davos 2020",
+        date: "2020-01-24",
+        jurisdiction: "WEF Davos",
+        description: "Keynote speech articulating the concept that humans are now 'hackable animals' through sufficient data and computing power. Discusses what's needed to hack humans: biometric data + AI processing.",
+        quote: {
+          text: "We humans should get used to the idea that we are no longer mysterious souls — we are now hackable animals. That's what we are.",
+          source: "Yuval Harari, Davos 2020"
+        },
+        tags: ["Yuval Harari", "WEF", "Davos", "Hackable Humans", "Biometrics"],
+        relatedEntities: ["Yuval Harari", "WEF", "Klaus Schwab"],
+        links: [
+          { label: "WEF Official Video", url: "https://www.weforum.org/events/world-economic-forum-annual-meeting-2020/sessions/how-to-survive-the-21st-century", icon: "🎬" },
+          { label: "YouTube Archive", url: "https://www.youtube.com/results?search_query=harari+davos+2020+hackable", icon: "▶️" }
+        ]
+      },
+      {
+        id: "speech-harari-uselessclass",
+        type: "speeches",
+        title: "Yuval Harari — 'Useless Class' Statements",
+        date: "Various",
+        jurisdiction: "Multiple Platforms",
+        description: "Collection of statements from Harari about the coming 'useless class' — people made economically irrelevant by AI. His proposed solution: 'drugs and computer games.'",
+        quote: {
+          text: "What to do with all these useless people? At present, the best guess we have is to keep them happy with drugs and computer games.",
+          source: "Yuval Harari, Various Interviews"
+        },
+        tags: ["Yuval Harari", "Useless Class", "AI Automation", "Population Management"],
+        relatedEntities: ["Yuval Harari", "WEF"],
+        links: [
+          { label: "TED Talk", url: "https://www.ted.com/speakers/yuval_noah_harari", icon: "🎬" },
+          { label: "Interview Clips", url: "https://www.youtube.com/results?search_query=harari+useless+class", icon: "▶️" }
+        ]
+      },
+      {
+        id: "speech-schwab-cabinets",
+        type: "speeches",
+        title: "Klaus Schwab — 'Penetrate the Cabinets' Statement",
+        date: "2017",
+        jurisdiction: "Harvard Kennedy School",
+        description: "Klaus Schwab discussing how WEF Young Global Leaders have been placed in government positions, noting they 'penetrate the cabinets' of world governments.",
+        quote: {
+          text: "What we are very proud of is that we penetrate the cabinets. I know that half of this cabinet, or even more than half, are actually Young Global Leaders of the World Economic Forum.",
+          source: "Klaus Schwab, Harvard Kennedy School (referring to Canada)"
+        },
+        tags: ["Klaus Schwab", "WEF", "Young Global Leaders", "Government Infiltration", "Canada"],
+        relatedEntities: ["Klaus Schwab", "WEF", "YGL", "Justin Trudeau"],
+        links: [
+          { label: "Video Clip", url: "https://www.youtube.com/results?search_query=schwab+penetrate+cabinets", icon: "▶️" }
+        ]
+      },
+      {
+        id: "speech-musk-neuralink",
+        type: "speeches",
+        title: "Elon Musk — Neuralink 'Symbiosis with AI' Presentations",
+        date: "2019-Present",
+        jurisdiction: "Neuralink Events",
+        description: "Series of presentations where Musk outlines Neuralink's goal of achieving 'symbiosis with artificial intelligence' through brain implants.",
+        quote: {
+          text: "The goal of Neuralink is to achieve symbiosis with artificial intelligence.",
+          source: "Elon Musk, Neuralink Presentations"
+        },
+        tags: ["Elon Musk", "Neuralink", "Brain-Computer Interface", "AI Symbiosis"],
+        relatedEntities: ["Elon Musk", "Neuralink"],
+        links: [
+          { label: "Neuralink Official YouTube", url: "https://www.youtube.com/neuralink", icon: "▶️" },
+          { label: "2024 Human Implant Announcement", url: "https://twitter.com/elonmusk/status/1752098683024220632", icon: "📱" }
+        ]
+      },
+      {
+        id: "speech-gates-population",
+        type: "speeches",
+        title: "Bill Gates — Population & Vaccines TED Talk",
+        date: "2010-02",
+        jurisdiction: "TED",
+        description: "TED Talk where Gates discusses reducing carbon emissions through population reduction, stating 'if we do a really great job on new vaccines... we could lower [population] by perhaps 10 or 15 percent.'",
+        quote: {
+          text: "The world today has 6.8 billion people... if we do a really great job on new vaccines, health care, reproductive health services, we could lower that by perhaps 10 or 15 percent.",
+          source: "Bill Gates, TED 2010"
+        },
+        tags: ["Bill Gates", "Population", "Vaccines", "Climate", "TED"],
+        relatedEntities: ["Bill Gates", "Gates Foundation"],
+        links: [
+          { label: "TED Talk Video", url: "https://www.ted.com/talks/bill_gates_innovating_to_zero", icon: "🎬" }
+        ]
+      },
+
+      // =========== CORPORATE FILINGS ===========
+      {
+        id: "corp-openai-microsoft",
+        type: "corporate",
+        title: "Microsoft-OpenAI Partnership Filings",
+        date: "2019-Present",
+        jurisdiction: "USA",
+        description: "Series of investments totaling $13B+ from Microsoft into OpenAI. Includes exclusive cloud computing agreement, licensing of GPT technology, and integration into Microsoft products.",
+        tags: ["Microsoft", "OpenAI", "Sam Altman", "Investment", "$13 Billion"],
+        relatedEntities: ["Microsoft", "OpenAI", "Sam Altman"],
+        links: [
+          { label: "Microsoft Press Release", url: "https://news.microsoft.com/2023/01/23/microsoftandopenaiextendpartnership/", icon: "📄" },
+          { label: "SEC Filings (Microsoft)", url: "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000789019", icon: "📊" }
+        ]
+      },
+      {
+        id: "corp-palantir-contracts",
+        type: "corporate",
+        title: "Palantir Government Contracts",
+        date: "Ongoing",
+        jurisdiction: "USA / International",
+        description: "Palantir contracts with CIA, ICE, US military, UK NHS, and other government agencies. Provides surveillance and predictive analytics platforms for government operations.",
+        tags: ["Palantir", "Peter Thiel", "CIA", "ICE", "Military", "NHS"],
+        relatedEntities: ["Palantir", "Peter Thiel"],
+        links: [
+          { label: "USASpending.gov (Palantir)", url: "https://www.usaspending.gov/search/?hash=7d3b4a8c9f2e1d0a", icon: "📊" },
+          { label: "Palantir SEC Filings", url: "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001321655", icon: "📊" }
+        ]
+      },
+      {
+        id: "corp-ring-police",
+        type: "corporate",
+        title: "Amazon Ring Police Partnership Program",
+        date: "2018-Present",
+        jurisdiction: "USA",
+        description: "Partnerships between Amazon Ring and 2,000+ police departments allowing doorbell footage requests without warrants. Creates distributed surveillance network across residential areas.",
+        tags: ["Amazon", "Ring", "Police", "Surveillance", "Doorbell Cameras"],
+        relatedEntities: ["Amazon", "Ring"],
+        links: [
+          { label: "Ring Neighbors Public Safety", url: "https://ring.com/neighbors", icon: "🏠" },
+          { label: "EFF Analysis", url: "https://www.eff.org/pages/amazon-ring-and-police", icon: "📄" }
+        ]
+      },
+      {
+        id: "corp-neuralink-fda",
+        type: "corporate",
+        title: "Neuralink FDA Human Trial Approval",
+        date: "2023-05",
+        jurisdiction: "USA / FDA",
+        description: "FDA approval for Neuralink to begin human clinical trials. First human implant January 2024. Marks beginning of commercial brain-computer interface implantation.",
+        tags: ["Neuralink", "FDA", "Human Trials", "Brain Implant", "Elon Musk"],
+        relatedEntities: ["Neuralink", "Elon Musk"],
+        links: [
+          { label: "Neuralink FDA Announcement", url: "https://neuralink.com/blog/", icon: "📄" },
+          { label: "ClinicalTrials.gov", url: "https://clinicaltrials.gov/search?cond=Neuralink", icon: "🏥" }
+        ]
+      },
+
+      // =========== LEAKS & DECLASSIFIED ===========
+      {
+        id: "leak-snowden-prism",
+        type: "leaks",
+        title: "Snowden NSA Revelations — PRISM & XKeyscore",
+        date: "2013-06",
+        jurisdiction: "USA / International",
+        description: "Edward Snowden leaked documents revealing NSA mass surveillance programs including PRISM (real-time access to Google, Facebook, Apple, Microsoft data) and XKeyscore (searchable database of all internet activity).",
+        tags: ["Snowden", "NSA", "PRISM", "XKeyscore", "Mass Surveillance"],
+        relatedEntities: ["NSA", "Google", "Meta", "Apple", "Microsoft"],
+        links: [
+          { label: "The Intercept Archive", url: "https://theintercept.com/snowden-sidtoday/", icon: "📄" },
+          { label: "Guardian Coverage", url: "https://www.theguardian.com/world/the-nsa-files", icon: "📰" }
+        ]
+      },
+      {
+        id: "leak-facebook-haugen",
+        type: "leaks",
+        title: "Frances Haugen Facebook Files",
+        date: "2021-09",
+        jurisdiction: "USA",
+        description: "Internal Facebook documents leaked by Frances Haugen showing company knew its algorithms promoted divisive content, harmed teen mental health, and spread misinformation. Revealed engagement-maximization over safety.",
+        quote: {
+          text: "Facebook's own research shows that it amplifies hate, misinformation, and political unrest—but the company hides what it knows.",
+          source: "Frances Haugen, Congressional Testimony"
+        },
+        tags: ["Facebook", "Meta", "Frances Haugen", "Algorithm", "Mental Health"],
+        relatedEntities: ["Meta", "Mark Zuckerberg"],
+        links: [
+          { label: "SEC Whistleblower Filing", url: "https://www.sec.gov/whistleblower", icon: "📊" },
+          { label: "Congressional Testimony", url: "https://www.commerce.senate.gov/2021/10/protecting-kids-online-testimony-from-a-facebook-whistleblower", icon: "🏛️" }
+        ]
+      },
+      {
+        id: "leak-cambridge-analytica",
+        type: "leaks",
+        title: "Cambridge Analytica Data Harvesting",
+        date: "2018-03",
+        jurisdiction: "USA / UK",
+        description: "Revelation that Cambridge Analytica harvested data from 87 million Facebook users without consent for political targeting. Used psychographic profiling to manipulate voters.",
+        tags: ["Cambridge Analytica", "Facebook", "Data Harvesting", "Election Manipulation"],
+        relatedEntities: ["Meta", "Mark Zuckerberg"],
+        links: [
+          { label: "UK ICO Investigation", url: "https://ico.org.uk/about-the-ico/media-centre/news-and-blogs/2018/07/ico-s-investigation-into-data-analytics-in-political-campaigns/", icon: "🏛️" },
+          { label: "Guardian Coverage", url: "https://www.theguardian.com/news/series/cambridge-analytica-files", icon: "📰" }
+        ]
+      },
+      {
+        id: "leak-twitter-files",
+        type: "leaks",
+        title: "Twitter Files",
+        date: "2022-12",
+        jurisdiction: "USA",
+        description: "Internal Twitter documents released after Musk acquisition revealing government coordination with platform on content moderation, FBI/DHS communications, and shadow banning practices.",
+        tags: ["Twitter", "Elon Musk", "FBI", "Censorship", "Government Coordination"],
+        relatedEntities: ["Twitter/X", "Elon Musk", "FBI"],
+        links: [
+          { label: "Twitter Files Thread Index", url: "https://twitter.com/search?q=twitter%20files", icon: "📱" },
+          { label: "Matt Taibbi Substack", url: "https://www.racket.news/p/twitter-files", icon: "📄" }
+        ]
+      },
+
+      // =========== RESEARCH STUDIES ===========
+      {
+        id: "research-facebook-emotion",
+        type: "research",
+        title: "Facebook Emotional Contagion Study",
+        date: "2014-06",
+        jurisdiction: "USA",
+        description: "Study published in PNAS where Facebook manipulated newsfeeds of 689,003 users to study emotional contagion. Users were not informed. Demonstrated ability to influence emotions at scale through algorithmic manipulation.",
+        quote: {
+          text: "We show that emotional states can be transferred to others via emotional contagion, leading people to experience the same emotions without their awareness.",
+          source: "Kramer et al., PNAS"
+        },
+        tags: ["Facebook", "Psychological Manipulation", "Emotional Contagion", "Ethics"],
+        relatedEntities: ["Meta", "Mark Zuckerberg"],
+        links: [
+          { label: "PNAS Study", url: "https://www.pnas.org/doi/10.1073/pnas.1320040111", icon: "📚" }
+        ]
+      },
+      {
+        id: "research-algorithmic-bias",
+        type: "research",
+        title: "Healthcare Algorithm Racial Bias Study",
+        date: "2019-10",
+        jurisdiction: "USA",
+        description: "Science study finding widely-used healthcare algorithm discriminated against Black patients. Used cost as proxy for health needs, systematically deprioritizing Black patients. Affected 200 million Americans.",
+        quote: {
+          text: "The algorithm was less likely to refer Black people than White people who were equally sick to programs that aim to improve care for patients with complex medical needs.",
+          source: "Obermeyer et al., Science"
+        },
+        tags: ["Algorithm Bias", "Healthcare", "Racial Discrimination", "AI Ethics"],
+        relatedEntities: [],
+        links: [
+          { label: "Science Paper", url: "https://www.science.org/doi/10.1126/science.aax2342", icon: "📚" }
+        ]
+      },
+      {
+        id: "research-predpol",
+        type: "research",
+        title: "Predictive Policing Algorithm Studies",
+        date: "Various",
+        jurisdiction: "USA",
+        description: "Research examining PredPol and similar predictive policing algorithms. Studies show they encode historical bias, creating feedback loops that increase policing in already over-policed areas.",
+        tags: ["Predictive Policing", "PredPol", "Algorithm Bias", "Criminal Justice"],
+        relatedEntities: ["Palantir"],
+        links: [
+          { label: "ACLU Analysis", url: "https://www.aclu.org/issues/privacy-technology/surveillance-technologies/predictive-policing", icon: "📄" },
+          { label: "MIT Tech Review", url: "https://www.technologyreview.com/topic/predictive-policing/", icon: "📰" }
+        ]
+      },
+
+      // =========== FUNDING TRAILS ===========
+      {
+        id: "funding-gates-moderna",
+        type: "funding",
+        title: "Gates Foundation Moderna Investment & Grants",
+        date: "2016-Present",
+        jurisdiction: "International",
+        description: "Gates Foundation investments in Moderna including $20M equity stake (2016), plus grants through CEPI. Bill Gates bought Moderna stock before pandemic and has promoted company extensively.",
+        tags: ["Gates Foundation", "Moderna", "mRNA", "CEPI", "Investment"],
+        relatedEntities: ["Bill Gates", "Moderna", "Stéphane Bancel"],
+        links: [
+          { label: "Gates Foundation Grants Database", url: "https://www.gatesfoundation.org/about/committed-grants", icon: "📊" },
+          { label: "CEPI Funding", url: "https://cepi.net/", icon: "🏛️" }
+        ]
+      },
+      {
+        id: "funding-gates-who",
+        type: "funding",
+        title: "Gates Foundation WHO Contributions",
+        date: "Ongoing",
+        jurisdiction: "International",
+        description: "Gates Foundation is second largest WHO funder (behind only US government). Gives hundreds of millions annually. Raises questions about private influence over global health policy.",
+        tags: ["Gates Foundation", "WHO", "Global Health", "Influence"],
+        relatedEntities: ["Bill Gates", "WHO"],
+        links: [
+          { label: "WHO Contributors List", url: "https://www.who.int/about/funding/contributors", icon: "📊" },
+          { label: "Open WHO Financials", url: "https://open.who.int/", icon: "🏛️" }
+        ]
+      },
+      {
+        id: "funding-openai-microsoft",
+        type: "funding",
+        title: "OpenAI Funding History",
+        date: "2015-Present",
+        jurisdiction: "USA",
+        description: "OpenAI founded 2015 as nonprofit with funding from Musk, Altman, Thiel, others. Transitioned to capped-profit 2019. Microsoft invested $1B (2019), then $10B+ (2023). Now valued at $80B+.",
+        tags: ["OpenAI", "Microsoft", "Sam Altman", "Elon Musk", "Peter Thiel"],
+        relatedEntities: ["OpenAI", "Sam Altman", "Microsoft", "Elon Musk", "Peter Thiel"],
+        links: [
+          { label: "OpenAI Blog", url: "https://openai.com/blog/", icon: "📄" },
+          { label: "Crunchbase Profile", url: "https://www.crunchbase.com/organization/openai", icon: "📊" }
+        ]
+      },
+      {
+        id: "funding-wef-partners",
+        type: "funding",
+        title: "WEF Strategic Partners List",
+        date: "Current",
+        jurisdiction: "International",
+        description: "World Economic Forum Strategic Partners — 100+ companies paying $600K+ annually for membership. Includes major tech, pharma, finance, media companies. Direct funding and influence on WEF agenda.",
+        tags: ["WEF", "Corporate Partners", "Funding", "Membership"],
+        relatedEntities: ["WEF", "Klaus Schwab"],
+        links: [
+          { label: "WEF Partners Page", url: "https://www.weforum.org/communities/strategic-partnership-b5337725-fac7-4f8a-9a4f-c89072b96fbb/", icon: "🏛️" }
+        ]
+      },
+      {
+        id: "funding-gavi",
+        type: "funding",
+        title: "GAVI Alliance Funding Sources",
+        date: "2000-Present",
+        jurisdiction: "International",
+        description: "GAVI vaccine alliance funded by Gates Foundation ($4B+ total), governments, and corporations. WEF partnership. Pushes digital vaccination records and ID integration in developing countries.",
+        tags: ["GAVI", "Gates Foundation", "Vaccines", "Digital ID", "Global Health"],
+        relatedEntities: ["Bill Gates", "GAVI", "WHO"],
+        links: [
+          { label: "GAVI Donor Profiles", url: "https://www.gavi.org/investing-gavi/funding/donor-profiles", icon: "📊" },
+          { label: "Gates Foundation Grants to GAVI", url: "https://www.gatesfoundation.org/about/committed-grants?q=gavi", icon: "📊" }
+        ]
+      },
+      {
+        id: "funding-ygl",
+        type: "funding",
+        title: "Young Global Leaders Programme Funding",
+        date: "2004-Present",
+        jurisdiction: "WEF",
+        description: "YGL programme funded through WEF. Alumni include tech CEOs, heads of state, media executives. Five-year programme develops future leaders aligned with WEF framework.",
+        tags: ["YGL", "WEF", "Leadership Development", "Global Elite"],
+        relatedEntities: ["WEF", "Klaus Schwab", "YGL"],
+        links: [
+          { label: "YGL Official Site", url: "https://www.younggloballeaders.org/", icon: "🏛️" },
+          { label: "YGL Community Database", url: "https://www.younggloballeaders.org/community", icon: "📊" }
+        ]
+      }
+    ];
+
+    // ============================================
+    // APPLICATION STATE
+    // ============================================
+
+    let activeFilters = ['patents', 'legislation', 'documents', 'speeches', 'corporate', 'leaks', 'research', 'funding'];
+    let searchQuery = '';
+    let expandedCard = null;
+
+    // ============================================
+    // RENDER FUNCTIONS
+    // ============================================
+
+    function init() {
+      renderCards();
+      updateStats();
+      setupEventListeners();
+    }
+
+    function renderCards() {
+      const grid = document.getElementById('cardsGrid');
+      
+      const filtered = evidence
+        .filter(e => activeFilters.includes(e.type))
+        .filter(e => matchesSearch(e))
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 60px; color: var(--text-muted);">No results found. Try adjusting your filters or search.</div>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(e => renderCard(e)).join('');
+
+      // Add click handlers
+      grid.querySelectorAll('.evidence-card').forEach(card => {
+        card.addEventListener('click', () => toggleCard(card.dataset.id));
+      });
+
+      // Prevent link clicks from toggling card
+      grid.querySelectorAll('.source-link').forEach(link => {
+        link.addEventListener('click', (event) => event.stopPropagation());
+      });
+    }
+
+    function renderCard(e) {
+      const isExpanded = expandedCard === e.id;
+      const expandedClass = isExpanded ? 'expanded' : '';
+
+      return `
+        <article class="evidence-card ${expandedClass}" data-id="${e.id}">
+          <div class="card-header">
+            <span class="card-type-badge ${e.type}">${formatType(e.type)}</span>
+            <h3 class="card-title">${e.title}</h3>
+          </div>
+          
+          <div class="card-meta">
+            <span class="card-meta-item"><strong>Date:</strong> ${formatDate(e.date)}</span>
+            <span class="card-meta-item"><strong>Jurisdiction:</strong> ${e.jurisdiction}</span>
+          </div>
+          
+          <p class="card-description">${e.description}</p>
+          
+          ${e.quote ? `
+            <div class="card-quote">
+              <div class="card-quote-text">"${e.quote.text}"</div>
+              <div class="card-quote-source">— ${e.quote.source}</div>
+            </div>
+          ` : ''}
+          
+          <div class="card-tags">
+            ${e.tags.map(tag => `<span class="card-tag">${tag}</span>`).join('')}
+          </div>
+          
+          <div class="card-links">
+            ${e.links.map(link => `
+              <a href="${link.url}" target="_blank" rel="noopener" class="source-link">
+                <span class="source-link-icon">${link.icon}</span>
+                <span class="source-link-text">
+                  <span class="source-link-label">${link.label}</span>
+                  <span class="source-link-url">${link.url}</span>
+                </span>
+                <span class="source-link-arrow">→</span>
+              </a>
+            `).join('')}
+          </div>
+          
+          ${e.relatedEntities && e.relatedEntities.length ? `
+            <div class="card-entities">
+              <div class="card-entities-label">Related Entities</div>
+              ${e.relatedEntities.map(ent => `<span class="entity-chip">${ent}</span>`).join('')}
+            </div>
+          ` : ''}
+          
+          <div class="card-expand-hint">Click to expand and view source links</div>
+        </article>
+      `;
+    }
+
+    function toggleCard(id) {
+      expandedCard = expandedCard === id ? null : id;
+      renderCards();
+    }
+
+    function formatType(type) {
+      const labels = {
+        patents: 'Patent',
+        legislation: 'Legislation',
+        documents: 'Document',
+        speeches: 'Speech',
+        corporate: 'Corporate',
+        leaks: 'Leak',
+        research: 'Research',
+        funding: 'Funding'
+      };
+      return labels[type] || type;
+    }
+
+    function formatDate(dateStr) {
+      if (dateStr.includes('Present') || dateStr.includes('Various') || dateStr.includes('Ongoing')) {
+        return dateStr;
+      }
+      const date = new Date(dateStr);
+      if (isNaN(date)) return dateStr;
+      return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+    }
+
+    function matchesSearch(item) {
+      if (!searchQuery) return true;
+      const q = searchQuery.toLowerCase();
+      return item.title.toLowerCase().includes(q) ||
+             item.description.toLowerCase().includes(q) ||
+             item.tags.some(t => t.toLowerCase().includes(q)) ||
+             (item.relatedEntities && item.relatedEntities.some(e => e.toLowerCase().includes(q)));
+    }
+
+    function updateStats() {
+      const visible = evidence.filter(e => activeFilters.includes(e.type) && matchesSearch(e));
+      
+      const stats = {
+        patents: visible.filter(e => e.type === 'patents').length,
+        legislation: visible.filter(e => e.type === 'legislation').length,
+        documents: visible.filter(e => e.type === 'documents').length,
+        speeches: visible.filter(e => e.type === 'speeches').length,
+        corporate: visible.filter(e => e.type === 'corporate').length,
+        leaks: visible.filter(e => e.type === 'leaks').length,
+        research: visible.filter(e => e.type === 'research').length,
+        funding: visible.filter(e => e.type === 'funding').length
+      };
+
+      document.getElementById('statsBar').innerHTML = `
+        <span><strong>${visible.length}</strong> sources displayed</span>
+        <span><strong>${stats.patents}</strong> patents</span>
+        <span><strong>${stats.legislation}</strong> legislation</span>
+        <span><strong>${stats.documents}</strong> documents</span>
+        <span><strong>${stats.speeches}</strong> speeches</span>
+        <span><strong>${stats.corporate}</strong> corporate</span>
+        <span><strong>${stats.leaks}</strong> leaks</span>
+        <span><strong>${stats.research}</strong> research</span>
+        <span><strong>${stats.funding}</strong> funding</span>
+      `;
+    }
+
+    // ============================================
+    // EVENT LISTENERS
+    // ============================================
+
+    function setupEventListeners() {
+      // Search
+      document.getElementById('searchInput').addEventListener('input', (e) => {
+        searchQuery = e.target.value;
+        expandedCard = null;
+        renderCards();
+        updateStats();
+      });
+
+      // Filters
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const filter = btn.dataset.filter;
+          btn.classList.toggle('active');
+          
+          if (activeFilters.includes(filter)) {
+            activeFilters = activeFilters.filter(f => f !== filter);
+          } else {
+            activeFilters.push(filter);
+          }
+
+          expandedCard = null;
+          renderCards();
+          updateStats();
+        });
+      });
+    }
+
+    // ============================================
+    // LAUNCH
+    // ============================================
+
+    init();
+  </script>
+</body>
+</html>
