@@ -5188,21 +5188,6 @@
 
 
 
-    const highValueContributions = [
-      '148 evidence cards with 459 direct links spanning policy, patents, funding, public health, bioengineering, digital identity, virtual-human systems, and legacy roots.',
-      'Convergence layers connect repeated nodes across money, patents, policy, quotes, deployments, and institutional lineages.',
-      'Inline discovery opens related cards in-place so keyword/entity exploration does not overwrite the main search or collapse the current view.',
-      'Every card keeps source posture visible through source-quality notes, facts, flags, details, quotes, and direct URLs.',
-      'Reusable research trails support saving, comparing, copying links, exporting JSON, and opening related clusters from the same workspace.'
-    ];
-
-    const presentationOptimizations = [
-      'Read top-down: orientation panels first, trajectory chains second, category accordions third, expanded source cards last.',
-      'Treat domino chains as navigation maps: they show chronological alignment and jump points, not proof of hidden motive by themselves.',
-      'Prioritize high-density categories in the Impact Matrix when a view has too many records to read linearly.',
-      'Use lenses for fast entry points into convergence, money, identity/pharma, virtual humans, bioengineering, and key-player networks.',
-      'Use caution labels, source-quality notes, and primary links to separate documented records from interpretation.'
-    ];
 
 
     const legacyLineages = [
@@ -6195,6 +6180,50 @@
       };
     }
 
+    function getSourceHardeningRecommendations(item) {
+      const source = classifySourceQuality(item);
+      const recommendations = [];
+      if (source.linkCount === 0) recommendations.push('Add at least one direct source URL before using this card in a report.');
+      if (source.linkCount === 1) recommendations.push('Add corroborating links or a primary-source mirror to reduce single-link dependency.');
+      if (!source.hasArchive) recommendations.push('Capture an archive/perma mirror for link-rot protection.');
+      if (source.isSecondary && !source.isPrimary) recommendations.push('Find the underlying primary document, filing, patent, transcript, dataset, or official page behind this secondary/reference source.');
+      if (!item.sourceQuality) recommendations.push('Add a source-quality label so exports can distinguish primary, secondary, peer-reviewed, and archive-backed records.');
+      if (source.linkCount >= 3 && source.isPrimary) recommendations.push('Candidate anchor card: source-rich and primary/official-backed; verify links remain live.');
+      return recommendations.length ? recommendations : ['Review source posture and add archive mirrors where pages are likely to move.'];
+    }
+
+    function exportSourceHardeningChecklist(items = discoveryMatches, term = discoveryTerm, guidance = discoveryGuidance) {
+      if (!items.length) return;
+      const audit = getSourceAudit(items);
+      const payload = {
+        generatedAt: new Date().toISOString(),
+        drawer: term || 'Source hardening checklist',
+        guidance,
+        summary: compactSourceAuditForExport(audit),
+        cards: items.map(item => ({
+          id: item.id,
+          title: item.title,
+          type: item.type,
+          date: item.date,
+          jurisdiction: item.jurisdiction || '',
+          sourceQuality: item.sourceQuality || 'Unlabeled source record',
+          linkCount: item.links?.length || 0,
+          currentLinks: (item.links || []).map(link => ({ label: link.label, url: link.url })),
+          recommendedActions: getSourceHardeningRecommendations(item)
+        }))
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const slug = (term || 'source-hardening-checklist').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'source-hardening-checklist';
+      a.href = url;
+      a.download = `source-hardening-${slug}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
     function compactProfileForExport(profile) {
       return {
         entity: profile.entity,
@@ -6578,25 +6607,32 @@
 
     function renderBriefPanel(items = getVisibleEvidence()) {
       const panel = document.getElementById('briefPanel');
+      const audit = getSourceAudit(items);
       panel.innerHTML = `
         <div class="brief-header">
           <div>
-            <div class="brief-title">Research orientation + source guardrails</div>
-            <div class="brief-subtitle">Finished reading layers for navigating the evidence without exposing implementation notes</div>
+            <div class="brief-title">Source provenance snapshot</div>
+            <div class="brief-subtitle">Live source-quality status for the current view; open weak-link or archive queues from Entity Intelligence for card-level remediation.</div>
           </div>
-          <button class="toolbar-btn" type="button" id="copyBriefBtn">Copy brief</button>
+          <button class="toolbar-btn" type="button" id="copyBriefBtn">Copy source snapshot</button>
         </div>
         <div class="brief-grid">
           <article class="brief-card">
-            <h4>Current map strengths</h4>
+            <h4>Current source mix</h4>
             <ol class="brief-list">
-              ${highValueContributions.map((item, index) => `<li><span class="brief-rank">${index + 1}</span>${item}</li>`).join('')}
+              <li><span class="brief-rank">${audit.primaryRatio}%</span>Primary / official source mix across ${audit.total} visible cards.</li>
+              <li><span class="brief-rank">${audit.peerReviewed.length}</span>Peer-reviewed or research-labeled records.</li>
+              <li><span class="brief-rank">${audit.secondary.length}</span>Secondary/reference-heavy records needing extra primary-source review.</li>
+              <li><span class="brief-rank">${audit.sourceRich.length}</span>Source-rich cards with three or more links.</li>
             </ol>
           </article>
           <article class="brief-card">
-            <h4>Source-reading guardrails</h4>
+            <h4>Hardening queue</h4>
             <ol class="brief-list">
-              ${presentationOptimizations.map((item, index) => `<li><span class="brief-rank">${index + 1}</span>${item}</li>`).join('')}
+              <li><span class="brief-rank">${audit.weakLinks.length}</span>Weak-link cards with zero or one direct link.</li>
+              <li><span class="brief-rank">${audit.archiveNeeds.length}</span>Cards that should receive archive/perma mirrors or stronger primary documentation.</li>
+              <li><span class="brief-rank">${audit.unlabeled.length}</span>Cards missing explicit source-quality labels.</li>
+              <li><span class="brief-rank">${audit.riskLabel}</span>Overall provenance-risk posture for the current view.</li>
             </ol>
           </article>
         </div>
@@ -6608,7 +6644,16 @@
         btn.addEventListener('click', () => applyLens(btn.dataset.lens));
       });
       document.getElementById('copyBriefBtn')?.addEventListener('click', () => {
-        copyText(`Current map strengths\n${highValueContributions.map((x, i) => `${i + 1}. ${x}`).join('\n')}\n\nSource-reading guardrails\n${presentationOptimizations.map((x, i) => `${i + 1}. ${x}`).join('\n')}`);
+        copyText(`Source provenance snapshot
+Visible cards: ${audit.total}
+Primary/official: ${audit.primary.length} (${audit.primaryRatio}%)
+Peer-reviewed/research: ${audit.peerReviewed.length}
+Secondary/reference: ${audit.secondary.length}
+Source-rich cards: ${audit.sourceRich.length}
+Weak-link cards: ${audit.weakLinks.length}
+Archive candidates: ${audit.archiveNeeds.length}
+Unlabeled source-quality: ${audit.unlabeled.length}
+Provenance risk: ${audit.riskLabel}`);
       });
     }
 
@@ -6899,6 +6944,7 @@
         <div class="discovery-actions">
           <button class="toolbar-btn" type="button" id="openDiscoveryBtn">Open matching cards</button>
           <button class="toolbar-btn" type="button" id="copyDiscoveryBtn">Copy matching links</button>
+          <button class="toolbar-btn" type="button" id="exportDiscoveryChecklistBtn">Export hardening checklist</button>
           <button class="toolbar-btn" type="button" id="convertDiscoveryBtn">Apply as global search</button>
         </div>
       `;
@@ -6920,6 +6966,7 @@
         renderCards();
       });
       document.getElementById('copyDiscoveryBtn')?.addEventListener('click', () => copyText(formatLinksForClipboard(discoveryMatches)));
+      document.getElementById('exportDiscoveryChecklistBtn')?.addEventListener('click', () => exportSourceHardeningChecklist(discoveryMatches, discoveryTerm, discoveryGuidance));
       document.getElementById('convertDiscoveryBtn')?.addEventListener('click', () => applySearch(discoveryTerm));
     }
 
