@@ -2,10 +2,15 @@
 
 These are internal follow-up tasks for future edits. They are intentionally not rendered in the user-facing evidence map.
 
-## Completed in this pass
+## Completed in prior passes
 
 1. Remove visible meta/product-planning language and gamified badge mechanics from the app UI.
 2. Keep only finished research affordances in the page: orientation, source guardrails, trajectory chains, source trails, compare, discovery, copy, and export.
+
+## Completed in this pass
+
+1. Add a persistent current-view state bar for visible result count, active categories, sort/density, open tabs, search/discovery chips, selected thread, selected trajectory, saved cards, and compare state.
+2. Add a low-risk Focus Mode that hides secondary panels and keeps the trajectory, timeline, discovery, and evidence cards in view for deep reading.
 
 ## Next logical tasks
 

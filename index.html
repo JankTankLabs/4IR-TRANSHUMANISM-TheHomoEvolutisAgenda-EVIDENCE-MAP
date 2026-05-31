@@ -207,6 +207,45 @@
       color: var(--text-primary);
     }
 
+    .state-bar {
+      align-items: center;
+      background: linear-gradient(135deg, rgba(93, 173, 226, 0.08), rgba(212, 175, 55, 0.06));
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: -18px 0 28px;
+      padding: 12px 14px;
+    }
+
+    .state-label {
+      color: var(--text-secondary);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      margin-right: 4px;
+      text-transform: uppercase;
+    }
+
+    .state-chip {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text-secondary);
+      font-size: 0.76rem;
+      padding: 6px 10px;
+    }
+
+    .state-chip.actionable {
+      cursor: pointer;
+    }
+
+    .state-chip.actionable:hover {
+      border-color: var(--link-color);
+      color: var(--text-primary);
+    }
 
 
     /* Utility Toolbar */
@@ -280,6 +319,28 @@
 
     .quick-link-chip:hover {
       background: rgba(93, 173, 226, 0.14);
+    }
+
+
+    body.focus-mode .quick-links,
+    body.focus-mode #briefPanel,
+    body.focus-mode #impactPanel,
+    body.focus-mode #investmentPanel,
+    body.focus-mode #pathwayPanel,
+    body.focus-mode #lineagePanel,
+    body.focus-mode #narrativePanel,
+    body.focus-mode .mission-grid,
+    body.focus-mode #quotePanel,
+    body.focus-mode #threadPanel,
+    body.focus-mode footer {
+      display: none;
+    }
+
+    body.focus-mode #dominoPanel,
+    body.focus-mode #timelinePanel,
+    body.focus-mode #discoveryPanel,
+    body.focus-mode #cardsGrid {
+      box-shadow: 0 0 0 1px rgba(93, 173, 226, 0.08);
     }
 
     .tag-inline {
@@ -1636,6 +1697,7 @@
           <option value="compact">Compact cards</option>
           <option value="comfortable">Comfortable cards</option>
         </select>
+        <button class="toolbar-btn" id="focusModeBtn" type="button">Focus mode</button>
       </div>
       <div class="toolbar-group">
         <button class="toolbar-btn" id="openAllCategoriesBtn" type="button">Open all tabs</button>
@@ -1651,6 +1713,8 @@
 
 
     <div class="stats-bar" id="statsBar"></div>
+
+    <div class="state-bar" id="stateBar"></div>
 
 
     <section class="brief-panel" id="briefPanel"></section>
@@ -5434,6 +5498,7 @@
     let selectedDominoTrajectory = 'gates-antitrust-global-health';
     let openCategories = new Set(['legacy', 'players', 'virtual', 'bioengineering']);
     let viewDensity = 'compact';
+    let focusMode = false;
     let savedCards = new Set();
     let compareCards = [];
     let discoveryTerm = '';
@@ -5743,6 +5808,7 @@
         btn.addEventListener('click', () => {
           selectedThread = btn.dataset.threadNode;
           renderThreadPanel(getVisibleEvidence());
+          renderStateBar(getVisibleEvidence());
         });
       });
 
@@ -6272,6 +6338,7 @@
           recordInteraction('cartographer');
           selectedThread = btn.dataset.constellationNode;
           renderThreadPanel(getVisibleEvidence());
+          renderStateBar(getVisibleEvidence());
           document.getElementById('threadPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
       });
@@ -6428,6 +6495,7 @@
       selectedThread = node;
       recordInteraction('thread-puller');
       renderThreadPanel(getVisibleEvidence());
+      renderStateBar(getVisibleEvidence());
       document.getElementById('threadPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
@@ -6586,6 +6654,57 @@
              (item.links && item.links.some(link => link.label.toLowerCase().includes(q) || link.url.toLowerCase().includes(q)));
     }
 
+    function getSelectedTrajectoryTitle() {
+      return (dominoTrajectories.find(item => item.id === selectedDominoTrajectory) || dominoTrajectories[0])?.title || 'None';
+    }
+
+    function renderStateBar(visible = getVisibleEvidence()) {
+      const stateBar = document.getElementById('stateBar');
+      if (!stateBar) return;
+      const chips = [];
+      chips.push(`<span class="state-chip"><strong>${visible.length}</strong> visible</span>`);
+      chips.push(`<span class="state-chip"><strong>${activeFilters.length}/${allTypes.length}</strong> categories</span>`);
+      chips.push(`<span class="state-chip">Sort: ${sortMode}</span>`);
+      chips.push(`<span class="state-chip">Density: ${viewDensity}</span>`);
+      chips.push(`<span class="state-chip">Open tabs: ${openCategories.size}</span>`);
+      if (searchQuery) chips.push(`<button class="state-chip actionable" type="button" data-clear-state="search">Search: ${searchQuery} ×</button>`);
+      if (discoveryTerm) chips.push(`<button class="state-chip actionable" type="button" data-clear-state="discovery">Discovery: ${discoveryTerm} ×</button>`);
+      if (selectedThread) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="thread">Thread: ${selectedThread}</button>`);
+      chips.push(`<button class="state-chip actionable" type="button" data-jump-state="domino">Trajectory: ${getSelectedTrajectoryTitle()}</button>`);
+      if (savedCards.size) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="trail">Saved: ${savedCards.size}</button>`);
+      if (compareCards.length) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="trail">Compare: ${compareCards.length}/2</button>`);
+      if (focusMode) chips.push('<span class="state-chip">Focus mode active</span>');
+      stateBar.innerHTML = `<span class="state-label">Current view</span>${chips.join('')}`;
+      stateBar.querySelectorAll('[data-clear-state]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (btn.dataset.clearState === 'search') {
+            applySearch('');
+          }
+          if (btn.dataset.clearState === 'discovery') {
+            discoveryTerm = '';
+            discoveryMatches = [];
+            renderDiscoveryPanel();
+            renderStateBar(getVisibleEvidence());
+          }
+        });
+      });
+      stateBar.querySelectorAll('[data-jump-state]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targets = {
+            thread: 'threadPanel',
+            domino: 'dominoPanel',
+            trail: 'missionPanel'
+          };
+          document.getElementById(targets[btn.dataset.jumpState])?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+      });
+    }
+
+    function updateFocusMode() {
+      document.body.classList.toggle('focus-mode', focusMode);
+      document.getElementById('focusModeBtn').textContent = focusMode ? 'Full workspace' : 'Focus mode';
+    }
+
     function updateStats() {
       const visible = getVisibleEvidence();
       const totalLinks = visible.reduce((sum, item) => sum + (item.links?.length || 0), 0);
@@ -6617,6 +6736,7 @@
         <span><strong>${stats.players}</strong> players</span>
       `;
 
+      renderStateBar(visible);
       renderSupportPanels(visible);
       renderTimeline(visible);
       renderThreadPanel(visible);
@@ -6690,6 +6810,8 @@
       compareCards = [];
       openCategories = new Set(['players', 'virtual', 'bioengineering']);
       viewDensity = 'compact';
+      focusMode = false;
+      updateFocusMode();
       document.getElementById('searchInput').value = '';
       document.getElementById('sortSelect').value = 'newest';
       document.getElementById('densitySelect').value = 'compact';
@@ -6719,16 +6841,26 @@
       document.getElementById('densitySelect').addEventListener('change', (e) => {
         viewDensity = e.target.value;
         renderCards();
+        renderStateBar(getVisibleEvidence());
+      });
+
+      document.getElementById('focusModeBtn').addEventListener('click', () => {
+        focusMode = !focusMode;
+        updateFocusMode();
+        renderStateBar(getVisibleEvidence());
+        document.getElementById('dominoPanel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
 
       document.getElementById('openAllCategoriesBtn').addEventListener('click', () => {
         openCategories = new Set(getVisibleEvidence().map(item => item.type));
         renderCards();
+        renderStateBar(getVisibleEvidence());
       });
 
       document.getElementById('closeAllCategoriesBtn').addEventListener('click', () => {
         openCategories.clear();
         renderCards();
+        renderStateBar(getVisibleEvidence());
       });
 
       document.getElementById('expandAllBtn').addEventListener('click', () => {
