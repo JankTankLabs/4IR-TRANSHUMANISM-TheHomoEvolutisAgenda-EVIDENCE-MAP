@@ -283,8 +283,6 @@
 
 
 
-
-
     /* Executive Brief / Impact Lenses */
     .brief-panel,
     .impact-panel,
@@ -447,7 +445,6 @@
       font-size: 0.74rem;
       margin-top: 8px;
     }
-
     /* Inline discovery drawer */
     .discovery-panel {
       border: 1px solid rgba(93, 173, 226, 0.22);
@@ -1558,13 +1555,11 @@
 
     <div class="stats-bar" id="statsBar"></div>
 
-
     <section class="brief-panel" id="briefPanel"></section>
 
     <section class="impact-panel" id="impactPanel"></section>
 
     <section class="pathway-panel" id="pathwayPanel"></section>
-
     <section class="discovery-panel" id="discoveryPanel"></section>
 
     <section class="narrative-panel" id="narrativePanel"></section>
@@ -3577,8 +3572,6 @@
 
 
 
-
-
     const highValueContributions = [
       'Convert the dataset into decision-ready layers: executive brief, lenses, pathways, matrix, and raw sources.',
       'Surface convergence, not just volume: prioritize nodes that connect money, patents, policy, quotes, and deployments.',
@@ -3630,7 +3623,6 @@
         why: 'Maps the machine-readable human: mindfiles, brain simulation, organ twins, chatbots, metaverse, and avatars.'
       }
     ];
-
     const insightPrompts = [
       'Start with a recurring node in Connection Constellation, then open its Thread Explorer links.',
       'Use Save to trail to hold evidence while comparing money, quotes, and patents.',
@@ -4214,7 +4206,6 @@
       renderDiscoveryPanel();
       document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-
     function getInlineMatches(term, items = evidence) {
       const q = term.toLowerCase();
       return items.filter(item =>
