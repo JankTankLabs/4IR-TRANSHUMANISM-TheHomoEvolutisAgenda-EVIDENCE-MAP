@@ -248,6 +248,87 @@
     }
 
 
+
+    .entity-panel {
+      background: linear-gradient(135deg, rgba(255, 209, 102, 0.08), rgba(93, 173, 226, 0.06));
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 24px;
+      padding: 18px 20px;
+    }
+
+    .entity-header {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .entity-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.86rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .entity-subtitle,
+    .entity-meta {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+    }
+
+    .entity-workspace {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: minmax(220px, 0.75fr) minmax(320px, 1.25fr);
+    }
+
+    .entity-node-list,
+    .entity-timeline {
+      display: grid;
+      gap: 8px;
+    }
+
+    .entity-node,
+    .entity-step {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-family: inherit;
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    .entity-node.active,
+    .entity-node:hover,
+    .entity-step:hover {
+      border-color: var(--players);
+      color: var(--text-primary);
+    }
+
+    .entity-detail {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .entity-stat-row,
+    .entity-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    @media (max-width: 860px) {
+      .entity-workspace { grid-template-columns: 1fr; }
+    }
+
     /* Utility Toolbar */
     .utility-toolbar {
       display: flex;
@@ -336,6 +417,7 @@
       display: none;
     }
 
+    body.focus-mode #entityPanel,
     body.focus-mode #dominoPanel,
     body.focus-mode #timelinePanel,
     body.focus-mode #discoveryPanel,
@@ -1715,6 +1797,8 @@
     <div class="stats-bar" id="statsBar"></div>
 
     <div class="state-bar" id="stateBar"></div>
+
+    <section class="entity-panel" id="entityPanel"></section>
 
 
     <section class="brief-panel" id="briefPanel"></section>
@@ -5495,6 +5579,7 @@
     let sortMode = 'newest';
     let expandedCards = new Set();
     let selectedThread = null;
+    let selectedEntity = null;
     let selectedDominoTrajectory = 'gates-antitrust-global-health';
     let openCategories = new Set(['legacy', 'players', 'virtual', 'bioengineering']);
     let viewDensity = 'compact';
@@ -5758,6 +5843,130 @@
         item.tags.some(tag => tag.toLowerCase() === q || tag.toLowerCase().includes(q)) ||
         (item.relatedEntities && item.relatedEntities.some(entity => entity.toLowerCase() === q || entity.toLowerCase().includes(q)))
       );
+    }
+
+
+
+    function getEntityProfiles(items = getVisibleEvidence()) {
+      return getThreadNodes(items).slice(0, 10).map(([entity, visibleCount]) => {
+        const allMatches = getThreadMatches(entity, evidence).sort((a, b) => dateForSort(a.date) - dateForSort(b.date));
+        const visibleMatches = getThreadMatches(entity, items);
+        const types = [...new Set(allMatches.map(item => formatTypePlural(item.type)))];
+        const links = allMatches.reduce((sum, item) => sum + (item.links?.length || 0), 0);
+        const dates = allMatches.map(item => dateForSort(item.date)).filter(Boolean);
+        const first = dates.length ? formatDate(allMatches[0].date) : 'Unknown';
+        const last = dates.length ? formatDate(allMatches[allMatches.length - 1].date) : 'Unknown';
+        const related = getThreadNodes(allMatches).filter(([node]) => node !== entity).slice(0, 8);
+        return { entity, visibleCount, allMatches, visibleMatches, types, links, first, last, related };
+      });
+    }
+
+    function renderEntityPanel(items = getVisibleEvidence()) {
+      const panel = document.getElementById('entityPanel');
+      const profiles = getEntityProfiles(items);
+      if (!profiles.length) {
+        panel.innerHTML = `
+          <div class="entity-header">
+            <div>
+              <div class="entity-title">Entity Intelligence</div>
+              <div class="entity-subtitle">No recurring entities in this view. Widen filters or clear search to rebuild the dossier map.</div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+      const activeProfile = profiles.find(profile => profile.entity === selectedEntity) || profiles[0];
+      selectedEntity = activeProfile.entity;
+      const timeline = activeProfile.allMatches.slice(0, 8);
+      const facts = activeProfile.allMatches.flatMap(item => item.facts || []).slice(0, 4);
+      const flags = activeProfile.allMatches.flatMap(item => item.flags || []).slice(0, 5);
+
+      panel.innerHTML = `
+        <div class="entity-header">
+          <div>
+            <div class="entity-title">Entity Intelligence · ${activeProfile.entity}</div>
+            <div class="entity-subtitle">A first-class dossier view: timeline, categories, related nodes, facts, flags, and direct evidence actions for the highest-convergence entities in the current view</div>
+          </div>
+          <button class="toolbar-btn" type="button" id="copyEntityDossierBtn">Copy dossier</button>
+        </div>
+        <div class="entity-workspace">
+          <div class="entity-node-list">
+            ${profiles.map(profile => `
+              <button class="entity-node ${profile.entity === activeProfile.entity ? 'active' : ''}" type="button" data-entity-node="${profile.entity}">
+                <strong>${profile.entity}</strong>
+                <span class="entity-meta">${profile.visibleCount} visible hits · ${profile.allMatches.length} total cards · ${profile.links} links</span>
+              </button>
+            `).join('')}
+          </div>
+          <div class="entity-detail">
+            <div class="entity-stat-row">
+              <span class="state-chip">${activeProfile.allMatches.length} evidence cards</span>
+              <span class="state-chip">${activeProfile.links} direct links</span>
+              <span class="state-chip">${activeProfile.first} → ${activeProfile.last}</span>
+              <span class="state-chip">${activeProfile.types.slice(0, 3).join(' + ') || 'Mixed records'}</span>
+            </div>
+            <div class="entity-meta">Related nodes: ${activeProfile.related.length ? activeProfile.related.map(([node]) => `<button class="tag-inline" type="button" data-entity-related="${node}">${node}</button>`).join(' ') : 'No repeated related nodes in this slice.'}</div>
+            ${facts.length ? `<div class="entity-meta" style="margin-top:8px;">Facts: ${facts.map(fact => `${fact.label}: ${fact.value}`).join(' · ')}</div>` : ''}
+            ${flags.length ? `<div class="entity-meta" style="margin-top:8px;">Flags: ${flags.join(' · ')}</div>` : ''}
+            <div class="entity-timeline" style="margin-top:12px;">
+              ${timeline.map(item => `
+                <button class="entity-step" type="button" data-entity-card="${item.id}">
+                  <span class="domino-date">${formatDate(item.date)} · ${formatType(item.type)}</span>
+                  <strong>${item.title}</strong>
+                  <span class="entity-meta">${item.links?.length || 0} links · ${item.sourceQuality || 'source record'}</span>
+                </button>
+              `).join('')}
+            </div>
+            <div class="entity-actions">
+              <button class="toolbar-btn" type="button" id="entityDiscoverBtn">Open inline discovery</button>
+              <button class="toolbar-btn" type="button" id="entityOpenCardsBtn">Expand dossier cards</button>
+              <button class="toolbar-btn" type="button" id="entityThreadBtn">Send to Thread Explorer</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      panel.querySelectorAll('[data-entity-node]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          selectedEntity = btn.dataset.entityNode;
+          selectedThread = selectedEntity;
+          renderEntityPanel(getVisibleEvidence());
+          renderThreadPanel(getVisibleEvidence());
+          renderStateBar(getVisibleEvidence());
+        });
+      });
+      panel.querySelectorAll('[data-entity-related]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          selectedEntity = btn.dataset.entityRelated;
+          selectedThread = selectedEntity;
+          renderEntityPanel(getVisibleEvidence());
+          renderThreadPanel(getVisibleEvidence());
+          renderStateBar(getVisibleEvidence());
+        });
+      });
+      panel.querySelectorAll('[data-entity-card]').forEach(btn => {
+        btn.addEventListener('click', () => openCardById(btn.dataset.entityCard));
+      });
+      document.getElementById('entityDiscoverBtn')?.addEventListener('click', () => showDiscovery(activeProfile.entity));
+      document.getElementById('entityOpenCardsBtn')?.addEventListener('click', () => {
+        activeProfile.allMatches.forEach(item => {
+          openCategories.add(item.type);
+          expandedCards.add(item.id);
+        });
+        renderCards();
+        renderStateBar(getVisibleEvidence());
+      });
+      document.getElementById('entityThreadBtn')?.addEventListener('click', () => {
+        selectedThread = activeProfile.entity;
+        renderThreadPanel(getVisibleEvidence());
+        renderStateBar(getVisibleEvidence());
+        document.getElementById('threadPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+      document.getElementById('copyEntityDossierBtn')?.addEventListener('click', () => {
+        const relatedText = activeProfile.related.map(([node, count]) => `${node} (${count})`).join(', ');
+        const timelineText = activeProfile.allMatches.map(item => `${formatDate(item.date)} — ${item.title}\n${item.description}\nLinks: ${(item.links || []).map(link => link.url).join(', ')}`).join('\n\n');
+        copyText(`${activeProfile.entity}\nCards: ${activeProfile.allMatches.length}\nLinks: ${activeProfile.links}\nSpan: ${activeProfile.first} → ${activeProfile.last}\nTypes: ${activeProfile.types.join(', ')}\nRelated: ${relatedText}\n\n${timelineText}`);
+      });
     }
 
     function renderThreadPanel(items = getVisibleEvidence()) {
@@ -6443,6 +6652,7 @@
     }
 
     function renderSupportPanels(items = getVisibleEvidence()) {
+      renderEntityPanel(items);
       renderBriefPanel(items);
       renderImpactPanel(items);
       renderInvestmentPanel(items);
@@ -6669,6 +6879,7 @@
       chips.push(`<span class="state-chip">Open tabs: ${openCategories.size}</span>`);
       if (searchQuery) chips.push(`<button class="state-chip actionable" type="button" data-clear-state="search">Search: ${searchQuery} ×</button>`);
       if (discoveryTerm) chips.push(`<button class="state-chip actionable" type="button" data-clear-state="discovery">Discovery: ${discoveryTerm} ×</button>`);
+      if (selectedEntity) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="entity">Entity: ${selectedEntity}</button>`);
       if (selectedThread) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="thread">Thread: ${selectedThread}</button>`);
       chips.push(`<button class="state-chip actionable" type="button" data-jump-state="domino">Trajectory: ${getSelectedTrajectoryTitle()}</button>`);
       if (savedCards.size) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="trail">Saved: ${savedCards.size}</button>`);
@@ -6691,6 +6902,7 @@
       stateBar.querySelectorAll('[data-jump-state]').forEach(btn => {
         btn.addEventListener('click', () => {
           const targets = {
+            entity: 'entityPanel',
             thread: 'threadPanel',
             domino: 'dominoPanel',
             trail: 'missionPanel'
@@ -6736,8 +6948,8 @@
         <span><strong>${stats.players}</strong> players</span>
       `;
 
-      renderStateBar(visible);
       renderSupportPanels(visible);
+      renderStateBar(visible);
       renderTimeline(visible);
       renderThreadPanel(visible);
       updateExpandButton(visible);
@@ -6807,6 +7019,7 @@
       sortMode = 'newest';
       expandedCards.clear();
       selectedThread = null;
+      selectedEntity = null;
       compareCards = [];
       openCategories = new Set(['players', 'virtual', 'bioengineering']);
       viewDensity = 'compact';
