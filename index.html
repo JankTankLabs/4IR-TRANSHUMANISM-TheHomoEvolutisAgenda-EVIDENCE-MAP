@@ -32,6 +32,7 @@
       --identity: #ff80bf;
       --pharma: #00e676;
       --players: #ffd166;
+      --legacy: #d4af37;
       --link-color: #5dade2;
     }
 
@@ -163,6 +164,7 @@
     .filter-btn.active.identity { color: var(--identity); border-color: var(--identity); }
     .filter-btn.active.pharma { color: var(--pharma); border-color: var(--pharma); }
     .filter-btn.active.players { color: var(--players); border-color: var(--players); }
+    .filter-btn.active.legacy { color: var(--legacy); border-color: var(--legacy); }
 
     .filter-dot {
       width: 10px;
@@ -186,6 +188,7 @@
     .filter-dot.identity { background: var(--identity); }
     .filter-dot.pharma { background: var(--pharma); }
     .filter-dot.players { background: var(--players); }
+    .filter-dot.legacy { background: var(--legacy); }
 
     /* Stats */
     .stats-bar {
@@ -278,6 +281,24 @@
     .quick-link-chip:hover {
       background: rgba(93, 173, 226, 0.14);
     }
+
+    .tag-inline {
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.28);
+      border-radius: 999px;
+      color: var(--legacy);
+      cursor: pointer;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      margin: 2px 4px 2px 0;
+      padding: 4px 8px;
+    }
+
+    .tag-inline:hover {
+      background: rgba(212, 175, 55, 0.18);
+    }
+
+
 
 
 
@@ -445,6 +466,7 @@
       font-size: 0.74rem;
       margin-top: 8px;
     }
+
     /* Inline discovery drawer */
     .discovery-panel {
       border: 1px solid rgba(93, 173, 226, 0.22);
@@ -1056,6 +1078,7 @@
     .card-type-badge.identity { background: rgba(255,128,191,0.15); color: var(--identity); }
     .card-type-badge.pharma { background: rgba(0,230,118,0.15); color: var(--pharma); }
     .card-type-badge.players { background: rgba(255,209,102,0.15); color: var(--players); }
+    .card-type-badge.legacy { background: rgba(212,175,55,0.15); color: var(--legacy); }
 
     .card-title {
       font-size: 1.1rem;
@@ -1467,7 +1490,7 @@
         </div>
       </div>
       <p class="intro-text">
-        Companion database to THE NETWORK. This contains the receipts — patents, legislation, official documents, speeches, filings, funding records, pathogen-surveillance projects, gene-editing/vector releases, identity-medicine funding, digital-twin/virtual-human projects, organ-manufacturing platforms, and environmental-modification governance documents. Every entry includes direct links to sources. Click any card to expand and access source links, research flags, and clarifying details.
+        Companion database to THE NETWORK. This contains the receipts — legacy ideologies, family/institutional roots, patents, legislation, official documents, speeches, filings, funding records, pathogen-surveillance projects, gene-editing/vector releases, identity-medicine funding, digital-twin/virtual-human projects, organ-manufacturing platforms, and environmental-modification governance documents. Every entry includes direct links to sources. Click any card to expand and access source links, research flags, and clarifying details.
       </p>
     </header>
 
@@ -1520,6 +1543,9 @@
       <button class="filter-btn active players" data-filter="players">
         <span class="filter-dot players"></span> Key Players & Networks
       </button>
+      <button class="filter-btn active legacy" data-filter="legacy">
+        <span class="filter-dot legacy"></span> Legacy Roots & Families
+      </button>
     </div>
 
     <div class="utility-toolbar" id="utilityToolbar">
@@ -1555,11 +1581,15 @@
 
     <div class="stats-bar" id="statsBar"></div>
 
+
     <section class="brief-panel" id="briefPanel"></section>
 
     <section class="impact-panel" id="impactPanel"></section>
 
     <section class="pathway-panel" id="pathwayPanel"></section>
+
+    <section class="brief-panel" id="lineagePanel"></section>
+
     <section class="discovery-panel" id="discoveryPanel"></section>
 
     <section class="narrative-panel" id="narrativePanel"></section>
@@ -3542,6 +3572,415 @@
           { label: "Congress Hearing Record", url: "https://www.congress.gov/event/117th-congress/house-event/111309", icon: "📜" },
           { label: "NSCEB Final Report Context", url: "https://www.biotech.senate.gov/final-report/chapters/about/", icon: "🧫" }
         ]
+      },
+      {
+        id: "legacy-galton-eugenics-origin-human-stock",
+        type: "legacy",
+        title: "Francis Galton and the Word 'Eugenics' — Original Human-Stock Improvement Ideology",
+        date: "1883",
+        jurisdiction: "United Kingdom / Early Eugenics Movement",
+        description: "A legacy-root card for the explicit ideology that preceded later population, heredity, genetics, reproductive-policy, and human-optimization debates. The National Human Genome Research Institute timeline documents Galton's coinage of 'eugenics' and the early framing around improving human 'stock.' This card is included to separate documented historical origins from modern speculation.",
+        quote: {
+          text: "Francis Galton coined the term eugenics in 1883.",
+          source: "National Human Genome Research Institute eugenics timeline"
+        },
+        tags: ["Francis Galton", "Eugenics", "Human Heredity", "Human Improvement", "Ideology", "Legacy Roots"],
+        relatedEntities: ["Francis Galton", "Charles Darwin", "Eugenics Record Office", "Cold Spring Harbor Laboratory", "Julian Huxley"],
+        sourceQuality: "Government educational timeline + historical source trail",
+        facts: [
+          { label: "Coinage", value: "1883" },
+          { label: "Domain", value: "Heredity + social policy" },
+          { label: "Key Risk", value: "Discredited coercive ideology" },
+          { label: "Bridge", value: "Eugenics → genetics governance" }
+        ],
+        flags: ["Original ideology layer", "Human heredity policy", "Population-quality framing", "Important for historical context", "Do not conflate with modern genetics without evidence"],
+        details: [
+          "This entry anchors the earliest vocabulary rather than alleging a continuous secret organization.",
+          "It helps users distinguish documented historical eugenics from later genetics, bioethics, reproductive technology, and transhumanist claims."
+        ],
+        links: [
+          { label: "NHGRI Eugenics Timeline", url: "https://www.genome.gov/about-genomics/educational-resources/timelines/eugenics", icon: "🧬" },
+          { label: "Wellcome Collection: Galton Archive", url: "https://wellcomecollection.org/works?query=Francis%20Galton%20eugenics", icon: "🏛️" },
+          { label: "Galton.org Works Archive", url: "https://galton.org/", icon: "📚" }
+        ]
+      },
+      {
+        id: "legacy-cshl-eugenics-record-office",
+        type: "legacy",
+        title: "Cold Spring Harbor Eugenics Record Office — Pedigree Files, Heredity Claims, and Discredited Human Sorting",
+        date: "1910-1939",
+        jurisdiction: "United States / Cold Spring Harbor Laboratory Archives",
+        description: "The Eugenics Record Office is a foundational legacy institution because it operationalized family pedigrees, trait records, and heredity ideology as a research and policy project. Cold Spring Harbor's archive states the collection is rooted in racial and disability bias and discredited as legitimate science.",
+        quote: {
+          text: "Rooted in racial and disability bias and discredited as a legitimate science.",
+          source: "Cold Spring Harbor Laboratory ArchivesSpace description"
+        },
+        tags: ["Eugenics Record Office", "Cold Spring Harbor", "Pedigrees", "Forced Sterilization", "Human Heredity", "Carnegie Institution"],
+        relatedEntities: ["Cold Spring Harbor Laboratory", "Charles Davenport", "Harry Laughlin", "Carnegie Institution", "Francis Galton", "Rockefeller Archive Center"],
+        sourceQuality: "Institutional archive + genetics education sources",
+        facts: [
+          { label: "Active", value: "1910-1939" },
+          { label: "Core Method", value: "Family pedigree records" },
+          { label: "Institution", value: "Carnegie / CSHL predecessor" },
+          { label: "Modern Status", value: "Discredited science" }
+        ],
+        flags: ["Family-tree data weaponized", "Policy influence history", "Racial/disability bias", "Bioethics warning layer", "Direct precedent for heredity governance debates"],
+        details: [
+          "This card is the strongest historical reason for adding a family-tree/lineage lens: family pedigrees were not incidental; they were the research substrate.",
+          "Modern genetics and genomics are not the same as the ERO, but the ERO is essential context for why genetics governance requires civil-rights safeguards."
+        ],
+        links: [
+          { label: "CSHL Eugenics Record Office Collection", url: "https://www.cshl.edu/archives/institutional-collections/eugenics-record-office/", icon: "🏛️" },
+          { label: "CSHL ArchivesSpace Collection", url: "https://archivesspace.cshl.edu/repositories/2/resources/67", icon: "📚" },
+          { label: "Eugenics Image Archive", url: "https://www.eugenicsarchive.org/html/eugenics/static/archives/csh.html", icon: "🖼️" },
+          { label: "NHGRI Eugenics Timeline", url: "https://www.genome.gov/about-genomics/educational-resources/timelines/eugenics", icon: "🧬" }
+        ]
+      },
+      {
+        id: "legacy-huxley-unesco-evolutionary-humanism",
+        type: "legacy",
+        title: "Julian Huxley at UNESCO — Evolutionary Humanism as Founding Philosophy Layer",
+        date: "1946",
+        jurisdiction: "UNESCO / United Nations System",
+        description: "Julian Huxley, UNESCO's first Director-General and brother of Aldous Huxley, wrote the 1946 blueprint 'UNESCO: Its Purpose and Its Philosophy.' It is a key ideological root because it places education, science, culture, world order, and evolutionary-humanist language inside a founding UN agency context.",
+        quote: {
+          text: "Huxley had written a sixty-page blueprint for the new Organization.",
+          source: "UNESCO retrospective on Huxley's 1946 document"
+        },
+        tags: ["Julian Huxley", "UNESCO", "Evolutionary Humanism", "United Nations", "World Order", "Education", "Science Governance"],
+        relatedEntities: ["Julian Huxley", "Aldous Huxley", "UNESCO", "United Nations", "World Health Organization", "Francis Galton"],
+        sourceQuality: "UNESCO/UNESCO-UK historical record",
+        facts: [
+          { label: "Blueprint", value: "1946" },
+          { label: "Role", value: "First UNESCO Director-General" },
+          { label: "Family Link", value: "Aldous Huxley's brother" },
+          { label: "Ideology", value: "Evolutionary humanism" }
+        ],
+        flags: ["Founding mission statement", "Science/culture governance", "Huxley family node", "UN system origin layer", "Ideology-before-technology context"],
+        details: [
+          "This entry documents a public founding text, not an occult hidden plan.",
+          "It is useful because later AI ethics, bioethics, education, and global-governance language often flows through UNESCO-style institutions."
+        ],
+        links: [
+          { label: "UNESCO Article on Huxley's Blueprint", url: "https://www.unesco.org/en/articles/seventy-year-old-views-remain-contemporary-0", icon: "🌐" },
+          { label: "UNESCO UK: Purpose and Philosophy", url: "https://unesco.org.uk/resources/unesco-its-purpose-and-philosophy-julian-huxley-1946", icon: "📄" },
+          { label: "Oxford Academic Record", url: "https://academic.oup.com/ia/article/23/4/565/2700437", icon: "🎓" }
+        ]
+      },
+      {
+        id: "legacy-huxley-transhumanism-new-bottles",
+        type: "legacy",
+        title: "Julian Huxley's 'Transhumanism' Essay — New Bottles for New Wine",
+        date: "1957",
+        jurisdiction: "United Kingdom / Published Essay",
+        description: "Huxley's 1957 essay is the cleanest legacy bridge from evolutionary humanism into explicit transhumanist language. The card connects ideology, family lineage, UNESCO, and later machine/human enhancement discourse without needing to overstate direct organizational continuity.",
+        quote: {
+          text: "The human species can, if it wishes, transcend itself.",
+          source: "Julian Huxley, 'Transhumanism,' in New Bottles for New Wine"
+        },
+        tags: ["Julian Huxley", "Transhumanism", "Evolutionary Humanism", "Aldous Huxley", "Human Enhancement", "Legacy Roots"],
+        relatedEntities: ["Julian Huxley", "Aldous Huxley", "UNESCO", "World Transhumanist Association", "Humanity+"],
+        sourceQuality: "Book record + cited essay text",
+        facts: [
+          { label: "Publication", value: "1957" },
+          { label: "Essay", value: "Transhumanism" },
+          { label: "Book", value: "New Bottles for New Wine" },
+          { label: "Bridge", value: "Evolutionary humanism → transhumanism" }
+        ],
+        flags: ["Explicit origin terminology", "Huxley family node", "Human transcendence framing", "Ideological root for enhancement discourse"],
+        details: [
+          "This is one of the most important quote anchors for the entire map because it names transhumanism before current AI/biotech systems existed.",
+          "The entry should be read as ideological genealogy, not proof that every later technology is controlled by Huxley's circle."
+        ],
+        links: [
+          { label: "Open Library Book Record", url: "https://openlibrary.org/works/OL1169725W/New_Bottles_for_New_Wine", icon: "📚" },
+          { label: "Internet Archive Record", url: "https://archive.org/details/newbottlesfornew00huxl", icon: "🗄️" },
+          { label: "Jahr Bioethics Article", url: "https://ojs.srce.hr/index.php/jahr/article/view/19376", icon: "🎓" }
+        ]
+      },
+      {
+        id: "legacy-rockefeller-molecular-biology-program",
+        type: "legacy",
+        title: "Rockefeller Foundation Natural Sciences Program — Birth of Molecular Biology Funding Layer",
+        date: "1933-1951",
+        jurisdiction: "United States / Rockefeller Foundation",
+        description: "Rockefeller Archive Center describes the Foundation's experimental-biology initiative under Warren Weaver as a high point of its natural-sciences program and notes that Weaver is widely credited with coining 'molecular biology' in 1938. This is a legacy family/philanthropy node for the funding architecture behind modern genetics and biotechnology.",
+        quote: {
+          text: "Weaver is widely credited with coining the term molecular biology in 1938.",
+          source: "Rockefeller Archive Center, 'Birth and Development of Molecular Biology'"
+        },
+        tags: ["Rockefeller Foundation", "Warren Weaver", "Molecular Biology", "Experimental Biology", "Philanthropy", "Genetics"],
+        relatedEntities: ["Rockefeller Foundation", "Warren Weaver", "Rockefeller Archive Center", "Cold Spring Harbor Laboratory", "NIH BRAIN Initiative"],
+        sourceQuality: "Rockefeller Archive Center historical research",
+        facts: [
+          { label: "Program", value: "1933-1951" },
+          { label: "Term", value: "Molecular biology, 1938" },
+          { label: "Mechanism", value: "Foundation grants" },
+          { label: "Modern Bridge", value: "Genetics + biotech" }
+        ],
+        flags: ["Philanthropy shaping science fields", "Family foundation legacy", "Biology becomes molecular/computational", "Funding architecture root"],
+        details: [
+          "This card does not claim Rockefeller created all molecular biology; it documents a major philanthropic role in defining and funding the field.",
+          "It connects older family philanthropy to later bioengineering, genomics, brain research, and health-data infrastructure cards."
+        ],
+        links: [
+          { label: "Rockefeller Archive: Birth of Molecular Biology", url: "https://resource.rockarch.org/story/birth-and-development-of-molecular-biology-field-rockefeller-foundation/", icon: "🧬" },
+          { label: "Rockefeller Archive Center Overview", url: "https://rockarch.org/about-us/overview/", icon: "🏛️" },
+          { label: "Rockefeller Foundation: Beyond Charity PDF", url: "https://www.rockefellerfoundation.org/wp-content/uploads/Beyond-Charity.pdf.pdf", icon: "📄" }
+        ]
+      },
+      {
+        id: "legacy-rockefeller-population-council",
+        type: "legacy",
+        title: "John D. Rockefeller III and the Population Council — Fertility, Demography, and Reproductive Research",
+        date: "1952",
+        jurisdiction: "United States / International Population Policy",
+        description: "The Rockefeller Brothers Fund history states that John D. Rockefeller III founded the Population Council in 1952 to address human fertility and contraceptive research. This card gives the map a documented family/mission-statement bridge from older population concerns to global health, reproductive technology, pharma, and development policy.",
+        quote: {
+          text: "JDR 3rd established the Council to address the more controversial fields of human fertility and contraceptive research.",
+          source: "Rockefeller Brothers Fund history timeline"
+        },
+        tags: ["John D. Rockefeller III", "Population Council", "Fertility", "Contraceptive Research", "Demography", "Global Health"],
+        relatedEntities: ["Rockefeller Brothers Fund", "Rockefeller Foundation", "Population Council", "Gavi", "WHO", "Bill Gates"],
+        sourceQuality: "Rockefeller Brothers Fund history + nonprofit record",
+        facts: [
+          { label: "Founded", value: "1952" },
+          { label: "Founder", value: "John D. Rockefeller III" },
+          { label: "Focus", value: "Human fertility + contraception" },
+          { label: "Bridge", value: "Population policy → global health" }
+        ],
+        flags: ["Documented family foundation initiative", "Population and fertility governance", "Reproductive technology link", "Philanthropy-policy interface"],
+        details: [
+          "This is a family-lineage card because it traces a specific Rockefeller family member to a specific institution and mission area.",
+          "It helps evaluate continuities and discontinuities between population policy, health philanthropy, and modern reproductive/biotech governance."
+        ],
+        links: [
+          { label: "RBF History: Population Council", url: "https://www.rbf.org/about/our-history/timeline/population-council", icon: "🏛️" },
+          { label: "Population Council Official Site", url: "https://popcouncil.org/", icon: "🌐" },
+          { label: "Britannica: Population Council", url: "https://www.britannica.com/topic/Population-Council", icon: "📚" }
+        ]
+      },
+      {
+        id: "legacy-macy-cybernetics-conferences",
+        type: "legacy",
+        title: "Macy Cybernetics Conferences — Control, Communication, Brains, Machines, and Social Science",
+        date: "1946-1953",
+        jurisdiction: "United States / Josiah Macy Jr. Foundation Conferences",
+        description: "The Macy conferences are a root layer for cybernetics: a meeting series that linked control, communication, brains, machines, social science, and systems theory after World War II. This is the conceptual ancestor of many AI, feedback, governance, human-machine, and digital twin themes in the map.",
+        quote: {
+          text: "A series of conferences aiming to bring together a diverse, interdisciplinary community of scholars and researchers.",
+          source: "University of Chicago Press description of Macy Conferences transactions"
+        },
+        tags: ["Macy Conferences", "Cybernetics", "Norbert Wiener", "John von Neumann", "Margaret Mead", "Systems Theory", "Human-Machine"],
+        relatedEntities: ["Josiah Macy Jr. Foundation", "Norbert Wiener", "John von Neumann", "Margaret Mead", "DARPA", "NIST AI RMF"],
+        sourceQuality: "Conference history + published transactions record",
+        facts: [
+          { label: "Series", value: "1946-1953" },
+          { label: "Theme", value: "Control + communication" },
+          { label: "Bridge", value: "Brains + machines + society" },
+          { label: "Legacy", value: "AI/systems governance" }
+        ],
+        flags: ["Original systems-control layer", "Human-machine conceptual root", "Postwar science network", "Cybernetics → AI/governance bridge"],
+        details: [
+          "This card is essential for showing that today's AI governance language sits on older systems/cybernetics foundations.",
+          "It adds a meeting-series root rather than a family root: who met, what was discussed, and what concepts propagated."
+        ],
+        links: [
+          { label: "American Society for Cybernetics Summary", url: "https://asc-cybernetics.org/foundations/history/MacySummary.htm", icon: "🧠" },
+          { label: "ASC History of Cybernetics", url: "https://asc-cybernetics.org/foundations/history2.htm", icon: "🔁" },
+          { label: "University of Chicago Press Transactions", url: "https://press.uchicago.edu/ucp/books/book/distributed/C/bo269830784.html", icon: "📚" }
+        ]
+      },
+      {
+        id: "legacy-bilderberg-first-meeting",
+        type: "legacy",
+        title: "Bilderberg Meetings — 1954 Private Transatlantic Forum Origin Layer",
+        date: "1954-Present",
+        jurisdiction: "Europe / North America",
+        description: "Bilderberg is a legacy meeting-series node because its official history describes an annual three-day forum for informal discussions designed to foster dialogue between Europe and North America, beginning at Hotel De Bilderberg in 1954. It connects elite convening, corporate/political networks, NATO-era policy culture, and later WEF/Davos-style private-public forums.",
+        quote: {
+          text: "The first Meeting took place in Hotel De Bilderberg in Oosterbeek, The Netherlands, from 29 to 31 May 1954.",
+          source: "Bilderberg Meetings official brief history"
+        },
+        tags: ["Bilderberg", "Elite Meetings", "Transatlantic", "Prince Bernhard", "David Rockefeller", "Private Forum"],
+        relatedEntities: ["Bilderberg Meetings", "David Rockefeller", "World Economic Forum", "Trilateral Commission", "Klaus Schwab"],
+        sourceQuality: "Official meeting history + annual participant archives",
+        facts: [
+          { label: "First Meeting", value: "May 29-31 1954" },
+          { label: "Format", value: "Private informal forum" },
+          { label: "Geography", value: "Europe + North America" },
+          { label: "Bridge", value: "Elite convening networks" }
+        ],
+        flags: ["Private elite forum", "Participant/topic archive", "Transatlantic policy network", "Meeting-series lineage"],
+        details: [
+          "The official site emphasizes informal dialogue rather than formal decisions; controversy centers on opacity and elite access.",
+          "This gives the map an early meeting-network anchor before WEF, Trilateral, and modern public-private governance forums."
+        ],
+        links: [
+          { label: "Official Brief History", url: "https://bilderbergmeetings.org/background/brief-history", icon: "🏨" },
+          { label: "Official Meetings Archive", url: "https://bilderbergmeetings.org/meetings/", icon: "🗂️" },
+          { label: "2026 Meeting Example", url: "https://bilderbergmeetings.org/meetings/meeting-2026/", icon: "📅" }
+        ]
+      },
+      {
+        id: "legacy-club-of-rome-limits-growth",
+        type: "legacy",
+        title: "Club of Rome / Limits to Growth — Systems Modeling, Population, Resources, Pollution, and Governance",
+        date: "1972",
+        jurisdiction: "International / Club of Rome + MIT Systems Modeling",
+        description: "The Club of Rome's 1972 Limits to Growth report is a legacy systems-governance node because it modeled population, industrialization, resources, food, and pollution as interacting planetary systems. Whether one views it as prudent ecological systems analysis or controversial technocratic planning, it is a major root for population/environment governance narratives.",
+        quote: {
+          text: "The first to model our planet’s interconnected systems.",
+          source: "Club of Rome LTG+50 retrospective"
+        },
+        tags: ["Club of Rome", "Limits to Growth", "Systems Modeling", "Population", "Resources", "Pollution", "Planetary Boundaries"],
+        relatedEntities: ["Club of Rome", "MIT", "World Economic Forum", "UNESCO", "Rockefeller Foundation", "Klaus Schwab"],
+        sourceQuality: "Club of Rome official retrospective + MIT record",
+        facts: [
+          { label: "Published", value: "1972" },
+          { label: "Model", value: "World3 systems dynamics" },
+          { label: "Variables", value: "Population/industry/food/resources/pollution" },
+          { label: "Legacy", value: "Sustainability governance" }
+        ],
+        flags: ["Population/environment systems framing", "Technocracy debate", "Planetary-scale modeling", "Governance narrative root"],
+        details: [
+          "This card is useful for understanding why modern climate, resource, population, and digital-governance documents use systems language.",
+          "It should be read alongside criticism and validation literature rather than as a standalone prediction."
+        ],
+        links: [
+          { label: "Club of Rome LTG+50", url: "https://www.clubofrome.org/ltg50/", icon: "🌍" },
+          { label: "Club of Rome: Limits and Beyond", url: "https://www.clubofrome.org/limits-to-growth/limits-and-beyond/", icon: "📈" },
+          { label: "MIT DOME Record", url: "https://dome.mit.edu/handle/1721.3/200467?show=full", icon: "🎓" }
+        ]
+      },
+      {
+        id: "legacy-trilateral-david-rockefeller",
+        type: "legacy",
+        title: "David Rockefeller and the Trilateral Commission — Elite Policy Network for Interdependence Governance",
+        date: "1973-Present",
+        jurisdiction: "North America / Europe / Asia-Pacific",
+        description: "The Trilateral Commission is a documented legacy network tied to David Rockefeller and the management of economic/political interdependence among North America, Western Europe, and Japan/Asia-Pacific. This card gives the map a formal elite-network bridge between family finance/philanthropy, policy planning, global governance, and recurring meeting ecosystems.",
+        quote: {
+          text: "Founded in 1973 principally by American banker David Rockefeller.",
+          source: "Britannica overview of the Trilateral Commission"
+        },
+        tags: ["David Rockefeller", "Trilateral Commission", "Interdependence", "Global Governance", "Elite Networks", "Policy Planning"],
+        relatedEntities: ["David Rockefeller", "Rockefeller Foundation", "Council on Foreign Relations", "Bilderberg Meetings", "World Economic Forum"],
+        sourceQuality: "Reference history + organization records",
+        facts: [
+          { label: "Founded", value: "1973" },
+          { label: "Founder", value: "David Rockefeller" },
+          { label: "Frame", value: "Interdependence" },
+          { label: "Bridge", value: "Finance/philanthropy → policy network" }
+        ],
+        flags: ["Elite policy network", "Rockefeller family node", "Interdependence governance", "Public-private influence debate"],
+        details: [
+          "This card documents an overt organization and its stated interdependence mission; it does not allege hidden command over governments.",
+          "It helps connect older Rockefeller network entries to later WEF/YGL and public-private governance cards."
+        ],
+        links: [
+          { label: "Britannica: Trilateral Commission", url: "https://www.britannica.com/topic/Trilateral-Commission", icon: "📚" },
+          { label: "Trilateral Commission Official Site", url: "https://www.trilateral.org/", icon: "🌐" },
+          { label: "CFR Annual Report Remembering David Rockefeller", url: "https://www.cfr.org/sites/default/files/pdf/CFR_Annual_Report_2017_0_0.pdf", icon: "📄" }
+        ]
+      },
+      {
+        id: "legacy-presidential-king-john-viral-claim",
+        type: "legacy",
+        title: "Viral Presidential Bloodline Claim — King John, BridgeAnne d'Avignon, and the Van Buren Exception",
+        date: "2010-2026",
+        jurisdiction: "United States / United Kingdom / Genealogy Media Claim",
+        description: "This card documents the widely shared claim that a 12-year-old genealogy project linked every U.S. president except Martin Van Buren to King John of England. The claim is useful for the family-tree layer because it shows how royal-lineage narratives circulate; it is also explicitly caveated because popular charts and media writeups are not the same as peer-reviewed, generation-by-generation genealogy.",
+        quote: {
+          text: "All the presidents except Martin Van Buren are related to King John of England.",
+          source: "NBC Bay Area report on BridgeAnne d'Avignon's genealogy project"
+        },
+        tags: ["U.S. Presidents", "King John", "Plantagenet", "BridgeAnne d'Avignon", "Martin Van Buren", "Royal Descent", "Genealogy"],
+        relatedEntities: ["King John", "Martin Van Buren", "George Washington", "Franklin D. Roosevelt", "George W. Bush", "Barack Obama", "Donald Trump"],
+        sourceQuality: "Viral/local media claim + genealogy caution sources",
+        facts: [
+          { label: "Popular Claim", value: "42 of first 43 presidents" },
+          { label: "Named Outlier", value: "Martin Van Buren" },
+          { label: "Common Ancestor", value: "King John, r.1199-1216" },
+          { label: "Evidence Caution", value: "Not peer-reviewed genealogy" }
+        ],
+        flags: ["Viral bloodline narrative", "Presidential genealogy", "Royal-descent claim", "Statistical common-ancestor caveat", "Do not treat as proof of political causation"],
+        details: [
+          "The viral version began as a student project aided by a grandfather's genealogy database and was amplified by local and tabloid media.",
+          "The strongest use in this map is not 'proof of control' but a prompt to separate documented genealogical descent, elite family networks, and unsupported motive claims.",
+          "Martin Van Buren is usually excluded in the viral charts; official biography sources describe him as of Dutch descent."
+        ],
+        links: [
+          { label: "NBC Bay Area: All the Presidents' Cousins", url: "https://www.nbcbayarea.com/news/local/all-the-presidents-cousins/1883245/", icon: "🧬" },
+          { label: "Factually: King John Claim Caveats", url: "https://factually.co/fact-checks/history/us-presidents-descendants-of-king-john-published-charts-exclusions-0f9540", icon: "⚖️" },
+          { label: "White House: Martin Van Buren Bio", url: "https://trumpwhitehouse.archives.gov/about-the-white-house/presidents/martin-van-buren/", icon: "🏛️" },
+          { label: "American Ancestors: Presidents and Kings", url: "https://www.americanancestors.org/gary-boyd-roberts/presidentsandkings", icon: "📚" }
+        ]
+      },
+      {
+        id: "legacy-presidential-english-royal-ancestry-wikitree",
+        type: "legacy",
+        title: "English Royal Ancestors of Presidents — WikiTree/IHGS Findings and High-Lineage Presidents",
+        date: "2026",
+        jurisdiction: "United States / United Kingdom / Genealogical Research",
+        description: "A more cautious genealogy layer than the viral King John chart: the Institute of Heraldic and Genealogical Studies summarizes WikiTree-based research suggesting 27 of 45 U.S. presidents have traced descent from English kings, with Franklin D. Roosevelt and George W. Bush ranking highest by separate Edward I/Edward III lines. This supports a family-tree view without overstating causality.",
+        quote: {
+          text: "27 of 45 presidents are linked to English royal descent.",
+          source: "Institute of Heraldic and Genealogical Studies summary"
+        },
+        tags: ["U.S. Presidents", "English Royal Ancestry", "WikiTree", "Edward I", "Edward III", "Franklin D. Roosevelt", "George W. Bush"],
+        relatedEntities: ["Franklin D. Roosevelt", "George W. Bush", "Theodore Roosevelt", "George H. W. Bush", "Harry S. Truman", "Herbert Hoover", "John F. Kennedy"],
+        sourceQuality: "Genealogy institute summary + American Ancestors scholarly context",
+        facts: [
+          { label: "Reported Count", value: "27 of 45 presidents" },
+          { label: "Edward I", value: "25 presidential pedigrees" },
+          { label: "Edward III", value: "13 presidential pedigrees" },
+          { label: "Top Ranked", value: "FDR, George W. Bush" }
+        ],
+        flags: ["Presidential royal-descent clustering", "Colonial gateway ancestors", "Elite-family overrepresentation question", "Genealogy is distant and probabilistic"],
+        details: [
+          "IHGS emphasizes that the presidency is republican in office while many presidential family histories reach into medieval England.",
+          "American Ancestors notes that royal descent for presidents with many colonial New England forebears should not be surprising because many Americans share those gateway ancestors.",
+          "Use this as a lineage-density signal, not a genetic determinism claim."
+        ],
+        links: [
+          { label: "IHGS: English Royal Ancestors", url: "https://ihgs.us/english-royal-ancestors-of-us-presidents/", icon: "👑" },
+          { label: "American Ancestors: Presidents, New England, Kings", url: "https://www.americanancestors.org/gary-boyd-roberts/presidentsandkings", icon: "📚" },
+          { label: "WikiTree U.S. Presidents Project", url: "https://www.wikitree.com/wiki/Space:US_Presidents_Project", icon: "🌳" },
+          { label: "Geneanet: American Presidents", url: "https://en.geneanet.org/genealogyblog/post/2025/01/geneastar-the-american-presidents", icon: "🧾" }
+        ]
+      },
+      {
+        id: "legacy-presidential-political-dynasties-family-clusters",
+        type: "legacy",
+        title: "Presidential Political Dynasties — Adams, Harrison, Roosevelt, Kennedy, Bush, Clinton, and Trump Family Clusters",
+        date: "1789-Present",
+        jurisdiction: "United States / Political Family Networks",
+        description: "Beyond medieval ancestry, the more concrete family-tree layer is visible in close political dynasties: fathers and sons, cousins, spouses, siblings, in-laws, donors, foundations, and party machines. This card tracks direct political-family clustering as a stronger evidentiary category than distant royal descent.",
+        quote: {
+          text: "Presidential kinships to Americans generally and popular interest in presidential genealogy.",
+          source: "American Ancestors / Gary Boyd Roberts"
+        },
+        tags: ["Political Dynasties", "Adams Family", "Harrison Family", "Roosevelt Family", "Kennedy Family", "Bush Family", "Clinton Family", "Trump Family"],
+        relatedEntities: ["John Adams", "John Quincy Adams", "William Henry Harrison", "Benjamin Harrison", "Theodore Roosevelt", "Franklin D. Roosevelt", "John F. Kennedy", "George H. W. Bush", "George W. Bush", "Donald Trump"],
+        sourceQuality: "Reference genealogy + official presidential biography entry points",
+        facts: [
+          { label: "Close Examples", value: "Adams, Harrison, Bush father/son lines" },
+          { label: "Cousin Example", value: "Theodore + Franklin Roosevelt" },
+          { label: "Marriage/Spouse Networks", value: "Clinton / Kennedy / Trump family political nodes" },
+          { label: "Best Evidence", value: "Close kinship > distant medieval ancestry" }
+        ],
+        flags: ["Concrete political-family clustering", "Dynastic access patterns", "Name recognition and donor-network inheritance", "Stronger than viral ancestry claims"],
+        details: [
+          "This card is a reminder that close, recent family networks are easier to document and more politically meaningful than claims about a medieval ancestor shared by millions.",
+          "It should be expanded over time with individual family cards where source density warrants it."
+        ],
+        links: [
+          { label: "American Ancestors: Presidential Kinships", url: "https://www.americanancestors.org/gary-boyd-roberts/presidentsandkings", icon: "🌳" },
+          { label: "Smithsonian List of Presidents", url: "https://americanhistory.si.edu/explore/exhibitions/american-presidency/online/resources/list-of-presidents", icon: "🏛️" },
+          { label: "Archives.com President Genealogy", url: "https://www.archives.com/genealogy/president.html", icon: "📚" },
+          { label: "Geneanet Presidential Genealogies", url: "https://en.geneanet.org/genealogyblog/post/2025/01/geneastar-the-american-presidents", icon: "🧾" }
+        ]
       }
 
     ];
@@ -3550,8 +3989,9 @@
     // APPLICATION STATE
     // ============================================
 
-    const allTypes = ['patents', 'legislation', 'documents', 'speeches', 'corporate', 'leaks', 'research', 'funding', 'bioengineering', 'outbreaks', 'environment', 'human', 'virtual', 'identity', 'pharma', 'players'];
+    const allTypes = ['legacy', 'players', 'patents', 'legislation', 'documents', 'speeches', 'corporate', 'leaks', 'research', 'funding', 'bioengineering', 'outbreaks', 'environment', 'human', 'virtual', 'identity', 'pharma'];
     const categorySummaries = {
+      legacy: 'Original ideologies, founding documents, meetings, families, and institutional roots',
       players: 'People and institutions that recur across the map',
       virtual: 'Digital twins, mindfiles, virtual organs, metaverse infrastructure',
       bioengineering: 'Gene drives, vector releases, CRISPR ecology, DARPA bio-programs',
@@ -3572,6 +4012,8 @@
 
 
 
+
+
     const highValueContributions = [
       'Convert the dataset into decision-ready layers: executive brief, lenses, pathways, matrix, and raw sources.',
       'Surface convergence, not just volume: prioritize nodes that connect money, patents, policy, quotes, and deployments.',
@@ -3588,7 +4030,64 @@
       'Cognitive wayfinding: keep discovery local, preserve scroll context, and offer close/copy/open actions at the point of need.'
     ];
 
+
+    const legacyLineages = [
+      {
+        family: 'Huxley line',
+        roots: 'Thomas Henry Huxley → Julian Huxley / Aldous Huxley',
+        documents: ['UNESCO Purpose and Philosophy (1946)', 'New Bottles for New Wine / Transhumanism (1957)', 'Brave New World cultural reference'],
+        connects: ['UNESCO', 'Evolutionary Humanism', 'Transhumanism', 'Education + science governance'],
+        caution: 'Documented family/intellectual lineage; not a claim of operational control over later institutions.'
+      },
+      {
+        family: 'Rockefeller line',
+        roots: 'John D. Rockefeller family philanthropy → John D. Rockefeller III / David Rockefeller',
+        documents: ['Rockefeller molecular-biology funding program', 'Population Council (1952)', 'Trilateral Commission (1973)'],
+        connects: ['Molecular Biology', 'Population Council', 'Bilderberg/Trilateral', 'Gavi/Global Health adjacency'],
+        caution: 'Shows named family philanthropy and convening roles where sourced, avoiding unsourced alias/name claims.'
+      },
+      {
+        family: 'Pritzker / TAWANI line',
+        roots: 'Pritzker family wealth → Jennifer Pritzker / TAWANI Foundation records',
+        documents: ['TAWANI grants', 'Palm Center legacy records', 'Gender-medicine institutional funding trail'],
+        connects: ['Identity medicine', 'WPATH/Endocrine Society ecosystem', 'Policy and institution funding'],
+        caution: 'Use grant records and organization pages; separate documented funding from motive claims.'
+      },
+      {
+        family: 'Systems-control meeting line',
+        roots: 'Macy cybernetics → Club of Rome systems modeling → WEF/AI governance language',
+        documents: ['Macy Conferences (1946-1953)', 'Limits to Growth (1972)', 'WEF 4IR governance documents'],
+        connects: ['Cybernetics', 'Systems modeling', 'AI governance', 'Digital twins'],
+        caution: 'This is a conceptual lineage through documents and meetings, not a biological family line.'
+      }
+    ];
+
+    const presidentialFamilyTree = [
+      {
+        node: 'King John / Plantagenet viral claim',
+        scope: 'Popular charts say 42 of first 43 presidents; Van Buren usually excluded',
+        evidence: 'Viral/local media + fact-check caveats',
+        connects: ['King John', 'Martin Van Buren', 'George Washington', 'Barack Obama', 'Donald Trump'],
+        caution: 'Distant medieval ancestry is common and does not prove coordination, selection, or motive.'
+      },
+      {
+        node: 'English royal descent research',
+        scope: 'IHGS/WikiTree summary says 27 of 45 presidents link to English kings',
+        evidence: 'Genealogy institute summary, WikiTree project, American Ancestors context',
+        connects: ['Edward I', 'Edward III', 'Franklin D. Roosevelt', 'George W. Bush', 'Theodore Roosevelt'],
+        caution: 'Best treated as pedigree density, not a causal theory of power.'
+      },
+      {
+        node: 'Close presidential dynasties',
+        scope: 'Adams, Harrison, Roosevelt, Kennedy, Bush, Clinton, and Trump family clusters',
+        evidence: 'Recent kinship, official biographies, genealogy databases, public office histories',
+        connects: ['John Adams', 'John Quincy Adams', 'Theodore Roosevelt', 'Franklin D. Roosevelt', 'George H. W. Bush', 'George W. Bush'],
+        caution: 'Close kinship is more politically meaningful than a shared ancestor hundreds of years back.'
+      }
+    ];
+
     const lensPresets = [
+      { id: 'legacy', label: 'Legacy Roots', terms: ['Julian Huxley', 'Rockefeller', 'Eugenics', 'Cybernetics', 'Population Council', 'Bilderberg', 'King John', 'Presidents'], types: ['legacy', 'players', 'funding', 'documents'] },
       { id: 'convergence', label: 'Convergence Stack', terms: ['WEF', 'Digital ID', 'AI', 'Biotechnology', 'World ID', 'Brain'], types: ['players', 'virtual', 'bioengineering', 'documents', 'funding'] },
       { id: 'money', label: 'Money & Influence', terms: ['Gates Foundation', 'Pritzker', 'Funding', 'Gavi', 'Microsoft', 'Meta'], types: ['funding', 'players', 'corporate', 'pharma', 'identity'] },
       { id: 'bio', label: 'Bio / Vector / Outbreak', terms: ['DARPA', 'Gene Drive', 'Mosquitoes', 'Hantavirus', 'EcoHealth', 'CRISPR'], types: ['bioengineering', 'outbreaks', 'funding', 'leaks', 'documents'] },
@@ -3597,6 +4096,11 @@
     ];
 
     const narrativePathways = [
+      {
+        title: 'Ideology → family philanthropy → institutions → governance',
+        terms: ['Francis Galton', 'Julian Huxley', 'Rockefeller', 'Population Council', 'Macy Conferences', 'Bilderberg', 'King John', 'Presidents'],
+        why: 'Shows the earliest documented roots: eugenics terminology, evolutionary humanism, family philanthropy, cybernetics meetings, population policy, and elite convening.'
+      },
       {
         title: 'Elite governance → technology policy → identity infrastructure',
         terms: ['WEF', 'Young Global Leaders', 'Klaus Schwab', 'World ID', 'Digital ID', 'AI Act'],
@@ -3623,6 +4127,7 @@
         why: 'Maps the machine-readable human: mindfiles, brain simulation, organ twins, chatbots, metaverse, and avatars.'
       }
     ];
+
     const insightPrompts = [
       'Start with a recurring node in Connection Constellation, then open its Thread Explorer links.',
       'Use Save to trail to hold evidence while comparing money, quotes, and patents.',
@@ -3711,6 +4216,36 @@
         url: 'https://patents.google.com/patent/US10853717B2/en'
       },
       {
+        speaker: 'Julian Huxley',
+        date: '1957',
+        where: 'New Bottles for New Wine, essay “Transhumanism”',
+        quote: 'The human species can, if it wishes, transcend itself.',
+        why: 'Direct origin quote for the map’s transhumanism root layer.',
+        tags: ['Julian Huxley', 'Transhumanism', 'Evolutionary Humanism', 'UNESCO', 'Legacy Roots'],
+        sourceLabel: 'Open Library record',
+        url: 'https://openlibrary.org/works/OL1169725W/New_Bottles_for_New_Wine'
+      },
+      {
+        speaker: 'Rockefeller Archive Center',
+        date: '1938',
+        where: 'Rockefeller Foundation natural-sciences history',
+        quote: 'Weaver is widely credited with coining the term molecular biology in 1938.',
+        why: 'Anchors a family-foundation funding route into modern genetics and biotechnology.',
+        tags: ['Rockefeller Foundation', 'Warren Weaver', 'Molecular Biology', 'Genetics'],
+        sourceLabel: 'Rockefeller Archive Center',
+        url: 'https://resource.rockarch.org/story/birth-and-development-of-molecular-biology-field-rockefeller-foundation/'
+      },
+      {
+        speaker: 'Cold Spring Harbor Laboratory Archives',
+        date: '1910-1939',
+        where: 'Eugenics Record Office collection description',
+        quote: 'Rooted in racial and disability bias and discredited as a legitimate science.',
+        why: 'Shows why family-pedigree and heredity records need an explicit ethical warning layer.',
+        tags: ['Eugenics Record Office', 'Cold Spring Harbor', 'Pedigrees', 'Human Heredity'],
+        sourceLabel: 'CSHL ArchivesSpace',
+        url: 'https://archivesspace.cshl.edu/repositories/2/resources/67'
+      },
+      {
         speaker: 'World Economic Forum',
         date: '2018',
         where: 'Shaping the Fourth Industrial Revolution release',
@@ -3722,14 +4257,14 @@
       }
     ];
 
-    const quickSearches = ['Klaus Schwab', 'Bill Gates', 'Yuval Harari', 'Sam Altman', 'Pritzker', 'Young Global Leaders', 'Digital Twin', 'Mind Uploading', 'Brain Transparency', 'Israel', 'World ID', 'Gene Drive'];
+    const quickSearches = ['King John', 'Presidents', 'Plantagenet', 'Royal Descent', 'Julian Huxley', 'Rockefeller', 'Eugenics', 'Cybernetics', 'Population Council', 'Bilderberg', 'Klaus Schwab', 'Bill Gates', 'Yuval Harari', 'Sam Altman', 'Pritzker', 'Young Global Leaders', 'Digital Twin', 'Mind Uploading', 'Brain Transparency', 'Israel', 'World ID', 'Gene Drive'];
 
     let activeFilters = [...allTypes];
     let searchQuery = '';
     let sortMode = 'newest';
     let expandedCards = new Set();
     let selectedThread = null;
-    let openCategories = new Set(['players', 'virtual', 'bioengineering']);
+    let openCategories = new Set(['legacy', 'players', 'virtual', 'bioengineering']);
     let viewDensity = 'compact';
     let savedCards = new Set();
     let compareCards = [];
@@ -4206,6 +4741,7 @@
       renderDiscoveryPanel();
       document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
+
     function getInlineMatches(term, items = evidence) {
       const q = term.toLowerCase();
       return items.filter(item =>
@@ -4443,10 +4979,75 @@
       document.getElementById('copyConstellationBtn')?.addEventListener('click', () => copyText(nodes.map(([node, count]) => `${node}: ${count}`).join('\n')));
     }
 
+
+    function renderLineagePanel(items = getVisibleEvidence()) {
+      const panel = document.getElementById('lineagePanel');
+      const visibleText = items.map(item => `${item.title} ${item.description} ${(item.tags || []).join(' ')} ${(item.relatedEntities || []).join(' ')}`).join(' ').toLowerCase();
+      const lineages = legacyLineages.map(line => {
+        const hits = line.connects.filter(term => visibleText.includes(term.toLowerCase())).length + line.documents.filter(doc => visibleText.includes(doc.toLowerCase())).length;
+        return { ...line, hits };
+      }).sort((a, b) => b.hits - a.hits);
+
+      panel.innerHTML = `
+        <div class="brief-header">
+          <div>
+            <div class="brief-title">Legacy Roots + Family / Meeting Lineages</div>
+            <div class="brief-subtitle">Documented origin paths only: families, institutions, mission documents, and meeting series that recur across the map</div>
+          </div>
+          <button class="toolbar-btn" type="button" id="copyLineagesBtn">Copy lineage map</button>
+        </div>
+        <div class="brief-grid">
+          ${lineages.map(line => `
+            <article class="brief-card">
+              <h4>${line.family}</h4>
+              <ul class="brief-list">
+                <li><span class="brief-rank">R</span>${line.roots}</li>
+                <li><span class="brief-rank">D</span>${line.documents.join(' · ')}</li>
+                <li><span class="brief-rank">C</span>${line.connects.map(term => `<button class="tag-inline" type="button" data-lineage-term="${term}">${term}</button>`).join(' ')}</li>
+                <li><span class="brief-rank">!</span>${line.caution}</li>
+              </ul>
+            </article>
+          `).join('')}
+        </div>
+        <div class="brief-header" style="margin-top:16px;">
+          <div>
+            <div class="brief-title">Presidential Family Tree / Royal-Ancestry Claims</div>
+            <div class="brief-subtitle">Separates viral King John charts, genealogy-institute findings, and closer political dynasties</div>
+          </div>
+        </div>
+        <div class="brief-grid">
+          ${presidentialFamilyTree.map(branch => `
+            <article class="brief-card">
+              <h4>${branch.node}</h4>
+              <ul class="brief-list">
+                <li><span class="brief-rank">S</span>${branch.scope}</li>
+                <li><span class="brief-rank">E</span>${branch.evidence}</li>
+                <li><span class="brief-rank">C</span>${branch.connects.map(term => `<button class="tag-inline" type="button" data-presidential-term="${term}">${term}</button>`).join(' ')}</li>
+                <li><span class="brief-rank">!</span>${branch.caution}</li>
+              </ul>
+            </article>
+          `).join('')}
+        </div>
+      `;
+
+      panel.querySelectorAll('[data-lineage-term]').forEach(btn => {
+        btn.addEventListener('click', () => showDiscovery(btn.dataset.lineageTerm));
+      });
+      panel.querySelectorAll('[data-presidential-term]').forEach(btn => {
+        btn.addEventListener('click', () => showDiscovery(btn.dataset.presidentialTerm));
+      });
+      document.getElementById('copyLineagesBtn')?.addEventListener('click', () => {
+        const lineageText = lineages.map(line => `${line.family}\nRoots: ${line.roots}\nDocuments: ${line.documents.join('; ')}\nConnects: ${line.connects.join('; ')}\nCaution: ${line.caution}`).join('\n\n');
+        const presidentialText = presidentialFamilyTree.map(branch => `${branch.node}\nScope: ${branch.scope}\nEvidence: ${branch.evidence}\nConnects: ${branch.connects.join('; ')}\nCaution: ${branch.caution}`).join('\n\n');
+        copyText(`${lineageText}\n\nPresidential family tree / royal-ancestry claims\n${presidentialText}`);
+      });
+    }
+
     function renderSupportPanels(items = getVisibleEvidence()) {
       renderBriefPanel(items);
       renderImpactPanel(items);
       renderPathwayPanel(items);
+      renderLineagePanel(items);
       renderMissionPanel(items);
       renderConnectionConstellation(items);
       renderQuoteVault(items);
