@@ -283,6 +283,168 @@
 
 
 
+    /* Executive Brief / Impact Lenses */
+    .brief-panel,
+    .impact-panel,
+    .pathway-panel {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 24px;
+      padding: 18px 20px;
+    }
+
+    .brief-header,
+    .impact-header,
+    .pathway-header {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .brief-title,
+    .impact-title,
+    .pathway-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.86rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brief-subtitle,
+    .impact-subtitle,
+    .pathway-subtitle {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+    }
+
+    .brief-grid,
+    .impact-grid,
+    .pathway-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .brief-card,
+    .impact-card,
+    .pathway-card {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+
+    .brief-card h4,
+    .impact-card h4,
+    .pathway-card h4 {
+      font-size: 0.92rem;
+      margin-bottom: 10px;
+    }
+
+    .brief-list,
+    .impact-list {
+      display: grid;
+      gap: 8px;
+      list-style: none;
+    }
+
+    .brief-list li,
+    .impact-list li {
+      color: var(--text-secondary);
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+
+    .brief-rank {
+      color: var(--players);
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 700;
+      margin-right: 6px;
+    }
+
+    .lens-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .lens-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.78rem;
+      padding: 8px 12px;
+    }
+
+    .lens-btn:hover {
+      border-color: var(--players);
+      color: var(--text-primary);
+    }
+
+    .impact-row {
+      align-items: center;
+      background: transparent;
+      border: 0;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: grid;
+      font-family: inherit;
+      text-align: left;
+      width: 100%;
+      gap: 10px;
+      grid-template-columns: 1fr auto;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .impact-row:last-child {
+      border-bottom: 0;
+    }
+
+    .impact-score {
+      color: var(--players);
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 700;
+    }
+
+    .mini-bar {
+      background: var(--bg-card);
+      border-radius: 999px;
+      height: 7px;
+      margin-top: 6px;
+      overflow: hidden;
+    }
+
+    .mini-bar span {
+      background: linear-gradient(90deg, var(--players), var(--virtual));
+      display: block;
+      height: 100%;
+    }
+
+    .pathway-card {
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .pathway-card:hover {
+      border-color: var(--link-color);
+      transform: translateY(-1px);
+    }
+
+    .pathway-tags {
+      color: var(--text-muted);
+      display: block;
+      font-size: 0.74rem;
+      margin-top: 8px;
+    }
     /* Inline discovery drawer */
     .discovery-panel {
       border: 1px solid rgba(93, 173, 226, 0.22);
@@ -1393,6 +1555,11 @@
 
     <div class="stats-bar" id="statsBar"></div>
 
+    <section class="brief-panel" id="briefPanel"></section>
+
+    <section class="impact-panel" id="impactPanel"></section>
+
+    <section class="pathway-panel" id="pathwayPanel"></section>
     <section class="discovery-panel" id="discoveryPanel"></section>
 
     <section class="narrative-panel" id="narrativePanel"></section>
@@ -3212,6 +3379,169 @@
           { label: "2026 Activity Report Release", url: "https://innovationisrael.org.il/en/press_release/bc-activity-report-2026/", icon: "📊" },
           { label: "AI in Healthcare Call for Information PDF", url: "https://www.gov.il/BlobFolder/rfp/ai-health-info/en/files_invitation-to-tender_Call%20for%20Information%20AI%20in%20Healthcare%20-%20Updated.pdf", icon: "🏥" }
         ]
+      },
+      {
+        id: "identity-id2020-digital-id-alliance",
+        type: "identity",
+        title: "ID2020 Alliance — Digital Identity, Biometrics, Microsoft, Accenture, Rockefeller, and Gavi Links",
+        date: "2016-Present",
+        jurisdiction: "International / Public-Private Alliance",
+        description: "ID2020 is a high-convergence digital-identity node tying Microsoft, Accenture, Rockefeller Foundation seed funding, Gavi, humanitarian identity, blockchain/decentralized identity language, and biometrics into a global identity agenda. It is included as a major missing bridge between health systems, identity infrastructure, financial access, and population-scale authentication.",
+        quote: {
+          text: "Accenture and Microsoft – founding alliance partners of ID2020 who have pledged financial and technology resources – demonstrated the prototype today at the ID2020 Summit at the U.N.",
+          source: "Accenture newsroom, June 19, 2017"
+        },
+        tags: ["ID2020", "Digital ID", "Microsoft", "Accenture", "Gavi", "Rockefeller Foundation", "Biometrics", "Blockchain Identity"],
+        relatedEntities: ["Microsoft", "Accenture", "Gavi", "Rockefeller Foundation", "United Nations", "Bill Gates"],
+        sourceQuality: "Alliance primary + partner release",
+        facts: [
+          { label: "Launch Era", value: "2016-2017" },
+          { label: "Founding Partners", value: "Microsoft + Accenture" },
+          { label: "Seed Link", value: "Rockefeller Foundation" },
+          { label: "Health Link", value: "Gavi" }
+        ],
+        flags: ["Digital identity layer", "Biometric identity prototype", "Health/vaccine delivery adjacency", "Public-private governance model", "High bridge between existing Gates/Gavi/Microsoft cards"],
+        details: [
+          "Accenture described leveraging its Unique Identity Service Platform to manage fingerprints, iris, and other data.",
+          "ID2020's own site frames digital identity as ethical and privacy-protecting; critics focus on infrastructure convergence with health, finance, and humanitarian dependency systems."
+        ],
+        links: [
+          { label: "ID2020 Official Site", url: "https://www.id2020.org/", icon: "🪪" },
+          { label: "ID2020 Alliance Manifesto PDF", url: "https://www.id2020.org/assets/pdf/ID2020-Alliance-Manifesto.pdf", icon: "📄" },
+          { label: "Accenture + Microsoft ID2020 Prototype", url: "https://newsroom.accenture.com/news/2017/accenture-microsoft-create-blockchain-solution-to-support-id2020", icon: "🔗" },
+          { label: "2018 Partner Announcement", url: "https://www.prnewswire.com/news-releases/the-id2020-alliance-announces-new-partners-in-digital-identity-initiative-300585991.html", icon: "🧾" }
+        ]
+      },
+      {
+        id: "documents-who-pandemic-agreement-ihr-2025",
+        type: "documents",
+        title: "WHO Pandemic Agreement + 2024 IHR Amendments — Global Health Governance Upgrade",
+        date: "2025-05-20",
+        jurisdiction: "World Health Organization / World Health Assembly",
+        description: "WHO Member States adopted the WHO Pandemic Agreement on May 20, 2025, after the 2024 IHR amendments created a new pandemic-emergency framework. This is a major missing governance layer for pandemic authority, pathogen access/benefit sharing, health-data coordination, vaccines, therapeutics, diagnostics, and future emergency response systems.",
+        quote: {
+          text: "WHO Member States today formally adopted by consensus the world’s first Pandemic Agreement.",
+          source: "WHO WHA78 daily update, May 20, 2025"
+        },
+        tags: ["WHO", "Pandemic Agreement", "International Health Regulations", "IHR", "Pandemic Emergency", "Health Data", "Vaccines"],
+        relatedEntities: ["WHO", "Tedros Adhanom Ghebreyesus", "Gavi", "Gates Foundation", "UNAIDS", "Global Fund"],
+        sourceQuality: "Official WHO governance record",
+        facts: [
+          { label: "Adopted", value: "May 20 2025" },
+          { label: "Negotiation", value: "3 years" },
+          { label: "IHR Amendments", value: "June 1 2024" },
+          { label: "Scope", value: "PPR + equity + access" }
+        ],
+        flags: ["Global pandemic governance", "Highest-level WHO legal instrument", "COVID-response lessons institutionalized", "Future vaccine/treatment/data coordination", "Sovereignty debate"],
+        details: [
+          "WHO says the agreement reaffirms state sovereignty; critics focus on how emergency norms, surveillance, access rules, and recommendations may shape national policy under pressure.",
+          "This card bridges COVID, WHO, Gates/Gavi/Global Fund, pathogen surveillance, and health-data infrastructure entries."
+        ],
+        links: [
+          { label: "WHO Pandemic Agreement Topic", url: "https://www.who.int/health-topics/who-pandemic-agreement", icon: "🌐" },
+          { label: "WHO Adoption Release", url: "https://www.who.int/news/item/20-05-2025-world-health-assembly-adopts-historic-pandemic-agreement-to-make-the-world-more-equitable-and-safer-from-future-pandemics", icon: "🏛️" },
+          { label: "WHO IHR Amendments Release", url: "https://www.who.int/news/item/01-06-2024-world-health-assembly-agreement-reached-on-wide-ranging--decisive-package-of-amendments-to-improve-the-international-health-regulations--and-sets-date-for-finalizing-negotiations-on-a-proposed-pandemic-agreement", icon: "📜" },
+          { label: "IHR Topic Page", url: "https://www.who.int/health-topics/international-health-regulations", icon: "📘" }
+        ]
+      },
+      {
+        id: "corporate-palantir-nhs-federated-data-platform",
+        type: "corporate",
+        title: "Palantir NHS Federated Data Platform — National Health Data Infrastructure Contract",
+        date: "2023-11-21",
+        jurisdiction: "United Kingdom / NHS England",
+        description: "NHS England awarded a seven-year Federated Data Platform contract to a consortium led by Palantir, with Accenture, PwC, NECS, and Carnall Farrar. The contract has been reported as up to £330M and is controversial because it centralizes operational health-data infrastructure under a company associated with intelligence, defense, policing, and immigration systems.",
+        quote: {
+          text: "The contract was awarded in 2023 to a consortium led by Palantir, including Accenture, PwC, Carnall Farrar, and NECS.",
+          source: "NHS Federated Data Platform public page"
+        },
+        tags: ["Palantir", "NHS", "Federated Data Platform", "Health Data", "Accenture", "PwC", "Peter Thiel", "Patient Data"],
+        relatedEntities: ["Palantir", "Peter Thiel", "NHS England", "Accenture", "PwC", "Alex Karp"],
+        sourceQuality: "NHS record + medical/public-interest reporting",
+        facts: [
+          { label: "Award", value: "2023" },
+          { label: "Reported Value", value: "Up to £330M" },
+          { label: "Term", value: "7 years" },
+          { label: "Consortium", value: "Palantir + Accenture + PwC + NECS + CF" }
+        ],
+        flags: ["National health-data infrastructure", "Patient-data trust controversy", "Public-private data platform", "Palantir intelligence/defense adjacency", "High connection to Peter Thiel / Accenture / health AI"],
+        details: [
+          "The BMJ reported opposition from BMA, Doctors' Association UK, patient groups, and privacy campaigners.",
+          "This card upgrades the earlier Palantir government-contract node with a concrete health-data platform and major contract value."
+        ],
+        links: [
+          { label: "NHS FDP Public Page", url: "https://www.england.nhs.uk/digitaltechnology/nhs-federated-data-platform/", icon: "🏥" },
+          { label: "NHS Trust FDP Explanation", url: "https://www.gloshospitals.nhs.uk/about-us/news-media/press-releases-statements/nhs-federated-data-platform/", icon: "📄" },
+          { label: "BMJ: Palantir Gets NHS Contract", url: "https://www.bmj.com/content/383/bmj.p2752", icon: "🧾" },
+          { label: "HTN Award Coverage", url: "https://htn.co.uk/2023/11/21/nhs-england-announces-awarding-of-federated-data-platform-contract/", icon: "📰" },
+          { label: "Foxglove FDP Risk Report PDF", url: "https://www.foxglove.org.uk/wp-content/uploads/2023/06/2023_06_05-FINAL-The-NHS-Federated-Data-Platform-and-Palantir.pdf", icon: "⚠️" }
+        ]
+      },
+      {
+        id: "leak-nso-pegasus-israel-surveillance",
+        type: "leaks",
+        title: "NSO Group Pegasus — Israeli Spyware, Zero-Click Surveillance, and Global Targeting Investigations",
+        date: "2016-Present",
+        jurisdiction: "Israel / International",
+        description: "Pegasus is a high-convergence surveillance gap because it links Israeli cyber firms, phone-level remote access, journalists and activists, government clients, human-rights investigations, and export-control politics. Citizen Lab and Amnesty documented forensic methods and infections; NSO says Pegasus is operated by authorized government agencies for crime and terrorism investigations.",
+        quote: {
+          text: "The Pegasus Project was the culmination of years of work investigating NSO Group’s shadowy Pegasus software.",
+          source: "Amnesty International Security Lab, 2022"
+        },
+        tags: ["NSO Group", "Pegasus", "Israel", "Spyware", "Zero-Click", "Citizen Lab", "Amnesty", "Surveillance"],
+        relatedEntities: ["NSO Group", "Israel", "Citizen Lab", "Amnesty International", "Apple", "Yuval Noah Harari"],
+        sourceQuality: "Forensic reports + company response",
+        facts: [
+          { label: "Public Analysis", value: "2016+" },
+          { label: "Pegasus Project", value: "2021" },
+          { label: "Reported Targets", value: "Activists/journalists/political figures" },
+          { label: "Core Capability", value: "Phone compromise" }
+        ],
+        flags: ["Zero-click surveillance", "Human-rights controversy", "Israeli cyber-export node", "Journalist/activist targeting reports", "Government-client opacity"],
+        details: [
+          "Citizen Lab peer-reviewed Amnesty's forensic methodology for identifying Pegasus compromise in device backups.",
+          "NSO's public position is that it does not operate Pegasus and that sovereign government customers operate it."
+        ],
+        links: [
+          { label: "Amnesty Forensic Methodology", url: "https://www.amnesty.org/en/documents/doc10/4487/2021/en/", icon: "🔬" },
+          { label: "Citizen Lab Peer Review", url: "https://citizenlab.ca/2021/07/amnesty-peer-review/", icon: "🧪" },
+          { label: "Amnesty Pegasus Project", url: "https://securitylab.amnesty.org/latest/2021/07/the-pegasus-project/", icon: "📱" },
+          { label: "Citizen Lab FORCEDENTRY Report", url: "https://citizenlab.ca/research/forcedentry-nso-group-imessage-zero-click-exploit-captured-in-the-wild/", icon: "⚠️" },
+          { label: "NSO Group Response", url: "https://www.nsogroup.com/Newses/the-facts-about-nso/", icon: "⚖️" }
+        ]
+      },
+      {
+        id: "players-eric-schmidt-nscai-ai-bio-national-security",
+        type: "players",
+        title: "Eric Schmidt / NSCAI / SCSP — AI, National Security, Bioeconomy, and Critical Technology Strategy",
+        date: "2021-Present",
+        jurisdiction: "United States / National Security Commission on AI",
+        description: "Eric Schmidt is a missing high-level convergence node: former Google/Alphabet CEO, chair of the National Security Commission on Artificial Intelligence, founder/backer of follow-on strategic-technology policy work, and a recurring figure in AI + national security + biotechnology strategy. NSCAI's final report explicitly links AI to biotechnology, defense, intelligence, and industrial policy.",
+        quote: {
+          text: "This Final Report presents the NSCAI's strategy for winning the artificial intelligence era.",
+          source: "NSCAI Final Report site"
+        },
+        tags: ["Eric Schmidt", "NSCAI", "SCSP", "AI", "National Security", "Biotechnology", "Bioeconomy", "Defense"],
+        relatedEntities: ["Eric Schmidt", "Google", "Alphabet", "NSCAI", "SCSP", "National Security Commission on Emerging Biotechnology"],
+        sourceQuality: "Official commission report + government records",
+        facts: [
+          { label: "Final Report", value: "2021" },
+          { label: "Role", value: "NSCAI Chair" },
+          { label: "Scope", value: "AI + defense + intelligence + bioeconomy" },
+          { label: "Follow-on", value: "SCSP / strategic tech policy" }
+        ],
+        flags: ["Elite AI national-security policy node", "AI + biotechnology convergence", "Government strategy pipeline", "Private-sector tech leadership to state policy bridge", "High relevance to defense/AI governance"],
+        details: [
+          "NSCAI Chapter 16 discusses AI-enabled biotechnology and a national bioeconomy strategy.",
+          "This card connects AI governance, defense/intelligence, bioeconomy, and emerging-biotech commission records."
+        ],
+        links: [
+          { label: "NSCAI Final Report", url: "https://reports.nscai.gov/", icon: "🤖" },
+          { label: "NSCAI Chapter 16: AI + Biotechnology", url: "https://reports.nscai.gov/final-report/chapter-16", icon: "🧬" },
+          { label: "GovInfo Final Report Record", url: "https://www.govinfo.gov/app/details/GOVPUB-Y3-PURL-gpo153246", icon: "🏛️" },
+          { label: "Congress Hearing Record", url: "https://www.congress.gov/event/117th-congress/house-event/111309", icon: "📜" },
+          { label: "NSCEB Final Report Context", url: "https://www.biotech.senate.gov/final-report/chapters/about/", icon: "🧫" }
+        ]
       }
 
     ];
@@ -3242,6 +3572,57 @@
 
 
 
+    const highValueContributions = [
+      'Convert the dataset into decision-ready layers: executive brief, lenses, pathways, matrix, and raw sources.',
+      'Surface convergence, not just volume: prioritize nodes that connect money, patents, policy, quotes, and deployments.',
+      'Make keyword exploration non-destructive: inline discovery previews matches without hijacking the main search state.',
+      'Pair claims with source posture: highlight primary records, filings, patents, official guidance, quotes, and audits.',
+      'Turn dense records into reusable trails: save, compare, copy, export, and open related clusters without losing context.'
+    ];
+
+    const presentationOptimizations = [
+      'Layered disclosure: headings first, compact cards second, expanded evidence third, source links last.',
+      'Narrative pathways: show the story arc connecting people, money, governance, technology, and implementation.',
+      'Impact scoring: rank categories by links, facts, flags, and cross-entity density so the strongest areas surface first.',
+      'Lens presets: one-click views for convergence, money, identity/pharma, virtual humans, bioengineering, and key players.',
+      'Cognitive wayfinding: keep discovery local, preserve scroll context, and offer close/copy/open actions at the point of need.'
+    ];
+
+    const lensPresets = [
+      { id: 'convergence', label: 'Convergence Stack', terms: ['WEF', 'Digital ID', 'AI', 'Biotechnology', 'World ID', 'Brain'], types: ['players', 'virtual', 'bioengineering', 'documents', 'funding'] },
+      { id: 'money', label: 'Money & Influence', terms: ['Gates Foundation', 'Pritzker', 'Funding', 'Gavi', 'Microsoft', 'Meta'], types: ['funding', 'players', 'corporate', 'pharma', 'identity'] },
+      { id: 'bio', label: 'Bio / Vector / Outbreak', terms: ['DARPA', 'Gene Drive', 'Mosquitoes', 'Hantavirus', 'EcoHealth', 'CRISPR'], types: ['bioengineering', 'outbreaks', 'funding', 'leaks', 'documents'] },
+      { id: 'identity', label: 'Identity + Pharma', terms: ['WPATH', 'Puberty Blockers', 'Pritzker', 'Gender', 'Endocrine', 'Cass Review'], types: ['identity', 'pharma', 'legislation', 'documents'] },
+      { id: 'virtual', label: 'Virtual Human / Machine', terms: ['Digital Twin', 'Mind Uploading', 'BINA48', 'Human Brain Project', 'Living Heart', 'Metaverse'], types: ['virtual', 'patents', 'human', 'players'] }
+    ];
+
+    const narrativePathways = [
+      {
+        title: 'Elite governance → technology policy → identity infrastructure',
+        terms: ['WEF', 'Young Global Leaders', 'Klaus Schwab', 'World ID', 'Digital ID', 'AI Act'],
+        why: 'Connects leadership pipelines, 4IR governance language, biometric identity, and AI policy infrastructure.'
+      },
+      {
+        title: 'Philanthropy → global health → gene-based interventions',
+        terms: ['Bill Gates', 'Gavi', 'HIV', 'Gene-Based Cures', 'WHO', 'UNAIDS'],
+        why: 'Follows money, vaccine delivery institutions, HIV programmes, and gene-cure collaborations.'
+      },
+      {
+        title: 'Bioengineering → vectors → outbreak surveillance',
+        terms: ['DARPA', 'Mosquitoes', 'Gene Drive', 'Hantavirus', 'EcoHealth Alliance', 'DEFUSE'],
+        why: 'Links environmental release technologies, pathogen surveillance, spillover prevention, and COVID-origin document trails.'
+      },
+      {
+        title: 'Human identity → endocrine pathways → legal shields',
+        terms: ['WPATH', 'Endocrine Society', 'Puberty Blockers', 'Pritzker', 'Cass Review', 'HB4664'],
+        why: 'Shows how professional guidance, drugs, philanthropy, evidence reviews, and law interact.'
+      },
+      {
+        title: 'Brain/body digitization → virtual organs → synthetic personhood',
+        terms: ['Terasem', 'BINA48', 'Digital Twin', 'Human Brain Project', 'Microsoft', 'Meta'],
+        why: 'Maps the machine-readable human: mindfiles, brain simulation, organ twins, chatbots, metaverse, and avatars.'
+      }
+    ];
     const insightPrompts = [
       'Start with a recurring node in Connection Constellation, then open its Thread Explorer links.',
       'Use Save to trail to hold evidence while comparing money, quotes, and patents.',
@@ -3679,6 +4060,152 @@
       document.getElementById('threadCopyBtn')?.addEventListener('click', () => copyText(formatLinksForClipboard(matches)));
     }
 
+    function renderBriefPanel(items = getVisibleEvidence()) {
+      const panel = document.getElementById('briefPanel');
+      panel.innerHTML = `
+        <div class="brief-header">
+          <div>
+            <div class="brief-title">Top 5 value contributions + presentation upgrades</div>
+            <div class="brief-subtitle">A concise, user-facing strategy layer for where the map now adds the most value</div>
+          </div>
+          <button class="toolbar-btn" type="button" id="copyBriefBtn">Copy brief</button>
+        </div>
+        <div class="brief-grid">
+          <article class="brief-card">
+            <h4>Highest-value contributions</h4>
+            <ol class="brief-list">
+              ${highValueContributions.map((item, index) => `<li><span class="brief-rank">${index + 1}</span>${item}</li>`).join('')}
+            </ol>
+          </article>
+          <article class="brief-card">
+            <h4>Best presentation optimizations</h4>
+            <ol class="brief-list">
+              ${presentationOptimizations.map((item, index) => `<li><span class="brief-rank">${index + 1}</span>${item}</li>`).join('')}
+            </ol>
+          </article>
+        </div>
+        <div class="lens-strip">
+          ${lensPresets.map(lens => `<button class="lens-btn" type="button" data-lens="${lens.id}">${lens.label}</button>`).join('')}
+        </div>
+      `;
+      panel.querySelectorAll('[data-lens]').forEach(btn => {
+        btn.addEventListener('click', () => applyLens(btn.dataset.lens));
+      });
+      document.getElementById('copyBriefBtn')?.addEventListener('click', () => {
+        copyText(`Top 5 value contributions\n${highValueContributions.map((x, i) => `${i + 1}. ${x}`).join('\n')}\n\nTop 5 presentation optimizations\n${presentationOptimizations.map((x, i) => `${i + 1}. ${x}`).join('\n')}`);
+      });
+    }
+
+    function getCategoryImpact(items = getVisibleEvidence()) {
+      const grouped = groupByType(items);
+      return Object.entries(grouped).map(([type, entries]) => {
+        const links = entries.reduce((sum, item) => sum + (item.links?.length || 0), 0);
+        const facts = entries.reduce((sum, item) => sum + (item.facts?.length || 0), 0);
+        const flags = entries.reduce((sum, item) => sum + (item.flags?.length || 0), 0);
+        const entities = new Set(entries.flatMap(item => item.relatedEntities || [])).size;
+        const score = entries.length * 3 + links + facts * 2 + flags * 2 + entities;
+        return { type, entries, links, facts, flags, entities, score };
+      }).sort((a, b) => b.score - a.score);
+    }
+
+    function renderImpactPanel(items = getVisibleEvidence()) {
+      const panel = document.getElementById('impactPanel');
+      const ranked = getCategoryImpact(items).slice(0, 8);
+      const maxScore = Math.max(...ranked.map(row => row.score), 1);
+      panel.innerHTML = `
+        <div class="impact-header">
+          <div>
+            <div class="impact-title">Impact Matrix</div>
+            <div class="impact-subtitle">Ranks open categories by cards, links, facts, flags, and entity density</div>
+          </div>
+          <button class="toolbar-btn" type="button" id="openHighestImpactBtn">Open highest impact</button>
+        </div>
+        <div class="impact-grid">
+          <article class="impact-card">
+            <h4>Highest-value categories in current view</h4>
+            <div class="impact-list">
+              ${ranked.map(row => `
+                <button class="impact-row" type="button" data-impact-type="${row.type}">
+                  <span>${formatTypePlural(row.type)}<span class="discovery-meta">${row.entries.length} cards · ${row.links} links · ${row.flags} flags · ${row.entities} entities</span><span class="mini-bar"><span style="width:${Math.round((row.score / maxScore) * 100)}%"></span></span></span>
+                  <span class="impact-score">${row.score}</span>
+                </button>
+              `).join('')}
+            </div>
+          </article>
+          <article class="impact-card">
+            <h4>Use the matrix to optimize reading order</h4>
+            <ul class="brief-list">
+              <li><span class="brief-rank">1</span>Open the highest score first for the densest source cluster.</li>
+              <li><span class="brief-rank">2</span>Use flags/facts to separate raw documentation from interpretation.</li>
+              <li><span class="brief-rank">3</span>Jump from a category into the constellation when repeated nodes appear.</li>
+              <li><span class="brief-rank">4</span>Save or compare records before exporting links.</li>
+            </ul>
+          </article>
+        </div>
+      `;
+      panel.querySelectorAll('[data-impact-type]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          openCategories.add(btn.dataset.impactType);
+          document.querySelector(`[data-category-section="${btn.dataset.impactType}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          renderCards();
+        });
+      });
+      document.getElementById('openHighestImpactBtn')?.addEventListener('click', () => {
+        ranked.slice(0, 3).forEach(row => openCategories.add(row.type));
+        renderCards();
+      });
+    }
+
+    function renderPathwayPanel(items = getVisibleEvidence()) {
+      const panel = document.getElementById('pathwayPanel');
+      panel.innerHTML = `
+        <div class="pathway-header">
+          <div>
+            <div class="pathway-title">High-convergence pathways</div>
+            <div class="pathway-subtitle">Curated routes that connect key people, institutions, technologies, funding, policies, and quote anchors</div>
+          </div>
+          <button class="toolbar-btn" type="button" id="copyPathwaysBtn">Copy pathways</button>
+        </div>
+        <div class="pathway-grid">
+          ${narrativePathways.map((pathway, index) => `
+            <article class="pathway-card" data-pathway-index="${index}">
+              <h4>${pathway.title}</h4>
+              <p class="card-description">${pathway.why}</p>
+              <span class="pathway-tags">${pathway.terms.join(' · ')}</span>
+            </article>
+          `).join('')}
+        </div>
+      `;
+      panel.querySelectorAll('[data-pathway-index]').forEach(card => {
+        card.addEventListener('click', () => {
+          const pathway = narrativePathways[Number(card.dataset.pathwayIndex)];
+          discoveryTerm = pathway.title;
+          discoveryMatches = [...new Map(pathway.terms.flatMap(term => getInlineMatches(term)).map(item => [item.id, item])).values()].sort(sortEvidence);
+          renderDiscoveryPanel();
+          document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+      });
+      document.getElementById('copyPathwaysBtn')?.addEventListener('click', () => {
+        copyText(narrativePathways.map((pathway, index) => `${index + 1}. ${pathway.title}\n${pathway.why}\nTerms: ${pathway.terms.join(', ')}`).join('\n\n'));
+      });
+    }
+
+    function applyLens(id) {
+      const lens = lensPresets.find(item => item.id === id);
+      if (!lens) return;
+      activeFilters = [...new Set(lens.types)];
+      openCategories = new Set(lens.types);
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.toggle('active', activeFilters.includes(btn.dataset.filter));
+      });
+      discoveryTerm = lens.label;
+      discoveryMatches = [...new Map(lens.terms.flatMap(term => getInlineMatches(term)).map(item => [item.id, item])).values()].sort(sortEvidence);
+      expandedCards.clear();
+      renderCards();
+      updateStats();
+      renderDiscoveryPanel();
+      document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
     function getInlineMatches(term, items = evidence) {
       const q = term.toLowerCase();
       return items.filter(item =>
@@ -3917,6 +4444,9 @@
     }
 
     function renderSupportPanels(items = getVisibleEvidence()) {
+      renderBriefPanel(items);
+      renderImpactPanel(items);
+      renderPathwayPanel(items);
       renderMissionPanel(items);
       renderConnectionConstellation(items);
       renderQuoteVault(items);
