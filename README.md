@@ -18,6 +18,7 @@ A single-page evidence map for tracking public source material on artificial int
 - Expand/collapse visible cards and open/close all category tabs.
 - Timeline panel showing the newest visible entries.
 - Thread Explorer overlay that surfaces recurring people, organizations, and concepts, then lets you search, open, or copy a whole connection thread.
+- Investigation Console, inline discovery drawer, Pattern Narratives, Quote Vault, Connection Constellation, bookmarks, compare tray, and random-thread discovery make navigation more guided without hijacking the global search.
 - Copy a single card citation with links, copy all visible links, or export the visible dataset as JSON.
 - Expanded card details include research flags, source-quality labels, source-domain chips, and clarifying notes that distinguish documented releases/proposals from unsupported claims.
 

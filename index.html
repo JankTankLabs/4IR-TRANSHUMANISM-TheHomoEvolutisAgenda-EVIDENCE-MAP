@@ -279,6 +279,268 @@
       background: rgba(93, 173, 226, 0.14);
     }
 
+
+
+
+
+    /* Inline discovery drawer */
+    .discovery-panel {
+      border: 1px solid rgba(93, 173, 226, 0.22);
+      background: linear-gradient(135deg, rgba(93, 173, 226, 0.08), rgba(255, 209, 102, 0.05));
+      border-radius: 12px;
+      display: none;
+      margin-bottom: 24px;
+      padding: 18px 20px;
+    }
+
+    .discovery-panel.is-active {
+      display: block;
+    }
+
+    .discovery-header,
+    .narrative-header {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .discovery-title,
+    .narrative-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.86rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .discovery-subtitle,
+    .narrative-subtitle {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+    }
+
+    .discovery-grid,
+    .narrative-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .discovery-result,
+    .narrative-card {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 12px 14px;
+      text-align: left;
+    }
+
+    .discovery-result:hover,
+    .narrative-card:hover {
+      border-color: var(--link-color);
+      color: var(--text-primary);
+    }
+
+    .discovery-meta,
+    .narrative-meta {
+      color: var(--text-muted);
+      display: block;
+      font-size: 0.74rem;
+      margin-top: 6px;
+    }
+
+    .discovery-actions,
+    .narrative-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .narrative-panel {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 28px;
+      padding: 18px 20px;
+    }
+
+    /* Mission Control / Gamified Overlays */
+    .mission-grid {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.9fr) minmax(320px, 1.1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .mission-panel,
+    .quote-panel,
+    .connection-panel {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+    }
+
+    .mission-panel {
+      background: linear-gradient(135deg, rgba(255, 209, 102, 0.08), rgba(0, 212, 255, 0.04));
+    }
+
+    .mission-header,
+    .quote-header,
+    .connection-header {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .mission-title,
+    .quote-title,
+    .connection-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .mission-subtitle,
+    .quote-subtitle,
+    .connection-subtitle {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+    }
+
+    .progress-track {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      height: 12px;
+      overflow: hidden;
+      margin: 8px 0 14px;
+    }
+
+    .progress-fill {
+      background: linear-gradient(90deg, var(--players), var(--virtual), var(--bioengineering));
+      height: 100%;
+      transition: width 0.25s ease;
+    }
+
+    .quest-list,
+    .badge-list,
+    .saved-list,
+    .quote-list,
+    .constellation-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .quest-item,
+    .badge-chip,
+    .saved-chip,
+    .quote-card,
+    .constellation-node {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      padding: 10px 12px;
+    }
+
+    .quest-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 8px;
+      font-size: 0.83rem;
+    }
+
+    .quest-check {
+      color: var(--players);
+      font-weight: 700;
+    }
+
+    .badge-list,
+    .saved-list {
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      margin-top: 12px;
+    }
+
+    .badge-chip,
+    .saved-chip,
+    .constellation-node {
+      cursor: pointer;
+      font-size: 0.78rem;
+    }
+
+    .badge-chip.unlocked {
+      border-color: var(--players);
+      color: var(--text-primary);
+      box-shadow: 0 0 14px rgba(255, 209, 102, 0.12);
+    }
+
+    .quote-card {
+      border-left: 3px solid var(--players);
+    }
+
+    .quote-text {
+      color: var(--text-primary);
+      font-size: 0.92rem;
+      line-height: 1.45;
+      margin-bottom: 8px;
+    }
+
+    .quote-meta {
+      color: var(--text-muted);
+      font-size: 0.76rem;
+      line-height: 1.5;
+    }
+
+    .quote-actions,
+    .constellation-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .constellation-list {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .constellation-node {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      text-align: left;
+    }
+
+    .constellation-node strong {
+      color: var(--text-primary);
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .compare-tray {
+      border-top: 1px solid var(--border);
+      display: none;
+      margin-top: 12px;
+      padding-top: 12px;
+    }
+
+    .compare-tray.is-active {
+      display: block;
+    }
+
+    @media (max-width: 960px) {
+      .mission-grid { grid-template-columns: 1fr; }
+    }
+
     /* Timeline */
     .timeline-panel {
       margin-bottom: 28px;
@@ -1130,6 +1392,17 @@
 
 
     <div class="stats-bar" id="statsBar"></div>
+
+    <section class="discovery-panel" id="discoveryPanel"></section>
+
+    <section class="narrative-panel" id="narrativePanel"></section>
+
+    <section class="mission-grid">
+      <div class="mission-panel" id="missionPanel"></div>
+      <div class="connection-panel" id="connectionPanel"></div>
+    </section>
+
+    <section class="quote-panel" id="quotePanel"></section>
 
     <section class="timeline-panel" id="timelinePanel"></section>
 
@@ -2967,6 +3240,107 @@
       speeches: 'Public statements, presentations and ideology signals'
     };
 
+
+
+    const insightPrompts = [
+      'Start with a recurring node in Connection Constellation, then open its Thread Explorer links.',
+      'Use Save to trail to hold evidence while comparing money, quotes, and patents.',
+      'Click a tag or entity to preview matching cards inline without changing the global search.',
+      'Use Quote Vault to anchor narratives to sourced who/what/when/where/why excerpts.'
+    ];
+
+    const rewardBadges = [
+      { id: 'thread-puller', label: '🧵 Thread Puller', hint: 'Open a connection node' },
+      { id: 'quote-hunter', label: '🎙️ Quote Hunter', hint: 'Search or open a quote source' },
+      { id: 'archivist', label: '📎 Archivist', hint: 'Save a card' },
+      { id: 'analyst', label: '🧩 Analyst', hint: 'Compare cards' },
+      { id: 'deep-diver', label: '🕳️ Deep Diver', hint: 'Expand a card' },
+      { id: 'cartographer', label: '🗺️ Cartographer', hint: 'Use the constellation' }
+    ];
+
+    const quoteBank = [
+      {
+        speaker: 'Klaus Schwab',
+        date: '2016',
+        where: 'WEF / The Fourth Industrial Revolution framing',
+        quote: 'The Fourth Industrial Revolution is not only changing what we do but also who we are.',
+        why: 'Core elite-forum language for the physical/digital/biological fusion theme.',
+        tags: ['Klaus Schwab', 'WEF', 'Fourth Industrial Revolution', 'Transhumanism'],
+        sourceLabel: 'WEF 4IR book page',
+        url: 'https://www.weforum.org/about/the-fourth-industrial-revolution-by-klaus-schwab/'
+      },
+      {
+        speaker: 'Yuval Noah Harari',
+        date: '2020-01-24',
+        where: 'World Economic Forum, Davos',
+        quote: 'If you have enough data about me, you can hack my body, my brain, my life.',
+        why: 'A concise statement of AI + biotech + data convergence and human hackability.',
+        tags: ['Yuval Noah Harari', 'WEF', 'Hackable Humans', 'AI', 'Biotechnology'],
+        sourceLabel: 'WEF Davos transcript',
+        url: 'https://www.weforum.org/agenda/2020/01/yuval-hararis-warning-davos-speech-future-predications/'
+      },
+      {
+        speaker: 'Bill Gates',
+        date: '2010-02',
+        where: 'TED: Innovating to Zero',
+        quote: 'The world today has 6.8 billion people. That is headed up to about 9 billion.',
+        why: 'Population, vaccines, health systems, and climate appear together in a major public speech.',
+        tags: ['Bill Gates', 'Population', 'Vaccines', 'Climate', 'TED'],
+        sourceLabel: 'TED transcript/video',
+        url: 'https://www.ted.com/talks/bill_gates_innovating_to_zero'
+      },
+      {
+        speaker: 'Sam Altman / World',
+        date: '2023-2024',
+        where: 'World / Orb biometric explanation',
+        quote: 'The iris is a very strong biometric signal for proving uniqueness.',
+        why: 'Connects AI-era proof-of-personhood to global biometric identity infrastructure.',
+        tags: ['Sam Altman', 'Worldcoin', 'World ID', 'Biometrics', 'Iris'],
+        sourceLabel: 'World Orb biometrics explainer',
+        url: 'https://world.org/blog/worldcoin/understanding-orb-why-worldcoin-uses-biometrics'
+      },
+      {
+        speaker: 'Nita Farahany',
+        date: '2023-01-19',
+        where: 'WEF Davos Brain Transparency session',
+        quote: 'We can pick up and decode faces that you are seeing in your mind.',
+        why: 'Frames brain-data capture and workplace neurotechnology as an imminent governance issue.',
+        tags: ['Nita Farahany', 'Brain Transparency', 'Neurotechnology', 'Cognitive Liberty'],
+        sourceLabel: 'WEF Brain Transparency video',
+        url: 'https://www.weforum.org/videos/davos-am23-ready-for-brain-transparency-english/'
+      },
+      {
+        speaker: 'Martine Rothblatt',
+        date: '2010s',
+        where: 'Terasem / mind-uploading ecosystem',
+        quote: 'A mindfile is a database of personal reflections, memories, photos, videos, and values.',
+        why: 'Documents the practical data layer behind mindclone / digital immortality claims.',
+        tags: ['Martine Rothblatt', 'Terasem', 'LifeNaut', 'Mindfiles', 'BINA48'],
+        sourceLabel: 'LifeNaut / Terasem materials',
+        url: 'https://www.lifenaut.com/'
+      },
+      {
+        speaker: 'Microsoft Patent US10853717B2',
+        date: '2020-12-01',
+        where: 'USPTO patent grant',
+        quote: 'The specific person may correspond to a past or present entity.',
+        why: 'Patent language for a chatbot modeled on a specific person or entity.',
+        tags: ['Microsoft', 'Digital Replica', 'Chatbot', 'Patent'],
+        sourceLabel: 'Google Patents',
+        url: 'https://patents.google.com/patent/US10853717B2/en'
+      },
+      {
+        speaker: 'World Economic Forum',
+        date: '2018',
+        where: 'Shaping the Fourth Industrial Revolution release',
+        quote: 'An urgent upgrade to the way we govern technology is needed.',
+        why: 'Shows the governance ambition attached to the 4IR technology stack.',
+        tags: ['WEF', 'Technology Governance', 'Klaus Schwab', '4IR'],
+        sourceLabel: 'WEF 2018 release',
+        url: 'https://www.weforum.org/press/2018/01/fourth-industrial-revolution-book-calls-for-urgent-upgrade-to-the-way-we-govern-technology/'
+      }
+    ];
+
     const quickSearches = ['Klaus Schwab', 'Bill Gates', 'Yuval Harari', 'Sam Altman', 'Pritzker', 'Young Global Leaders', 'Digital Twin', 'Mind Uploading', 'Brain Transparency', 'Israel', 'World ID', 'Gene Drive'];
 
     let activeFilters = [...allTypes];
@@ -2976,6 +3350,11 @@
     let selectedThread = null;
     let openCategories = new Set(['players', 'virtual', 'bioengineering']);
     let viewDensity = 'compact';
+    let savedCards = new Set();
+    let compareCards = [];
+    let unlockedBadges = new Set(['cartographer']);
+    let discoveryTerm = '';
+    let discoveryMatches = [];
 
     // ============================================
     // RENDER FUNCTIONS
@@ -3055,11 +3434,19 @@
       });
 
       grid.querySelectorAll('[data-search-term]').forEach(el => {
-        el.addEventListener('click', () => applySearch(el.dataset.searchTerm));
+        el.addEventListener('click', () => showDiscovery(el.dataset.searchTerm));
       });
 
       grid.querySelectorAll('[data-copy-id]').forEach(btn => {
         btn.addEventListener('click', () => copyCardLinks(btn.dataset.copyId));
+      });
+
+      grid.querySelectorAll('[data-save-id]').forEach(btn => {
+        btn.addEventListener('click', () => saveCard(btn.dataset.saveId));
+      });
+
+      grid.querySelectorAll('[data-compare-id]').forEach(btn => {
+        btn.addEventListener('click', () => addToCompare(btn.dataset.compareId));
       });
     }
 
@@ -3158,6 +3545,8 @@
 
           <div class="card-actions">
             <button class="card-action-btn" type="button" data-copy-id="${e.id}">Copy citation + links</button>
+            <button class="card-action-btn" type="button" data-save-id="${e.id}">${savedCards.has(e.id) ? 'Saved ✓' : 'Save to trail'}</button>
+            <button class="card-action-btn" type="button" data-compare-id="${e.id}">Compare</button>
             <button class="card-action-btn" type="button" data-search-term="${e.type}">More ${formatType(e.type).toLowerCase()}</button>
           </div>
 
@@ -3282,12 +3671,300 @@
         });
       });
 
-      document.getElementById('threadSearchBtn')?.addEventListener('click', () => applySearch(active));
+      document.getElementById('threadSearchBtn')?.addEventListener('click', () => showDiscovery(active));
       document.getElementById('threadExpandBtn')?.addEventListener('click', () => {
         matches.forEach(item => expandedCards.add(item.id));
         renderCards();
       });
       document.getElementById('threadCopyBtn')?.addEventListener('click', () => copyText(formatLinksForClipboard(matches)));
+    }
+
+    function getInlineMatches(term, items = evidence) {
+      const q = term.toLowerCase();
+      return items.filter(item =>
+        item.type.toLowerCase().includes(q) ||
+        formatType(item.type).toLowerCase().includes(q) ||
+        item.title.toLowerCase().includes(q) ||
+        item.description.toLowerCase().includes(q) ||
+        item.jurisdiction.toLowerCase().includes(q) ||
+        (item.sourceQuality && item.sourceQuality.toLowerCase().includes(q)) ||
+        item.tags.some(tag => tag.toLowerCase().includes(q)) ||
+        (item.facts && item.facts.some(fact => fact.label.toLowerCase().includes(q) || fact.value.toLowerCase().includes(q))) ||
+        (item.flags && item.flags.some(flag => flag.toLowerCase().includes(q))) ||
+        (item.details && item.details.some(detail => detail.toLowerCase().includes(q))) ||
+        (item.relatedEntities && item.relatedEntities.some(entity => entity.toLowerCase().includes(q))) ||
+        (item.links && item.links.some(link => link.label.toLowerCase().includes(q) || link.url.toLowerCase().includes(q)))
+      ).sort(sortEvidence);
+    }
+
+    function showDiscovery(term) {
+      discoveryTerm = term;
+      discoveryMatches = getInlineMatches(term);
+      renderDiscoveryPanel();
+      document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function renderDiscoveryPanel() {
+      const panel = document.getElementById('discoveryPanel');
+      if (!discoveryTerm) {
+        panel.classList.remove('is-active');
+        panel.innerHTML = '';
+        return;
+      }
+      panel.classList.add('is-active');
+      const grouped = groupByType(discoveryMatches);
+      const categories = Object.keys(grouped).map(type => `${formatTypePlural(type)} (${grouped[type].length})`).join(' · ');
+      panel.innerHTML = `
+        <div class="discovery-header">
+          <div>
+            <div class="discovery-title">Inline discovery · ${discoveryTerm}</div>
+            <div class="discovery-subtitle">${discoveryMatches.length} matches without changing the main search or collapsing your current place${categories ? ' · ' + categories : ''}</div>
+          </div>
+          <button class="toolbar-btn" type="button" id="closeDiscoveryBtn">Close</button>
+        </div>
+        <div class="discovery-grid">
+          ${discoveryMatches.slice(0, 12).map(item => `
+            <button class="discovery-result" type="button" data-discovery-card="${item.id}">
+              <strong>${formatType(item.type)}</strong> · ${item.title}
+              <span class="discovery-meta">${formatDate(item.date)} · ${item.links?.length || 0} links · ${item.sourceQuality || 'source record'}</span>
+            </button>
+          `).join('')}
+        </div>
+        <div class="discovery-actions">
+          <button class="toolbar-btn" type="button" id="openDiscoveryBtn">Open matching cards</button>
+          <button class="toolbar-btn" type="button" id="copyDiscoveryBtn">Copy matching links</button>
+          <button class="toolbar-btn" type="button" id="convertDiscoveryBtn">Apply as global search</button>
+        </div>
+      `;
+      document.getElementById('closeDiscoveryBtn')?.addEventListener('click', () => {
+        discoveryTerm = '';
+        discoveryMatches = [];
+        renderDiscoveryPanel();
+      });
+      panel.querySelectorAll('[data-discovery-card]').forEach(btn => {
+        btn.addEventListener('click', () => openCardById(btn.dataset.discoveryCard));
+      });
+      document.getElementById('openDiscoveryBtn')?.addEventListener('click', () => {
+        discoveryMatches.slice(0, 24).forEach(item => {
+          openCategories.add(item.type);
+          expandedCards.add(item.id);
+        });
+        unlockBadge('deep-diver');
+        renderCards();
+      });
+      document.getElementById('copyDiscoveryBtn')?.addEventListener('click', () => copyText(formatLinksForClipboard(discoveryMatches)));
+      document.getElementById('convertDiscoveryBtn')?.addEventListener('click', () => applySearch(discoveryTerm));
+    }
+
+    function renderNarrativePanel(items = getVisibleEvidence()) {
+      const panel = document.getElementById('narrativePanel');
+      const nodes = getThreadNodes(items).slice(0, 6);
+      const narratives = nodes.map(([node, count]) => {
+        const matches = getThreadMatches(node, items);
+        const types = [...new Set(matches.map(item => formatType(item.type)))].slice(0, 4).join(' + ');
+        const facts = matches.flatMap(item => item.facts || []).slice(0, 3).map(f => `${f.label}: ${f.value}`).join(' · ');
+        const quote = quoteBank.find(q => q.tags.some(tag => node.toLowerCase().includes(tag.toLowerCase()) || tag.toLowerCase().includes(node.toLowerCase())) || q.speaker.toLowerCase().includes(node.toLowerCase()));
+        return { node, count, matches, types, facts, quote };
+      });
+      panel.innerHTML = `
+        <div class="narrative-header">
+          <div>
+            <div class="narrative-title">Pattern Narratives</div>
+            <div class="narrative-subtitle">Fact-based summaries generated from recurring entities in the current view</div>
+          </div>
+          <button class="toolbar-btn" type="button" id="copyNarrativesBtn">Copy narratives</button>
+        </div>
+        <div class="narrative-grid">
+          ${narratives.map(n => `
+            <button class="narrative-card" type="button" data-narrative-node="${n.node}">
+              <strong>${n.node}</strong>
+              <span class="narrative-meta">${n.count} appearances · ${n.types || 'mixed records'}${n.facts ? '<br>' + n.facts : ''}${n.quote ? '<br>Quote anchor: ' + n.quote.speaker + ' · ' + n.quote.date : ''}</span>
+            </button>
+          `).join('')}
+        </div>
+      `;
+      panel.querySelectorAll('[data-narrative-node]').forEach(btn => {
+        btn.addEventListener('click', () => showDiscovery(btn.dataset.narrativeNode));
+      });
+      document.getElementById('copyNarrativesBtn')?.addEventListener('click', () => {
+        copyText(narratives.map(n => `${n.node}: ${n.count} appearances across ${n.types || 'mixed records'}. ${n.facts ? 'Facts: ' + n.facts + '. ' : ''}${n.quote ? 'Quote anchor: ' + n.quote.speaker + ' (' + n.quote.date + ') ' + n.quote.url : ''}`).join('\n\n'));
+      });
+    }
+
+    function renderMissionPanel(items = getVisibleEvidence()) {
+      const panel = document.getElementById('missionPanel');
+      const saved = [...savedCards].map(id => evidence.find(item => item.id === id)).filter(Boolean);
+      const compared = compareCards.map(id => evidence.find(item => item.id === id)).filter(Boolean);
+      panel.innerHTML = `
+        <div class="mission-header">
+          <div>
+            <div class="mission-title">Investigation Console</div>
+            <div class="mission-subtitle">${items.length} visible cards · ${saved.length} saved · ${compared.length}/2 in compare tray</div>
+          </div>
+          <button class="toolbar-btn" type="button" id="randomThreadBtn">🎲 Pull a random thread</button>
+        </div>
+        <div class="quest-list">
+          ${insightPrompts.map(prompt => `<div class="quest-item"><span class="quest-check">→</span><span>${prompt}</span></div>`).join('')}
+        </div>
+        <div class="badge-list">
+          ${rewardBadges.map(badge => `<button class="badge-chip ${unlockedBadges.has(badge.id) ? 'unlocked' : ''}" type="button" title="${badge.hint}">${badge.label}</button>`).join('')}
+        </div>
+        <div class="saved-list">
+          ${saved.length ? saved.map(item => `<button class="saved-chip" type="button" data-saved-card="${item.id}">📎 ${item.title}</button>`).join('') : '<div class="saved-chip">📎 Save cards to build an investigation trail</div>'}
+        </div>
+        <div class="compare-tray ${compared.length ? 'is-active' : ''}">
+          <div class="mission-subtitle">Compare tray</div>
+          <div class="saved-list">
+            ${compared.map(item => `<button class="saved-chip" type="button" data-saved-card="${item.id}">🧩 ${item.title}</button>`).join('')}
+          </div>
+        </div>
+      `;
+
+      document.getElementById('randomThreadBtn')?.addEventListener('click', pullRandomThread);
+      panel.querySelectorAll('[data-saved-card]').forEach(btn => {
+        btn.addEventListener('click', () => openCardById(btn.dataset.savedCard));
+      });
+    }
+
+    function renderQuoteVault(items = getVisibleEvidence()) {
+      const panel = document.getElementById('quotePanel');
+      const visibleText = items.map(item => `${item.title} ${item.description} ${item.tags.join(' ')} ${(item.relatedEntities || []).join(' ')}`).join(' ').toLowerCase();
+      const matchingQuotes = quoteBank.filter(q => q.tags.some(tag => visibleText.includes(tag.toLowerCase())) || visibleText.includes(q.speaker.toLowerCase())).slice(0, 6);
+      const quotes = matchingQuotes.length ? matchingQuotes : quoteBank.slice(0, 6);
+      panel.innerHTML = `
+        <div class="quote-header">
+          <div>
+            <div class="quote-title">Quote Vault · who / what / when / where / why</div>
+            <div class="quote-subtitle">Short sourced excerpts tied to high-convergence entities</div>
+          </div>
+          <button class="toolbar-btn" type="button" id="copyQuotesBtn">Copy quotes</button>
+        </div>
+        <div class="quote-list">
+          ${quotes.map((q, index) => `
+            <article class="quote-card">
+              <div class="quote-text">“${q.quote}”</div>
+              <div class="quote-meta"><strong>${q.speaker}</strong> · ${q.date} · ${q.where}<br>${q.why}</div>
+              <div class="quote-actions">
+                <button class="toolbar-btn" type="button" data-quote-search="${q.speaker}">Search speaker</button>
+                <a class="toolbar-btn" href="${q.url}" target="_blank" rel="noopener" data-quote-source="${index}">${q.sourceLabel}</a>
+              </div>
+            </article>
+          `).join('')}
+        </div>
+      `;
+
+      panel.querySelectorAll('[data-quote-search]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          unlockBadge('quote-hunter');
+          showDiscovery(btn.dataset.quoteSearch);
+        });
+      });
+      panel.querySelectorAll('[data-quote-source]').forEach(link => {
+        link.addEventListener('click', () => unlockBadge('quote-hunter'));
+      });
+      document.getElementById('copyQuotesBtn')?.addEventListener('click', () => {
+        unlockBadge('quote-hunter');
+        copyText(quotes.map(q => `${q.speaker} (${q.date}, ${q.where}): "${q.quote}"\nWhy it matters: ${q.why}\nSource: ${q.url}`).join('\n\n'));
+      });
+    }
+
+    function renderConnectionConstellation(items = getVisibleEvidence()) {
+      const panel = document.getElementById('connectionPanel');
+      const nodes = getThreadNodes(items).slice(0, 12);
+      const totalEdges = nodes.reduce((sum, [, count]) => sum + count, 0);
+      panel.innerHTML = `
+        <div class="connection-header">
+          <div>
+            <div class="connection-title">Connection Constellation</div>
+            <div class="connection-subtitle">Highest-repeat nodes in the current view · ${totalEdges} visible links between tags/entities</div>
+          </div>
+          <button class="toolbar-btn" type="button" id="copyConstellationBtn">Copy map</button>
+        </div>
+        <div class="constellation-list">
+          ${nodes.map(([node, count]) => `
+            <button class="constellation-node" type="button" data-constellation-node="${node}">
+              <span>${node}</span><strong>${count}</strong>
+            </button>
+          `).join('')}
+        </div>
+        <div class="constellation-actions">
+          <button class="toolbar-btn" type="button" id="openTopNodeBtn">Open top node</button>
+          <button class="toolbar-btn" type="button" id="saveVisibleBtn">Save visible set</button>
+        </div>
+      `;
+
+      panel.querySelectorAll('[data-constellation-node]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          unlockBadge('cartographer');
+          selectedThread = btn.dataset.constellationNode;
+          renderThreadPanel(getVisibleEvidence());
+          document.getElementById('threadPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+      });
+      document.getElementById('openTopNodeBtn')?.addEventListener('click', () => {
+        if (nodes[0]) {
+          unlockBadge('thread-puller');
+          showDiscovery(nodes[0][0]);
+        }
+      });
+      document.getElementById('saveVisibleBtn')?.addEventListener('click', () => {
+        items.slice(0, 12).forEach(item => savedCards.add(item.id));
+        unlockBadge('archivist');
+        renderSupportPanels(getVisibleEvidence());
+        renderCards();
+      });
+      document.getElementById('copyConstellationBtn')?.addEventListener('click', () => copyText(nodes.map(([node, count]) => `${node}: ${count}`).join('\n')));
+    }
+
+    function renderSupportPanels(items = getVisibleEvidence()) {
+      renderMissionPanel(items);
+      renderConnectionConstellation(items);
+      renderQuoteVault(items);
+      renderNarrativePanel(items);
+      renderDiscoveryPanel();
+    }
+
+    function unlockBadge(id) {
+      unlockedBadges.add(id);
+      renderMissionPanel(getVisibleEvidence());
+    }
+
+    function saveCard(id) {
+      if (savedCards.has(id)) {
+        savedCards.delete(id);
+      } else {
+        savedCards.add(id);
+        unlockBadge('archivist');
+      }
+      renderCards();
+      renderSupportPanels(getVisibleEvidence());
+    }
+
+    function addToCompare(id) {
+      compareCards = compareCards.filter(cardId => cardId !== id);
+      compareCards.unshift(id);
+      compareCards = compareCards.slice(0, 2);
+      unlockBadge('analyst');
+      renderMissionPanel(getVisibleEvidence());
+    }
+
+    function openCardById(id) {
+      const item = evidence.find(entry => entry.id === id);
+      if (!item) return;
+      openCategories.add(item.type);
+      expandedCards.add(id);
+      renderCards();
+      document.querySelector(`[data-id="${id}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function pullRandomThread() {
+      const nodes = getThreadNodes(getVisibleEvidence());
+      if (!nodes.length) return;
+      const node = nodes[Math.floor(Math.random() * nodes.length)][0];
+      selectedThread = node;
+      unlockBadge('thread-puller');
+      renderThreadPanel(getVisibleEvidence());
+      document.getElementById('threadPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
     function renderTimeline(items = getVisibleEvidence()) {
@@ -3319,6 +3996,7 @@
       panel.querySelectorAll('[data-timeline-id]').forEach(item => {
         item.addEventListener('click', () => {
           expandedCards = new Set([item.dataset.timelineId]);
+          unlockBadge('deep-diver');
           renderCards();
           document.querySelector(`[data-id="${item.dataset.timelineId}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
@@ -3330,8 +4008,10 @@
         expandedCards.delete(id);
       } else {
         expandedCards.add(id);
+        unlockBadge('deep-diver');
       }
       renderCards();
+      renderSupportPanels(getVisibleEvidence());
     }
 
     function formatType(type) {
@@ -3451,6 +4131,7 @@
         <span><strong>${stats.players}</strong> players</span>
       `;
 
+      renderSupportPanels(visible);
       renderTimeline(visible);
       renderThreadPanel(visible);
       updateExpandButton(visible);
@@ -3520,6 +4201,7 @@
       sortMode = 'newest';
       expandedCards.clear();
       selectedThread = null;
+      compareCards = [];
       openCategories = new Set(['players', 'virtual', 'bioengineering']);
       viewDensity = 'compact';
       document.getElementById('searchInput').value = '';
@@ -3567,6 +4249,7 @@
         const visible = getVisibleEvidence();
         const allExpanded = visible.every(item => expandedCards.has(item.id));
         expandedCards = allExpanded ? new Set() : new Set(visible.map(item => item.id));
+        if (!allExpanded) unlockBadge('deep-diver');
         renderCards();
         updateStats();
       });
@@ -3580,7 +4263,7 @@
 
       document.getElementById('quickLinks').addEventListener('click', (event) => {
         const chip = event.target.closest('[data-search-term]');
-        if (chip) applySearch(chip.dataset.searchTerm);
+        if (chip) showDiscovery(chip.dataset.searchTerm);
       });
 
       document.querySelectorAll('.filter-btn').forEach(btn => {
