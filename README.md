@@ -11,9 +11,11 @@ A single-page evidence map for tracking public source material on artificial int
 ## Useful features
 
 - Search across titles, descriptions, jurisdictions, tags, research flags, details, related entities, source quality notes, and source URLs.
+- Collapsible category tabs replace the old wall of tiles, so each major topic starts folded and can be opened only when needed.
+- Compact/comfortable density controls plus per-category enlarge/shrink actions make it easier to scan many entries at a glance.
 - Category filters and quick-search chips for high-value topics including Rothblatt, Pritzker, digital twins, mind uploading, virtual humans, puberty blockers, WPATH, and pathogen/vector topics.
 - Sort controls for newest, oldest, title, category, and most source links.
-- Expand/collapse visible cards.
+- Expand/collapse visible cards and open/close all category tabs.
 - Timeline panel showing the newest visible entries.
 - Thread Explorer overlay that surfaces recurring people, organizations, and concepts, then lets you search, open, or copy a whole connection thread.
 - Copy a single card citation with links, copy all visible links, or export the visible dataset as JSON.

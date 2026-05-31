@@ -441,21 +441,117 @@
       .thread-grid { grid-template-columns: 1fr; }
     }
 
-    /* Cards Grid */
+    /* Category Accordion */
+    .category-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .category-section {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .category-section.is-open {
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+
+    .category-heading {
+      align-items: center;
+      background: transparent;
+      border: 0;
+      color: var(--text-primary);
+      cursor: pointer;
+      display: grid;
+      gap: 14px;
+      grid-template-columns: auto 1fr auto auto;
+      padding: 18px 20px;
+      text-align: left;
+      width: 100%;
+    }
+
+    .category-heading:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .category-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      box-shadow: 0 0 18px currentColor;
+    }
+
+    .category-title-block {
+      min-width: 0;
+    }
+
+    .category-title {
+      display: block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .category-summary {
+      color: var(--text-muted);
+      display: block;
+      font-size: 0.78rem;
+      margin-top: 2px;
+    }
+
+    .category-count {
+      color: var(--text-secondary);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }
+
+    .category-chevron {
+      color: var(--text-muted);
+      transition: transform 0.2s ease;
+    }
+
+    .category-section.is-open .category-chevron {
+      transform: rotate(90deg);
+    }
+
+    .category-body {
+      border-top: 1px solid var(--border);
+      display: none;
+      padding: 18px;
+    }
+
+    .category-section.is-open .category-body {
+      display: block;
+    }
+
     .cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px;
+    }
+
+    .category-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
     }
 
     /* Evidence Card */
     .evidence-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px;
-      transition: all 0.2s ease;
+      border-radius: 10px;
       cursor: pointer;
+      min-height: 190px;
+      padding: 16px;
+      transition: all 0.2s ease;
     }
 
     .evidence-card:hover {
@@ -464,12 +560,42 @@
     }
 
     .evidence-card.expanded {
+      border-color: rgba(255, 255, 255, 0.2);
       grid-column: span 2;
+      min-height: 0;
+    }
+
+    .view-density-compact .evidence-card:not(.expanded) .card-description {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+    }
+
+    .view-density-compact .evidence-card:not(.expanded) .card-meta {
+      gap: 8px;
+    }
+
+    .view-density-comfortable .cards-grid {
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 18px;
+    }
+
+    .view-density-comfortable .evidence-card {
+      padding: 22px;
     }
 
     @media (max-width: 900px) {
       .evidence-card.expanded {
         grid-column: span 1;
+      }
+
+      .category-heading {
+        grid-template-columns: auto 1fr auto;
+      }
+
+      .category-count {
+        display: none;
       }
     }
 
@@ -512,6 +638,17 @@
       font-weight: 600;
       line-height: 1.3;
       flex: 1;
+    }
+
+    .evidence-card:not(.expanded) .card-actions,
+    .evidence-card:not(.expanded) .card-links,
+    .evidence-card:not(.expanded) .card-entities,
+    .evidence-card:not(.expanded) .domain-chips,
+    .evidence-card:not(.expanded) .card-flag-list,
+    .evidence-card:not(.expanded) .card-detail-list,
+    .evidence-card:not(.expanded) .fact-grid,
+    .evidence-card:not(.expanded) .card-quote {
+      display: none;
     }
 
     .card-meta {
@@ -973,6 +1110,15 @@
         </select>
       </div>
       <div class="toolbar-group">
+        <span class="toolbar-label">View</span>
+        <select class="toolbar-select" id="densitySelect" aria-label="Change card density">
+          <option value="compact">Compact cards</option>
+          <option value="comfortable">Comfortable cards</option>
+        </select>
+      </div>
+      <div class="toolbar-group">
+        <button class="toolbar-btn" id="openAllCategoriesBtn" type="button">Open all tabs</button>
+        <button class="toolbar-btn" id="closeAllCategoriesBtn" type="button">Close all tabs</button>
         <button class="toolbar-btn" id="expandAllBtn" type="button">Expand visible</button>
         <button class="toolbar-btn" id="copyLinksBtn" type="button">Copy visible links</button>
         <button class="toolbar-btn" id="exportJsonBtn" type="button">Export JSON</button>
@@ -989,7 +1135,7 @@
 
     <section class="thread-panel" id="threadPanel"></section>
 
-    <main class="cards-grid" id="cardsGrid"></main>
+    <main class="category-accordion view-density-compact" id="cardsGrid"></main>
 
     <footer>
       <div class="footer-text">
@@ -2802,6 +2948,25 @@
     // ============================================
 
     const allTypes = ['patents', 'legislation', 'documents', 'speeches', 'corporate', 'leaks', 'research', 'funding', 'bioengineering', 'outbreaks', 'environment', 'human', 'virtual', 'identity', 'pharma', 'players'];
+    const categorySummaries = {
+      players: 'People and institutions that recur across the map',
+      virtual: 'Digital twins, mindfiles, virtual organs, metaverse infrastructure',
+      bioengineering: 'Gene drives, vector releases, CRISPR ecology, DARPA bio-programs',
+      identity: 'Gender medicine, institutional funding, standards and policy',
+      pharma: 'Endocrine drugs, organ manufacturing, pharma-funded platforms',
+      funding: 'Money trails, grants, donors, public-private funding',
+      documents: 'Official frameworks, audits, guidance, reports',
+      legislation: 'Laws, executive orders, regulations and shield policies',
+      patents: 'Filed IP for biometric, digital, neural or identity systems',
+      outbreaks: 'Pathogen surveillance and genomic infrastructure',
+      environment: 'Weather and climate-intervention governance',
+      human: 'Human genome editing and germline governance',
+      leaks: 'Leaks, FOIA and declassified/document-trail material',
+      research: 'Studies, inventories and peer-reviewed evidence',
+      corporate: 'SEC filings, contracts and company programmes',
+      speeches: 'Public statements, presentations and ideology signals'
+    };
+
     const quickSearches = ['Klaus Schwab', 'Bill Gates', 'Yuval Harari', 'Sam Altman', 'Pritzker', 'Young Global Leaders', 'Digital Twin', 'Mind Uploading', 'Brain Transparency', 'Israel', 'World ID', 'Gene Drive'];
 
     let activeFilters = [...allTypes];
@@ -2809,6 +2974,8 @@
     let sortMode = 'newest';
     let expandedCards = new Set();
     let selectedThread = null;
+    let openCategories = new Set(['players', 'virtual', 'bioengineering']);
+    let viewDensity = 'compact';
 
     // ============================================
     // RENDER FUNCTIONS
@@ -2839,14 +3006,45 @@
     function renderCards() {
       const grid = document.getElementById('cardsGrid');
       const filtered = getVisibleEvidence();
+      grid.classList.toggle('view-density-compact', viewDensity === 'compact');
+      grid.classList.toggle('view-density-comfortable', viewDensity === 'comfortable');
 
       if (filtered.length === 0) {
-        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 60px; color: var(--text-muted);">No results found. Try adjusting your filters or search.</div>';
+        grid.innerHTML = '<div style="text-align: center; padding: 60px; color: var(--text-muted);">No results found. Try adjusting your filters or search.</div>';
         renderTimeline([]);
+        renderThreadPanel([]);
         return;
       }
 
-      grid.innerHTML = filtered.map(e => renderCard(e)).join('');
+      const grouped = groupByType(filtered);
+      grid.innerHTML = allTypes
+        .filter(type => grouped[type]?.length)
+        .map(type => renderCategorySection(type, grouped[type]))
+        .join('');
+
+      grid.querySelectorAll('.category-heading').forEach(btn => {
+        btn.addEventListener('click', () => toggleCategory(btn.dataset.category));
+      });
+
+      grid.querySelectorAll('[data-category-open]').forEach(btn => {
+        btn.addEventListener('click', (event) => {
+          event.stopPropagation();
+          const type = btn.dataset.categoryOpen;
+          grouped[type].forEach(item => expandedCards.add(item.id));
+          openCategories.add(type);
+          renderCards();
+          updateExpandButton();
+        });
+      });
+
+      grid.querySelectorAll('[data-category-close]').forEach(btn => {
+        btn.addEventListener('click', (event) => {
+          event.stopPropagation();
+          grouped[btn.dataset.categoryClose].forEach(item => expandedCards.delete(item.id));
+          renderCards();
+          updateExpandButton();
+        });
+      });
 
       grid.querySelectorAll('.evidence-card').forEach(card => {
         card.addEventListener('click', () => toggleCard(card.dataset.id));
@@ -2863,6 +3061,52 @@
       grid.querySelectorAll('[data-copy-id]').forEach(btn => {
         btn.addEventListener('click', () => copyCardLinks(btn.dataset.copyId));
       });
+    }
+
+    function groupByType(items) {
+      return items.reduce((groups, item) => {
+        groups[item.type] = groups[item.type] || [];
+        groups[item.type].push(item);
+        return groups;
+      }, {});
+    }
+
+    function renderCategorySection(type, items) {
+      const isOpen = openCategories.has(type);
+      const linkCount = items.reduce((sum, item) => sum + (item.links?.length || 0), 0);
+      const expandedCount = items.filter(item => expandedCards.has(item.id)).length;
+      return `
+        <section class="category-section ${isOpen ? 'is-open' : ''}" data-category-section="${type}">
+          <button class="category-heading" type="button" data-category="${type}" aria-expanded="${isOpen}">
+            <span class="category-dot filter-dot ${type}"></span>
+            <span class="category-title-block">
+              <span class="category-title">${formatTypePlural(type)}</span>
+              <span class="category-summary">${categorySummaries[type] || 'Evidence grouped by source type'} · ${expandedCount} enlarged</span>
+            </span>
+            <span class="category-count">${items.length} cards · ${linkCount} links</span>
+            <span class="category-chevron">›</span>
+          </button>
+          <div class="category-body">
+            <div class="category-actions">
+              <button class="toolbar-btn" type="button" data-category-open="${type}">Enlarge this tab</button>
+              <button class="toolbar-btn" type="button" data-category-close="${type}">Shrink this tab</button>
+              <button class="toolbar-btn" type="button" data-search-term="${type}">Isolate ${formatType(type)}</button>
+            </div>
+            <div class="cards-grid">
+              ${items.map(e => renderCard(e)).join('')}
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function toggleCategory(type) {
+      if (openCategories.has(type)) {
+        openCategories.delete(type);
+      } else {
+        openCategories.add(type);
+      }
+      renderCards();
     }
 
     function renderCard(e) {
@@ -3112,6 +3356,28 @@
       return labels[type] || type;
     }
 
+    function formatTypePlural(type) {
+      const labels = {
+        patents: 'Patents',
+        legislation: 'Legislation & Regulation',
+        documents: 'Official Documents',
+        speeches: 'Speeches & Ideology Signals',
+        corporate: 'Corporate Filings & Contracts',
+        leaks: 'Leaks / FOIA / Declassified',
+        research: 'Research Studies & Inventories',
+        funding: 'Funding Trails',
+        bioengineering: 'Bioengineering & Vectors',
+        outbreaks: 'Outbreaks & Pathogen Infrastructure',
+        environment: 'Environment & Weather Modification',
+        human: 'Human Genome Editing',
+        virtual: 'Virtual Humans & Digital Twins',
+        identity: 'Identity & Gender Medicine',
+        pharma: 'Pharma & Endocrine Tech',
+        players: 'Key Players & Networks'
+      };
+      return labels[type] || formatType(type);
+    }
+
     function formatDate(dateStr) {
       if (dateStr.includes('Present') || dateStr.includes('Various') || dateStr.includes('Ongoing') || dateStr.includes('Current')) {
         return dateStr;
@@ -3254,8 +3520,11 @@
       sortMode = 'newest';
       expandedCards.clear();
       selectedThread = null;
+      openCategories = new Set(['players', 'virtual', 'bioengineering']);
+      viewDensity = 'compact';
       document.getElementById('searchInput').value = '';
       document.getElementById('sortSelect').value = 'newest';
+      document.getElementById('densitySelect').value = 'compact';
       document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.add('active'));
       renderCards();
       updateStats();
@@ -3277,6 +3546,21 @@
         sortMode = e.target.value;
         renderCards();
         updateStats();
+      });
+
+      document.getElementById('densitySelect').addEventListener('change', (e) => {
+        viewDensity = e.target.value;
+        renderCards();
+      });
+
+      document.getElementById('openAllCategoriesBtn').addEventListener('click', () => {
+        openCategories = new Set(getVisibleEvidence().map(item => item.type));
+        renderCards();
+      });
+
+      document.getElementById('closeAllCategoriesBtn').addEventListener('click', () => {
+        openCategories.clear();
+        renderCards();
       });
 
       document.getElementById('expandAllBtn').addEventListener('click', () => {
@@ -3308,6 +3592,7 @@
             activeFilters = activeFilters.filter(f => f !== filter);
           } else {
             activeFilters.push(filter);
+            openCategories.add(filter);
           }
 
           expandedCards.clear();
