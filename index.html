@@ -207,7 +207,180 @@
       color: var(--text-primary);
     }
 
+    .state-bar {
+      align-items: center;
+      background: linear-gradient(135deg, rgba(93, 173, 226, 0.08), rgba(212, 175, 55, 0.06));
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: -18px 0 28px;
+      padding: 12px 14px;
+    }
 
+    .state-label {
+      color: var(--text-secondary);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      margin-right: 4px;
+      text-transform: uppercase;
+    }
+
+    .state-chip {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text-secondary);
+      font-size: 0.76rem;
+      padding: 6px 10px;
+    }
+
+    .state-chip.actionable {
+      cursor: pointer;
+    }
+
+    .state-chip.actionable:hover {
+      border-color: var(--link-color);
+      color: var(--text-primary);
+    }
+
+
+
+    .entity-panel {
+      background: linear-gradient(135deg, rgba(255, 209, 102, 0.08), rgba(93, 173, 226, 0.06));
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 24px;
+      padding: 18px 20px;
+    }
+
+    .entity-header {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .entity-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.86rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .entity-subtitle,
+    .entity-meta {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+    }
+
+    .entity-workspace {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: minmax(220px, 0.75fr) minmax(320px, 1.25fr);
+    }
+
+    .entity-node-list,
+    .entity-timeline {
+      display: grid;
+      gap: 8px;
+    }
+
+    .entity-node,
+    .entity-step {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-family: inherit;
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    .entity-node.active,
+    .entity-node:hover,
+    .entity-step:hover {
+      border-color: var(--players);
+      color: var(--text-primary);
+    }
+
+    .entity-detail {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .entity-stat-row,
+    .entity-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+
+    .entity-bridge-grid {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      margin-top: 12px;
+    }
+
+    .entity-bridge {
+      background: rgba(255,255,255,0.035);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-family: inherit;
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    .entity-bridge:hover {
+      border-color: var(--link-color);
+      color: var(--text-primary);
+    }
+
+    .entity-compare-panel {
+      background: rgba(93, 173, 226, 0.035);
+      border: 1px solid rgba(93, 173, 226, 0.18);
+      border-radius: 10px;
+      margin-top: 14px;
+      padding: 12px;
+    }
+
+    .entity-compare-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      margin-top: 10px;
+    }
+
+    .entity-compare-metric {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 10px 12px;
+    }
+
+    .entity-compare-metric strong {
+      color: var(--text-primary);
+      display: block;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    @media (max-width: 860px) {
+      .entity-workspace { grid-template-columns: 1fr; }
+    }
 
     /* Utility Toolbar */
     .utility-toolbar {
@@ -282,6 +455,29 @@
       background: rgba(93, 173, 226, 0.14);
     }
 
+
+    body.focus-mode .quick-links,
+    body.focus-mode #briefPanel,
+    body.focus-mode #impactPanel,
+    body.focus-mode #investmentPanel,
+    body.focus-mode #pathwayPanel,
+    body.focus-mode #lineagePanel,
+    body.focus-mode #narrativePanel,
+    body.focus-mode .mission-grid,
+    body.focus-mode #quotePanel,
+    body.focus-mode #threadPanel,
+    body.focus-mode footer {
+      display: none;
+    }
+
+    body.focus-mode #entityPanel,
+    body.focus-mode #dominoPanel,
+    body.focus-mode #timelinePanel,
+    body.focus-mode #discoveryPanel,
+    body.focus-mode #cardsGrid {
+      box-shadow: 0 0 0 1px rgba(93, 173, 226, 0.08);
+    }
+
     .tag-inline {
       background: rgba(212, 175, 55, 0.1);
       border: 1px solid rgba(212, 175, 55, 0.28);
@@ -307,7 +503,8 @@
     /* Executive Brief / Impact Lenses */
     .brief-panel,
     .impact-panel,
-    .pathway-panel {
+    .pathway-panel,
+    .domino-panel {
       background: var(--bg-secondary);
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -317,7 +514,8 @@
 
     .brief-header,
     .impact-header,
-    .pathway-header {
+    .pathway-header,
+    .domino-header {
       align-items: center;
       display: flex;
       justify-content: space-between;
@@ -327,7 +525,8 @@
 
     .brief-title,
     .impact-title,
-    .pathway-title {
+    .pathway-title,
+    .domino-title {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 0.86rem;
       font-weight: 700;
@@ -337,14 +536,22 @@
 
     .brief-subtitle,
     .impact-subtitle,
-    .pathway-subtitle {
+    .pathway-subtitle,
+    .domino-subtitle {
       color: var(--text-muted);
       font-size: 0.78rem;
     }
 
+    .compact-panel-header {
+      border-top: 1px solid var(--border);
+      margin-top: 18px;
+      padding-top: 18px;
+    }
+
     .brief-grid,
     .impact-grid,
-    .pathway-grid {
+    .pathway-grid,
+    .domino-grid {
       display: grid;
       gap: 12px;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -352,7 +559,8 @@
 
     .brief-card,
     .impact-card,
-    .pathway-card {
+    .pathway-card,
+    .domino-card {
       background: var(--bg-tertiary);
       border: 1px solid var(--border);
       border-radius: 10px;
@@ -361,7 +569,8 @@
 
     .brief-card h4,
     .impact-card h4,
-    .pathway-card h4 {
+    .pathway-card h4,
+    .domino-card h4 {
       font-size: 0.92rem;
       margin-bottom: 10px;
     }
@@ -467,6 +676,74 @@
       margin-top: 8px;
     }
 
+    .domino-panel {
+      background: radial-gradient(circle at top left, rgba(212, 175, 55, 0.10), transparent 34%), var(--bg-secondary);
+    }
+
+    .domino-card {
+      cursor: pointer;
+      min-height: 150px;
+      position: relative;
+      transition: all 0.15s ease;
+    }
+
+    .domino-card::after {
+      background: linear-gradient(90deg, var(--legacy), var(--players), var(--virtual));
+      border-radius: 999px;
+      bottom: 10px;
+      content: '';
+      height: 3px;
+      left: 14px;
+      opacity: 0.35;
+      position: absolute;
+      right: 14px;
+    }
+
+    .domino-card:hover,
+    .domino-card.is-active {
+      border-color: var(--legacy);
+      transform: translateY(-1px);
+    }
+
+    .domino-chain {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      margin-top: 14px;
+    }
+
+    .domino-step {
+      background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015));
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 12px;
+      text-align: left;
+      transition: all 0.15s ease;
+    }
+
+    .domino-step:hover {
+      border-color: var(--link-color);
+      color: var(--text-primary);
+    }
+
+    .domino-date {
+      color: var(--legacy);
+      display: block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      margin-bottom: 6px;
+    }
+
+    .domino-meta {
+      color: var(--text-muted);
+      display: block;
+      font-size: 0.73rem;
+      line-height: 1.45;
+      margin-top: 6px;
+    }
+
     /* Inline discovery drawer */
     .discovery-panel {
       border: 1px solid rgba(93, 173, 226, 0.22);
@@ -553,7 +830,7 @@
       padding: 18px 20px;
     }
 
-    /* Mission Control / Gamified Overlays */
+    /* Research Trail Console */
     .mission-grid {
       display: grid;
       grid-template-columns: minmax(260px, 0.9fr) minmax(320px, 1.1fr);
@@ -617,7 +894,6 @@
     }
 
     .quest-list,
-    .badge-list,
     .saved-list,
     .quote-list,
     .constellation-list {
@@ -626,7 +902,6 @@
     }
 
     .quest-item,
-    .badge-chip,
     .saved-chip,
     .quote-card,
     .constellation-node {
@@ -649,23 +924,15 @@
       font-weight: 700;
     }
 
-    .badge-list,
     .saved-list {
       grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
       margin-top: 12px;
     }
 
-    .badge-chip,
     .saved-chip,
     .constellation-node {
       cursor: pointer;
       font-size: 0.78rem;
-    }
-
-    .badge-chip.unlocked {
-      border-color: var(--players);
-      color: var(--text-primary);
-      box-shadow: 0 0 14px rgba(255, 209, 102, 0.12);
     }
 
     .quote-card {
@@ -1565,6 +1832,7 @@
           <option value="compact">Compact cards</option>
           <option value="comfortable">Comfortable cards</option>
         </select>
+        <button class="toolbar-btn" id="focusModeBtn" type="button">Focus mode</button>
       </div>
       <div class="toolbar-group">
         <button class="toolbar-btn" id="openAllCategoriesBtn" type="button">Open all tabs</button>
@@ -1581,12 +1849,20 @@
 
     <div class="stats-bar" id="statsBar"></div>
 
+    <div class="state-bar" id="stateBar"></div>
+
+    <section class="entity-panel" id="entityPanel"></section>
+
 
     <section class="brief-panel" id="briefPanel"></section>
 
     <section class="impact-panel" id="impactPanel"></section>
 
+    <section class="impact-panel" id="investmentPanel"></section>
+
     <section class="pathway-panel" id="pathwayPanel"></section>
+
+    <section class="domino-panel" id="dominoPanel"></section>
 
     <section class="brief-panel" id="lineagePanel"></section>
 
@@ -3981,7 +4257,873 @@
           { label: "Archives.com President Genealogy", url: "https://www.archives.com/genealogy/president.html", icon: "📚" },
           { label: "Geneanet Presidential Genealogies", url: "https://en.geneanet.org/genealogyblog/post/2025/01/geneastar-the-american-presidents", icon: "🧾" }
         ]
+      },
+      {
+        id: "legacy-family-bush-walker-prescott-george-dynasty",
+        type: "legacy",
+        title: "Bush / Walker Family Dynasty — Prescott Bush, George H. W. Bush, George W. Bush, Jeb Bush, and George P. Bush",
+        date: "1952-Present",
+        jurisdiction: "United States / Political Family Network",
+        description: "A concrete elite-family-ties card: Prescott Bush served in the U.S. Senate, George H. W. Bush became vice president and president, George W. Bush became governor and president, Jeb Bush became governor of Florida, and George P. Bush later held statewide office in Texas. This is a stronger evidence category than distant royal ancestry because the offices, parent-child links, and political roles are close and documented.",
+        quote: {
+          text: "Bush became the second presidential son (after John Quincy Adams) to assume office.",
+          source: "White House Historical Association biography of George W. Bush"
+        },
+        tags: ["Bush Family", "Walker Family", "Prescott Bush", "George H. W. Bush", "George W. Bush", "Jeb Bush", "George P. Bush", "Political Dynasty"],
+        relatedEntities: ["Prescott Bush", "George H. W. Bush", "George W. Bush", "Jeb Bush", "George P. Bush", "Skull and Bones", "Yale"],
+        sourceQuality: "Official presidential/library sources + reference biography",
+        facts: [
+          { label: "Senate Root", value: "Prescott Bush, U.S. Senator" },
+          { label: "Presidents", value: "George H. W. Bush + George W. Bush" },
+          { label: "Governors", value: "George W. Bush + Jeb Bush" },
+          { label: "Next Generation", value: "George P. Bush, Texas GLO" }
+        ],
+        flags: ["Close political dynasty", "Father-son presidency", "Multi-generation officeholding", "Yale/elite-network adjacency", "Concrete kinship evidence"],
+        details: [
+          "This card is about documented family political continuity, not distant medieval ancestry.",
+          "The Bush line is one of the clearest examples of inherited political networks, donor access, name recognition, and institutional familiarity."
+        ],
+        links: [
+          { label: "WHHA: George W. Bush", url: "https://www.whitehousehistory.org/bios/George-W-Bush", icon: "🏛️" },
+          { label: "George H. W. Bush Presidential Library Bio", url: "https://www.georgehwbushlibrary.gov/bush-family", icon: "📚" },
+          { label: "Britannica: Bush Family", url: "https://www.britannica.com/topic/Bush-family", icon: "🌳" },
+          { label: "Texas GLO: George P. Bush Bio", url: "https://www.glo.texas.gov/the-glo/about/commissioner/index.html", icon: "🏛️" }
+        ]
+      },
+      {
+        id: "legacy-family-kennedy-dynasty-politics-media",
+        type: "legacy",
+        title: "Kennedy Family Dynasty — Joseph P. Kennedy Sr., JFK, RFK, Ted Kennedy, Caroline Kennedy, and RFK Jr.",
+        date: "1930s-Present",
+        jurisdiction: "United States / Political and Media Family Network",
+        description: "The Kennedy family is a high-signal elite-family cluster tying finance, Hollywood/media, diplomacy, the presidency, the Senate, cabinet-level politics, ambassadors, public health/environment advocacy, and celebrity culture. It is included because it shows how family name, money, marriage, tragedy, mythology, and institutional placement can compound over generations.",
+        quote: {
+          text: "Kennedy family, American family that produced several nationally prominent political figures.",
+          source: "Britannica overview of Kennedy family"
+        },
+        tags: ["Kennedy Family", "Joseph P. Kennedy", "John F. Kennedy", "Robert F. Kennedy", "Ted Kennedy", "Caroline Kennedy", "RFK Jr", "Political Dynasty"],
+        relatedEntities: ["Joseph P. Kennedy Sr.", "John F. Kennedy", "Robert F. Kennedy", "Edward Kennedy", "Caroline Kennedy", "Robert F. Kennedy Jr.", "CIA", "Hollywood"],
+        sourceQuality: "Reference biography + official government biography sources",
+        facts: [
+          { label: "Patriarch", value: "Joseph P. Kennedy Sr." },
+          { label: "President", value: "John F. Kennedy" },
+          { label: "Senate/Cabinet", value: "RFK + Ted Kennedy" },
+          { label: "Ambassadors", value: "Joseph P. Kennedy Sr. + Caroline Kennedy" }
+        ],
+        flags: ["Multi-generation political dynasty", "Media/celebrity feedback loop", "Assassination/mythology layer", "Public-health/environment-policy crossover", "Family name as political infrastructure"],
+        details: [
+          "This is one of the clearest U.S. examples of celebrity, power, state office, philanthropy, and dynastic name-recognition interacting.",
+          "The card is intentionally about documented offices and family relationships, not speculation around every Kennedy-related event."
+        ],
+        links: [
+          { label: "Britannica: Kennedy Family", url: "https://www.britannica.com/topic/Kennedy-family", icon: "🌳" },
+          { label: "JFK Library: Kennedy Family", url: "https://www.jfklibrary.org/learn/about-jfk/the-kennedy-family", icon: "🏛️" },
+          { label: "Senate: Edward M. Kennedy", url: "https://www.senate.gov/senators/FeaturedBios/Featured_Bio_KennedyEdward.htm", icon: "🏛️" },
+          { label: "State Dept: Caroline Kennedy", url: "https://history.state.gov/departmenthistory/people/kennedy-caroline-bouvier", icon: "🌐" }
+        ]
+      },
+      {
+        id: "legacy-family-roosevelt-kinship-presidents",
+        type: "legacy",
+        title: "Roosevelt Family — Theodore Roosevelt, Franklin D. Roosevelt, Eleanor Roosevelt, and Progressive-State Lineage",
+        date: "1901-1945",
+        jurisdiction: "United States / Political Family Network",
+        description: "The Roosevelt family connects two presidents, a major first lady, reform politics, wartime state expansion, banking/merchant-family roots, and elite New York social networks. Theodore and Franklin were distant cousins, while Eleanor Roosevelt connected the two branches by marriage and blood relation.",
+        quote: {
+          text: "Were Theodore and Franklin Roosevelt related? Yes. They were fifth cousins.",
+          source: "National Park Service FAQ"
+        },
+        tags: ["Roosevelt Family", "Theodore Roosevelt", "Franklin D. Roosevelt", "Eleanor Roosevelt", "Political Dynasty", "New Deal", "Progressive Era"],
+        relatedEntities: ["Theodore Roosevelt", "Franklin D. Roosevelt", "Eleanor Roosevelt", "Hyde Park", "Oyster Bay", "New Deal"],
+        sourceQuality: "National Park Service + presidential library records",
+        facts: [
+          { label: "TR Presidency", value: "1901-1909" },
+          { label: "FDR Presidency", value: "1933-1945" },
+          { label: "Kinship", value: "Fifth cousins" },
+          { label: "Marriage Bridge", value: "Eleanor Roosevelt" }
+        ],
+        flags: ["Two-presidency family line", "Elite New York network", "Progressive/New Deal governance bridge", "Marriage connects branches"],
+        details: [
+          "The Roosevelt case is useful because the relationship is documented, politically salient, and close enough in time to influence image and legitimacy.",
+          "Eleanor Roosevelt also makes the family tie more visible because she was TR's niece and FDR's wife."
+        ],
+        links: [
+          { label: "NPS Theodore Roosevelt FAQ", url: "https://www.nps.gov/thri/faqs.htm", icon: "🏛️" },
+          { label: "FDR Library: Franklin D. Roosevelt", url: "https://www.fdrlibrary.org/fdr-biography", icon: "📚" },
+          { label: "Theodore Roosevelt Center Biography", url: "https://www.theodorerooseveltcenter.org/Learn-About-TR/TR-Biography", icon: "📚" },
+          { label: "Britannica: Roosevelt Family", url: "https://www.britannica.com/topic/Roosevelt-family", icon: "🌳" }
+        ]
+      },
+      {
+        id: "legacy-family-adams-harrison-father-son-grandson",
+        type: "legacy",
+        title: "Adams and Harrison Presidential Lines — Father-Son and Grandfather-Grandson Office Inheritance",
+        date: "1797-1893",
+        jurisdiction: "United States / Presidential Family Lines",
+        description: "The Adams and Harrison lines are early U.S. examples of direct office inheritance: John Quincy Adams was the son of John Adams, and Benjamin Harrison was the grandson of William Henry Harrison. These family ties are more concrete than distant shared ancestry because the familial relationship and office sequence are immediate and documented.",
+        quote: {
+          text: "The first President who was the son of a President, John Quincy Adams.",
+          source: "White House biography of John Quincy Adams"
+        },
+        tags: ["Adams Family", "Harrison Family", "John Adams", "John Quincy Adams", "William Henry Harrison", "Benjamin Harrison", "Political Dynasty"],
+        relatedEntities: ["John Adams", "John Quincy Adams", "Abigail Adams", "William Henry Harrison", "Benjamin Harrison", "Benjamin Harrison V"],
+        sourceQuality: "White House + Britannica biography records",
+        facts: [
+          { label: "Adams Tie", value: "Father → son presidents" },
+          { label: "Harrison Tie", value: "Grandfather → grandson presidents" },
+          { label: "Founding Link", value: "Benjamin Harrison V signer" },
+          { label: "Evidence Strength", value: "Direct close kinship" }
+        ],
+        flags: ["Early republic family continuity", "Direct kinship evidence", "Founding-era political family", "Name/institution inheritance"],
+        details: [
+          "This card belongs in the family-tree layer because it demonstrates that dynastic officeholding existed from early U.S. history onward.",
+          "It is also a baseline for comparing modern dynasties like Bush, Clinton, Kennedy, and Roosevelt."
+        ],
+        links: [
+          { label: "White House: John Quincy Adams", url: "https://trumpwhitehouse.archives.gov/about-the-white-house/presidents/john-quincy-adams/", icon: "🏛️" },
+          { label: "NPS: John Quincy Adams", url: "https://www.nps.gov/people/john-quincy-adams.htm", icon: "🏛️" },
+          { label: "Britannica: William Henry Harrison", url: "https://www.britannica.com/biography/William-Henry-Harrison", icon: "📚" },
+          { label: "Britannica: John Quincy Adams", url: "https://www.britannica.com/biography/John-Quincy-Adams", icon: "📚" }
+        ]
+      },
+      {
+        id: "legacy-family-gates-maxwell-civic-philanthropy",
+        type: "legacy",
+        title: "Gates / Maxwell Family Civic Network — Bill Gates Sr., Mary Maxwell Gates, Microsoft, United Way, and Global Health Philanthropy",
+        date: "1970s-Present",
+        jurisdiction: "United States / Global Health Philanthropy",
+        description: "A documented family-power bridge for the map: Bill Gates' father was a prominent attorney and foundation co-chair, while his mother Mary Maxwell Gates was a University of Washington regent and United Way International chair. The Gates Foundation itself states Bill Sr. guided the foundation and first answered his son's request around reproductive and child health in the developing world.",
+        quote: {
+          text: "His late mother, Mary Gates, was a schoolteacher, University of Washington regent, and chair of United Way International.",
+          source: "Gates Foundation leadership biography for Bill Gates"
+        },
+        tags: ["Bill Gates", "Bill Gates Sr", "Mary Maxwell Gates", "Gates Foundation", "United Way", "University of Washington", "Global Health", "Family Network"],
+        relatedEntities: ["Bill Gates", "William H. Gates Sr.", "Mary Maxwell Gates", "Gates Foundation", "Microsoft", "United Way", "Rockefeller Foundation"],
+        sourceQuality: "Gates Foundation primary biographies + foundation history",
+        facts: [
+          { label: "Father", value: "Attorney + Gates Foundation co-chair" },
+          { label: "Mother", value: "UW regent + United Way International chair" },
+          { label: "Foundation Origin", value: "William H. Gates Foundation, 1994" },
+          { label: "Bridge", value: "Tech wealth → global health philanthropy" }
+        ],
+        flags: ["Family civic-capital bridge", "Global-health philanthropy", "Reproductive/child-health origin note", "Microsoft-to-foundation pathway"],
+        details: [
+          "This card adds family context to Gates-related global-health, vaccine, gene-cure, and digital-identity cards already in the system.",
+          "It relies on Gates Foundation primary biography pages, not claims that unrelated people with the same surname are kin."
+        ],
+        links: [
+          { label: "Gates Foundation: Bill Gates Bio", url: "https://www.gatesfoundation.org/about/leadership/bill-gates", icon: "🏥" },
+          { label: "Gates Foundation: William H. Gates Sr.", url: "https://www.gatesfoundation.org/ideas/media-center/press-releases/2020/09/william-h-gates-sr", icon: "🏥" },
+          { label: "Gates Notes: Philanthropy Origin", url: "https://www.gatesnotes.com/work/my-philanthropy", icon: "📝" },
+          { label: "Gates Foundation Story", url: "https://www.gatesfoundation.org/about/our-story", icon: "📜" }
+        ]
+      },
+      {
+        id: "legacy-family-walton-walmart-heirs-philanthropy",
+        type: "legacy",
+        title: "Walton Family — Walmart Fortune, Heirs, Philanthropy, Retail Data, and Education/Policy Influence",
+        date: "1962-Present",
+        jurisdiction: "United States / Corporate Family Wealth",
+        description: "The Walton family is a core elite-family node because Walmart wealth produced one of the world's largest family fortunes, with heirs active through philanthropy, charter-school/education policy, art institutions, finance, and board-level corporate influence. This adds a non-presidential corporate-family lineage to the power map.",
+        quote: {
+          text: "The Walton family fortune is derived from Walmart, the world's largest retailer by revenue.",
+          source: "Forbes billionaire/family wealth coverage"
+        },
+        tags: ["Walton Family", "Walmart", "Family Fortune", "Philanthropy", "Education Policy", "Retail Data", "Corporate Dynasty"],
+        relatedEntities: ["Sam Walton", "Alice Walton", "Rob Walton", "Jim Walton", "Walmart", "Walton Family Foundation"],
+        sourceQuality: "Forbes/Bloomberg wealth reporting + foundation/company records",
+        facts: [
+          { label: "Company Root", value: "Walmart, founded 1962" },
+          { label: "Family Vehicle", value: "Walton Family Foundation" },
+          { label: "Power Layer", value: "Retail + philanthropy + education" },
+          { label: "Evidence Type", value: "Family wealth concentration" }
+        ],
+        flags: ["Corporate dynasty", "Concentrated family wealth", "Education-policy philanthropy", "Retail-data infrastructure", "Board/shareholder influence"],
+        details: [
+          "This card is included because family fortunes can shape policy and institutions without holding formal state office.",
+          "The strongest evidence is ownership, foundation grants, board roles, and publicly reported net worth rather than hidden-family claims."
+        ],
+        links: [
+          { label: "Forbes: Walton Family", url: "https://www.forbes.com/profile/walton-1/", icon: "💰" },
+          { label: "Walton Family Foundation", url: "https://www.waltonfamilyfoundation.org/", icon: "🏛️" },
+          { label: "Walmart Corporate History", url: "https://corporate.walmart.com/about/history", icon: "🏬" },
+          { label: "Bloomberg Billionaires: Walton Family", url: "https://www.bloomberg.com/billionaires/families/walton-family", icon: "📊" }
+        ]
+      },
+      {
+        id: "legacy-family-mars-koch-lauder-pritzker-wealth-clusters",
+        type: "legacy",
+        title: "Mars, Koch, Lauder, and Pritzker Family Wealth Clusters — Private Dynasties Behind Corporate and Philanthropic Power",
+        date: "1900s-Present",
+        jurisdiction: "United States / Corporate and Philanthropic Family Networks",
+        description: "This aggregate card adds several major U.S. family wealth clusters that routinely appear in rankings and policy/philanthropy ecosystems: Mars (consumer products), Koch (energy/politics), Lauder (cosmetics/art/politics), and Pritzker (Hyatt, philanthropy, politics, gender-medicine funding trails already represented elsewhere in the map).",
+        quote: {
+          text: "America's richest families have fortunes derived from businesses built over generations.",
+          source: "Forbes richest families coverage"
+        },
+        tags: ["Mars Family", "Koch Family", "Lauder Family", "Pritzker Family", "Family Wealth", "Philanthropy", "Political Funding", "Corporate Dynasties"],
+        relatedEntities: ["Mars Inc", "Koch Industries", "Estée Lauder", "Pritzker Family", "Hyatt", "TAWANI Foundation", "Jennifer Pritzker"],
+        sourceQuality: "Wealth rankings + company/foundation records",
+        facts: [
+          { label: "Sectors", value: "Consumer, energy, cosmetics, hotels" },
+          { label: "Power Route", value: "Ownership + philanthropy + politics" },
+          { label: "Map Link", value: "Pritzker/TAWANI identity-medicine cards" },
+          { label: "Evidence Type", value: "Named family fortunes" }
+        ],
+        flags: ["Elite family wealth clusters", "Political and philanthropic influence", "Corporate ownership concentration", "Connects to Pritzker identity funding records"],
+        details: [
+          "This is a directory-style card: not every family member gets a separate evidence card unless the source density warrants it.",
+          "It helps the lineage panel show that celebrity/political power is only one lane; private family ownership and philanthropy are another."
+        ],
+        links: [
+          { label: "Forbes: America's Richest Families", url: "https://www.forbes.com/americas-richest-families/", icon: "💰" },
+          { label: "Koch Industries History", url: "https://www.kochind.com/about/history", icon: "🏭" },
+          { label: "Estée Lauder Companies History", url: "https://www.elcompanies.com/en/who-we-are/our-history", icon: "🏢" },
+          { label: "Hyatt: Pritzker History", url: "https://about.hyatt.com/en/hyatthistory.html", icon: "🏨" }
+        ]
+      },
+      {
+        id: "legacy-family-coppola-cage-schwartzman-hollywood-dynasty",
+        type: "legacy",
+        title: "Coppola / Cage / Schwartzman Hollywood Dynasty — Film, Celebrity, Nepotism, and Cultural Power",
+        date: "1960s-Present",
+        jurisdiction: "United States / Hollywood Family Network",
+        description: "A celebrity-family-ties card showing how cultural power reproduces through family networks: Francis Ford Coppola's family tree includes Sofia Coppola, Roman Coppola, Nicolas Cage (born Nicolas Coppola), Jason Schwartzman, Talia Shire, and other Hollywood figures. This belongs in the map because celebrity influence can normalize ideologies, technologies, and political narratives.",
+        quote: {
+          text: "Nicolas Cage, original name Nicholas Kim Coppola.",
+          source: "Britannica biography of Nicolas Cage"
+        },
+        tags: ["Coppola Family", "Nicolas Cage", "Sofia Coppola", "Jason Schwartzman", "Talia Shire", "Hollywood Dynasty", "Celebrity Network"],
+        relatedEntities: ["Francis Ford Coppola", "Nicolas Cage", "Sofia Coppola", "Roman Coppola", "Jason Schwartzman", "Talia Shire", "Hollywood"],
+        sourceQuality: "Reference biographies + film-family records",
+        facts: [
+          { label: "Patriarch Node", value: "Francis Ford Coppola" },
+          { label: "Name Change", value: "Nicolas Cage born Coppola" },
+          { label: "Branches", value: "Coppola / Cage / Schwartzman / Shire" },
+          { label: "Power Type", value: "Cultural/celebrity capital" }
+        ],
+        flags: ["Hollywood family dynasty", "Celebrity influence network", "Nepotism/legacy access", "Culture as soft-power layer"],
+        details: [
+          "This card adds the celebrity world requested by the user while keeping the claim narrow: family relationships and cultural influence, not hidden command structures.",
+          "It can later connect to specific films, AI-avatar rights, digital replicas, or entertainment-industry lobbying if those cards are added."
+        ],
+        links: [
+          { label: "Britannica: Nicolas Cage", url: "https://www.britannica.com/biography/Nicolas-Cage", icon: "🎬" },
+          { label: "Britannica: Francis Ford Coppola", url: "https://www.britannica.com/biography/Francis-Ford-Coppola", icon: "🎥" },
+          { label: "Britannica: Sofia Coppola", url: "https://www.britannica.com/biography/Sofia-Coppola", icon: "🎞️" },
+          { label: "IMDb: Coppola Family Tree", url: "https://www.imdb.com/list/ls063395945/", icon: "🌳" }
+        ]
+      },
+      {
+        id: "legacy-family-barrymore-fonda-hollywood-dynasties",
+        type: "legacy",
+        title: "Barrymore and Fonda Acting Dynasties — Multi-Generation Celebrity Families and Cultural Inheritance",
+        date: "1800s-Present",
+        jurisdiction: "United States / Hollywood and Theater Family Networks",
+        description: "The Barrymore and Fonda families are long-running celebrity dynasties with multiple generations in theater, film, activism, and public influence. They are included as examples of cultural elite reproduction through family name, training, access, and inherited audience trust.",
+        quote: {
+          text: "Barrymore family, U.S. theatrical family.",
+          source: "Britannica overview of Barrymore family"
+        },
+        tags: ["Barrymore Family", "Fonda Family", "Drew Barrymore", "John Barrymore", "Henry Fonda", "Jane Fonda", "Peter Fonda", "Hollywood Dynasty"],
+        relatedEntities: ["Drew Barrymore", "John Barrymore", "Ethel Barrymore", "Lionel Barrymore", "Henry Fonda", "Jane Fonda", "Peter Fonda"],
+        sourceQuality: "Reference biographies + cultural-history sources",
+        facts: [
+          { label: "Barrymore Route", value: "Theater → Hollywood" },
+          { label: "Fonda Route", value: "Film → activism / celebrity politics" },
+          { label: "Power Type", value: "Cultural legitimacy" },
+          { label: "Evidence", value: "Documented family careers" }
+        ],
+        flags: ["Multi-generation celebrity families", "Cultural capital inheritance", "Activism/celebrity-politics link", "Soft-power family networks"],
+        details: [
+          "This card is a family-tree scaffold: it can later be expanded into separate Barrymore and Fonda cards if needed.",
+          "The important pattern is not that all celebrities agree politically, but that celebrity status often travels through family networks."
+        ],
+        links: [
+          { label: "Britannica: Barrymore Family", url: "https://www.britannica.com/topic/Barrymore-family", icon: "🎭" },
+          { label: "Britannica: Jane Fonda", url: "https://www.britannica.com/biography/Jane-Fonda", icon: "🎬" },
+          { label: "Britannica: Henry Fonda", url: "https://www.britannica.com/biography/Henry-Fonda", icon: "🎥" },
+          { label: "Britannica: Drew Barrymore", url: "https://www.britannica.com/biography/Drew-Barrymore", icon: "⭐" }
+        ]
+      },
+      {
+        id: "documents-doj-epstein-library-efta-2026",
+        type: "documents",
+        title: "DOJ Epstein Library + Epstein Files Transparency Act Release — 3.5M Responsive Pages",
+        date: "2026-01-30",
+        jurisdiction: "United States / Department of Justice",
+        description: "The DOJ Epstein Library is the highest-value primary-source hub for the investigation because it centralizes disclosures under the Epstein Files Transparency Act, including case files, FBI materials, court records, and staged datasets. DOJ announced publication of over 3 million additional responsive pages in January 2026 after the Act became law in November 2025.",
+        quote: { text: "Department of Justice Publishes 3.5 Million Responsive Pages in Compliance with the Epstein Files Transparency Act.", source: "DOJ Office of Public Affairs, Jan. 30, 2026" },
+        tags: ["Jeffrey Epstein", "DOJ", "FBI", "Epstein Files Transparency Act", "Ghislaine Maxwell", "Evidence Release", "Primary Source Hub"],
+        relatedEntities: ["Jeffrey Epstein", "Ghislaine Maxwell", "Department of Justice", "FBI", "Pam Bondi", "Todd Blanche", "Congress"],
+        sourceQuality: "Official DOJ repository + statutory release record",
+        facts: [{ label: "Law Signed", value: "Nov. 19 2025" }, { label: "Major Release", value: "Jan. 30 2026" }, { label: "Published", value: "3.5M responsive pages" }, { label: "Primary Use", value: "Searchable source hub" }],
+        flags: ["Primary evidence portal", "Massive document corpus", "Congressional transparency law", "Redaction/privacy constraints", "Names do not equal wrongdoing"],
+        details: ["This is the master index for source-first research: users should cite specific Bates/document IDs whenever possible.", "The presence of a name in released records is not proof of criminal conduct; records include victims, witnesses, investigators, journalists, lawyers, contacts, and unrelated references."],
+        links: [
+          { label: "DOJ Epstein Library", url: "https://www.justice.gov/epstein/", icon: "🏛️" },
+          { label: "DOJ Disclosures Page", url: "https://www.justice.gov/epstein/doj-disclosures", icon: "📂" },
+          { label: "DOJ 3.5M Pages Release", url: "https://www.justice.gov/opa/pr/department-justice-publishes-35-million-responsive-pages-compliance-epstein-files", icon: "📜" },
+          { label: "Congress.gov H.R.4405", url: "https://www.congress.gov/bill/119th-congress/house-bill/4405/all-info", icon: "🏛️" },
+          { label: "GovInfo Public Law PDF", url: "https://www.govinfo.gov/content/pkg/PLAW-119publ38/pdf/PLAW-119publ38.pdf", icon: "📄" }
+        ]
+      },
+      {
+        id: "leaks-house-oversight-epstein-releases-2025",
+        type: "leaks",
+        title: "House Oversight Epstein Releases — DOJ Records, Estate Productions, Emails, Flight Logs, Schedules, Ledgers",
+        date: "2025-09-02/2025-11-12",
+        jurisdiction: "United States / House Oversight Committee",
+        description: "House Oversight releases are a second primary-source hub: the committee released 33,295 pages from DOJ, estate records produced under subpoena, and an additional 20,000+ pages of estate documents including emails, phone logs, flight logs/manifests, ledgers, and daily schedules. This routes users looking for Epstein emails and related entity mentions to the source releases.",
+        quote: { text: "released 33,295 pages of Epstein-related records", source: "House Oversight majority release, Sept. 2, 2025" },
+        tags: ["House Oversight", "Epstein Estate", "Emails", "Flight Logs", "Phone Logs", "Financial Ledgers", "Daily Schedule", "DOJ Records"],
+        relatedEntities: ["James Comer", "Robert Garcia", "Jeffrey Epstein", "Ghislaine Maxwell", "Donald Trump", "Bill Clinton", "Prince Andrew", "Elon Musk", "Peter Thiel", "Steve Bannon"],
+        sourceQuality: "Official congressional releases, party-side context noted",
+        facts: [{ label: "DOJ Pages", value: "33,295" }, { label: "Estate Pages", value: "20,000+ / 23,000 cited" }, { label: "Record Types", value: "Emails, logs, ledgers, schedules" }, { label: "Key Caveat", value: "Mentions ≠ guilt" }],
+        flags: ["Congressional evidence release", "Email correspondence", "High-profile names", "Flight and schedule records", "Partisan interpretation risk"],
+        details: ["The majority and minority committee pages sometimes frame the same document releases differently; both should be linked so users can compare source posture.", "Documents may include allegations, hearsay, scheduling notes, or name mentions; treat each record by document type and evidentiary weight."],
+        links: [
+          { label: "Oversight: DOJ Records Release", url: "https://oversight.house.gov/release/oversight-committee-releases-epstein-records-provided-by-the-department-of-justice/", icon: "🏛️" },
+          { label: "Oversight: Estate Records Release", url: "https://oversight.house.gov/release/oversight-committee-releases-records-provided-by-the-epstein-estate-chairman-comer-provides-statement/", icon: "📂" },
+          { label: "Oversight: Additional Estate Documents", url: "https://oversight.house.gov/release/oversight-committee-releases-additional-epstein-estate-documents/", icon: "📨" },
+          { label: "Oversight Democrats Email Release", url: "https://oversightdemocrats.house.gov/news/press-releases/house-oversight-committee-releases-jeffrey-epstein-email-correspondence-raising", icon: "✉️" },
+          { label: "Oversight Democrats Third Batch", url: "https://oversightdemocrats.house.gov/news/press-releases/oversight-democrats-release-third-batch-documents-jeffrey-epstein-estate", icon: "🗂️" }
+        ]
+      },
+      {
+        id: "leaks-epstein-email-correspondence-trump-wolff-maxwell",
+        type: "leaks",
+        title: "Epstein Email Correspondence — Trump, Michael Wolff, Ghislaine Maxwell, and Political Leverage Claims",
+        date: "2011-2019 / Released 2025",
+        jurisdiction: "United States / House Oversight Estate Documents",
+        description: "Oversight Democrats released selected Epstein email chains involving Ghislaine Maxwell and author Michael Wolff, with references to Donald Trump. This card captures the email-specific controversy while preserving the caveat that emails contain statements by Epstein/Wolff/Maxwell and are not, by themselves, judicial findings against people mentioned.",
+        quote: { text: "valuable PR and political currency", source: "Michael Wolff email quoted by Oversight Democrats release" },
+        tags: ["Epstein Emails", "Michael Wolff", "Ghislaine Maxwell", "Donald Trump", "House Oversight Democrats", "Political Leverage", "Estate Documents"],
+        relatedEntities: ["Jeffrey Epstein", "Ghislaine Maxwell", "Michael Wolff", "Donald Trump", "Virginia Giuffre", "House Oversight Democrats"],
+        sourceQuality: "Congressional minority release + congressional record context",
+        facts: [{ label: "Selected Emails", value: "2011, 2015, 2019" }, { label: "Release Date", value: "Nov. 12 2025" }, { label: "Core Issue", value: "What high-profile figures knew" }, { label: "Evidence Type", value: "Email correspondence" }],
+        flags: ["High-profile email claims", "Politically contested release", "Requires source-context reading", "Name mention does not equal adjudicated finding"],
+        details: ["This card should be used as an entry point to source emails, not as a verdict about any named person.", "The White House and Oversight Republicans disputed the political framing of the minority release; users should compare the full release set."],
+        links: [
+          { label: "Oversight Democrats Email Release", url: "https://oversightdemocrats.house.gov/news/press-releases/house-oversight-committee-releases-jeffrey-epstein-email-correspondence-raising", icon: "✉️" },
+          { label: "Congressional Record Nov. 18 2025", url: "https://www.congress.gov/119/crec/2025/11/18/171/194/CREC-2025-11-18-pt1-PgH4725.pdf", icon: "📜" },
+          { label: "Oversight Additional Estate Docs", url: "https://oversight.house.gov/release/oversight-committee-releases-additional-epstein-estate-documents/", icon: "📂" }
+        ]
+      },
+      {
+        id: "players-ghislaine-maxwell-conviction-family-node",
+        type: "players",
+        title: "Ghislaine Maxwell — Conviction, 20-Year Sentence, Epstein Network, and Robert Maxwell Family Link",
+        date: "2021-12-29/2022-06-28",
+        jurisdiction: "United States / Southern District of New York",
+        description: "Ghislaine Maxwell is the central adjudicated co-conspirator node in the Epstein map. DOJ records document her conviction and 20-year sentence; Britannica and other biographies document her as the daughter of media magnate Robert Maxwell. This links criminal-case evidence to elite-family/socialite access and media-family legacy.",
+        quote: { text: "No one is above the law", source: "U.S. Attorney Damian Williams statement on Maxwell verdict" },
+        tags: ["Ghislaine Maxwell", "Jeffrey Epstein", "Robert Maxwell", "Conviction", "Sex Trafficking", "Socialite", "Family Tie"],
+        relatedEntities: ["Ghislaine Maxwell", "Jeffrey Epstein", "Robert Maxwell", "SDNY", "Damian Williams", "Annie Farmer", "Prince Andrew"],
+        sourceQuality: "DOJ court case page + verdict/sentencing records + biography reference",
+        facts: [{ label: "Verdict", value: "Dec. 29 2021" }, { label: "Sentence", value: "20 years" }, { label: "Counts", value: "5 of 6 counts guilty" }, { label: "Family Link", value: "Daughter of Robert Maxwell" }],
+        flags: ["Adjudicated conviction", "Central Epstein network node", "Elite social access", "Maxwell family/media legacy", "Victim privacy sensitivity"],
+        details: ["Unlike many name-mention records, Maxwell's role is established by federal conviction and sentence.", "The family tie matters for the legacy panel because Robert Maxwell was a major media and publishing magnate whose family entered elite social circles."],
+        links: [
+          { label: "DOJ Maxwell Case Page", url: "https://www.justice.gov/usao-sdny/united-states-v-ghislaine-maxwell", icon: "⚖️" },
+          { label: "DOJ Verdict Statement", url: "https://www.justice.gov/usao-sdny/pr/statement-us-attorney-damian-williams-verdict-us-v-ghislaine-maxwell", icon: "🏛️" },
+          { label: "Britannica: Ghislaine Maxwell", url: "https://www.britannica.com/biography/Ghislaine-Maxwell", icon: "📚" },
+          { label: "Britannica: Robert Maxwell", url: "https://www.britannica.com/biography/Robert-Maxwell", icon: "📰" }
+        ]
+      },
+      {
+        id: "corporate-epstein-banking-jpmorgan-deutsche-bank",
+        type: "corporate",
+        title: "Epstein Banking Infrastructure — JPMorgan, Deutsche Bank, USVI Litigation, NYDFS Consent Order, and Anti-Trafficking Controls",
+        date: "2020-2023",
+        jurisdiction: "United States / Banking Regulation and Civil Litigation",
+        description: "Epstein's network depended on regulated financial infrastructure. NYDFS penalized Deutsche Bank in 2020 for compliance failures involving Epstein and other relationships, while the U.S. Virgin Islands later settled claims against JPMorgan over Epstein banking relationships. The bank settlements are among the most concrete institutional accountability records in the case.",
+        quote: { text: "failed to properly monitor account activity", source: "NYDFS Deutsche Bank consent order summary" },
+        tags: ["JPMorgan", "Deutsche Bank", "US Virgin Islands", "NYDFS", "Human Trafficking", "Banking Compliance", "Financial Infrastructure"],
+        relatedEntities: ["JPMorgan Chase", "Deutsche Bank", "Jes Staley", "U.S. Virgin Islands", "Jeffrey Epstein", "Ariel Smith", "Albert Bryan Jr."],
+        sourceQuality: "Regulator consent order + government settlement statement + court/litigation reporting",
+        facts: [{ label: "NYDFS Penalty", value: "$150M, 2020" }, { label: "USVI/JPM Settlement", value: "$75M, 2023" }, { label: "Anti-Trafficking Measures", value: "Settlement commitments" }, { label: "Evidence Type", value: "Banking compliance/legal records" }],
+        flags: ["Financial-enabler evidence", "Regulatory penalty", "Settlement without admission caveats", "Anti-trafficking compliance", "Institutional accountability"],
+        details: ["This card does not claim every named bank employee knew of crimes; it documents regulatory findings, allegations, settlements, and compliance failures.", "Financial records are among the strongest ways to map how a network functioned because they show payments, withdrawals, controls, and red flags."],
+        links: [
+          { label: "NYDFS Deutsche Bank Consent Order PDF", url: "https://www.dfs.ny.gov/system/files/documents/2020/07/ea20200706_deutsche_bank_consent_order.pdf", icon: "📄" },
+          { label: "USVI Governor on JPMorgan Settlement", url: "https://www.vi.gov/governor-bryan-issues-statement-on-jp-morgan-chase-settlement-in-epstein-lawsuit/", icon: "🏝️" },
+          { label: "AP: JPMorgan Settlement", url: "https://apnews.com/article/b33f0094586fd4fa229bd6295a7d09e8", icon: "📰" },
+          { label: "Oversight USVI Records Letter", url: "https://oversight.house.gov/wp-content/uploads/2025/11/11.18.2025-Letter-to-the-AG-USVI.pdf", icon: "📜" }
+        ]
+      },
+      {
+        id: "funding-epstein-mit-harvard-science-donations",
+        type: "funding",
+        title: "Epstein Science-Philanthropy Pipeline — MIT Media Lab, Harvard PED, Gates/Leon Black Donation Claims, and Post-Conviction Access",
+        date: "1998-2020",
+        jurisdiction: "United States / Harvard + MIT",
+        description: "Epstein cultivated science and elite-university legitimacy through donations and access. MIT's fact-finding report found Epstein gifts and claimed facilitation of gifts by Bill Gates and Leon Black; Harvard reported $9.1M in gifts before 2008 and extensive post-conviction visits to the Program for Evolutionary Dynamics. This directly connects the investigation to science funding, reputation laundering, and elite academic networks.",
+        quote: { text: "Epstein claimed that he had arranged an anonymous $2 million gift from Bill Gates", source: "MIT News summary of Goodwin Procter report" },
+        tags: ["MIT Media Lab", "Harvard", "Program for Evolutionary Dynamics", "Joi Ito", "Seth Lloyd", "Leon Black", "Bill Gates", "Science Philanthropy"],
+        relatedEntities: ["Jeffrey Epstein", "MIT Media Lab", "Harvard", "Joi Ito", "Seth Lloyd", "Martin Nowak", "Leon Black", "Bill Gates", "Lawrence Bacow"],
+        sourceQuality: "University fact-finding reports + official university statements",
+        facts: [{ label: "Harvard Gifts", value: "$9.1M, 1998-2008" }, { label: "Harvard PED Gift", value: "$6.5M" }, { label: "MIT Gifts", value: "$850k reported" }, { label: "Post-Conviction Access", value: "Harvard PED visits 2010-2018" }],
+        flags: ["Reputation laundering", "Science funding access", "University governance failure", "Gates/Black claims disputed/contextual", "Post-conviction institutional access"],
+        details: ["MIT's report noted Epstein claimed credit for arranging Gates/Black donations; that is not the same as proving the donations were Epstein's money.", "This is high-convergence because it links elite science, AI/media lab culture, evolutionary dynamics, billionaires, and institutional risk controls."],
+        links: [
+          { label: "MIT Fact-Finding Hub", url: "https://web.mit.edu/fact2020/", icon: "🎓" },
+          { label: "MIT News Summary", url: "https://news.mit.edu/2020/mit-releases-results-fact-finding-report-jeffrey-epstein-0110", icon: "🧪" },
+          { label: "MIT Goodwin Report PDF", url: "https://web.mit.edu/fact2020/files/MIT-report.pdf", icon: "📄" },
+          { label: "Harvard Epstein Report", url: "https://www.harvard.edu/president/news-and-statements-by-president-bacow/2020/report-regarding-jeffrey-epstein-s-connections-to-harvard/", icon: "🏛️" },
+          { label: "Harvard Magazine Summary", url: "https://www.harvardmagazine.com/2020/05/harvard-report-jeffrey-epstein-gifts", icon: "📰" }
+        ]
+      },
+      {
+        id: "players-les-wexner-epstein-money-manager-node",
+        type: "players",
+        title: "Les Wexner / L Brands / Wexner Foundation — Epstein Money Manager, Misappropriation Claim, and Retail-Fortune Access",
+        date: "1980s-2026",
+        jurisdiction: "United States / Retail Fortune + Congressional Oversight",
+        description: "Les Wexner is a major Epstein-source-of-wealth and access node. Wexner's foundation statement says Epstein was his personal money manager and involved in many aspects of his financial life; later reporting and Oversight activity focused on the depth and duration of the relationship. Wexner has denied wrongdoing and said Epstein conned him.",
+        quote: { text: "Epstein was my personal money manager", source: "Statement from Les Wexner, Wexner Foundation" },
+        tags: ["Les Wexner", "L Brands", "Victoria's Secret", "Wexner Foundation", "Jeffrey Epstein", "Retail Fortune", "Power of Attorney"],
+        relatedEntities: ["Les Wexner", "Jeffrey Epstein", "L Brands", "Victoria's Secret", "Wexner Foundation", "New Albany", "Ohio State University"],
+        sourceQuality: "Foundation statement + congressional/media records, denial caveats included",
+        facts: [{ label: "Relationship", value: "Personal money manager" }, { label: "Wexner Claim", value: "Misappropriated funds / conned" }, { label: "Oversight", value: "2026 deposition/reporting" }, { label: "Power Layer", value: "Retail billionaire access" }],
+        flags: ["Major wealth/access node", "Foundation-family network", "Denied wrongdoing", "Financial control questions", "Source-of-wealth inquiry"],
+        details: ["This card is framed around Wexner's own public statement and congressional/media records, not unsourced theories.", "It belongs in both the players and legacy family/fortune lenses because it ties Epstein to one of the largest retail fortunes and philanthropy networks."],
+        links: [
+          { label: "Wexner Foundation Statement", url: "https://www.wexnerfoundation.org/statement-from-les-wexner/", icon: "🏛️" },
+          { label: "AP: Wexner Says Duped", url: "https://apnews.com/article/733833f6d648c09e6b3473eb1cd4009d", icon: "📰" },
+          { label: "CNBC: Misappropriation Claim", url: "https://www.cnbc.com/2019/08/07/jeffrey-epstein-misappropriated-vast-sums-les-wexner-says.html", icon: "💰" },
+          { label: "Axios: Oversight Deposition", url: "https://www.axios.com/2026/02/18/les-wexner-epstein-oversight-deposition", icon: "🏛️" }
+        ]
+      },
+      {
+        id: "legacy-family-maxwell-media-dynasty-epstein",
+        type: "legacy",
+        title: "Maxwell Family Legacy — Robert Maxwell Media Empire, Ghislaine Maxwell, Social Access, and Epstein Network",
+        date: "1940s-2022",
+        jurisdiction: "United Kingdom / United States / Media Family Network",
+        description: "The Maxwell family is the most direct family-ties addition to the Epstein investigation: Ghislaine Maxwell was the daughter of publishing magnate Robert Maxwell and moved through elite social networks before her conviction for crimes committed with Epstein. This card adds family/media legacy context without importing unverified intelligence claims.",
+        quote: { text: "daughter Ghislaine Maxwell", source: "Britannica biography of Robert Maxwell" },
+        tags: ["Maxwell Family", "Robert Maxwell", "Ghislaine Maxwell", "Media Empire", "Publishing", "Elite Social Networks", "Jeffrey Epstein"],
+        relatedEntities: ["Robert Maxwell", "Ghislaine Maxwell", "Jeffrey Epstein", "Daily Mirror", "Pergamon Press", "Elisabeth Maxwell", "Prince Andrew"],
+        sourceQuality: "Reference biography + DOJ conviction records",
+        facts: [{ label: "Patriarch", value: "Robert Maxwell" }, { label: "Industry", value: "Publishing / media" }, { label: "Daughter", value: "Ghislaine Maxwell" }, { label: "Legal Outcome", value: "Ghislaine sentenced to 20 years" }],
+        flags: ["Family-ties layer", "Media/publishing dynasty", "Elite social access", "Adjudicated criminal node", "Avoid unsupported intelligence claims"],
+        details: ["This card should be treated as a documented family and social-access node, not as proof of claims not established in court.", "It bridges the legacy-family panel with the Epstein/Maxwell evidence corpus and high-profile social-network records."],
+        links: [
+          { label: "Britannica: Robert Maxwell", url: "https://www.britannica.com/biography/Robert-Maxwell", icon: "📰" },
+          { label: "Britannica: Ghislaine Maxwell", url: "https://www.britannica.com/biography/Ghislaine-Maxwell", icon: "📚" },
+          { label: "DOJ Maxwell Case Page", url: "https://www.justice.gov/usao-sdny/united-states-v-ghislaine-maxwell", icon: "⚖️" },
+          { label: "DOJ Verdict Statement", url: "https://www.justice.gov/usao-sdny/pr/statement-us-attorney-damian-williams-verdict-us-v-ghislaine-maxwell", icon: "🏛️" }
+        ]
+      },
+      {
+        id: "documents-event-201-pandemic-exercise-oct-2019",
+        type: "documents",
+        title: "Event 201 — Coronavirus Pandemic Tabletop Exercise, Gates Foundation, WEF, Johns Hopkins",
+        date: "2019-10-18",
+        jurisdiction: "United States / New York / Johns Hopkins Center for Health Security",
+        description: "Event 201 is the central timing-pattern card: on October 18, 2019, Johns Hopkins Center for Health Security, the World Economic Forum, and the Bill & Melinda Gates Foundation hosted a high-level pandemic tabletop exercise simulating a severe pandemic caused by a novel zoonotic coronavirus. The official site states it was fictional and not a prediction; the research value is the precise overlap in pathogen class, public-private actors, communications policy, supply chains, and timing before COVID-19 was publicly identified.",
+        quote: { text: "hosted Event 201, a high-level pandemic exercise on October 18, 2019, in New York, NY", source: "Johns Hopkins Center for Health Security Event 201 page" },
+        tags: ["Event 201", "Coronavirus", "Johns Hopkins", "World Economic Forum", "Gates Foundation", "Pandemic Exercise", "Public-Private Response"],
+        relatedEntities: ["Johns Hopkins Center for Health Security", "World Economic Forum", "Bill & Melinda Gates Foundation", "Tom Inglesby", "George Gao", "Christopher Elias", "Jane Halton", "Matthew Harrington"],
+        sourceQuality: "Official exercise page + videos + statement caveat",
+        facts: [{ label: "Date", value: "Oct. 18 2019" }, { label: "Pathogen", value: "Novel zoonotic coronavirus" }, { label: "Partners", value: "JHU + WEF + Gates" }, { label: "Scenario Impact", value: "65M deaths in 18 months" }],
+        flags: ["High-timing coincidence", "Public-private governance simulation", "Media/social-control themes", "Supply-chain and travel-policy rehearsal", "Official statement says not prediction"],
+        details: ["This is not proof that COVID-19 was planned; it is a high-value pattern record because the simulated pathogen family and governance dilemmas closely resembled the 2020 response environment.", "Event 201 should be read alongside other 2017-2019 tabletop exercises to distinguish normal preparedness work from unusually concentrated timing."],
+        links: [
+          { label: "Event 201 Videos / Official Page", url: "https://centerforhealthsecurity.org/event201/videos.html", icon: "🎥" },
+          { label: "Event 201 Players", url: "https://centerforhealthsecurity.org/our-work/tabletop-exercises/event-201-pandemic-tabletop-exercise/event-201-players", icon: "👥" },
+          { label: "Event 201 Recommendations", url: "https://centerforhealthsecurity.org/our-work/tabletop-exercises/event-201-pandemic-tabletop-exercise/event-201-recommendations", icon: "📋" },
+          { label: "Statement on nCoV and Event 201", url: "https://centerforhealthsecurity.org/event201/statement.html", icon: "⚖️" },
+          { label: "JHU Hub: This Is Not a Drill", url: "https://hub.jhu.edu/magazine/2020/summer/center-for-health-security-responds-to-coronavirus/", icon: "🧪" }
+        ]
+      },
+      {
+        id: "documents-crimson-contagion-2019-hhs-exercise",
+        type: "documents",
+        title: "Crimson Contagion 2019 — HHS National-Level Influenza Pandemic Exercise and After-Action Failures",
+        date: "2019-01/2019-08",
+        jurisdiction: "United States / HHS ASPR National Level Exercise",
+        description: "Crimson Contagion was a large 2019 HHS pandemic exercise series built around a novel influenza scenario originating abroad and spreading in the United States. The after-action record is high value because many later COVID-19 response failures — coordination, data, PPE, medical countermeasures, authorities, and messaging — were already visible before 2020.",
+        quote: { text: "Crimson Contagion 2019 Functional Exercise", source: "HHS after-action review title" },
+        tags: ["Crimson Contagion", "HHS", "ASPR", "Pandemic Exercise", "Novel Influenza", "PPE", "Supply Chain", "After Action Review"],
+        relatedEntities: ["HHS", "ASPR", "CDC", "FEMA", "Robert Kadlec", "Crimson Contagion", "COVID-19"],
+        sourceQuality: "HHS/GAO/public-record after-action material",
+        facts: [{ label: "Exercise Year", value: "2019" }, { label: "Scenario", value: "Novel influenza pandemic" }, { label: "Agency Lead", value: "HHS ASPR" }, { label: "Pattern", value: "Known gaps before COVID" }],
+        flags: ["Pre-COVID warning signal", "Supply-chain/PPE issues", "Federal coordination failures", "Countermeasure distribution gaps", "Preparedness gap despite rehearsal"],
+        details: ["This pattern is not that exercises are inherently suspicious; it is that a major exercise identified weaknesses shortly before a real pandemic exposed similar weaknesses.", "Crimson Contagion belongs next to Event 201 because it shows government-side readiness failures while Event 201 shows elite public-private communications and governance themes."],
+        links: [
+          { label: "HHS 2019 Annual Report", url: "https://www.hhs.gov/sites/default/files/2019-annual-report.pdf", icon: "🏛️" },
+          { label: "Crimson Contagion AAR PDF", url: "https://www.governmentattic.org/38docs/HHSaarCrimsonContAAR_2020.pdf", icon: "📄" },
+          { label: "GAO COVID-19 Lessons Report", url: "https://www.gao.gov/assets/d21513.pdf", icon: "📊" },
+          { label: "NBSB Dec. 2019 Proceedings", url: "https://aspr.hhs.gov/AboutASPR/WorkingwithASPR/BoardsandCommittees/Documents/pblc-mtg-proceedings-3dec2019.pdf", icon: "🧾" }
+        ]
+      },
+      {
+        id: "documents-spars-pandemic-scenario-2017-risk-communications",
+        type: "documents",
+        title: "SPARS Pandemic 2025-2028 — Johns Hopkins Risk-Communications Scenario for Medical Countermeasures",
+        date: "2017-10",
+        jurisdiction: "United States / Johns Hopkins Center for Health Security",
+        description: "The SPARS scenario is a fictional Johns Hopkins training document about medical-countermeasure communication dilemmas during a future respiratory pandemic. It is included because later readers saw parallels to COVID-era vaccine communications, EUA debates, social media messaging, adverse-event controversy, and public trust collapse. The source itself frames SPARS as a training scenario, not a prediction.",
+        quote: { text: "A Futuristic Scenario for Public Health Risk Communicators", source: "SPARS Pandemic PDF subtitle" },
+        tags: ["SPARS", "Johns Hopkins", "Risk Communication", "Medical Countermeasures", "EUA", "Vaccines", "Public Trust", "Scenario Planning"],
+        relatedEntities: ["Johns Hopkins Center for Health Security", "Monica Schoch-Spana", "Matthew Shearer", "CDC", "FDA", "WHO"],
+        sourceQuality: "Official scenario PDF + clarification context",
+        facts: [{ label: "Published", value: "2017" }, { label: "Scenario Window", value: "2025-2028" }, { label: "Theme", value: "MCM risk communication" }, { label: "Caveat", value: "Fictional training resource" }],
+        flags: ["Pre-COVID scenario parallels", "Vaccine/EUA communications", "Adverse-event narrative management", "Social media trust issues", "Not a prediction"],
+        details: ["This card is useful for pattern narratives because it shows how public-health planners anticipated communication dilemmas that later became central to COVID-19 governance.", "Treat parallels as scenario-planning overlap unless a specific document proves operational continuity."],
+        links: [
+          { label: "SPARS Scenario PDF", url: "https://centerforhealthsecurity.org/sites/default/files/2022-12/spars-pandemic-scenario.pdf", icon: "📄" },
+          { label: "JHU Publications Index", url: "https://centerforhealthsecurity.org/our-work/publications", icon: "📚" },
+          { label: "Johns Hopkins Pure Record", url: "https://pure.johnshopkins.edu/en/publications/the-spars-pandemic-20252028-a-futuristic-scenario-to-facilitate-m", icon: "🎓" }
+        ]
+      },
+      {
+        id: "speeches-milken-universal-flu-vaccine-oct-2019",
+        type: "speeches",
+        title: "Milken Future of Health 2019 — Fauci, Rick Bright, Michael Specter and the Universal Flu Vaccine / Platform Shift Conversation",
+        date: "2019-10-29",
+        jurisdiction: "United States / Milken Institute Future of Health Summit",
+        description: "Eleven days after Event 201, Milken hosted a panel on universal influenza vaccines featuring Anthony Fauci, Rick Bright, Bruce Gellin, Casey Wright, Margaret Hamburg, and Michael Specter. It is high-value because it openly discussed pandemic threat framing, public perception, platform innovation, government/philanthropy/private-sector coordination, and the difficulty of moving from legacy vaccine systems to faster technologies.",
+        quote: { text: "no greater threat to global health, security, and the economy than the emergence of a highly transmissible influenza virus", source: "Milken panel description" },
+        tags: ["Milken Institute", "Anthony Fauci", "Rick Bright", "Universal Flu Vaccine", "mRNA", "BARDA", "NIAID", "Platform Vaccines"],
+        relatedEntities: ["Anthony Fauci", "Rick Bright", "Michael Specter", "Margaret Hamburg", "Bruce Gellin", "BARDA", "NIAID", "Milken Institute", "Rockefeller Foundation"],
+        sourceQuality: "Official summit page + C-SPAN video record",
+        facts: [{ label: "Date", value: "Oct. 29 2019" }, { label: "Panel", value: "Universal flu vaccine" }, { label: "Actors", value: "NIAID + BARDA + Milken" }, { label: "Pattern", value: "Vaccine platform acceleration" }],
+        flags: ["Close timing after Event 201", "Platform-vaccine transition", "Pandemic threat messaging", "Public perception as policy barrier", "Clips often quoted out of context"],
+        details: ["The card does not claim the panel planned COVID-19; it documents a public high-level conversation about vaccine platform disruption immediately before COVID-era mRNA acceleration.", "Use the full panel/video rather than short viral clips when evaluating quotes."],
+        links: [
+          { label: "Milken Panel Page", url: "https://milkeninstitute.org/panel/10027", icon: "🎙️" },
+          { label: "Future of Health 2019 Program", url: "https://milkeninstitute.org/events/future-of-health-summit-2019/program", icon: "📅" },
+          { label: "C-SPAN Universal Flu Vaccine", url: "https://www.c-span.org/program/public-affairs-event/universal-flu-vaccine/535344", icon: "🎥" },
+          { label: "NIAID Universal Flu Strategic Plan", url: "https://www.niaid.nih.gov/sites/default/files/universal-flu-vaccine-strategic-plan-2018.pdf", icon: "📄" }
+        ]
+      },
+      {
+        id: "outbreaks-wuhan-military-world-games-oct-2019",
+        type: "outbreaks",
+        title: "Wuhan 2019 Military World Games — Mass International Military Event During Event 201 Window",
+        date: "2019-10-18/2019-10-27",
+        jurisdiction: "China / Wuhan / International Military Sports Council",
+        description: "The 7th CISM Military World Games opened in Wuhan on October 18, 2019 — the same date as Event 201 in New York — and brought thousands of military athletes and delegations from over 100 countries to Wuhan shortly before the first recognized COVID-19 cluster. The evidentiary value is timing, location, and international movement; it is not proof of origin by itself.",
+        quote: { text: "declared the 7th Military World Games open", source: "Chinese Ministry of National Defense / Xinhua report" },
+        tags: ["Wuhan", "Military World Games", "CISM", "October 2019", "International Movement", "COVID-19 Timing", "Event 201"],
+        relatedEntities: ["Wuhan", "CISM", "Chinese Ministry of National Defense", "Xi Jinping", "World Military Games", "COVID-19"],
+        sourceQuality: "Official/opening reports + sports federation records",
+        facts: [{ label: "Dates", value: "Oct. 18-27 2019" }, { label: "Location", value: "Wuhan" }, { label: "Scale", value: "100+ countries / thousands of athletes" }, { label: "Same Date", value: "Event 201 opened Oct. 18" }],
+        flags: ["Same-day timing with Event 201", "Mass international movement", "Wuhan location", "Origin speculation risk", "No standalone proof"],
+        details: ["This card should be read as a timeline/event-density marker, not a conclusion about who introduced SARS-CoV-2.", "It becomes more useful when placed next to early-case timelines, wastewater/serology studies, and WHO/China origin reports."],
+        links: [
+          { label: "China MOD Opening Report", url: "https://eng.mod.gov.cn/xb/News_213114/TopStories/4853315.html", icon: "🏟️" },
+          { label: "Wuhan 7th CISM MWG Local Page", url: "https://en.whkfq.gov.cn/7thmwg.html", icon: "📍" },
+          { label: "CISM News Platform", url: "https://www.milsport.one/news/102019-october-2019/news-information-service-platform-of-7th-cwg-makes-debut", icon: "📰" },
+          { label: "UIPM Wuhan Games Report", url: "https://www.uipmworld.org/news/world-military-games-2019-strength-depth-wuhan-chn", icon: "🏅" }
+        ]
+      },
+      {
+        id: "funding-gates-sif-breakthrough-energy-portfolio-convergence",
+        type: "funding",
+        title: "Gates Portfolio Convergence — Strategic Investment Fund, Breakthrough Energy, Vaccines, Bio, Food, Climate, Digital Health",
+        date: "2009-Present",
+        jurisdiction: "United States / Global Philanthropy + Venture Investment",
+        description: "A portfolio-convergence card for Bill Gates-linked vehicles: the Gates Foundation Strategic Investment Fund describes itself as the foundation's impact-first strategic investment arm, while Breakthrough Energy lists a large portfolio across clean energy, food/agriculture, industrial decarbonization, fusion, carbon removal, batteries, and climate infrastructure. The concerning pattern is not one company; it is the same actor stack appearing across global health, vaccines, digital identity adjacency, climate/energy, food systems, and policy advocacy.",
+        quote: { text: "impact-first strategic investment arm of the Gates Foundation", source: "Gates Foundation Strategic Investment Fund" },
+        tags: ["Bill Gates", "Gates Foundation", "Strategic Investment Fund", "Breakthrough Energy", "Vaccine Platforms", "Climate Tech", "Food Systems", "Portfolio Convergence"],
+        relatedEntities: ["Bill Gates", "Gates Foundation", "Breakthrough Energy", "Moderna", "Gavi", "WHO", "Adjuvant Capital", "Commonwealth Fusion Systems"],
+        sourceQuality: "Official portfolio pages + foundation factsheets",
+        facts: [
+          { label: "SIF", value: "Impact-first investment arm" },
+          { label: "SIF Size", value: "$2.5B referenced by SIF materials" },
+          { label: "BEV Scope", value: "Climate/energy/food/industry portfolio" },
+          { label: "Convergence", value: "Health + bio + food + climate + policy" }
+        ],
+        flags: ["Same actor across global health and climate infrastructure", "Program-related investments beyond grants", "Vaccine/therapeutic platform exposure", "Food and energy systems influence", "Philanthropy-to-market pipeline"],
+        details: [
+          "This card is designed for the investment-convergence panel: it maps portfolio domains rather than alleging a single hidden motive.",
+          "The most important pattern is how grants, PRIs, LP commitments, policy advocacy, and venture-style investments can reinforce the same global-health and climate-market agendas."
+        ],
+        links: [
+          { label: "Gates SIF Home", url: "https://sif.gatesfoundation.org/", icon: "💼" },
+          { label: "Gates SIF Portfolio", url: "https://sif.gatesfoundation.org/portfolio-", icon: "📊" },
+          { label: "Gates SIF Life Sciences", url: "https://sif.gatesfoundation.org/our-focus/life-sciences/", icon: "🧬" },
+          { label: "Breakthrough Energy Portfolio", url: "https://www.breakthroughenergy.org/portfolio", icon: "⚡" },
+          { label: "Gates Foundation Fact Sheet", url: "https://www.gatesfoundation.org/en/about/foundation-fact-sheet", icon: "🏛️" }
+        ]
+      },
+      {
+        id: "funding-thiel-founders-fund-defense-ai-neuro-space-portfolio",
+        type: "funding",
+        title: "Thiel / Founders Fund Portfolio Convergence — Palantir, Anduril, SpaceX, Neuralink, AI, Defense, Space, Neurotech",
+        date: "2005-Present",
+        jurisdiction: "United States / Venture Capital + Defense Tech",
+        description: "Founders Fund's public portfolio lists Palantir, Anduril, SpaceX, Neuralink, OpenAI-related ecosystem companies, and other category-defining technology firms. The high-convergence pattern is portfolio density across surveillance/data fusion, autonomous weapons and defense, commercial space, brain-computer interfaces, AI infrastructure, crypto/fintech, and state-adjacent procurement.",
+        quote: { text: "Palantir Anduril Neuralink", source: "Founders Fund public portfolio listings" },
+        tags: ["Peter Thiel", "Founders Fund", "Palantir", "Anduril", "SpaceX", "Neuralink", "OpenAI", "Defense Tech", "Portfolio Convergence"],
+        relatedEntities: ["Peter Thiel", "Founders Fund", "Palantir", "Anduril", "SpaceX", "Neuralink", "OpenAI", "Joe Lonsdale", "Alex Karp", "Elon Musk"],
+        sourceQuality: "Official VC portfolio + company/SEC context",
+        facts: [
+          { label: "Defense/Data", value: "Palantir + Anduril" },
+          { label: "Space", value: "SpaceX" },
+          { label: "Neurotech", value: "Neuralink" },
+          { label: "Pattern", value: "State + AI + war + body + space" }
+        ],
+        flags: ["Surveillance-to-defense portfolio stack", "AI-enabled autonomy", "Brain-computer interface exposure", "Government procurement adjacency", "Category creation before regulation"],
+        details: [
+          "This is one of the strongest investment-convergence nodes because portfolio companies map directly onto the app's core categories: surveillance, defense, AI, space, neural interfaces, and identity/finance infrastructure.",
+          "A portfolio position does not prove coordinated wrongdoing; it shows aligned capital allocation into domains that can converge into powerful state/corporate systems."
+        ],
+        links: [
+          { label: "Founders Fund Portfolio", url: "https://founders.com/portfolio", icon: "💼" },
+          { label: "Founders Fund: Anduril", url: "https://foundersfund.com/company/anduril/", icon: "🛡️" },
+          { label: "Palantir SEC Filings", url: "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001321655", icon: "📊" },
+          { label: "Joe Lonsdale / 8VC Team", url: "https://8vc.com/team/joe-lonsdale", icon: "🧩" },
+          { label: "8VC Defense Thesis", url: "https://www.8vc.com/resources/reboot-defense-with-technological-innovation", icon: "🏛️" }
+        ]
+      },
+      {
+        id: "funding-schmidt-ai-bio-defense-quantum-portfolio",
+        type: "funding",
+        title: "Eric Schmidt Portfolio Convergence — AI Policy, National Security, Biotechnology, Quantum/Cyber, Science Funding",
+        date: "2010-Present",
+        jurisdiction: "United States / AI Policy + Venture + Philanthropy",
+        description: "Eric Schmidt is a high-convergence portfolio node because he links Google/Alphabet leadership, Innovation Endeavors venture investing, Schmidt Sciences/Futures philanthropy, SCSP national-security strategy work, NSCAI/biotech commission roles, and SandboxAQ quantum/AI/cyber commercialization. The pattern is private capital plus policy recommendations in exactly the same AI/biotech/defense stack.",
+        quote: { text: "strengthening America's long-term AI and technological competitiveness", source: "Innovation Endeavors profile describing SCSP" },
+        tags: ["Eric Schmidt", "Innovation Endeavors", "Schmidt Futures", "Schmidt Sciences", "SCSP", "Sandbox AQ", "AI", "Biotechnology", "Defense", "Quantum"],
+        relatedEntities: ["Eric Schmidt", "Google", "Alphabet", "Innovation Endeavors", "SCSP", "Schmidt Sciences", "Sandbox AQ", "NSCAI", "National Security Commission on Emerging Biotechnology"],
+        sourceQuality: "Official profiles + foundation/program pages + portfolio references",
+        facts: [
+          { label: "Venture", value: "Innovation Endeavors" },
+          { label: "Policy", value: "NSCAI + SCSP" },
+          { label: "Science", value: "Schmidt Sciences AI programs" },
+          { label: "Commercial Node", value: "SandboxAQ chair/investor network" }
+        ],
+        flags: ["Policy-capital overlap", "AI national-security strategy", "AI + biotechnology convergence", "Quantum/cyber commercialization", "Foundation-to-policy pipeline"],
+        details: [
+          "This card is high value because Schmidt appears in both investment and recommendation channels: funding companies/science while shaping government strategy documents.",
+          "The concern is conflict-of-interest and agenda-setting risk, not a claim that every Schmidt-funded project is harmful."
+        ],
+        links: [
+          { label: "Innovation Endeavors: Eric Schmidt", url: "https://www.innovationendeavors.com/team/eric-schmidt/", icon: "💼" },
+          { label: "SCSP Our Work", url: "https://www.scsp.ai/ourwork/", icon: "🏛️" },
+          { label: "Schmidt Sciences AI", url: "https://www.schmidtsciences.org/focus-area-ai/", icon: "🤖" },
+          { label: "Paladin: Sandbox AQ", url: "https://www.paladincapgroup.com/portfolio/sandbox-aq/", icon: "🧮" },
+          { label: "NSCAI Final Report", url: "https://reports.nscai.gov/", icon: "📘" }
+        ]
+      },
+      {
+        id: "funding-a16z-american-dynamism-ai-bio-defense-portfolio",
+        type: "funding",
+        title: "Andreessen Horowitz / a16z Convergence — American Dynamism, AI, Bio+Health, Defense, Civic Tech",
+        date: "2022-Present",
+        jurisdiction: "United States / Venture Capital + Policy Interface",
+        description: "a16z is a high-convergence portfolio actor because its public pages split across AI, Bio+Health, infrastructure, crypto, and American Dynamism / national-interest companies. Public materials and reporting connect a16z to Anduril, Shield AI, defense tech, AI infrastructure, healthcare AI, and government-facing civic technology. The pattern is venture capital explicitly moving into state capacity, defense, health, and AI governance lanes.",
+        quote: { text: "AI at the Intersection: The a16z Investment Thesis on AI in Bio + Health", source: "a16z Bio+Health page" },
+        tags: ["a16z", "Andreessen Horowitz", "American Dynamism", "Anduril", "Shield AI", "AI", "Bio+Health", "Defense", "Civic Tech"],
+        relatedEntities: ["Marc Andreessen", "Ben Horowitz", "Katherine Boyle", "Andreessen Horowitz", "Anduril", "Shield AI", "Hippocratic AI", "Palmer Luckey"],
+        sourceQuality: "Official portfolio/thesis pages + major funding reporting",
+        facts: [
+          { label: "AI", value: "AI portfolio + infra thesis" },
+          { label: "Bio+Health", value: "AI in bio/health thesis" },
+          { label: "Defense", value: "Anduril / Shield AI exposure" },
+          { label: "Civic", value: "American Dynamism" }
+        ],
+        flags: ["VC-to-state capacity lane", "Defense autonomy funding", "Healthcare AI commercialization", "AI infrastructure concentration", "Policy influence risk"],
+        details: [
+          "This card helps the convergence section compare a16z with Founders Fund and Schmidt: all three push capital into AI, defense/national security, and bio/health infrastructure.",
+          "Use company pages and portfolio disclosures for concrete evidence; avoid inferring that every a16z portfolio company shares a single political program."
+        ],
+        links: [
+          { label: "a16z Portfolio", url: "https://a16z.com/portfolio/", icon: "💼" },
+          { label: "a16z AI", url: "https://a16z.com/ai/", icon: "🤖" },
+          { label: "a16z Bio+Health", url: "https://a16z.com/bio-health/", icon: "🏥" },
+          { label: "a16z Anduril Announcement", url: "https://a16z.com/announcement/anduril/", icon: "🛡️" },
+          { label: "Axios: American Dynamism $500M", url: "https://www.axios.com/2023/05/09/andreessen-horowitz-silicon-valley", icon: "🏛️" }
+        ]
+      },
+      {
+        id: "funding-blackrock-tokenized-assets-health-genomics-ai-portfolio",
+        type: "funding",
+        title: "BlackRock Convergence — Tokenized Funds, AI, Health Innovation, Genomics/Immunology, Climate/Infrastructure Portfolios",
+        date: "2024-Present",
+        jurisdiction: "United States / Global Asset Management",
+        description: "BlackRock is a different kind of convergence actor: not a founder-led venture network, but a giant asset manager building products and exposure around tokenized funds, AI innovation, health innovation, genomics/immunology/bioengineering, climate and infrastructure. The most concerning pattern is institutional capital packaging the same domains — digital finance rails, AI, bio/health, climate/infrastructure — into investable products at global scale.",
+        quote: { text: "BlackRock's first tokenized fund to be issued on a public blockchain", source: "Securitize BUIDL announcement" },
+        tags: ["BlackRock", "BUIDL", "Securitize", "Tokenized Assets", "AI", "Genomics", "Bioengineering", "Health Innovation", "Infrastructure"],
+        relatedEntities: ["BlackRock", "Larry Fink", "Securitize", "BUIDL", "iShares", "Genomics", "AI Innovation", "Health Innovation", "BNY Mellon"],
+        sourceQuality: "Official product pages + issuer/partner releases",
+        facts: [
+          { label: "Tokenization", value: "BUIDL launched 2024" },
+          { label: "Bio/Health", value: "Health innovation and genomics ETFs" },
+          { label: "AI", value: "AI innovation fund/product line" },
+          { label: "Pattern", value: "Institutional packaging of convergence sectors" }
+        ],
+        flags: ["Digital-finance rails", "Tokenized securities", "Genomics/bioengineering exposure", "AI productization", "Asset-manager scale"],
+        details: [
+          "This card belongs in the investment section because BlackRock can scale themes by turning them into products and allocations even without directly controlling the underlying companies.",
+          "The concerning pattern is systemic exposure and normalization: AI, bioengineering, health data, tokenized finance, and climate infrastructure become portfolio categories."
+        ],
+        links: [
+          { label: "BlackRock BUIDL Multichain Release", url: "https://www.prnewswire.com/news-releases/blackrock-launches-new-buidl-share-classes-across-multiple-blockchains-to-expand-access-and-potential-of-buidl-ecosystem-302304035.html", icon: "⛓️" },
+          { label: "Securitize: BUIDL $1B AUM", url: "https://www.prnewswire.com/news-releases/blackrock-usd-institutional-digital-liquidity-fund-buidl-tokenized-by-securitize-surpasses-1b-in-aum-302401480.html", icon: "📈" },
+          { label: "iShares Health Innovation ETF", url: "https://www.blackrock.com/us/individual/products/316007/blackrock-future-health-etf-fund/1000", icon: "🏥" },
+          { label: "iShares Genomics Immunology Healthcare ETF", url: "https://www.blackrock.com/ca/investors/en/products/327372/ishares-genomics-immunology-and-healthcare-index-etf", icon: "🧬" },
+          { label: "BlackRock LifePath / Infrastructure Context", url: "https://www.blackrock.com/us/financial-professionals/retirement/products/lifepath", icon: "🏗️" }
+        ]
+      },
+      {
+        id: "legacy-gates-microsoft-antitrust-foundation-pivot-1998-2000",
+        type: "legacy",
+        title: "Bill Gates Antitrust-to-Philanthropy Pivot — Microsoft Trial, Foundation Merger, CEO Step-Down, Gavi Pledge",
+        date: "1998-05-18/2000-04-03",
+        jurisdiction: "United States / Seattle / Washington, D.C. / Davos",
+        description: "High-value timing record: the DOJ filed its Microsoft antitrust case on May 18, 1998; Gates deposition excerpts were played in court in late 1998 and January 1999; Judge Jackson issued Findings of Fact on November 5, 1999; the Gates Foundation announced a US$750 million vaccine pledge in November 1999; the Gates Foundation and Gates Learning Foundation merger was announced in August 1999 and consolidated into the Bill & Melinda Gates Foundation in January 2000; Gates stepped down as Microsoft CEO on January 13, 2000; and the court issued Conclusions of Law on April 3, 2000. The card documents an optics and institutional-power pivot window, not a standalone proof of motive.",
+        quote: { text: "coming together as a single organization", source: "Gates Foundation press release, Aug. 22, 1999" },
+        tags: ["Bill Gates", "Microsoft Antitrust", "Gates Foundation", "Gavi", "Steve Ballmer", "DOJ", "Philanthropy Pivot", "Timing Pattern"],
+        relatedEntities: ["Bill Gates", "Microsoft", "Steve Ballmer", "Gates Foundation", "Gavi", "DOJ Antitrust Division", "David Boies", "Thomas Penfield Jackson"],
+        sourceQuality: "DOJ case record + Gates Foundation press releases + Microsoft/press timeline records",
+        facts: [
+          { label: "Case filed", value: "DOJ filed May 18 1998" },
+          { label: "Findings", value: "Nov. 5 1999 monopoly findings" },
+          { label: "Foundation", value: "Aug. 1999 merger announcement / Jan. 2000 consolidation" },
+          { label: "CEO shift", value: "Gates to Chief Software Architect Jan. 13 2000" },
+          { label: "Law", value: "Conclusions Apr. 3 2000" }
+        ],
+        flags: ["Antitrust litigation window", "Philanthropy rebrand optics", "Global vaccine pledge during monopoly case", "Leadership shift before conclusions of law", "Timing alone does not prove intent"],
+        details: [
+          "Use this as a chronology anchor: the strongest evidence is the date-stack, not speculation about private intent.",
+          "The philanthropic expansion was framed publicly as global health and learning; the research concern is how monopoly-era wealth moved into public-health agenda-setting during the same compressed window."
+        ],
+        links: [
+          { label: "DOJ Findings of Fact", url: "https://www.justice.gov/atr/cases/ms_findings.htm", icon: "⚖️" },
+          { label: "DOJ Gates Deposition Excerpts", url: "https://www.justice.gov/atr/cases/ms_depos.htm", icon: "🎥" },
+          { label: "Gates Foundation Merger / Endowment Press Release", url: "https://www.gatesfoundation.org/ideas/media-center/press-releases/1999/08/bill-melinda-gates-foundation", icon: "🏛️" },
+          { label: "Gates Foundation $750M GAVI Gift", url: "https://www.gatesfoundation.org/ideas/media-center/press-releases/1999/11/global-alliance-for-vaccines-and-immunization", icon: "💉" },
+          { label: "Microsoft 2000 Annual Report Officers", url: "https://www.microsoft.com/investor/reports/ar00/directors_officers.htm", icon: "📊" },
+          { label: "DOJ Conclusions of Law", url: "https://www.justice.gov/atr/usdoj-antitrust-division-us-v-microsoft-corporation-browser-and-middleware-conclusions-law", icon: "📄" }
+        ]
+      },
+      {
+        id: "legacy-rockefeller-gates-antitrust-philanthropy-parallel",
+        type: "legacy",
+        title: "Rockefeller / Gates Parallel — Antitrust Pressure Followed by System-Scale Philanthropy",
+        date: "1911-1913 / 1998-2000",
+        jurisdiction: "United States / Global Philanthropy",
+        description: "Comparative lineage card: Standard Oil was ordered broken up in 1911 and the Rockefeller Foundation was chartered in 1913; Microsoft faced DOJ antitrust litigation from 1998 through 2001 while the Gates Foundation consolidated in 1999-2000 and launched global-health funding channels. The situations are not identical, but both show monopoly-era fortunes moving into large philanthropic institutions that influenced medicine, public health, education, science, and policy.",
+        quote: { text: "unchanged since 1913", source: "Rockefeller Foundation mission statement" },
+        tags: ["Rockefeller Foundation", "Gates Foundation", "Standard Oil", "Microsoft Antitrust", "Philanthrocapitalism", "Public Health", "Education", "Monopoly Power"],
+        relatedEntities: ["John D. Rockefeller", "Rockefeller Foundation", "Standard Oil", "Bill Gates", "Gates Foundation", "Microsoft", "Public Health", "Antitrust"],
+        sourceQuality: "Official foundation history + Cornell legal summary + DOJ Microsoft case documents",
+        facts: [
+          { label: "Standard Oil", value: "1911 breakup order" },
+          { label: "Rockefeller Foundation", value: "Founded/chartered 1913" },
+          { label: "Microsoft", value: "1998-2000 DOJ trial window" },
+          { label: "Gates Foundation", value: "1999-2000 consolidation" }
+        ],
+        flags: ["Monopoly wealth to philanthropy", "Public-health agenda influence", "Education/science institution building", "Pattern comparison not identity claim", "Requires source-by-source caveats"],
+        details: [
+          "This card is intentionally comparative: it helps readers test whether U.S. monopoly fortunes repeatedly convert legal and reputation pressure into long-lived policy-facing philanthropy.",
+          "The Rockefeller and Gates models should be evaluated with primary legal records, foundation histories, grant databases, and recipient records rather than broad family-name claims."
+        ],
+        links: [
+          { label: "Rockefeller Foundation History", url: "https://www.rockefellerfoundation.org/about-us/our-history", icon: "🏛️" },
+          { label: "Rockefeller Foundation FAQ / Mission", url: "https://www.rockefellerfoundation.org/about-us/rock-faqs/", icon: "📜" },
+          { label: "Cornell Wex: Standard Oil v. United States", url: "https://www.law.cornell.edu/wex/standard_oil_co._of_new_jersey_v._united_states_%281911%29", icon: "⚖️" },
+          { label: "Gates Foundation Our Story", url: "https://www.gatesfoundation.org/about/our-story", icon: "📚" },
+          { label: "DOJ Microsoft Findings", url: "https://www.justice.gov/atr/cases/ms_findings.htm", icon: "⚖️" }
+        ]
+      },
+      {
+        id: "funding-gates-gavi-launch-750m-vaccine-alliance",
+        type: "funding",
+        title: "Gavi Launch — Gates Foundation US$750M Pledge, WHO/UNICEF/World Bank Vaccine Alliance",
+        date: "1999-11/2000-01",
+        jurisdiction: "Global Health / Davos / Geneva / Seattle",
+        description: "The Gates Foundation announced a US$750 million, five-year gift in November 1999 to speed vaccine delivery through GAVI partners including WHO, UNICEF, the World Bank, and the Gates Children's Vaccine Program. Gavi's own donor profile says the initial US$750 million commitment helped bring other donors into vaccine delivery and create Gavi. This is a core node because it links Gates philanthropy, multilateral agencies, vaccine markets, public-private partnerships, and WEF-era Davos launch narratives.",
+        quote: { text: "US$ 750 million commitment", source: "Gavi Gates Foundation donor profile" },
+        tags: ["Gavi", "Gates Foundation", "WHO", "UNICEF", "World Bank", "Vaccines", "Davos", "Public Private Partnership"],
+        relatedEntities: ["Bill Gates", "Gates Foundation", "Gavi", "WHO", "UNICEF", "World Bank", "World Economic Forum", "Children's Vaccine Program"],
+        sourceQuality: "Official Gates Foundation release + Gavi donor/profile pages",
+        facts: [
+          { label: "Gift", value: "US$750M over five years" },
+          { label: "Announcement", value: "Nov. 1999" },
+          { label: "Alliance", value: "WHO + UNICEF + World Bank + Gates program" },
+          { label: "Pattern", value: "Private capital seeds multilateral vaccine infrastructure" }
+        ],
+        flags: ["Public-private vaccine governance", "Foundation seeded alliance", "Davos launch adjacency", "Market-shaping potential", "Health-benefit claims and governance concerns both need sourcing"],
+        details: [
+          "This card is one of the strongest convergence records because the source trail is official and the alliance became central to global vaccine financing.",
+          "The concern is not merely vaccines; it is the governance model where a private foundation becomes a catalytic funder beside WHO, UNICEF, and World Bank infrastructure."
+        ],
+        links: [
+          { label: "Gates Foundation $750M GAVI Gift", url: "https://www.gatesfoundation.org/ideas/media-center/press-releases/1999/11/global-alliance-for-vaccines-and-immunization", icon: "💸" },
+          { label: "Gavi Donor Profile: Gates Foundation", url: "https://www.gavi.org/investing-gavi/funding/donor-profiles/gates-foundation", icon: "💉" },
+          { label: "Gavi Partnership Model", url: "https://www.gavi.org/operating-model/gavis-partnership-model", icon: "🤝" },
+          { label: "Gavi About the Alliance", url: "https://www.gavi.org/our-alliance/about", icon: "🌐" },
+          { label: "Gates Foundation Gavi History Article", url: "https://www.gatesfoundation.org/ideas/science-innovation-technology/vaccine-delivery-development", icon: "📚" }
+        ]
+      },
+      {
+        id: "funding-gates-institute-population-reproductive-health",
+        type: "funding",
+        title: "Gates Institute for Population and Reproductive Health — Johns Hopkins, Family Planning, Demography",
+        date: "1999-Present",
+        jurisdiction: "United States / Johns Hopkins Bloomberg School of Public Health / Global South Programs",
+        description: "In May 1999, Gates family foundations committed US$20 million to create the Bill & Melinda Gates Institute for Population and Reproductive Health at Johns Hopkins. The institute says it was founded in 1999 for 'Scholarship and Science for Social Change' and focuses on family planning, reproductive health, population dynamics research, programs, and policies. This belongs in the map because it shows Gates philanthropy entering reproductive-health and population-policy infrastructure during the same 1999 foundation-consolidation window.",
+        quote: { text: "Scholarship and Science for Social Change", source: "William H. Gates Sr. Institute About page" },
+        tags: ["Gates Institute", "Johns Hopkins", "Population", "Reproductive Health", "Family Planning", "Demography", "Global Health", "Bill Gates Sr."],
+        relatedEntities: ["Gates Foundation", "Johns Hopkins Bloomberg School of Public Health", "Bill Gates Sr.", "Population Dynamics", "Family Planning", "Reproductive Health"],
+        sourceQuality: "Official institute/about page + Gates Foundation grant/release records + Johns Hopkins context",
+        facts: [
+          { label: "Grant", value: "US$20M commitment in May 1999" },
+          { label: "Institution", value: "Johns Hopkins Bloomberg School" },
+          { label: "Focus", value: "Family planning + reproductive health + population dynamics" },
+          { label: "Timing", value: "Same year as foundation merger/Gavi pledge" }
+        ],
+        flags: ["Population-policy infrastructure", "Reproductive-health agenda setting", "Johns Hopkins node", "1999 timing cluster", "Do not conflate family planning with coercive programs without direct evidence"],
+        details: [
+          "This is a sourceable population-policy card; it should be framed as institutional funding, not as proof of coercion.",
+          "Its evidentiary value is the date, amount, institution, and program scope alongside other Gates global-health buildout records."
+        ],
+        links: [
+          { label: "Gates Foundation Johns Hopkins $20M Release", url: "https://www.gatesfoundation.org/Ideas/Media-Center/Press-Releases/1999/05/Johns-Hopkins-University-School-of-Public-Health", icon: "🏫" },
+          { label: "Gates Foundation Grant OPP117", url: "https://www.gatesfoundation.org/about/committed-grants/1999/05/opp117", icon: "💸" },
+          { label: "William H. Gates Sr. Institute About", url: "https://gatesinstitute.org/about/", icon: "📚" },
+          { label: "Johns Hopkins 20-Year Institute Article", url: "https://magazine.publichealth.jhu.edu/2019/bill-melinda-gates-institute-population-and-reproductive-health-celebrates-20-years", icon: "📰" },
+          { label: "JHU Focus on Family Planning", url: "https://publichealth.jhu.edu/2014/focus-on-family-planning", icon: "🔎" }
+        ]
+      },
+      {
+        id: "funding-gates-media-journalism-grants-soft-power",
+        type: "funding",
+        title: "Gates Foundation Media / Journalism Funding — BBC, NPR, Guardian, CJR Debate, Narrative Legitimacy",
+        date: "2002-Present",
+        jurisdiction: "Global Media / United States / United Kingdom",
+        description: "Columbia Journalism Review reported in 2020 that an examination of nearly 20,000 Gates Foundation grants found more than US$250 million going toward journalism, with recipients or affiliated entities including BBC, NPR, The Guardian, Al Jazeera, ProPublica, National Journal, Univision, Financial Times, The Atlantic, Texas Tribune, Gannett, Le Monde, and journalism organizations. The foundation's own committed-grants database is the primary verification layer. The card does not prove editorial control; it documents agenda-setting and conflict-disclosure concerns where a foundation funds coverage ecosystems that may also report on its work.",
+        quote: { text: "more than $250 million going toward journalism", source: "Columbia Journalism Review, Journalism's Gates keepers" },
+        tags: ["Gates Foundation", "Journalism", "Media Funding", "BBC Media Action", "NPR", "Guardian", "Columbia Journalism Review", "Narrative Infrastructure"],
+        relatedEntities: ["Gates Foundation", "BBC Media Action", "NPR", "The Guardian", "Columbia Journalism Review", "Global Policy and Advocacy", "Pulitzer Center", "International Center for Journalists"],
+        sourceQuality: "CJR investigation + Gates Foundation committed-grants database + grant-disclosure pages",
+        facts: [
+          { label: "Reported total", value: "CJR: $250M+ toward journalism" },
+          { label: "Source layer", value: "Gates grants database from 1994 onward" },
+          { label: "Risk", value: "Coverage incentives / disclosure gaps" },
+          { label: "Caveat", value: "Funding is not proof of direct editorial control" }
+        ],
+        flags: ["Narrative infrastructure", "Foundation-funded coverage", "Conflict-of-interest disclosure", "Global health agenda amplification", "Needs grant-by-grant verification"],
+        details: [
+          "This card adds the media layer to the Gates convergence stack: grants can create reporting capacity while also shaping what topics become professionally funded and visible.",
+          "Use the Gates committed-grants database to verify specific recipient amounts and dates; do not infer editorial commands without documents showing them."
+        ],
+        links: [
+          { label: "CJR: Journalism's Gates Keepers", url: "https://www.cjr.org/criticism/gates-foundation-journalism-funding.php", icon: "📰" },
+          { label: "Gates Committed Grants Database", url: "https://www.gatesfoundation.org/about/committed-grants", icon: "🔎" },
+          { label: "Gates Grants Search: Media", url: "https://www.gatesfoundation.org/about/committed-grants?q=media", icon: "📎" },
+          { label: "CIMA Donor Profile: Gates Foundation", url: "https://www.cima.ned.org/donor-profiles/bill-melinda-gates-foundation/", icon: "🌐" },
+          { label: "CJR: Foundation Funding and Journalism", url: "https://www.cjr.org/analysis/foundation-funding-journalism.php", icon: "📚" }
+        ]
       }
+
 
     ];
 
@@ -4015,19 +5157,19 @@
 
 
     const highValueContributions = [
-      'Convert the dataset into decision-ready layers: executive brief, lenses, pathways, matrix, and raw sources.',
-      'Surface convergence, not just volume: prioritize nodes that connect money, patents, policy, quotes, and deployments.',
-      'Make keyword exploration non-destructive: inline discovery previews matches without hijacking the main search state.',
-      'Pair claims with source posture: highlight primary records, filings, patents, official guidance, quotes, and audits.',
-      'Turn dense records into reusable trails: save, compare, copy, export, and open related clusters without losing context.'
+      '148 evidence cards with 459 direct links spanning policy, patents, funding, public health, bioengineering, digital identity, virtual-human systems, and legacy roots.',
+      'Convergence layers connect repeated nodes across money, patents, policy, quotes, deployments, and institutional lineages.',
+      'Inline discovery opens related cards in-place so keyword/entity exploration does not overwrite the main search or collapse the current view.',
+      'Every card keeps source posture visible through source-quality notes, facts, flags, details, quotes, and direct URLs.',
+      'Reusable research trails support saving, comparing, copying links, exporting JSON, and opening related clusters from the same workspace.'
     ];
 
     const presentationOptimizations = [
-      'Layered disclosure: headings first, compact cards second, expanded evidence third, source links last.',
-      'Narrative pathways: show the story arc connecting people, money, governance, technology, and implementation.',
-      'Impact scoring: rank categories by links, facts, flags, and cross-entity density so the strongest areas surface first.',
-      'Lens presets: one-click views for convergence, money, identity/pharma, virtual humans, bioengineering, and key players.',
-      'Cognitive wayfinding: keep discovery local, preserve scroll context, and offer close/copy/open actions at the point of need.'
+      'Read top-down: orientation panels first, trajectory chains second, category accordions third, expanded source cards last.',
+      'Treat domino chains as navigation maps: they show chronological alignment and jump points, not proof of hidden motive by themselves.',
+      'Prioritize high-density categories in the Impact Matrix when a view has too many records to read linearly.',
+      'Use lenses for fast entry points into convergence, money, identity/pharma, virtual humans, bioengineering, and key-player networks.',
+      'Use caution labels, source-quality notes, and primary links to separate documented records from interpretation.'
     ];
 
 
@@ -4052,6 +5194,34 @@
         documents: ['TAWANI grants', 'Palm Center legacy records', 'Gender-medicine institutional funding trail'],
         connects: ['Identity medicine', 'WPATH/Endocrine Society ecosystem', 'Policy and institution funding'],
         caution: 'Use grant records and organization pages; separate documented funding from motive claims.'
+      },
+      {
+        family: 'Presidential dynasty line',
+        roots: 'Adams / Harrison / Roosevelt / Kennedy / Bush families plus presidential royal-ancestry claims',
+        documents: ['White House/NPS presidential biographies', 'American Ancestors presidential kinship research', 'IHGS/WikiTree royal-ancestry summary'],
+        connects: ['Bush Family', 'Kennedy Family', 'Roosevelt Family', 'Adams Family', 'King John'],
+        caution: 'Close family officeholding is stronger evidence than distant shared ancestry; keep those layers separate.'
+      },
+      {
+        family: 'Epstein / Maxwell investigation line',
+        roots: 'Epstein estate records → Maxwell conviction → Maxwell media-family legacy → banking/university/elite-contact records',
+        documents: ['DOJ Epstein Library', 'House Oversight estate releases', 'U.S. v. Ghislaine Maxwell', 'MIT/Harvard Epstein reports'],
+        connects: ['Jeffrey Epstein', 'Ghislaine Maxwell', 'Maxwell Family', 'JPMorgan', 'MIT Media Lab', 'Harvard', 'Les Wexner'],
+        caution: 'Separate adjudicated convictions, financial settlements, email mentions, allegations, victim records, and unrelated contact references.'
+      },
+      {
+        family: 'Corporate-family wealth line',
+        roots: 'Walton / Mars / Koch / Lauder / Pritzker family fortunes',
+        documents: ['Forbes/Bloomberg family wealth lists', 'company histories', 'foundation grant records'],
+        connects: ['Walton Family', 'Koch Family', 'Pritzker Family', 'TAWANI Foundation', 'Education policy'],
+        caution: 'Documents ownership, philanthropy, and policy influence; avoid assuming every heir has identical politics.'
+      },
+      {
+        family: 'Celebrity dynasty line',
+        roots: 'Coppola/Cage/Schwartzman, Barrymore, Fonda and similar multi-generation entertainment families',
+        documents: ['Britannica family/biography entries', 'IMDb/filmography records', 'public activism and industry histories'],
+        connects: ['Coppola Family', 'Barrymore Family', 'Fonda Family', 'Hollywood', 'Digital replicas'],
+        caution: 'Cultural power and nepotism are documented patterns; they do not prove a single coordinated ideology.'
       },
       {
         family: 'Systems-control meeting line',
@@ -4081,13 +5251,24 @@
         node: 'Close presidential dynasties',
         scope: 'Adams, Harrison, Roosevelt, Kennedy, Bush, Clinton, and Trump family clusters',
         evidence: 'Recent kinship, official biographies, genealogy databases, public office histories',
-        connects: ['John Adams', 'John Quincy Adams', 'Theodore Roosevelt', 'Franklin D. Roosevelt', 'George H. W. Bush', 'George W. Bush'],
+        connects: ['John Adams', 'John Quincy Adams', 'Theodore Roosevelt', 'Franklin D. Roosevelt', 'Kennedy Family', 'George H. W. Bush', 'George W. Bush', 'Bush Family'],
         caution: 'Close kinship is more politically meaningful than a shared ancestor hundreds of years back.'
       }
     ];
 
+    const eliteFamilyClusters = [
+      { cluster: 'Political dynasties', nodes: ['Bush Family', 'Kennedy Family', 'Roosevelt Family', 'Adams Family', 'Harrison Family'], why: 'Close kinship plus officeholding, diplomacy, donors, foundations, and name recognition.' },
+      { cluster: 'Corporate-family fortunes', nodes: ['Walton Family', 'Koch Family', 'Mars Family', 'Lauder Family', 'Pritzker Family'], why: 'Ownership, inheritance, philanthropy, think tanks, education policy, and board-level influence.' },
+      { cluster: 'Celebrity / Hollywood dynasties', nodes: ['Coppola Family', 'Barrymore Family', 'Fonda Family'], why: 'Cultural capital, inherited access, celebrity activism, and soft-power narrative shaping.' },
+      { cluster: 'Epstein / Maxwell network evidence', nodes: ['Jeffrey Epstein', 'Ghislaine Maxwell', 'Maxwell Family', 'Les Wexner', 'JPMorgan', 'MIT Media Lab', 'Harvard'], why: 'Court records, estate emails, financial settlements, university reports, and family/social access records.' },
+      { cluster: 'Tech/philanthropy family bridges', nodes: ['Gates / Maxwell Family', 'Bill Gates Sr.', 'Mary Maxwell Gates', 'Gates Foundation'], why: 'Family civic networks bridging tech wealth, law, universities, United Way, and global health philanthropy.' }
+    ];
+
     const lensPresets = [
-      { id: 'legacy', label: 'Legacy Roots', terms: ['Julian Huxley', 'Rockefeller', 'Eugenics', 'Cybernetics', 'Population Council', 'Bilderberg', 'King John', 'Presidents'], types: ['legacy', 'players', 'funding', 'documents'] },
+      { id: 'investment-convergence', label: 'Investment Convergence', terms: ['Founders Fund', 'Gates Foundation', 'BlackRock', 'a16z', 'Eric Schmidt', 'Breakthrough Energy', 'Palantir', 'Gavi', 'Microsoft Antitrust', 'Rockefeller Foundation'], types: ['funding', 'corporate', 'players', 'documents', 'patents', 'legacy'] },
+      { id: 'gates-timing', label: 'Gates Timing Window', terms: ['Microsoft Antitrust', 'Gates Foundation', 'Gavi', 'Gates Institute', 'Rockefeller Foundation', 'Standard Oil'], types: ['legacy', 'funding', 'players', 'documents'] },
+      { id: 'covid-patterns', label: 'COVID Pattern Stack', terms: ['Event 201', 'Crimson Contagion', 'SPARS', 'Milken', 'Wuhan', 'Fauci', 'Gates Foundation'], types: ['documents', 'speeches', 'outbreaks', 'funding', 'players'] },
+      { id: 'legacy', label: 'Legacy Roots', terms: ['Julian Huxley', 'Rockefeller', 'Eugenics', 'Cybernetics', 'Population Council', 'Bilderberg', 'King John', 'Presidents', 'Bush Family', 'Kennedy Family', 'Hollywood Dynasty', 'Walton Family', 'Epstein', 'Ghislaine Maxwell', 'JPMorgan', 'MIT Media Lab'], types: ['legacy', 'players', 'funding', 'documents'] },
       { id: 'convergence', label: 'Convergence Stack', terms: ['WEF', 'Digital ID', 'AI', 'Biotechnology', 'World ID', 'Brain'], types: ['players', 'virtual', 'bioengineering', 'documents', 'funding'] },
       { id: 'money', label: 'Money & Influence', terms: ['Gates Foundation', 'Pritzker', 'Funding', 'Gavi', 'Microsoft', 'Meta'], types: ['funding', 'players', 'corporate', 'pharma', 'identity'] },
       { id: 'bio', label: 'Bio / Vector / Outbreak', terms: ['DARPA', 'Gene Drive', 'Mosquitoes', 'Hantavirus', 'EcoHealth', 'CRISPR'], types: ['bioengineering', 'outbreaks', 'funding', 'leaks', 'documents'] },
@@ -4097,8 +5278,23 @@
 
     const narrativePathways = [
       {
+        title: 'Portfolio convergence → policy influence → deployment infrastructure',
+        terms: ['Founders Fund', 'Gates Foundation', 'BlackRock', 'a16z', 'Eric Schmidt', 'Palantir', 'Breakthrough Energy'],
+        why: 'Compares the highest-value investment stacks: actors who fund, govern, package, or advise across AI, defense, bio/health, climate/food, tokenized finance, and public-sector infrastructure.'
+      },
+      {
+        title: 'Antitrust pressure → philanthropy rebrand → global-health architecture',
+        terms: ['Microsoft Antitrust', 'Bill Gates', 'Gates Foundation', 'Gavi', 'Gates Institute', 'Rockefeller Foundation', 'Standard Oil'],
+        why: 'Adds the exact timing stack requested by users: Microsoft monopoly litigation, foundation consolidation, the US$750M Gavi pledge, Gates CEO step-down, and the Rockefeller antitrust-to-foundation comparison.'
+      },
+      {
+        title: 'Pandemic drills → platform vaccines → response failures → COVID governance',
+        terms: ['Event 201', 'Crimson Contagion', 'SPARS', 'Milken', 'Universal Flu Vaccine', 'Wuhan', 'COVID-19'],
+        why: 'Tracks the highest-value COVID pattern: scenario planning and drills in 2017-2019, vaccine-platform acceleration conversations, Wuhan mass-movement timing, and documented response failures that became real-world policy problems.'
+      },
+      {
         title: 'Ideology → family philanthropy → institutions → governance',
-        terms: ['Francis Galton', 'Julian Huxley', 'Rockefeller', 'Population Council', 'Macy Conferences', 'Bilderberg', 'King John', 'Presidents'],
+        terms: ['Francis Galton', 'Julian Huxley', 'Rockefeller', 'Population Council', 'Macy Conferences', 'Bilderberg', 'King John', 'Presidents', 'Bush Family', 'Kennedy Family', 'Hollywood Dynasty', 'Walton Family', 'Epstein', 'Ghislaine Maxwell', 'JPMorgan', 'MIT Media Lab'],
         why: 'Shows the earliest documented roots: eugenics terminology, evolutionary humanism, family philanthropy, cybernetics meetings, population policy, and elite convening.'
       },
       {
@@ -4128,20 +5324,172 @@
       }
     ];
 
-    const insightPrompts = [
-      'Start with a recurring node in Connection Constellation, then open its Thread Explorer links.',
-      'Use Save to trail to hold evidence while comparing money, quotes, and patents.',
-      'Click a tag or entity to preview matching cards inline without changing the global search.',
-      'Use Quote Vault to anchor narratives to sourced who/what/when/where/why excerpts.'
+    const dominoTrajectories = [
+      {
+        id: 'legacy-to-governance',
+        title: 'Ideology → foundations → systems governance',
+        arc: 'A macro lineage from eugenics and evolutionary-humanist language into Rockefeller population work, cybernetics/systems meetings, WEF 4IR framing, and modern AI/digital-ID governance.',
+        terms: ['Francis Galton', 'Julian Huxley', 'Rockefeller', 'Population Council', 'Cybernetics', 'WEF', 'Digital ID', 'AI Act'],
+        dominoes: [
+          { date: '1883', label: 'Eugenics terminology', summary: 'Galton gives a name to heredity-focused social planning language.', terms: ['Francis Galton', 'Eugenics'] },
+          { date: '1913-1952', label: 'Rockefeller public-health/population institutions', summary: 'Rockefeller philanthropy builds durable medicine, molecular biology, and population-policy nodes.', terms: ['Rockefeller Foundation', 'Population Council', 'Molecular Biology'] },
+          { date: '1946-1953', label: 'Macy cybernetics meetings', summary: 'Systems, feedback, communication, and control language becomes a cross-disciplinary toolkit.', terms: ['Macy Conferences', 'Cybernetics', 'Systems modeling'] },
+          { date: '1971-1973', label: 'WEF / Trilateral era', summary: 'Elite convening institutions formalize public-private governance language.', terms: ['WEF', 'Bilderberg', 'Trilateral Commission'] },
+          { date: '2016-2024', label: '4IR, AI Act, digital identity', summary: 'The systems language resurfaces in AI governance, digital identity, and biometric infrastructure.', terms: ['Fourth Industrial Revolution', 'AI Act', 'Digital ID', 'World ID'] }
+        ]
+      },
+      {
+        id: 'gates-antitrust-global-health',
+        title: 'Microsoft antitrust → Gates Foundation → global health rails',
+        arc: 'The exact timing window: monopoly litigation, foundation consolidation, Gavi launch funding, population/reproductive-health grants, media grants, and public-private vaccine governance.',
+        terms: ['Microsoft Antitrust', 'Bill Gates', 'Gates Foundation', 'Gavi', 'Gates Institute', 'Media Funding', 'Rockefeller Foundation'],
+        dominoes: [
+          { date: 'May 1998', label: 'DOJ files Microsoft antitrust case', summary: 'Legal pressure over Microsoft monopoly conduct becomes the starting domino.', terms: ['Microsoft Antitrust', 'DOJ', 'Bill Gates'] },
+          { date: 'May-Aug 1999', label: 'Population institute + foundation merger', summary: 'Gates-linked philanthropy funds Johns Hopkins population/reproductive-health work and announces foundation consolidation.', terms: ['Gates Institute', 'Johns Hopkins', 'Gates Foundation'] },
+          { date: 'Nov 1999', label: 'Findings of Fact + Gavi pledge', summary: 'Microsoft monopoly findings and the US$750M vaccine-alliance pledge land in the same compressed window.', terms: ['Findings of Fact', 'Gavi', 'Vaccines'] },
+          { date: 'Jan-Apr 2000', label: 'CEO step-down + conclusions of law', summary: 'Gates shifts role while the court issues legal conclusions.', terms: ['Steve Ballmer', 'Conclusions of Law', 'Microsoft'] },
+          { date: '2002+', label: 'Media/journalism grant layer', summary: 'Narrative and coverage infrastructure becomes part of the broader philanthropy influence map.', terms: ['Media Funding', 'Journalism', 'Gates Foundation'] }
+        ]
+      },
+      {
+        id: 'covid-drill-platform-response',
+        title: 'Drills → platform vaccines → COVID governance',
+        arc: 'A timeline of scenario planning and platform-vaccine acceleration conversations that aligned with later real-world COVID governance problems.',
+        terms: ['Event 201', 'Crimson Contagion', 'SPARS', 'Milken', 'Universal Flu Vaccine', 'Wuhan', 'COVID-19'],
+        dominoes: [
+          { date: '2017', label: 'SPARS scenario', summary: 'Fictional planning around EUA, vaccine communication, adverse-event narratives, and public trust.', terms: ['SPARS', 'EUA', 'Public Trust'] },
+          { date: 'Jan-Aug 2019', label: 'Crimson Contagion', summary: 'HHS exercise flags coordination, supply-chain, and communication failures before COVID.', terms: ['Crimson Contagion', 'HHS', 'Supply Chain'] },
+          { date: 'Oct 18 2019', label: 'Event 201 + Wuhan Games', summary: 'Coronavirus simulation in New York and mass international military event in Wuhan share a striking date window.', terms: ['Event 201', 'Wuhan', 'Military World Games'] },
+          { date: 'Oct 29 2019', label: 'Milken universal flu panel', summary: 'Fauci/BARDA/Milken panel discusses pandemic threat and faster vaccine platforms.', terms: ['Milken', 'Anthony Fauci', 'Rick Bright', 'Universal Flu Vaccine'] },
+          { date: '2020-2024', label: 'COVID response / origin / oversight records', summary: 'EUA, mandates, origin debates, NIH/EcoHealth oversight, and response failures become evidence clusters.', terms: ['COVID-19', 'EcoHealth Alliance', 'NIH', 'EUA'] }
+        ]
+      },
+      {
+        id: 'bio-vector-release-surveillance',
+        title: 'Bioengineering → vectors → surveillance → ecological contact',
+        arc: 'Tracks technologies that intentionally modify organisms, vectors, pathogens, or environmental interfaces that can contact humans.',
+        terms: ['DARPA', 'Gene Drive', 'Oxitec', 'Target Malaria', 'Wolbachia', 'Ticks', 'Hantavirus', 'EcoHealth'],
+        dominoes: [
+          { date: '2016-2018', label: 'DARPA Safe Genes / Insect Allies', summary: 'Defense-funded genetic-control and insect-vector programs enter the public source trail.', terms: ['DARPA', 'Safe Genes', 'Insect Allies'] },
+          { date: '2018-2024', label: 'Gene-drive mosquitoes', summary: 'Target Malaria and related releases frame ecological genetic engineering as public-health intervention.', terms: ['Target Malaria', 'Gene Drive', 'Mosquitoes'] },
+          { date: '2020-2024', label: 'Oxitec / Wolbachia deployment records', summary: 'Vector releases and biopesticide registrations become practical field-deployment cases.', terms: ['Oxitec', 'Wolbachia', 'EPA'] },
+          { date: '2021-2025', label: 'Ticks / Lyme / CRISPR ecology', summary: 'Tick and Lyme ecological-engineering research extends the vector-modification question beyond mosquitoes.', terms: ['Ticks', 'Lyme', 'CRISPR'] },
+          { date: '2014-2024', label: 'Pathogen surveillance / spillover grants', summary: 'EcoHealth, Hantavirus/HantaNet, DEFUSE, and origin records connect surveillance to outbreak-governance debates.', terms: ['EcoHealth Alliance', 'Hantavirus', 'DEFUSE', 'Pathogen Surveillance'] }
+        ]
+      },
+      {
+        id: 'digital-body-identity-machine',
+        title: 'Digital body → identity rails → machine-readable personhood',
+        arc: 'A chain from brain/body digitization and digital twins into biometric identity, AI governance, metaverse, and virtual-person patents.',
+        terms: ['Digital Twin', 'Human Brain Project', 'Blue Brain', 'World ID', 'BINA48', 'Microsoft', 'Meta', 'Brain Transparency'],
+        dominoes: [
+          { date: '2005-2013', label: 'Blue Brain / Human Brain Project', summary: 'Brain simulation infrastructure frames biology as computationally modellable.', terms: ['Blue Brain', 'Human Brain Project', 'Brain Simulation'] },
+          { date: '2010-2021', label: 'Mindfiles / virtual humans / chatbot patents', summary: 'Terasem, BINA48, and Microsoft patents normalize digital replicas and posthumous chatbots.', terms: ['Terasem', 'BINA48', 'Microsoft', 'Digital Person'] },
+          { date: '2019-2024', label: 'Living organs / digital twins', summary: 'Virtual-heart/body and digital-twin projects make organs and bodies operational models.', terms: ['Digital Twin', 'Living Heart', 'Virtual Human'] },
+          { date: '2020-2024', label: 'Metaverse and biometric identity', summary: 'Meta, World ID, digital-ID alliances, and biometric rails move identity into machine-verifiable layers.', terms: ['Meta', 'World ID', 'Digital ID', 'Biometrics'] },
+          { date: '2023-2026', label: 'AI governance + brain transparency', summary: 'AI policy and neurotechnology debates define rights, safety, and monitoring boundaries around human cognition.', terms: ['AI Act', 'Nita Farahany', 'Brain Transparency', 'Neurotechnology'] }
+        ]
+      }
     ];
 
-    const rewardBadges = [
-      { id: 'thread-puller', label: '🧵 Thread Puller', hint: 'Open a connection node' },
-      { id: 'quote-hunter', label: '🎙️ Quote Hunter', hint: 'Search or open a quote source' },
-      { id: 'archivist', label: '📎 Archivist', hint: 'Save a card' },
-      { id: 'analyst', label: '🧩 Analyst', hint: 'Compare cards' },
-      { id: 'deep-diver', label: '🕳️ Deep Diver', hint: 'Expand a card' },
-      { id: 'cartographer', label: '🗺️ Cartographer', hint: 'Use the constellation' }
+
+    const investmentConvergencePatterns = [
+      {
+        actor: 'Gates stack',
+        portfolio: ['Gates SIF', 'Breakthrough Energy', 'Gavi/WHO adjacency', 'Microsoft Antitrust', 'Gates Institute', 'Media Funding', 'Vaccine + therapeutic platforms', 'Food/climate systems'],
+        pattern: 'Health, bio, food, climate, media, population/reproductive-health, and policy capital reinforce one another through grants, PRIs, LP commitments, venture-style investments, and public-private alliances.',
+        risk: 'Philanthropy can shape markets, media agendas, and policy priorities while appearing outside ordinary democratic procurement channels; the 1998-2000 antitrust/foundation window is a key optics marker.',
+        term: 'Gates Foundation'
+      },
+      {
+        actor: 'Thiel / Founders Fund stack',
+        portfolio: ['Palantir', 'Anduril', 'SpaceX', 'Neuralink', 'OpenAI ecosystem'],
+        pattern: 'A single venture network spans surveillance/data fusion, defense autonomy, space infrastructure, neural interfaces, and AI.',
+        risk: 'Defense, intelligence, body-interface, and AI platforms can converge into state-corporate command infrastructure.',
+        term: 'Founders Fund'
+      },
+      {
+        actor: 'Schmidt stack',
+        portfolio: ['Innovation Endeavors', 'SCSP', 'Schmidt Sciences', 'SandboxAQ', 'NSCAI/biotech policy'],
+        pattern: 'Investment, philanthropy, science grants, and government strategy recommendations cluster around AI, bio, quantum, and national security.',
+        risk: 'Policy recommendations and private investment priorities can become mutually reinforcing.',
+        term: 'Eric Schmidt'
+      },
+      {
+        actor: 'a16z / American Dynamism stack',
+        portfolio: ['AI', 'Bio+Health', 'Anduril/defense', 'Civic/government tech', 'Infrastructure'],
+        pattern: 'Venture capital explicitly targets national-interest sectors while simultaneously funding AI and bio/health infrastructure.',
+        risk: 'Public missions can become venture-backed markets, with policy influence and procurement shaping winners.',
+        term: 'a16z'
+      },
+      {
+        actor: 'BlackRock institutional packaging stack',
+        portfolio: ['BUIDL tokenized fund', 'AI products', 'Health innovation', 'Genomics/immunology/bioengineering', 'Infrastructure/climate'],
+        pattern: 'Asset-management products normalize convergence sectors at portfolio scale: tokenized finance, AI, bio/health, climate, and infrastructure.',
+        risk: 'Once themes become default institutional allocations, they can scale faster than public understanding or democratic oversight.',
+        term: 'BlackRock'
+      }
+    ];
+
+    const gatesTimingWindows = [
+      {
+        window: 'May 18 1998 → Nov. 5 1999',
+        pattern: 'DOJ files Microsoft antitrust case; Gates deposition excerpts play in court; Findings of Fact find Microsoft held monopoly power.',
+        terms: ['Microsoft Antitrust', 'Bill Gates', 'DOJ', 'Findings of Fact'],
+        caution: 'A legal chronology marker; it should not be used alone as proof of private philanthropic motive.'
+      },
+      {
+        window: 'May 1999 → Jan. 2000',
+        pattern: 'Gates foundations fund Johns Hopkins population/reproductive-health institute, announce foundation merger, then consolidate as Bill & Melinda Gates Foundation.',
+        terms: ['Gates Institute', 'Johns Hopkins', 'Gates Foundation', 'Population'],
+        caution: 'Population and reproductive-health funding is documented; coercive-population claims need separate evidence.'
+      },
+      {
+        window: 'Nov. 1999 → Jan. 2000',
+        pattern: 'US$750M vaccine pledge to GAVI partners lands weeks before Gates steps down as Microsoft CEO and Gavi launch narratives accelerate.',
+        terms: ['Gavi', 'WHO', 'UNICEF', 'World Bank', 'Steve Ballmer'],
+        caution: 'The overlap is useful for pattern analysis, not a substitute for direct intent documents.'
+      },
+      {
+        window: '1911 → 1913 comparison',
+        pattern: 'Standard Oil breakup order is followed by Rockefeller Foundation charter; a monopoly-era fortune becomes a durable public-health/science philanthropy.',
+        terms: ['Standard Oil', 'Rockefeller Foundation', 'John D. Rockefeller', 'Antitrust'],
+        caution: 'Comparable structure does not mean identical facts; source each lineage separately.'
+      }
+    ];
+
+    const covidPatternHotspots = [
+      {
+        pattern: 'October 18, 2019 same-day convergence',
+        why: 'Event 201 simulated a novel coronavirus pandemic in New York on the same date the Military World Games opened in Wuhan.',
+        terms: ['Event 201', 'Military World Games', 'Wuhan', 'Johns Hopkins', 'Gates Foundation'],
+        caution: 'Same-day timing is a pattern marker, not proof of origin or intent.'
+      },
+      {
+        pattern: 'Preparedness exercises identified real failures before COVID',
+        why: 'Crimson Contagion and Event 201 both surfaced coordination, supply-chain, communication, and governance problems later seen during COVID-19.',
+        terms: ['Crimson Contagion', 'HHS', 'PPE', 'Supply Chain', 'Event 201'],
+        caution: 'Preparedness exercises are normal; the concerning issue is whether known gaps were fixed before crisis.'
+      },
+      {
+        pattern: 'Medical-countermeasure communications rehearsal',
+        why: 'SPARS focused on vaccine/EUA/adverse-event/public-trust dilemmas that became central in COVID-era governance disputes.',
+        terms: ['SPARS', 'EUA', 'Vaccines', 'Public Trust', 'Risk Communication'],
+        caution: 'SPARS was a fictional scenario; parallels should be treated as planning overlap unless documents prove more.'
+      },
+      {
+        pattern: 'Platform-vaccine acceleration before the shock',
+        why: 'The Milken universal flu panel gathered Fauci, BARDA, and vaccine-policy figures days after Event 201 to discuss pandemic threat and faster vaccine platforms.',
+        terms: ['Milken', 'Anthony Fauci', 'Rick Bright', 'Universal Flu Vaccine', 'mRNA'],
+        caution: 'Use full video/context; viral clips can overstate what the panel proves.'
+      }
+    ];
+
+    const consoleGuides = [
+      'Open a recurring node in Connection Constellation, then review its Thread Explorer matches.',
+      'Save source cards while reading; use Compare for two-record side-by-side triage.',
+      'Click any tag, entity, domino, or timeline step to preview related cards inline without changing global search.',
+      'Use Quote Vault and source-quality labels to anchor narratives to who / what / when / where / why records.'
     ];
 
     const quoteBank = [
@@ -4216,6 +5564,26 @@
         url: 'https://patents.google.com/patent/US10853717B2/en'
       },
       {
+        speaker: 'Department of Justice',
+        date: '2026-01-30',
+        where: 'Epstein Files Transparency Act release',
+        quote: '3.5 Million Responsive Pages',
+        why: 'Anchors the largest public source corpus for the Epstein investigation.',
+        tags: ['Jeffrey Epstein', 'DOJ', 'Epstein Files Transparency Act', 'FBI'],
+        sourceLabel: 'DOJ release',
+        url: 'https://www.justice.gov/opa/pr/department-justice-publishes-35-million-responsive-pages-compliance-epstein-files'
+      },
+      {
+        speaker: 'Wexner Foundation',
+        date: '2019-08-07',
+        where: 'Statement from Les Wexner',
+        quote: 'Epstein was my personal money manager',
+        why: 'Direct source quote for one of Epstein’s largest wealth/access relationships.',
+        tags: ['Les Wexner', 'Jeffrey Epstein', 'Wexner Foundation', 'L Brands'],
+        sourceLabel: 'Wexner Foundation statement',
+        url: 'https://www.wexnerfoundation.org/statement-from-les-wexner/'
+      },
+      {
         speaker: 'Julian Huxley',
         date: '1957',
         where: 'New Bottles for New Wine, essay “Transhumanism”',
@@ -4257,18 +5625,21 @@
       }
     ];
 
-    const quickSearches = ['King John', 'Presidents', 'Plantagenet', 'Royal Descent', 'Julian Huxley', 'Rockefeller', 'Eugenics', 'Cybernetics', 'Population Council', 'Bilderberg', 'Klaus Schwab', 'Bill Gates', 'Yuval Harari', 'Sam Altman', 'Pritzker', 'Young Global Leaders', 'Digital Twin', 'Mind Uploading', 'Brain Transparency', 'Israel', 'World ID', 'Gene Drive'];
+    const quickSearches = ['Microsoft Antitrust', 'Timing Pattern', 'Gavi', 'Gates Institute', 'Media Funding', 'Rockefeller Foundation', 'Investment Convergence', 'Founders Fund', 'Breakthrough Energy', 'BlackRock', 'a16z', 'Eric Schmidt', 'Palantir', 'Anduril', 'Event 201', 'Crimson Contagion', 'SPARS', 'Milken', 'Wuhan Games', 'Universal Flu Vaccine', 'Jeffrey Epstein', 'Ghislaine Maxwell', 'Epstein Emails', 'JPMorgan', 'MIT Media Lab', 'Maxwell Family', 'Les Wexner', 'Bush Family', 'Kennedy Family', 'Roosevelt Family', 'Gates Family', 'Walton Family', 'Hollywood Dynasty', 'Coppola Family', 'King John', 'Presidents', 'Plantagenet', 'Royal Descent', 'Julian Huxley', 'Rockefeller', 'Eugenics', 'Cybernetics', 'Population Council', 'Bilderberg', 'Klaus Schwab', 'Bill Gates', 'Yuval Harari', 'Sam Altman', 'Pritzker', 'Young Global Leaders', 'Digital Twin', 'Mind Uploading', 'Brain Transparency', 'Israel', 'World ID', 'Gene Drive'];
 
     let activeFilters = [...allTypes];
     let searchQuery = '';
     let sortMode = 'newest';
     let expandedCards = new Set();
     let selectedThread = null;
+    let selectedEntity = null;
+    let selectedComparisonEntity = null;
+    let selectedDominoTrajectory = 'gates-antitrust-global-health';
     let openCategories = new Set(['legacy', 'players', 'virtual', 'bioengineering']);
     let viewDensity = 'compact';
+    let focusMode = false;
     let savedCards = new Set();
     let compareCards = [];
-    let unlockedBadges = new Set(['cartographer']);
     let discoveryTerm = '';
     let discoveryMatches = [];
 
@@ -4528,6 +5899,447 @@
       );
     }
 
+
+
+    function getEntityProfile(entity, items = getVisibleEvidence(), visibleCount = 0) {
+      const allMatches = getThreadMatches(entity, evidence).sort((a, b) => dateForSort(a.date) - dateForSort(b.date));
+      const visibleMatches = getThreadMatches(entity, items);
+      const types = [...new Set(allMatches.map(item => formatTypePlural(item.type)))];
+      const links = allMatches.reduce((sum, item) => sum + (item.links?.length || 0), 0);
+      const dates = allMatches.map(item => dateForSort(item.date)).filter(Boolean);
+      const first = dates.length && allMatches[0] ? formatDate(allMatches[0].date) : 'Unknown';
+      const last = dates.length && allMatches[allMatches.length - 1] ? formatDate(allMatches[allMatches.length - 1].date) : 'Unknown';
+      const related = getThreadNodes(allMatches).filter(([node]) => node !== entity).slice(0, 8);
+      return { entity, visibleCount: visibleCount || visibleMatches.length, allMatches, visibleMatches, types, links, first, last, related };
+    }
+
+    function getEntityProfiles(items = getVisibleEvidence()) {
+      return getThreadNodes(items).slice(0, 10).map(([entity, visibleCount]) => getEntityProfile(entity, items, visibleCount));
+    }
+
+
+    function getEntityRelationships(profile) {
+      const relationships = new Map();
+      profile.allMatches.forEach(item => {
+        [...(item.relatedEntities || []), ...(item.tags || [])]
+          .filter(Boolean)
+          .filter(node => node !== profile.entity)
+          .forEach(node => {
+            if (!relationships.has(node)) relationships.set(node, { node, items: [], links: 0, types: new Set() });
+            const rel = relationships.get(node);
+            if (!rel.items.some(existing => existing.id === item.id)) {
+              rel.items.push(item);
+              rel.links += item.links?.length || 0;
+              rel.types.add(formatType(item.type));
+            }
+          });
+      });
+      return [...relationships.values()]
+        .map(rel => ({ ...rel, count: rel.items.length, types: [...rel.types] }))
+        .sort((a, b) => b.count - a.count || b.links - a.links || a.node.localeCompare(b.node))
+        .slice(0, 8);
+    }
+
+    function exportEntityGraph(profile, relationships) {
+      const payload = {
+        entity: profile.entity,
+        generatedAt: new Date().toISOString(),
+        stats: {
+          cards: profile.allMatches.length,
+          links: profile.links,
+          first: profile.first,
+          last: profile.last,
+          types: profile.types
+        },
+        nodes: [
+          { id: profile.entity, type: 'selected-entity', cards: profile.allMatches.length, links: profile.links },
+          ...relationships.map(rel => ({ id: rel.node, type: 'related-entity', sharedCards: rel.count, links: rel.links, categories: rel.types }))
+        ],
+        edges: relationships.map(rel => ({
+          source: profile.entity,
+          target: rel.node,
+          relationship: 'co-occurs-in-evidence',
+          sharedCards: rel.count,
+          links: rel.links,
+          cardIds: rel.items.map(item => item.id),
+          titles: rel.items.map(item => item.title)
+        })),
+        cards: profile.allMatches.map(item => ({
+          id: item.id,
+          type: item.type,
+          title: item.title,
+          date: item.date,
+          sourceQuality: item.sourceQuality || '',
+          links: (item.links || []).map(link => ({ label: link.label, url: link.url }))
+        }))
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `entity-graph-${profile.entity.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+
+
+
+    function getEntityComparison(primary, secondary) {
+      const primaryIds = new Set(primary.allMatches.map(item => item.id));
+      const secondaryIds = new Set(secondary.allMatches.map(item => item.id));
+      const shared = primary.allMatches.filter(item => secondaryIds.has(item.id));
+      const uniquePrimary = primary.allMatches.filter(item => !secondaryIds.has(item.id));
+      const uniqueSecondary = secondary.allMatches.filter(item => !primaryIds.has(item.id));
+      const primaryTypes = new Set(primary.allMatches.map(item => formatTypePlural(item.type)));
+      const secondaryTypes = new Set(secondary.allMatches.map(item => formatTypePlural(item.type)));
+      const sharedTypes = [...primaryTypes].filter(type => secondaryTypes.has(type));
+      const primaryDates = primary.allMatches.map(item => dateForSort(item.date)).filter(Boolean);
+      const secondaryDates = secondary.allMatches.map(item => dateForSort(item.date)).filter(Boolean);
+      const overlapStart = Math.max(Math.min(...primaryDates, Infinity), Math.min(...secondaryDates, Infinity));
+      const overlapEnd = Math.min(Math.max(...primaryDates, 0), Math.max(...secondaryDates, 0));
+      const hasOverlap = Number.isFinite(overlapStart) && overlapStart <= overlapEnd;
+      const overlapCards = hasOverlap ? [...primary.allMatches, ...secondary.allMatches]
+        .filter(item => {
+          const date = dateForSort(item.date);
+          return date >= overlapStart && date <= overlapEnd;
+        }) : [];
+      const primaryRelationships = getEntityRelationships(primary);
+      const secondaryRelationships = getEntityRelationships(secondary);
+      const secondaryRelNodes = new Set(secondaryRelationships.map(rel => rel.node));
+      const sharedBridges = primaryRelationships.filter(rel => secondaryRelNodes.has(rel.node));
+      return {
+        shared,
+        uniquePrimary,
+        uniqueSecondary,
+        sharedTypes,
+        overlapLabel: hasOverlap ? `${formatDate(new Date(overlapStart).toISOString())} → ${formatDate(new Date(overlapEnd).toISOString())}` : 'No dated overlap',
+        overlapCards: [...new Map(overlapCards.map(item => [item.id, item])).values()],
+        primaryDensity: primary.allMatches.length ? (primary.links / primary.allMatches.length).toFixed(1) : '0.0',
+        secondaryDensity: secondary.allMatches.length ? (secondary.links / secondary.allMatches.length).toFixed(1) : '0.0',
+        sharedBridges
+      };
+    }
+
+
+
+
+    function openEntityComparisonSet(items = []) {
+      if (!items.length) return;
+      items.forEach(item => {
+        openCategories.add(item.type);
+        expandedCards.add(item.id);
+      });
+      discoveryTerm = 'Entity comparison set';
+      discoveryMatches = items.sort(sortEvidence);
+      renderDiscoveryPanel();
+      renderCards();
+      renderStateBar(getVisibleEvidence());
+      document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function copyEntityComparison(primary, secondary, comparison) {
+      if (!primary || !secondary || !comparison) return;
+      const lines = [
+        `${primary.entity} ↔ ${secondary.entity}`,
+        `Shared cards: ${comparison.shared.length}`,
+        `${primary.entity} unique cards: ${comparison.uniquePrimary.length}`,
+        `${secondary.entity} unique cards: ${comparison.uniqueSecondary.length}`,
+        `Shared categories: ${comparison.sharedTypes.join(', ') || 'None'}`,
+        `Timeline overlap: ${comparison.overlapLabel} (${comparison.overlapCards.length} cards in overlap window)`,
+        `Source-link density: ${primary.entity} ${comparison.primaryDensity} links/card · ${secondary.entity} ${comparison.secondaryDensity} links/card`,
+        `Shared relationship bridges: ${comparison.sharedBridges.map(rel => rel.node).join(', ') || 'None'}`,
+        '',
+        'Shared evidence:',
+        comparison.shared.map(item => `- ${formatDate(item.date)} · ${item.title}`).join('\n') || '- None',
+        '',
+        `${primary.entity} unique evidence:`,
+        comparison.uniquePrimary.slice(0, 12).map(item => `- ${formatDate(item.date)} · ${item.title}`).join('\n') || '- None',
+        '',
+        `${secondary.entity} unique evidence:`,
+        comparison.uniqueSecondary.slice(0, 12).map(item => `- ${formatDate(item.date)} · ${item.title}`).join('\n') || '- None'
+      ];
+      copyText(lines.join('\n'));
+    }
+
+
+
+
+    function compactCardForExport(item) {
+      return {
+        id: item.id,
+        type: item.type,
+        title: item.title,
+        date: item.date,
+        jurisdiction: item.jurisdiction,
+        sourceQuality: item.sourceQuality || '',
+        facts: item.facts || [],
+        flags: item.flags || [],
+        relatedEntities: item.relatedEntities || [],
+        links: (item.links || []).map(link => ({ label: link.label, url: link.url }))
+      };
+    }
+
+    function compactProfileForExport(profile) {
+      return {
+        entity: profile.entity,
+        stats: {
+          cards: profile.allMatches.length,
+          visibleCards: profile.visibleMatches.length,
+          links: profile.links,
+          first: profile.first,
+          last: profile.last,
+          categories: profile.types,
+          linksPerCard: profile.allMatches.length ? Number((profile.links / profile.allMatches.length).toFixed(2)) : 0
+        },
+        topRelatedNodes: profile.related.map(([node, count]) => ({ node, count })),
+        cards: profile.allMatches.map(compactCardForExport)
+      };
+    }
+
+    function exportEntityComparison(primary, secondary, comparison) {
+      if (!primary || !secondary || !comparison) return;
+      const primaryRelationships = getEntityRelationships(primary);
+      const secondaryRelationships = getEntityRelationships(secondary);
+      const payload = {
+        generatedAt: new Date().toISOString(),
+        comparison: `${primary.entity} ↔ ${secondary.entity}`,
+        entities: {
+          primary: compactProfileForExport(primary),
+          secondary: compactProfileForExport(secondary)
+        },
+        metrics: {
+          sharedCards: comparison.shared.length,
+          primaryUniqueCards: comparison.uniquePrimary.length,
+          secondaryUniqueCards: comparison.uniqueSecondary.length,
+          sharedCategories: comparison.sharedTypes,
+          timelineOverlap: {
+            label: comparison.overlapLabel,
+            cardsInOverlap: comparison.overlapCards.length,
+            cardIds: comparison.overlapCards.map(item => item.id)
+          },
+          sourceLinkDensity: {
+            primaryLinksPerCard: Number(comparison.primaryDensity),
+            secondaryLinksPerCard: Number(comparison.secondaryDensity),
+            primaryTotalLinks: primary.links,
+            secondaryTotalLinks: secondary.links
+          },
+          sharedRelationshipBridges: comparison.sharedBridges.map(rel => ({
+            node: rel.node,
+            sharedCards: rel.count,
+            links: rel.links,
+            categories: rel.types,
+            cardIds: rel.items.map(item => item.id)
+          }))
+        },
+        evidenceSets: {
+          sharedCards: comparison.shared.map(compactCardForExport),
+          primaryUniqueCards: comparison.uniquePrimary.map(compactCardForExport),
+          secondaryUniqueCards: comparison.uniqueSecondary.map(compactCardForExport),
+          overlapCards: comparison.overlapCards.map(compactCardForExport)
+        },
+        graph: {
+          nodes: [
+            { id: primary.entity, type: 'comparison-primary', cards: primary.allMatches.length, links: primary.links },
+            { id: secondary.entity, type: 'comparison-secondary', cards: secondary.allMatches.length, links: secondary.links },
+            ...[...new Map([...primaryRelationships, ...secondaryRelationships].map(rel => [rel.node, rel])).values()]
+              .map(rel => ({ id: rel.node, type: 'bridge-node', sharedCards: rel.count, links: rel.links, categories: rel.types }))
+          ],
+          edges: [
+            ...primaryRelationships.map(rel => ({ source: primary.entity, target: rel.node, relationship: 'primary-bridge', sharedCards: rel.count, cardIds: rel.items.map(item => item.id) })),
+            ...secondaryRelationships.map(rel => ({ source: secondary.entity, target: rel.node, relationship: 'secondary-bridge', sharedCards: rel.count, cardIds: rel.items.map(item => item.id) })),
+            ...comparison.shared.map(item => ({ source: primary.entity, target: secondary.entity, relationship: 'shared-evidence-card', cardId: item.id, title: item.title }))
+          ]
+        }
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const slug = `${primary.entity}-vs-${secondary.entity}`.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      a.href = url;
+      a.download = `entity-comparison-${slug}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+
+    function renderEntityPanel(items = getVisibleEvidence()) {
+      const panel = document.getElementById('entityPanel');
+      const profiles = getEntityProfiles(items);
+      if (!profiles.length) {
+        panel.innerHTML = `
+          <div class="entity-header">
+            <div>
+              <div class="entity-title">Entity Intelligence</div>
+              <div class="entity-subtitle">No recurring entities in this view. Widen filters or clear search to rebuild the dossier map.</div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+      const activeProfile = profiles.find(profile => profile.entity === selectedEntity) || profiles[0];
+      selectedEntity = activeProfile.entity;
+      const timeline = activeProfile.allMatches.slice(0, 8);
+      const facts = activeProfile.allMatches.flatMap(item => item.facts || []).slice(0, 4);
+      const flags = activeProfile.allMatches.flatMap(item => item.flags || []).slice(0, 5);
+      const relationships = getEntityRelationships(activeProfile);
+      const comparisonCandidates = profiles.filter(profile => profile.entity !== activeProfile.entity);
+      const comparisonProfile = (selectedComparisonEntity && selectedComparisonEntity !== activeProfile.entity)
+        ? (profiles.find(profile => profile.entity === selectedComparisonEntity) || getEntityProfile(selectedComparisonEntity, items))
+        : comparisonCandidates[0];
+      if (comparisonProfile) selectedComparisonEntity = comparisonProfile.entity;
+      const comparison = comparisonProfile ? getEntityComparison(activeProfile, comparisonProfile) : null;
+
+      panel.innerHTML = `
+        <div class="entity-header">
+          <div>
+            <div class="entity-title">Entity Intelligence · ${activeProfile.entity}</div>
+            <div class="entity-subtitle">A first-class dossier view: timeline, categories, related nodes, facts, flags, and direct evidence actions for the highest-convergence entities in the current view</div>
+          </div>
+          <button class="toolbar-btn" type="button" id="copyEntityDossierBtn">Copy dossier</button>
+        </div>
+        <div class="entity-workspace">
+          <div class="entity-node-list">
+            ${profiles.map(profile => `
+              <button class="entity-node ${profile.entity === activeProfile.entity ? 'active' : ''}" type="button" data-entity-node="${profile.entity}">
+                <strong>${profile.entity}</strong>
+                <span class="entity-meta">${profile.visibleCount} visible hits · ${profile.allMatches.length} total cards · ${profile.links} links</span>
+              </button>
+            `).join('')}
+            ${comparisonCandidates.length ? `<div class="entity-meta" style="margin-top:8px;">Compare against</div>${comparisonCandidates.slice(0, 6).map(profile => `
+              <button class="entity-node ${comparisonProfile?.entity === profile.entity ? 'active' : ''}" type="button" data-entity-compare="${profile.entity}">
+                <strong>${profile.entity}</strong>
+                <span class="entity-meta">${profile.allMatches.length} cards · ${profile.links} links</span>
+              </button>
+            `).join('')}` : ''}
+          </div>
+          <div class="entity-detail">
+            <div class="entity-stat-row">
+              <span class="state-chip">${activeProfile.allMatches.length} evidence cards</span>
+              <span class="state-chip">${activeProfile.links} direct links</span>
+              <span class="state-chip">${activeProfile.first} → ${activeProfile.last}</span>
+              <span class="state-chip">${activeProfile.types.slice(0, 3).join(' + ') || 'Mixed records'}</span>
+            </div>
+            <div class="entity-meta">Related nodes: ${activeProfile.related.length ? activeProfile.related.map(([node]) => `<button class="tag-inline" type="button" data-entity-related="${node}">${node}</button>`).join(' ') : 'No repeated related nodes in this slice.'}</div>
+            <div class="entity-bridge-grid">
+              ${relationships.map(rel => `
+                <button class="entity-bridge" type="button" data-entity-bridge="${rel.node}">
+                  <strong>${rel.node}</strong>
+                  <span class="entity-meta">${rel.count} shared cards · ${rel.links} links · ${rel.types.slice(0, 3).join(' + ')}</span>
+                </button>
+              `).join('')}
+            </div>
+            ${facts.length ? `<div class="entity-meta" style="margin-top:8px;">Facts: ${facts.map(fact => `${fact.label}: ${fact.value}`).join(' · ')}</div>` : ''}
+            ${flags.length ? `<div class="entity-meta" style="margin-top:8px;">Flags: ${flags.join(' · ')}</div>` : ''}
+            <div class="entity-timeline" style="margin-top:12px;">
+              ${timeline.map(item => `
+                <button class="entity-step" type="button" data-entity-card="${item.id}">
+                  <span class="domino-date">${formatDate(item.date)} · ${formatType(item.type)}</span>
+                  <strong>${item.title}</strong>
+                  <span class="entity-meta">${item.links?.length || 0} links · ${item.sourceQuality || 'source record'}</span>
+                </button>
+              `).join('')}
+            </div>
+            ${comparison ? `
+              <div class="entity-compare-panel">
+                <div class="entity-title">Entity comparison · ${activeProfile.entity} ↔ ${comparisonProfile.entity}</div>
+                <div class="entity-compare-grid">
+                  <div class="entity-compare-metric"><strong>${comparison.shared.length}</strong><span class="entity-meta">shared cards</span></div>
+                  <div class="entity-compare-metric"><strong>${comparison.uniquePrimary.length} / ${comparison.uniqueSecondary.length}</strong><span class="entity-meta">unique cards</span></div>
+                  <div class="entity-compare-metric"><strong>${comparison.sharedTypes.length}</strong><span class="entity-meta">shared categories</span></div>
+                  <div class="entity-compare-metric"><strong>${comparison.overlapCards.length}</strong><span class="entity-meta">cards in overlap window<br>${comparison.overlapLabel}</span></div>
+                  <div class="entity-compare-metric"><strong>${comparison.primaryDensity} / ${comparison.secondaryDensity}</strong><span class="entity-meta">links per card</span></div>
+                  <div class="entity-compare-metric"><strong>${comparison.sharedBridges.length}</strong><span class="entity-meta">shared relationship bridges</span></div>
+                </div>
+                <div class="entity-meta" style="margin-top:10px;">Shared categories: ${comparison.sharedTypes.join(' · ') || 'None in current evidence set'}</div>
+                <div class="entity-meta" style="margin-top:6px;">Shared bridges: ${comparison.sharedBridges.map(rel => rel.node).join(' · ') || 'No repeated bridge nodes'}</div>
+                <div class="entity-actions">
+                  <button class="toolbar-btn" type="button" id="compareSharedBtn">Open shared cards</button>
+                  <button class="toolbar-btn" type="button" id="compareUniquePrimaryBtn">Open ${activeProfile.entity} unique</button>
+                  <button class="toolbar-btn" type="button" id="compareUniqueSecondaryBtn">Open ${comparisonProfile.entity} unique</button>
+                  <button class="toolbar-btn" type="button" id="copyEntityCompareBtn">Copy comparison</button>
+                  <button class="toolbar-btn" type="button" id="exportEntityCompareBtn">Export comparison JSON</button>
+                </div>
+              </div>
+            ` : ''}
+            <div class="entity-actions">
+              <button class="toolbar-btn" type="button" id="entityDiscoverBtn">Open inline discovery</button>
+              <button class="toolbar-btn" type="button" id="entityOpenCardsBtn">Expand dossier cards</button>
+              <button class="toolbar-btn" type="button" id="entityThreadBtn">Send to Thread Explorer</button>
+              <button class="toolbar-btn" type="button" id="entityGraphBtn">Export graph JSON</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      panel.querySelectorAll('[data-entity-node]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          selectedEntity = btn.dataset.entityNode;
+          selectedThread = selectedEntity;
+          renderEntityPanel(getVisibleEvidence());
+          renderThreadPanel(getVisibleEvidence());
+          renderStateBar(getVisibleEvidence());
+        });
+      });
+      panel.querySelectorAll('[data-entity-compare]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          selectedComparisonEntity = btn.dataset.entityCompare;
+          renderEntityPanel(getVisibleEvidence());
+          renderStateBar(getVisibleEvidence());
+        });
+      });
+      panel.querySelectorAll('[data-entity-related]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          selectedEntity = btn.dataset.entityRelated;
+          selectedThread = selectedEntity;
+          renderEntityPanel(getVisibleEvidence());
+          renderThreadPanel(getVisibleEvidence());
+          renderStateBar(getVisibleEvidence());
+        });
+      });
+      panel.querySelectorAll('[data-entity-bridge]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const relationship = relationships.find(rel => rel.node === btn.dataset.entityBridge);
+          if (!relationship) return;
+          discoveryTerm = `${activeProfile.entity} ↔ ${relationship.node}`;
+          discoveryMatches = relationship.items.sort(sortEvidence);
+          renderDiscoveryPanel();
+          renderStateBar(getVisibleEvidence());
+          document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+      });
+      panel.querySelectorAll('[data-entity-card]').forEach(btn => {
+        btn.addEventListener('click', () => openCardById(btn.dataset.entityCard));
+      });
+      document.getElementById('entityDiscoverBtn')?.addEventListener('click', () => showDiscovery(activeProfile.entity));
+      document.getElementById('entityOpenCardsBtn')?.addEventListener('click', () => {
+        activeProfile.allMatches.forEach(item => {
+          openCategories.add(item.type);
+          expandedCards.add(item.id);
+        });
+        renderCards();
+        renderStateBar(getVisibleEvidence());
+      });
+      document.getElementById('entityThreadBtn')?.addEventListener('click', () => {
+        selectedThread = activeProfile.entity;
+        renderThreadPanel(getVisibleEvidence());
+        renderStateBar(getVisibleEvidence());
+        document.getElementById('threadPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+      document.getElementById('compareSharedBtn')?.addEventListener('click', () => openEntityComparisonSet(comparison?.shared || []));
+      document.getElementById('compareUniquePrimaryBtn')?.addEventListener('click', () => openEntityComparisonSet(comparison?.uniquePrimary || []));
+      document.getElementById('compareUniqueSecondaryBtn')?.addEventListener('click', () => openEntityComparisonSet(comparison?.uniqueSecondary || []));
+      document.getElementById('copyEntityCompareBtn')?.addEventListener('click', () => copyEntityComparison(activeProfile, comparisonProfile, comparison));
+      document.getElementById('exportEntityCompareBtn')?.addEventListener('click', () => exportEntityComparison(activeProfile, comparisonProfile, comparison));
+      document.getElementById('entityGraphBtn')?.addEventListener('click', () => exportEntityGraph(activeProfile, relationships));
+      document.getElementById('copyEntityDossierBtn')?.addEventListener('click', () => {
+        const relatedText = activeProfile.related.map(([node, count]) => `${node} (${count})`).join(', ');
+        const relationshipText = relationships.map(rel => `${rel.node}: ${rel.count} shared cards / ${rel.links} links`).join('; ');
+        const timelineText = activeProfile.allMatches.map(item => `${formatDate(item.date)} — ${item.title}\n${item.description}\nLinks: ${(item.links || []).map(link => link.url).join(', ')}`).join('\n\n');
+        copyText(`${activeProfile.entity}\nCards: ${activeProfile.allMatches.length}\nLinks: ${activeProfile.links}\nSpan: ${activeProfile.first} → ${activeProfile.last}\nTypes: ${activeProfile.types.join(', ')}\nRelated: ${relatedText}\nRelationship map: ${relationshipText}\n\n${timelineText}`);
+      });
+    }
+
     function renderThreadPanel(items = getVisibleEvidence()) {
       const panel = document.getElementById('threadPanel');
       const nodes = getThreadNodes(items);
@@ -4576,6 +6388,7 @@
         btn.addEventListener('click', () => {
           selectedThread = btn.dataset.threadNode;
           renderThreadPanel(getVisibleEvidence());
+          renderStateBar(getVisibleEvidence());
         });
       });
 
@@ -4600,20 +6413,20 @@
       panel.innerHTML = `
         <div class="brief-header">
           <div>
-            <div class="brief-title">Top 5 value contributions + presentation upgrades</div>
-            <div class="brief-subtitle">A concise, user-facing strategy layer for where the map now adds the most value</div>
+            <div class="brief-title">Research orientation + source guardrails</div>
+            <div class="brief-subtitle">Finished reading layers for navigating the evidence without exposing implementation notes</div>
           </div>
           <button class="toolbar-btn" type="button" id="copyBriefBtn">Copy brief</button>
         </div>
         <div class="brief-grid">
           <article class="brief-card">
-            <h4>Highest-value contributions</h4>
+            <h4>Current map strengths</h4>
             <ol class="brief-list">
               ${highValueContributions.map((item, index) => `<li><span class="brief-rank">${index + 1}</span>${item}</li>`).join('')}
             </ol>
           </article>
           <article class="brief-card">
-            <h4>Best presentation optimizations</h4>
+            <h4>Source-reading guardrails</h4>
             <ol class="brief-list">
               ${presentationOptimizations.map((item, index) => `<li><span class="brief-rank">${index + 1}</span>${item}</li>`).join('')}
             </ol>
@@ -4627,7 +6440,7 @@
         btn.addEventListener('click', () => applyLens(btn.dataset.lens));
       });
       document.getElementById('copyBriefBtn')?.addEventListener('click', () => {
-        copyText(`Top 5 value contributions\n${highValueContributions.map((x, i) => `${i + 1}. ${x}`).join('\n')}\n\nTop 5 presentation optimizations\n${presentationOptimizations.map((x, i) => `${i + 1}. ${x}`).join('\n')}`);
+        copyText(`Current map strengths\n${highValueContributions.map((x, i) => `${i + 1}. ${x}`).join('\n')}\n\nSource-reading guardrails\n${presentationOptimizations.map((x, i) => `${i + 1}. ${x}`).join('\n')}`);
       });
     }
 
@@ -4688,6 +6501,139 @@
       document.getElementById('openHighestImpactBtn')?.addEventListener('click', () => {
         ranked.slice(0, 3).forEach(row => openCategories.add(row.type));
         renderCards();
+      });
+    }
+
+    function renderInvestmentPanel(items = getVisibleEvidence()) {
+      const panel = document.getElementById('investmentPanel');
+      const visibleText = items.map(item => `${item.title} ${item.description} ${(item.tags || []).join(' ')} ${(item.relatedEntities || []).join(' ')}`).join(' ').toLowerCase();
+      const ranked = investmentConvergencePatterns.map(row => {
+        const hits = row.portfolio.filter(term => visibleText.includes(term.toLowerCase())).length + (visibleText.includes(row.term.toLowerCase()) ? 2 : 0);
+        return { ...row, hits };
+      }).sort((a, b) => b.hits - a.hits);
+
+      panel.innerHTML = `
+        <div class="impact-header">
+          <div>
+            <div class="impact-title">Coincidence / Investment Convergence</div>
+            <div class="impact-subtitle">Portfolio stacks where the same actors fund or package AI, bio/health, defense, surveillance, tokenized finance, food/climate, and policy infrastructure</div>
+          </div>
+          <button class="toolbar-btn" type="button" id="copyInvestmentConvergenceBtn">Copy convergence map</button>
+        </div>
+        <div class="impact-grid">
+          ${ranked.map(row => `
+            <article class="impact-card">
+              <h4>${row.actor}</h4>
+              <ul class="brief-list">
+                <li><span class="brief-rank">P</span>${row.portfolio.map(term => `<button class="tag-inline" type="button" data-investment-term="${term}">${term}</button>`).join(' ')}</li>
+                <li><span class="brief-rank">Pattern</span>${row.pattern}</li>
+                <li><span class="brief-rank">Risk</span>${row.risk}</li>
+              </ul>
+            </article>
+          `).join('')}
+        </div>
+        <div class="impact-header compact-panel-header">
+          <div>
+            <div class="impact-title">Gates / Rockefeller exact timing windows</div>
+            <div class="impact-subtitle">Compressed chronology cards for the requested antitrust → foundation → global-health comparison, with caution labels so timing is not overstated</div>
+          </div>
+        </div>
+        <div class="impact-grid">
+          ${gatesTimingWindows.map(row => `
+            <article class="impact-card">
+              <h4>${row.window}</h4>
+              <ul class="brief-list">
+                <li><span class="brief-rank">Pattern</span>${row.pattern}</li>
+                <li><span class="brief-rank">Terms</span>${row.terms.map(term => `<button class="tag-inline" type="button" data-gates-window-term="${term}">${term}</button>`).join(' ')}</li>
+                <li><span class="brief-rank">Caution</span>${row.caution}</li>
+              </ul>
+            </article>
+          `).join('')}
+        </div>
+      `;
+
+      panel.querySelectorAll('[data-investment-term]').forEach(btn => {
+        btn.addEventListener('click', () => showDiscovery(btn.dataset.investmentTerm));
+      });
+      panel.querySelectorAll('[data-gates-window-term]').forEach(btn => {
+        btn.addEventListener('click', () => showDiscovery(btn.dataset.gatesWindowTerm));
+      });
+      document.getElementById('copyInvestmentConvergenceBtn')?.addEventListener('click', () => {
+        const rankedText = ranked.map(row => `${row.actor}\nPortfolio: ${row.portfolio.join('; ')}\nPattern: ${row.pattern}\nRisk: ${row.risk}`).join('\n\n');
+        const timingText = gatesTimingWindows.map(row => `${row.window}\nPattern: ${row.pattern}\nTerms: ${row.terms.join(', ')}\nCaution: ${row.caution}`).join('\n\n');
+        copyText(`${rankedText}\n\nGates / Rockefeller timing windows\n\n${timingText}`);
+      });
+    }
+
+
+    function getDominoMatches(trajectory, items = evidence) {
+      const terms = [...trajectory.terms, ...trajectory.dominoes.flatMap(step => step.terms || [])];
+      return [...new Map(terms.flatMap(term => getInlineMatches(term, items)).map(item => [item.id, item])).values()].sort(sortEvidence);
+    }
+
+    function renderDominoPanel(items = getVisibleEvidence()) {
+      const panel = document.getElementById('dominoPanel');
+      const visibleText = items.map(item => `${item.title} ${item.description} ${(item.tags || []).join(' ')} ${(item.relatedEntities || []).join(' ')}`).join(' ').toLowerCase();
+      const ranked = dominoTrajectories.map(trajectory => {
+        const hits = trajectory.terms.filter(term => visibleText.includes(term.toLowerCase())).length;
+        return { ...trajectory, hits };
+      }).sort((a, b) => b.hits - a.hits || a.title.localeCompare(b.title));
+      const selected = dominoTrajectories.find(item => item.id === selectedDominoTrajectory) || ranked[0] || dominoTrajectories[0];
+      const selectedMatches = getDominoMatches(selected, evidence);
+
+      panel.innerHTML = `
+        <div class="domino-header">
+          <div>
+            <div class="domino-title">Trajectory Domino Map</div>
+            <div class="domino-subtitle">Macro chains show how documented cards line up over time; click a trajectory to load its chain, then click any domino to open matching evidence without hijacking search</div>
+          </div>
+          <button class="toolbar-btn" type="button" id="copyDominoBtn">Copy domino chain</button>
+        </div>
+        <div class="domino-grid">
+          ${ranked.map(trajectory => `
+            <button class="domino-card ${trajectory.id === selected.id ? 'is-active' : ''}" type="button" data-domino-trajectory="${trajectory.id}">
+              <h4>${trajectory.title}</h4>
+              <span class="domino-meta">${trajectory.arc}<br>${trajectory.dominoes.length} dominoes · ${trajectory.hits} visible-term hits · ${getDominoMatches(trajectory, evidence).length} linked cards</span>
+            </button>
+          `).join('')}
+        </div>
+        <div class="domino-header compact-panel-header">
+          <div>
+            <div class="domino-title">Active chain · ${selected.title}</div>
+            <div class="domino-subtitle">${selected.arc} · ${selectedMatches.length} total matching cards across the dataset</div>
+          </div>
+        </div>
+        <div class="domino-chain">
+          ${selected.dominoes.map((step, index) => `
+            <button class="domino-step" type="button" data-domino-step="${index}">
+              <span class="domino-date">${index + 1}. ${step.date}</span>
+              <strong>${step.label}</strong>
+              <span class="domino-meta">${step.summary}<br>Terms: ${step.terms.join(' · ')}</span>
+            </button>
+          `).join('')}
+        </div>
+      `;
+
+      panel.querySelectorAll('[data-domino-trajectory]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          selectedDominoTrajectory = btn.dataset.dominoTrajectory;
+          recordInteraction('cartographer');
+          renderDominoPanel(getVisibleEvidence());
+          renderTimeline(getVisibleEvidence());
+        });
+      });
+      panel.querySelectorAll('[data-domino-step]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const step = selected.dominoes[Number(btn.dataset.dominoStep)];
+          discoveryTerm = `${selected.title} · ${step.label}`;
+          discoveryMatches = [...new Map(step.terms.flatMap(term => getInlineMatches(term)).map(item => [item.id, item])).values()].sort(sortEvidence);
+          renderDiscoveryPanel();
+          document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+      });
+      document.getElementById('copyDominoBtn')?.addEventListener('click', () => {
+        const chainText = selected.dominoes.map((step, index) => `${index + 1}. ${step.date} — ${step.label}\n${step.summary}\nTerms: ${step.terms.join(', ')}`).join('\n\n');
+        copyText(`${selected.title}\n${selected.arc}\n\n${chainText}\n\nLinked cards: ${selectedMatches.map(item => item.title).join('; ')}`);
       });
     }
 
@@ -4812,7 +6758,7 @@
           openCategories.add(item.type);
           expandedCards.add(item.id);
         });
-        unlockBadge('deep-diver');
+        recordInteraction('deep-diver');
         renderCards();
       });
       document.getElementById('copyDiscoveryBtn')?.addEventListener('click', () => copyText(formatLinksForClipboard(discoveryMatches)));
@@ -4838,6 +6784,14 @@
           <button class="toolbar-btn" type="button" id="copyNarrativesBtn">Copy narratives</button>
         </div>
         <div class="narrative-grid">
+          ${covidPatternHotspots.map((hotspot, index) => `
+            <button class="narrative-card" type="button" data-covid-pattern="${index}">
+              <strong>⚠ ${hotspot.pattern}</strong>
+              <span class="narrative-meta">${hotspot.why}<br>Caution: ${hotspot.caution}<br>Terms: ${hotspot.terms.join(' · ')}</span>
+            </button>
+          `).join('')}
+        </div>
+        <div class="narrative-grid" style="margin-top:12px;">
           ${narratives.map(n => `
             <button class="narrative-card" type="button" data-narrative-node="${n.node}">
               <strong>${n.node}</strong>
@@ -4846,11 +6800,16 @@
           `).join('')}
         </div>
       `;
+      panel.querySelectorAll('[data-covid-pattern]').forEach(btn => {
+        btn.addEventListener('click', () => showDiscovery(covidPatternHotspots[Number(btn.dataset.covidPattern)].terms[0]));
+      });
       panel.querySelectorAll('[data-narrative-node]').forEach(btn => {
         btn.addEventListener('click', () => showDiscovery(btn.dataset.narrativeNode));
       });
       document.getElementById('copyNarrativesBtn')?.addEventListener('click', () => {
-        copyText(narratives.map(n => `${n.node}: ${n.count} appearances across ${n.types || 'mixed records'}. ${n.facts ? 'Facts: ' + n.facts + '. ' : ''}${n.quote ? 'Quote anchor: ' + n.quote.speaker + ' (' + n.quote.date + ') ' + n.quote.url : ''}`).join('\n\n'));
+        const hotspotText = covidPatternHotspots.map(h => `${h.pattern}: ${h.why} Caution: ${h.caution} Terms: ${h.terms.join(', ')}`).join('\n\n');
+        const narrativeText = narratives.map(n => `${n.node}: ${n.count} appearances across ${n.types || 'mixed records'}. ${n.facts ? 'Facts: ' + n.facts + '. ' : ''}${n.quote ? 'Quote anchor: ' + n.quote.speaker + ' (' + n.quote.date + ') ' + n.quote.url : ''}`).join('\n\n');
+        copyText(`COVID / drill pattern hotspots\n${hotspotText}\n\nRecurring-node narratives\n${narrativeText}`);
       });
     }
 
@@ -4861,19 +6820,17 @@
       panel.innerHTML = `
         <div class="mission-header">
           <div>
-            <div class="mission-title">Investigation Console</div>
+            <div class="mission-title">Research Trail Console</div>
             <div class="mission-subtitle">${items.length} visible cards · ${saved.length} saved · ${compared.length}/2 in compare tray</div>
           </div>
-          <button class="toolbar-btn" type="button" id="randomThreadBtn">🎲 Pull a random thread</button>
+          <button class="toolbar-btn" type="button" id="randomThreadBtn">Open recurring thread</button>
         </div>
+        <div class="mission-subtitle">Workflow shortcuts</div>
         <div class="quest-list">
-          ${insightPrompts.map(prompt => `<div class="quest-item"><span class="quest-check">→</span><span>${prompt}</span></div>`).join('')}
-        </div>
-        <div class="badge-list">
-          ${rewardBadges.map(badge => `<button class="badge-chip ${unlockedBadges.has(badge.id) ? 'unlocked' : ''}" type="button" title="${badge.hint}">${badge.label}</button>`).join('')}
+          ${consoleGuides.map(prompt => `<div class="quest-item"><span class="quest-check">→</span><span>${prompt}</span></div>`).join('')}
         </div>
         <div class="saved-list">
-          ${saved.length ? saved.map(item => `<button class="saved-chip" type="button" data-saved-card="${item.id}">📎 ${item.title}</button>`).join('') : '<div class="saved-chip">📎 Save cards to build an investigation trail</div>'}
+          ${saved.length ? saved.map(item => `<button class="saved-chip" type="button" data-saved-card="${item.id}">📎 ${item.title}</button>`).join('') : '<div class="saved-chip">📎 Save cards to build a source trail</div>'}
         </div>
         <div class="compare-tray ${compared.length ? 'is-active' : ''}">
           <div class="mission-subtitle">Compare tray</div>
@@ -4918,15 +6875,15 @@
 
       panel.querySelectorAll('[data-quote-search]').forEach(btn => {
         btn.addEventListener('click', () => {
-          unlockBadge('quote-hunter');
+          recordInteraction('quote-hunter');
           showDiscovery(btn.dataset.quoteSearch);
         });
       });
       panel.querySelectorAll('[data-quote-source]').forEach(link => {
-        link.addEventListener('click', () => unlockBadge('quote-hunter'));
+        link.addEventListener('click', () => recordInteraction('quote-hunter'));
       });
       document.getElementById('copyQuotesBtn')?.addEventListener('click', () => {
-        unlockBadge('quote-hunter');
+        recordInteraction('quote-hunter');
         copyText(quotes.map(q => `${q.speaker} (${q.date}, ${q.where}): "${q.quote}"\nWhy it matters: ${q.why}\nSource: ${q.url}`).join('\n\n'));
       });
     }
@@ -4958,21 +6915,22 @@
 
       panel.querySelectorAll('[data-constellation-node]').forEach(btn => {
         btn.addEventListener('click', () => {
-          unlockBadge('cartographer');
+          recordInteraction('cartographer');
           selectedThread = btn.dataset.constellationNode;
           renderThreadPanel(getVisibleEvidence());
+          renderStateBar(getVisibleEvidence());
           document.getElementById('threadPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
       });
       document.getElementById('openTopNodeBtn')?.addEventListener('click', () => {
         if (nodes[0]) {
-          unlockBadge('thread-puller');
+          recordInteraction('thread-puller');
           showDiscovery(nodes[0][0]);
         }
       });
       document.getElementById('saveVisibleBtn')?.addEventListener('click', () => {
         items.slice(0, 12).forEach(item => savedCards.add(item.id));
-        unlockBadge('archivist');
+        recordInteraction('archivist');
         renderSupportPanels(getVisibleEvidence());
         renderCards();
       });
@@ -5028,6 +6986,23 @@
             </article>
           `).join('')}
         </div>
+        <div class="brief-header" style="margin-top:16px;">
+          <div>
+            <div class="brief-title">Elite / Celebrity Family Clusters</div>
+            <div class="brief-subtitle">Power-family buckets across politics, corporate fortunes, philanthropy, and Hollywood soft power</div>
+          </div>
+        </div>
+        <div class="brief-grid">
+          ${eliteFamilyClusters.map(cluster => `
+            <article class="brief-card">
+              <h4>${cluster.cluster}</h4>
+              <ul class="brief-list">
+                <li><span class="brief-rank">N</span>${cluster.nodes.map(term => `<button class="tag-inline" type="button" data-family-cluster-term="${term}">${term}</button>`).join(' ')}</li>
+                <li><span class="brief-rank">Why</span>${cluster.why}</li>
+              </ul>
+            </article>
+          `).join('')}
+        </div>
       `;
 
       panel.querySelectorAll('[data-lineage-term]').forEach(btn => {
@@ -5036,17 +7011,24 @@
       panel.querySelectorAll('[data-presidential-term]').forEach(btn => {
         btn.addEventListener('click', () => showDiscovery(btn.dataset.presidentialTerm));
       });
+      panel.querySelectorAll('[data-family-cluster-term]').forEach(btn => {
+        btn.addEventListener('click', () => showDiscovery(btn.dataset.familyClusterTerm));
+      });
       document.getElementById('copyLineagesBtn')?.addEventListener('click', () => {
         const lineageText = lineages.map(line => `${line.family}\nRoots: ${line.roots}\nDocuments: ${line.documents.join('; ')}\nConnects: ${line.connects.join('; ')}\nCaution: ${line.caution}`).join('\n\n');
         const presidentialText = presidentialFamilyTree.map(branch => `${branch.node}\nScope: ${branch.scope}\nEvidence: ${branch.evidence}\nConnects: ${branch.connects.join('; ')}\nCaution: ${branch.caution}`).join('\n\n');
-        copyText(`${lineageText}\n\nPresidential family tree / royal-ancestry claims\n${presidentialText}`);
+        const eliteText = eliteFamilyClusters.map(cluster => `${cluster.cluster}\nNodes: ${cluster.nodes.join('; ')}\nWhy: ${cluster.why}`).join('\n\n');
+        copyText(`${lineageText}\n\nPresidential family tree / royal-ancestry claims\n${presidentialText}\n\nElite / celebrity family clusters\n${eliteText}`);
       });
     }
 
     function renderSupportPanels(items = getVisibleEvidence()) {
+      renderEntityPanel(items);
       renderBriefPanel(items);
       renderImpactPanel(items);
+      renderInvestmentPanel(items);
       renderPathwayPanel(items);
+      renderDominoPanel(items);
       renderLineagePanel(items);
       renderMissionPanel(items);
       renderConnectionConstellation(items);
@@ -5055,9 +7037,8 @@
       renderDiscoveryPanel();
     }
 
-    function unlockBadge(id) {
-      unlockedBadges.add(id);
-      renderMissionPanel(getVisibleEvidence());
+    function recordInteraction(id) {
+      return id;
     }
 
     function saveCard(id) {
@@ -5065,7 +7046,7 @@
         savedCards.delete(id);
       } else {
         savedCards.add(id);
-        unlockBadge('archivist');
+        recordInteraction('archivist');
       }
       renderCards();
       renderSupportPanels(getVisibleEvidence());
@@ -5075,7 +7056,7 @@
       compareCards = compareCards.filter(cardId => cardId !== id);
       compareCards.unshift(id);
       compareCards = compareCards.slice(0, 2);
-      unlockBadge('analyst');
+      recordInteraction('analyst');
       renderMissionPanel(getVisibleEvidence());
     }
 
@@ -5093,8 +7074,9 @@
       if (!nodes.length) return;
       const node = nodes[Math.floor(Math.random() * nodes.length)][0];
       selectedThread = node;
-      unlockBadge('thread-puller');
+      recordInteraction('thread-puller');
       renderThreadPanel(getVisibleEvidence());
+      renderStateBar(getVisibleEvidence());
       document.getElementById('threadPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
@@ -5103,6 +7085,7 @@
       const timelineItems = [...items]
         .sort((a, b) => dateForSort(b.date) - dateForSort(a.date))
         .slice(0, 12);
+      const selected = dominoTrajectories.find(item => item.id === selectedDominoTrajectory) || dominoTrajectories[0];
 
       if (!timelineItems.length) {
         panel.innerHTML = '<div class="timeline-header"><span>Timeline</span><span>No visible items</span></div>';
@@ -5111,6 +7094,18 @@
 
       panel.innerHTML = `
         <div class="timeline-header">
+          <span>Big trajectory timeline · ${selected.title}</span>
+          <span>${selected.dominoes.length} dominoes · click one to open its chain evidence</span>
+        </div>
+        <div class="timeline-strip">
+          ${selected.dominoes.map((step, index) => `
+            <div class="timeline-item" data-timeline-domino-step="${index}">
+              <div class="timeline-date">${index + 1}. ${step.date}</div>
+              <div class="timeline-title">${step.label}<span class="domino-meta">${step.summary}</span></div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="timeline-header compact-panel-header">
           <span>Recent visible timeline</span>
           <span>${timelineItems.length} newest shown</span>
         </div>
@@ -5124,10 +7119,19 @@
         </div>
       `;
 
+      panel.querySelectorAll('[data-timeline-domino-step]').forEach(item => {
+        item.addEventListener('click', () => {
+          const step = selected.dominoes[Number(item.dataset.timelineDominoStep)];
+          discoveryTerm = `${selected.title} · ${step.label}`;
+          discoveryMatches = [...new Map(step.terms.flatMap(term => getInlineMatches(term)).map(card => [card.id, card])).values()].sort(sortEvidence);
+          renderDiscoveryPanel();
+          document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+      });
       panel.querySelectorAll('[data-timeline-id]').forEach(item => {
         item.addEventListener('click', () => {
           expandedCards = new Set([item.dataset.timelineId]);
-          unlockBadge('deep-diver');
+          recordInteraction('deep-diver');
           renderCards();
           document.querySelector(`[data-id="${item.dataset.timelineId}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
@@ -5139,7 +7143,7 @@
         expandedCards.delete(id);
       } else {
         expandedCards.add(id);
-        unlockBadge('deep-diver');
+        recordInteraction('deep-diver');
       }
       renderCards();
       renderSupportPanels(getVisibleEvidence());
@@ -5231,6 +7235,60 @@
              (item.links && item.links.some(link => link.label.toLowerCase().includes(q) || link.url.toLowerCase().includes(q)));
     }
 
+    function getSelectedTrajectoryTitle() {
+      return (dominoTrajectories.find(item => item.id === selectedDominoTrajectory) || dominoTrajectories[0])?.title || 'None';
+    }
+
+    function renderStateBar(visible = getVisibleEvidence()) {
+      const stateBar = document.getElementById('stateBar');
+      if (!stateBar) return;
+      const chips = [];
+      chips.push(`<span class="state-chip"><strong>${visible.length}</strong> visible</span>`);
+      chips.push(`<span class="state-chip"><strong>${activeFilters.length}/${allTypes.length}</strong> categories</span>`);
+      chips.push(`<span class="state-chip">Sort: ${sortMode}</span>`);
+      chips.push(`<span class="state-chip">Density: ${viewDensity}</span>`);
+      chips.push(`<span class="state-chip">Open tabs: ${openCategories.size}</span>`);
+      if (searchQuery) chips.push(`<button class="state-chip actionable" type="button" data-clear-state="search">Search: ${searchQuery} ×</button>`);
+      if (discoveryTerm) chips.push(`<button class="state-chip actionable" type="button" data-clear-state="discovery">Discovery: ${discoveryTerm} ×</button>`);
+      if (selectedEntity) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="entity">Entity: ${selectedEntity}</button>`);
+      if (selectedComparisonEntity) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="entity">Compare: ${selectedComparisonEntity}</button>`);
+      if (selectedThread) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="thread">Thread: ${selectedThread}</button>`);
+      chips.push(`<button class="state-chip actionable" type="button" data-jump-state="domino">Trajectory: ${getSelectedTrajectoryTitle()}</button>`);
+      if (savedCards.size) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="trail">Saved: ${savedCards.size}</button>`);
+      if (compareCards.length) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="trail">Compare: ${compareCards.length}/2</button>`);
+      if (focusMode) chips.push('<span class="state-chip">Focus mode active</span>');
+      stateBar.innerHTML = `<span class="state-label">Current view</span>${chips.join('')}`;
+      stateBar.querySelectorAll('[data-clear-state]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (btn.dataset.clearState === 'search') {
+            applySearch('');
+          }
+          if (btn.dataset.clearState === 'discovery') {
+            discoveryTerm = '';
+            discoveryMatches = [];
+            renderDiscoveryPanel();
+            renderStateBar(getVisibleEvidence());
+          }
+        });
+      });
+      stateBar.querySelectorAll('[data-jump-state]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targets = {
+            entity: 'entityPanel',
+            thread: 'threadPanel',
+            domino: 'dominoPanel',
+            trail: 'missionPanel'
+          };
+          document.getElementById(targets[btn.dataset.jumpState])?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+      });
+    }
+
+    function updateFocusMode() {
+      document.body.classList.toggle('focus-mode', focusMode);
+      document.getElementById('focusModeBtn').textContent = focusMode ? 'Full workspace' : 'Focus mode';
+    }
+
     function updateStats() {
       const visible = getVisibleEvidence();
       const totalLinks = visible.reduce((sum, item) => sum + (item.links?.length || 0), 0);
@@ -5263,6 +7321,7 @@
       `;
 
       renderSupportPanels(visible);
+      renderStateBar(visible);
       renderTimeline(visible);
       renderThreadPanel(visible);
       updateExpandButton(visible);
@@ -5332,9 +7391,13 @@
       sortMode = 'newest';
       expandedCards.clear();
       selectedThread = null;
+      selectedEntity = null;
+      selectedComparisonEntity = null;
       compareCards = [];
       openCategories = new Set(['players', 'virtual', 'bioengineering']);
       viewDensity = 'compact';
+      focusMode = false;
+      updateFocusMode();
       document.getElementById('searchInput').value = '';
       document.getElementById('sortSelect').value = 'newest';
       document.getElementById('densitySelect').value = 'compact';
@@ -5364,23 +7427,33 @@
       document.getElementById('densitySelect').addEventListener('change', (e) => {
         viewDensity = e.target.value;
         renderCards();
+        renderStateBar(getVisibleEvidence());
+      });
+
+      document.getElementById('focusModeBtn').addEventListener('click', () => {
+        focusMode = !focusMode;
+        updateFocusMode();
+        renderStateBar(getVisibleEvidence());
+        document.getElementById('dominoPanel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
 
       document.getElementById('openAllCategoriesBtn').addEventListener('click', () => {
         openCategories = new Set(getVisibleEvidence().map(item => item.type));
         renderCards();
+        renderStateBar(getVisibleEvidence());
       });
 
       document.getElementById('closeAllCategoriesBtn').addEventListener('click', () => {
         openCategories.clear();
         renderCards();
+        renderStateBar(getVisibleEvidence());
       });
 
       document.getElementById('expandAllBtn').addEventListener('click', () => {
         const visible = getVisibleEvidence();
         const allExpanded = visible.every(item => expandedCards.has(item.id));
         expandedCards = allExpanded ? new Set() : new Set(visible.map(item => item.id));
-        if (!allExpanded) unlockBadge('deep-diver');
+        if (!allExpanded) recordInteraction('deep-diver');
         renderCards();
         updateStats();
       });
