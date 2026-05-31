@@ -325,6 +325,57 @@
       margin: 10px 0;
     }
 
+    .entity-bridge-grid {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      margin-top: 12px;
+    }
+
+    .entity-bridge {
+      background: rgba(255,255,255,0.035);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-family: inherit;
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    .entity-bridge:hover {
+      border-color: var(--link-color);
+      color: var(--text-primary);
+    }
+
+    .entity-compare-panel {
+      background: rgba(93, 173, 226, 0.035);
+      border: 1px solid rgba(93, 173, 226, 0.18);
+      border-radius: 10px;
+      margin-top: 14px;
+      padding: 12px;
+    }
+
+    .entity-compare-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      margin-top: 10px;
+    }
+
+    .entity-compare-metric {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 10px 12px;
+    }
+
+    .entity-compare-metric strong {
+      color: var(--text-primary);
+      display: block;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
     @media (max-width: 860px) {
       .entity-workspace { grid-template-columns: 1fr; }
     }
@@ -5580,6 +5631,7 @@
     let expandedCards = new Set();
     let selectedThread = null;
     let selectedEntity = null;
+    let selectedComparisonEntity = null;
     let selectedDominoTrajectory = 'gates-antitrust-global-health';
     let openCategories = new Set(['legacy', 'players', 'virtual', 'bioengineering']);
     let viewDensity = 'compact';
@@ -5847,20 +5899,266 @@
 
 
 
-    function getEntityProfiles(items = getVisibleEvidence()) {
-      return getThreadNodes(items).slice(0, 10).map(([entity, visibleCount]) => {
-        const allMatches = getThreadMatches(entity, evidence).sort((a, b) => dateForSort(a.date) - dateForSort(b.date));
-        const visibleMatches = getThreadMatches(entity, items);
-        const types = [...new Set(allMatches.map(item => formatTypePlural(item.type)))];
-        const links = allMatches.reduce((sum, item) => sum + (item.links?.length || 0), 0);
-        const dates = allMatches.map(item => dateForSort(item.date)).filter(Boolean);
-        const first = dates.length ? formatDate(allMatches[0].date) : 'Unknown';
-        const last = dates.length ? formatDate(allMatches[allMatches.length - 1].date) : 'Unknown';
-        const related = getThreadNodes(allMatches).filter(([node]) => node !== entity).slice(0, 8);
-        return { entity, visibleCount, allMatches, visibleMatches, types, links, first, last, related };
-      });
+    function getEntityProfile(entity, items = getVisibleEvidence(), visibleCount = 0) {
+      const allMatches = getThreadMatches(entity, evidence).sort((a, b) => dateForSort(a.date) - dateForSort(b.date));
+      const visibleMatches = getThreadMatches(entity, items);
+      const types = [...new Set(allMatches.map(item => formatTypePlural(item.type)))];
+      const links = allMatches.reduce((sum, item) => sum + (item.links?.length || 0), 0);
+      const dates = allMatches.map(item => dateForSort(item.date)).filter(Boolean);
+      const first = dates.length && allMatches[0] ? formatDate(allMatches[0].date) : 'Unknown';
+      const last = dates.length && allMatches[allMatches.length - 1] ? formatDate(allMatches[allMatches.length - 1].date) : 'Unknown';
+      const related = getThreadNodes(allMatches).filter(([node]) => node !== entity).slice(0, 8);
+      return { entity, visibleCount: visibleCount || visibleMatches.length, allMatches, visibleMatches, types, links, first, last, related };
     }
 
+    function getEntityProfiles(items = getVisibleEvidence()) {
+      return getThreadNodes(items).slice(0, 10).map(([entity, visibleCount]) => getEntityProfile(entity, items, visibleCount));
+    }
+
+
+    function getEntityRelationships(profile) {
+      const relationships = new Map();
+      profile.allMatches.forEach(item => {
+        [...(item.relatedEntities || []), ...(item.tags || [])]
+          .filter(Boolean)
+          .filter(node => node !== profile.entity)
+          .forEach(node => {
+            if (!relationships.has(node)) relationships.set(node, { node, items: [], links: 0, types: new Set() });
+            const rel = relationships.get(node);
+            if (!rel.items.some(existing => existing.id === item.id)) {
+              rel.items.push(item);
+              rel.links += item.links?.length || 0;
+              rel.types.add(formatType(item.type));
+            }
+          });
+      });
+      return [...relationships.values()]
+        .map(rel => ({ ...rel, count: rel.items.length, types: [...rel.types] }))
+        .sort((a, b) => b.count - a.count || b.links - a.links || a.node.localeCompare(b.node))
+        .slice(0, 8);
+    }
+
+    function exportEntityGraph(profile, relationships) {
+      const payload = {
+        entity: profile.entity,
+        generatedAt: new Date().toISOString(),
+        stats: {
+          cards: profile.allMatches.length,
+          links: profile.links,
+          first: profile.first,
+          last: profile.last,
+          types: profile.types
+        },
+        nodes: [
+          { id: profile.entity, type: 'selected-entity', cards: profile.allMatches.length, links: profile.links },
+          ...relationships.map(rel => ({ id: rel.node, type: 'related-entity', sharedCards: rel.count, links: rel.links, categories: rel.types }))
+        ],
+        edges: relationships.map(rel => ({
+          source: profile.entity,
+          target: rel.node,
+          relationship: 'co-occurs-in-evidence',
+          sharedCards: rel.count,
+          links: rel.links,
+          cardIds: rel.items.map(item => item.id),
+          titles: rel.items.map(item => item.title)
+        })),
+        cards: profile.allMatches.map(item => ({
+          id: item.id,
+          type: item.type,
+          title: item.title,
+          date: item.date,
+          sourceQuality: item.sourceQuality || '',
+          links: (item.links || []).map(link => ({ label: link.label, url: link.url }))
+        }))
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `entity-graph-${profile.entity.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+
+
+
+    function getEntityComparison(primary, secondary) {
+      const primaryIds = new Set(primary.allMatches.map(item => item.id));
+      const secondaryIds = new Set(secondary.allMatches.map(item => item.id));
+      const shared = primary.allMatches.filter(item => secondaryIds.has(item.id));
+      const uniquePrimary = primary.allMatches.filter(item => !secondaryIds.has(item.id));
+      const uniqueSecondary = secondary.allMatches.filter(item => !primaryIds.has(item.id));
+      const primaryTypes = new Set(primary.allMatches.map(item => formatTypePlural(item.type)));
+      const secondaryTypes = new Set(secondary.allMatches.map(item => formatTypePlural(item.type)));
+      const sharedTypes = [...primaryTypes].filter(type => secondaryTypes.has(type));
+      const primaryDates = primary.allMatches.map(item => dateForSort(item.date)).filter(Boolean);
+      const secondaryDates = secondary.allMatches.map(item => dateForSort(item.date)).filter(Boolean);
+      const overlapStart = Math.max(Math.min(...primaryDates, Infinity), Math.min(...secondaryDates, Infinity));
+      const overlapEnd = Math.min(Math.max(...primaryDates, 0), Math.max(...secondaryDates, 0));
+      const hasOverlap = Number.isFinite(overlapStart) && overlapStart <= overlapEnd;
+      const overlapCards = hasOverlap ? [...primary.allMatches, ...secondary.allMatches]
+        .filter(item => {
+          const date = dateForSort(item.date);
+          return date >= overlapStart && date <= overlapEnd;
+        }) : [];
+      const primaryRelationships = getEntityRelationships(primary);
+      const secondaryRelationships = getEntityRelationships(secondary);
+      const secondaryRelNodes = new Set(secondaryRelationships.map(rel => rel.node));
+      const sharedBridges = primaryRelationships.filter(rel => secondaryRelNodes.has(rel.node));
+      return {
+        shared,
+        uniquePrimary,
+        uniqueSecondary,
+        sharedTypes,
+        overlapLabel: hasOverlap ? `${formatDate(new Date(overlapStart).toISOString())} → ${formatDate(new Date(overlapEnd).toISOString())}` : 'No dated overlap',
+        overlapCards: [...new Map(overlapCards.map(item => [item.id, item])).values()],
+        primaryDensity: primary.allMatches.length ? (primary.links / primary.allMatches.length).toFixed(1) : '0.0',
+        secondaryDensity: secondary.allMatches.length ? (secondary.links / secondary.allMatches.length).toFixed(1) : '0.0',
+        sharedBridges
+      };
+    }
+
+
+
+
+    function openEntityComparisonSet(items = []) {
+      if (!items.length) return;
+      items.forEach(item => {
+        openCategories.add(item.type);
+        expandedCards.add(item.id);
+      });
+      discoveryTerm = 'Entity comparison set';
+      discoveryMatches = items.sort(sortEvidence);
+      renderDiscoveryPanel();
+      renderCards();
+      renderStateBar(getVisibleEvidence());
+      document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function copyEntityComparison(primary, secondary, comparison) {
+      if (!primary || !secondary || !comparison) return;
+      const lines = [
+        `${primary.entity} ↔ ${secondary.entity}`,
+        `Shared cards: ${comparison.shared.length}`,
+        `${primary.entity} unique cards: ${comparison.uniquePrimary.length}`,
+        `${secondary.entity} unique cards: ${comparison.uniqueSecondary.length}`,
+        `Shared categories: ${comparison.sharedTypes.join(', ') || 'None'}`,
+        `Timeline overlap: ${comparison.overlapLabel} (${comparison.overlapCards.length} cards in overlap window)`,
+        `Source-link density: ${primary.entity} ${comparison.primaryDensity} links/card · ${secondary.entity} ${comparison.secondaryDensity} links/card`,
+        `Shared relationship bridges: ${comparison.sharedBridges.map(rel => rel.node).join(', ') || 'None'}`,
+        '',
+        'Shared evidence:',
+        comparison.shared.map(item => `- ${formatDate(item.date)} · ${item.title}`).join('\n') || '- None',
+        '',
+        `${primary.entity} unique evidence:`,
+        comparison.uniquePrimary.slice(0, 12).map(item => `- ${formatDate(item.date)} · ${item.title}`).join('\n') || '- None',
+        '',
+        `${secondary.entity} unique evidence:`,
+        comparison.uniqueSecondary.slice(0, 12).map(item => `- ${formatDate(item.date)} · ${item.title}`).join('\n') || '- None'
+      ];
+      copyText(lines.join('\n'));
+    }
+
+
+
+
+    function compactCardForExport(item) {
+      return {
+        id: item.id,
+        type: item.type,
+        title: item.title,
+        date: item.date,
+        jurisdiction: item.jurisdiction,
+        sourceQuality: item.sourceQuality || '',
+        facts: item.facts || [],
+        flags: item.flags || [],
+        relatedEntities: item.relatedEntities || [],
+        links: (item.links || []).map(link => ({ label: link.label, url: link.url }))
+      };
+    }
+
+    function compactProfileForExport(profile) {
+      return {
+        entity: profile.entity,
+        stats: {
+          cards: profile.allMatches.length,
+          visibleCards: profile.visibleMatches.length,
+          links: profile.links,
+          first: profile.first,
+          last: profile.last,
+          categories: profile.types,
+          linksPerCard: profile.allMatches.length ? Number((profile.links / profile.allMatches.length).toFixed(2)) : 0
+        },
+        topRelatedNodes: profile.related.map(([node, count]) => ({ node, count })),
+        cards: profile.allMatches.map(compactCardForExport)
+      };
+    }
+
+    function exportEntityComparison(primary, secondary, comparison) {
+      if (!primary || !secondary || !comparison) return;
+      const primaryRelationships = getEntityRelationships(primary);
+      const secondaryRelationships = getEntityRelationships(secondary);
+      const payload = {
+        generatedAt: new Date().toISOString(),
+        comparison: `${primary.entity} ↔ ${secondary.entity}`,
+        entities: {
+          primary: compactProfileForExport(primary),
+          secondary: compactProfileForExport(secondary)
+        },
+        metrics: {
+          sharedCards: comparison.shared.length,
+          primaryUniqueCards: comparison.uniquePrimary.length,
+          secondaryUniqueCards: comparison.uniqueSecondary.length,
+          sharedCategories: comparison.sharedTypes,
+          timelineOverlap: {
+            label: comparison.overlapLabel,
+            cardsInOverlap: comparison.overlapCards.length,
+            cardIds: comparison.overlapCards.map(item => item.id)
+          },
+          sourceLinkDensity: {
+            primaryLinksPerCard: Number(comparison.primaryDensity),
+            secondaryLinksPerCard: Number(comparison.secondaryDensity),
+            primaryTotalLinks: primary.links,
+            secondaryTotalLinks: secondary.links
+          },
+          sharedRelationshipBridges: comparison.sharedBridges.map(rel => ({
+            node: rel.node,
+            sharedCards: rel.count,
+            links: rel.links,
+            categories: rel.types,
+            cardIds: rel.items.map(item => item.id)
+          }))
+        },
+        evidenceSets: {
+          sharedCards: comparison.shared.map(compactCardForExport),
+          primaryUniqueCards: comparison.uniquePrimary.map(compactCardForExport),
+          secondaryUniqueCards: comparison.uniqueSecondary.map(compactCardForExport),
+          overlapCards: comparison.overlapCards.map(compactCardForExport)
+        },
+        graph: {
+          nodes: [
+            { id: primary.entity, type: 'comparison-primary', cards: primary.allMatches.length, links: primary.links },
+            { id: secondary.entity, type: 'comparison-secondary', cards: secondary.allMatches.length, links: secondary.links },
+            ...[...new Map([...primaryRelationships, ...secondaryRelationships].map(rel => [rel.node, rel])).values()]
+              .map(rel => ({ id: rel.node, type: 'bridge-node', sharedCards: rel.count, links: rel.links, categories: rel.types }))
+          ],
+          edges: [
+            ...primaryRelationships.map(rel => ({ source: primary.entity, target: rel.node, relationship: 'primary-bridge', sharedCards: rel.count, cardIds: rel.items.map(item => item.id) })),
+            ...secondaryRelationships.map(rel => ({ source: secondary.entity, target: rel.node, relationship: 'secondary-bridge', sharedCards: rel.count, cardIds: rel.items.map(item => item.id) })),
+            ...comparison.shared.map(item => ({ source: primary.entity, target: secondary.entity, relationship: 'shared-evidence-card', cardId: item.id, title: item.title }))
+          ]
+        }
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const slug = `${primary.entity}-vs-${secondary.entity}`.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      a.href = url;
+      a.download = `entity-comparison-${slug}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
     function renderEntityPanel(items = getVisibleEvidence()) {
       const panel = document.getElementById('entityPanel');
       const profiles = getEntityProfiles(items);
@@ -5880,6 +6178,13 @@
       const timeline = activeProfile.allMatches.slice(0, 8);
       const facts = activeProfile.allMatches.flatMap(item => item.facts || []).slice(0, 4);
       const flags = activeProfile.allMatches.flatMap(item => item.flags || []).slice(0, 5);
+      const relationships = getEntityRelationships(activeProfile);
+      const comparisonCandidates = profiles.filter(profile => profile.entity !== activeProfile.entity);
+      const comparisonProfile = (selectedComparisonEntity && selectedComparisonEntity !== activeProfile.entity)
+        ? (profiles.find(profile => profile.entity === selectedComparisonEntity) || getEntityProfile(selectedComparisonEntity, items))
+        : comparisonCandidates[0];
+      if (comparisonProfile) selectedComparisonEntity = comparisonProfile.entity;
+      const comparison = comparisonProfile ? getEntityComparison(activeProfile, comparisonProfile) : null;
 
       panel.innerHTML = `
         <div class="entity-header">
@@ -5897,6 +6202,12 @@
                 <span class="entity-meta">${profile.visibleCount} visible hits · ${profile.allMatches.length} total cards · ${profile.links} links</span>
               </button>
             `).join('')}
+            ${comparisonCandidates.length ? `<div class="entity-meta" style="margin-top:8px;">Compare against</div>${comparisonCandidates.slice(0, 6).map(profile => `
+              <button class="entity-node ${comparisonProfile?.entity === profile.entity ? 'active' : ''}" type="button" data-entity-compare="${profile.entity}">
+                <strong>${profile.entity}</strong>
+                <span class="entity-meta">${profile.allMatches.length} cards · ${profile.links} links</span>
+              </button>
+            `).join('')}` : ''}
           </div>
           <div class="entity-detail">
             <div class="entity-stat-row">
@@ -5906,6 +6217,14 @@
               <span class="state-chip">${activeProfile.types.slice(0, 3).join(' + ') || 'Mixed records'}</span>
             </div>
             <div class="entity-meta">Related nodes: ${activeProfile.related.length ? activeProfile.related.map(([node]) => `<button class="tag-inline" type="button" data-entity-related="${node}">${node}</button>`).join(' ') : 'No repeated related nodes in this slice.'}</div>
+            <div class="entity-bridge-grid">
+              ${relationships.map(rel => `
+                <button class="entity-bridge" type="button" data-entity-bridge="${rel.node}">
+                  <strong>${rel.node}</strong>
+                  <span class="entity-meta">${rel.count} shared cards · ${rel.links} links · ${rel.types.slice(0, 3).join(' + ')}</span>
+                </button>
+              `).join('')}
+            </div>
             ${facts.length ? `<div class="entity-meta" style="margin-top:8px;">Facts: ${facts.map(fact => `${fact.label}: ${fact.value}`).join(' · ')}</div>` : ''}
             ${flags.length ? `<div class="entity-meta" style="margin-top:8px;">Flags: ${flags.join(' · ')}</div>` : ''}
             <div class="entity-timeline" style="margin-top:12px;">
@@ -5917,10 +6236,33 @@
                 </button>
               `).join('')}
             </div>
+            ${comparison ? `
+              <div class="entity-compare-panel">
+                <div class="entity-title">Entity comparison · ${activeProfile.entity} ↔ ${comparisonProfile.entity}</div>
+                <div class="entity-compare-grid">
+                  <div class="entity-compare-metric"><strong>${comparison.shared.length}</strong><span class="entity-meta">shared cards</span></div>
+                  <div class="entity-compare-metric"><strong>${comparison.uniquePrimary.length} / ${comparison.uniqueSecondary.length}</strong><span class="entity-meta">unique cards</span></div>
+                  <div class="entity-compare-metric"><strong>${comparison.sharedTypes.length}</strong><span class="entity-meta">shared categories</span></div>
+                  <div class="entity-compare-metric"><strong>${comparison.overlapCards.length}</strong><span class="entity-meta">cards in overlap window<br>${comparison.overlapLabel}</span></div>
+                  <div class="entity-compare-metric"><strong>${comparison.primaryDensity} / ${comparison.secondaryDensity}</strong><span class="entity-meta">links per card</span></div>
+                  <div class="entity-compare-metric"><strong>${comparison.sharedBridges.length}</strong><span class="entity-meta">shared relationship bridges</span></div>
+                </div>
+                <div class="entity-meta" style="margin-top:10px;">Shared categories: ${comparison.sharedTypes.join(' · ') || 'None in current evidence set'}</div>
+                <div class="entity-meta" style="margin-top:6px;">Shared bridges: ${comparison.sharedBridges.map(rel => rel.node).join(' · ') || 'No repeated bridge nodes'}</div>
+                <div class="entity-actions">
+                  <button class="toolbar-btn" type="button" id="compareSharedBtn">Open shared cards</button>
+                  <button class="toolbar-btn" type="button" id="compareUniquePrimaryBtn">Open ${activeProfile.entity} unique</button>
+                  <button class="toolbar-btn" type="button" id="compareUniqueSecondaryBtn">Open ${comparisonProfile.entity} unique</button>
+                  <button class="toolbar-btn" type="button" id="copyEntityCompareBtn">Copy comparison</button>
+                  <button class="toolbar-btn" type="button" id="exportEntityCompareBtn">Export comparison JSON</button>
+                </div>
+              </div>
+            ` : ''}
             <div class="entity-actions">
               <button class="toolbar-btn" type="button" id="entityDiscoverBtn">Open inline discovery</button>
               <button class="toolbar-btn" type="button" id="entityOpenCardsBtn">Expand dossier cards</button>
               <button class="toolbar-btn" type="button" id="entityThreadBtn">Send to Thread Explorer</button>
+              <button class="toolbar-btn" type="button" id="entityGraphBtn">Export graph JSON</button>
             </div>
           </div>
         </div>
@@ -5935,6 +6277,13 @@
           renderStateBar(getVisibleEvidence());
         });
       });
+      panel.querySelectorAll('[data-entity-compare]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          selectedComparisonEntity = btn.dataset.entityCompare;
+          renderEntityPanel(getVisibleEvidence());
+          renderStateBar(getVisibleEvidence());
+        });
+      });
       panel.querySelectorAll('[data-entity-related]').forEach(btn => {
         btn.addEventListener('click', () => {
           selectedEntity = btn.dataset.entityRelated;
@@ -5942,6 +6291,17 @@
           renderEntityPanel(getVisibleEvidence());
           renderThreadPanel(getVisibleEvidence());
           renderStateBar(getVisibleEvidence());
+        });
+      });
+      panel.querySelectorAll('[data-entity-bridge]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const relationship = relationships.find(rel => rel.node === btn.dataset.entityBridge);
+          if (!relationship) return;
+          discoveryTerm = `${activeProfile.entity} ↔ ${relationship.node}`;
+          discoveryMatches = relationship.items.sort(sortEvidence);
+          renderDiscoveryPanel();
+          renderStateBar(getVisibleEvidence());
+          document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
       });
       panel.querySelectorAll('[data-entity-card]').forEach(btn => {
@@ -5964,9 +6324,16 @@
       });
       document.getElementById('copyEntityDossierBtn')?.addEventListener('click', () => {
         const relatedText = activeProfile.related.map(([node, count]) => `${node} (${count})`).join(', ');
+        const relationshipText = relationships.map(rel => `${rel.node}: ${rel.count} shared cards / ${rel.links} links`).join('; ');
         const timelineText = activeProfile.allMatches.map(item => `${formatDate(item.date)} — ${item.title}\n${item.description}\nLinks: ${(item.links || []).map(link => link.url).join(', ')}`).join('\n\n');
-        copyText(`${activeProfile.entity}\nCards: ${activeProfile.allMatches.length}\nLinks: ${activeProfile.links}\nSpan: ${activeProfile.first} → ${activeProfile.last}\nTypes: ${activeProfile.types.join(', ')}\nRelated: ${relatedText}\n\n${timelineText}`);
+        copyText(`${activeProfile.entity}\nCards: ${activeProfile.allMatches.length}\nLinks: ${activeProfile.links}\nSpan: ${activeProfile.first} → ${activeProfile.last}\nTypes: ${activeProfile.types.join(', ')}\nRelated: ${relatedText}\nRelationship map: ${relationshipText}\n\n${timelineText}`);
       });
+      document.getElementById('compareSharedBtn')?.addEventListener('click', () => openEntityComparisonSet(comparison?.shared || []));
+      document.getElementById('compareUniquePrimaryBtn')?.addEventListener('click', () => openEntityComparisonSet(comparison?.uniquePrimary || []));
+      document.getElementById('compareUniqueSecondaryBtn')?.addEventListener('click', () => openEntityComparisonSet(comparison?.uniqueSecondary || []));
+      document.getElementById('copyEntityCompareBtn')?.addEventListener('click', () => copyEntityComparison(activeProfile, comparisonProfile, comparison));
+      document.getElementById('exportEntityCompareBtn')?.addEventListener('click', () => exportEntityComparison(activeProfile, comparisonProfile, comparison));
+      document.getElementById('entityGraphBtn')?.addEventListener('click', () => exportEntityGraph(activeProfile, relationships));
     }
 
     function renderThreadPanel(items = getVisibleEvidence()) {
@@ -6666,9 +7033,8 @@
       renderDiscoveryPanel();
     }
 
-    function unlockBadge(id) {
-      unlockedBadges.add(id);
-      renderMissionPanel(getVisibleEvidence());
+    function recordInteraction(id) {
+      return id;
     }
 
     function recordInteraction(id) {
@@ -6886,6 +7252,7 @@
       if (searchQuery) chips.push(`<button class="state-chip actionable" type="button" data-clear-state="search">Search: ${searchQuery} ×</button>`);
       if (discoveryTerm) chips.push(`<button class="state-chip actionable" type="button" data-clear-state="discovery">Discovery: ${discoveryTerm} ×</button>`);
       if (selectedEntity) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="entity">Entity: ${selectedEntity}</button>`);
+      if (selectedComparisonEntity) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="entity">Compare: ${selectedComparisonEntity}</button>`);
       if (selectedThread) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="thread">Thread: ${selectedThread}</button>`);
       chips.push(`<button class="state-chip actionable" type="button" data-jump-state="domino">Trajectory: ${getSelectedTrajectoryTitle()}</button>`);
       if (savedCards.size) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="trail">Saved: ${savedCards.size}</button>`);
@@ -7026,6 +7393,7 @@
       expandedCards.clear();
       selectedThread = null;
       selectedEntity = null;
+      selectedComparisonEntity = null;
       compareCards = [];
       openCategories = new Set(['players', 'virtual', 'bioengineering']);
       viewDensity = 'compact';
