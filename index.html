@@ -634,7 +634,7 @@
       padding: 18px 20px;
     }
 
-    /* Mission Control / Gamified Overlays */
+    /* Research Trail Console */
     .mission-grid {
       display: grid;
       grid-template-columns: minmax(260px, 0.9fr) minmax(320px, 1.1fr);
@@ -698,7 +698,6 @@
     }
 
     .quest-list,
-    .badge-list,
     .saved-list,
     .quote-list,
     .constellation-list {
@@ -707,7 +706,6 @@
     }
 
     .quest-item,
-    .badge-chip,
     .saved-chip,
     .quote-card,
     .constellation-node {
@@ -730,23 +728,15 @@
       font-weight: 700;
     }
 
-    .badge-list,
     .saved-list {
       grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
       margin-top: 12px;
     }
 
-    .badge-chip,
     .saved-chip,
     .constellation-node {
       cursor: pointer;
       font-size: 0.78rem;
-    }
-
-    .badge-chip.unlocked {
-      border-color: var(--players);
-      color: var(--text-primary);
-      box-shadow: 0 0 14px rgba(255, 209, 102, 0.12);
     }
 
     .quote-card {
@@ -4966,19 +4956,19 @@
 
 
     const highValueContributions = [
-      'Convert the dataset into decision-ready layers: executive brief, lenses, pathways, matrix, and raw sources.',
-      'Surface convergence, not just volume: prioritize nodes that connect money, patents, policy, quotes, and deployments.',
-      'Make keyword exploration non-destructive: inline discovery previews matches without hijacking the main search state.',
-      'Pair claims with source posture: highlight primary records, filings, patents, official guidance, quotes, and audits.',
-      'Turn dense records into reusable trails: save, compare, copy, export, and open related clusters without losing context.'
+      '148 evidence cards with 459 direct links spanning policy, patents, funding, public health, bioengineering, digital identity, virtual-human systems, and legacy roots.',
+      'Convergence layers connect repeated nodes across money, patents, policy, quotes, deployments, and institutional lineages.',
+      'Inline discovery opens related cards in-place so keyword/entity exploration does not overwrite the main search or collapse the current view.',
+      'Every card keeps source posture visible through source-quality notes, facts, flags, details, quotes, and direct URLs.',
+      'Reusable research trails support saving, comparing, copying links, exporting JSON, and opening related clusters from the same workspace.'
     ];
 
     const presentationOptimizations = [
-      'Layered disclosure: headings first, compact cards second, expanded evidence third, source links last.',
-      'Narrative pathways: show the story arc connecting people, money, governance, technology, and implementation.',
-      'Impact scoring: rank categories by links, facts, flags, and cross-entity density so the strongest areas surface first.',
-      'Lens presets: one-click views for convergence, money, identity/pharma, virtual humans, bioengineering, and key players.',
-      'Cognitive wayfinding: keep discovery local, preserve scroll context, and offer close/copy/open actions at the point of need.'
+      'Read top-down: orientation panels first, trajectory chains second, category accordions third, expanded source cards last.',
+      'Treat domino chains as navigation maps: they show chronological alignment and jump points, not proof of hidden motive by themselves.',
+      'Prioritize high-density categories in the Impact Matrix when a view has too many records to read linearly.',
+      'Use lenses for fast entry points into convergence, money, identity/pharma, virtual humans, bioengineering, and key-player networks.',
+      'Use caution labels, source-quality notes, and primary links to separate documented records from interpretation.'
     ];
 
 
@@ -5294,20 +5284,11 @@
       }
     ];
 
-    const insightPrompts = [
-      'Start with a recurring node in Connection Constellation, then open its Thread Explorer links.',
-      'Use Save to trail to hold evidence while comparing money, quotes, and patents.',
-      'Click a tag or entity to preview matching cards inline without changing the global search.',
-      'Use Quote Vault to anchor narratives to sourced who/what/when/where/why excerpts.'
-    ];
-
-    const rewardBadges = [
-      { id: 'thread-puller', label: '🧵 Thread Puller', hint: 'Open a connection node' },
-      { id: 'quote-hunter', label: '🎙️ Quote Hunter', hint: 'Search or open a quote source' },
-      { id: 'archivist', label: '📎 Archivist', hint: 'Save a card' },
-      { id: 'analyst', label: '🧩 Analyst', hint: 'Compare cards' },
-      { id: 'deep-diver', label: '🕳️ Deep Diver', hint: 'Expand a card' },
-      { id: 'cartographer', label: '🗺️ Cartographer', hint: 'Use the constellation' }
+    const consoleGuides = [
+      'Open a recurring node in Connection Constellation, then review its Thread Explorer matches.',
+      'Save source cards while reading; use Compare for two-record side-by-side triage.',
+      'Click any tag, entity, domino, or timeline step to preview related cards inline without changing global search.',
+      'Use Quote Vault and source-quality labels to anchor narratives to who / what / when / where / why records.'
     ];
 
     const quoteBank = [
@@ -5455,7 +5436,6 @@
     let viewDensity = 'compact';
     let savedCards = new Set();
     let compareCards = [];
-    let unlockedBadges = new Set(['cartographer']);
     let discoveryTerm = '';
     let discoveryMatches = [];
 
@@ -5787,20 +5767,20 @@
       panel.innerHTML = `
         <div class="brief-header">
           <div>
-            <div class="brief-title">Top 5 value contributions + presentation upgrades</div>
-            <div class="brief-subtitle">A concise, user-facing strategy layer for where the map now adds the most value</div>
+            <div class="brief-title">Research orientation + source guardrails</div>
+            <div class="brief-subtitle">Finished reading layers for navigating the evidence without exposing implementation notes</div>
           </div>
           <button class="toolbar-btn" type="button" id="copyBriefBtn">Copy brief</button>
         </div>
         <div class="brief-grid">
           <article class="brief-card">
-            <h4>Highest-value contributions</h4>
+            <h4>Current map strengths</h4>
             <ol class="brief-list">
               ${highValueContributions.map((item, index) => `<li><span class="brief-rank">${index + 1}</span>${item}</li>`).join('')}
             </ol>
           </article>
           <article class="brief-card">
-            <h4>Best presentation optimizations</h4>
+            <h4>Source-reading guardrails</h4>
             <ol class="brief-list">
               ${presentationOptimizations.map((item, index) => `<li><span class="brief-rank">${index + 1}</span>${item}</li>`).join('')}
             </ol>
@@ -5814,7 +5794,7 @@
         btn.addEventListener('click', () => applyLens(btn.dataset.lens));
       });
       document.getElementById('copyBriefBtn')?.addEventListener('click', () => {
-        copyText(`Top 5 value contributions\n${highValueContributions.map((x, i) => `${i + 1}. ${x}`).join('\n')}\n\nTop 5 presentation optimizations\n${presentationOptimizations.map((x, i) => `${i + 1}. ${x}`).join('\n')}`);
+        copyText(`Current map strengths\n${highValueContributions.map((x, i) => `${i + 1}. ${x}`).join('\n')}\n\nSource-reading guardrails\n${presentationOptimizations.map((x, i) => `${i + 1}. ${x}`).join('\n')}`);
       });
     }
 
@@ -5991,7 +5971,7 @@
       panel.querySelectorAll('[data-domino-trajectory]').forEach(btn => {
         btn.addEventListener('click', () => {
           selectedDominoTrajectory = btn.dataset.dominoTrajectory;
-          unlockBadge('cartographer');
+          recordInteraction('cartographer');
           renderDominoPanel(getVisibleEvidence());
           renderTimeline(getVisibleEvidence());
         });
@@ -6132,7 +6112,7 @@
           openCategories.add(item.type);
           expandedCards.add(item.id);
         });
-        unlockBadge('deep-diver');
+        recordInteraction('deep-diver');
         renderCards();
       });
       document.getElementById('copyDiscoveryBtn')?.addEventListener('click', () => copyText(formatLinksForClipboard(discoveryMatches)));
@@ -6194,19 +6174,17 @@
       panel.innerHTML = `
         <div class="mission-header">
           <div>
-            <div class="mission-title">Investigation Console</div>
+            <div class="mission-title">Research Trail Console</div>
             <div class="mission-subtitle">${items.length} visible cards · ${saved.length} saved · ${compared.length}/2 in compare tray</div>
           </div>
-          <button class="toolbar-btn" type="button" id="randomThreadBtn">🎲 Pull a random thread</button>
+          <button class="toolbar-btn" type="button" id="randomThreadBtn">Open recurring thread</button>
         </div>
+        <div class="mission-subtitle">Workflow shortcuts</div>
         <div class="quest-list">
-          ${insightPrompts.map(prompt => `<div class="quest-item"><span class="quest-check">→</span><span>${prompt}</span></div>`).join('')}
-        </div>
-        <div class="badge-list">
-          ${rewardBadges.map(badge => `<button class="badge-chip ${unlockedBadges.has(badge.id) ? 'unlocked' : ''}" type="button" title="${badge.hint}">${badge.label}</button>`).join('')}
+          ${consoleGuides.map(prompt => `<div class="quest-item"><span class="quest-check">→</span><span>${prompt}</span></div>`).join('')}
         </div>
         <div class="saved-list">
-          ${saved.length ? saved.map(item => `<button class="saved-chip" type="button" data-saved-card="${item.id}">📎 ${item.title}</button>`).join('') : '<div class="saved-chip">📎 Save cards to build an investigation trail</div>'}
+          ${saved.length ? saved.map(item => `<button class="saved-chip" type="button" data-saved-card="${item.id}">📎 ${item.title}</button>`).join('') : '<div class="saved-chip">📎 Save cards to build a source trail</div>'}
         </div>
         <div class="compare-tray ${compared.length ? 'is-active' : ''}">
           <div class="mission-subtitle">Compare tray</div>
@@ -6251,15 +6229,15 @@
 
       panel.querySelectorAll('[data-quote-search]').forEach(btn => {
         btn.addEventListener('click', () => {
-          unlockBadge('quote-hunter');
+          recordInteraction('quote-hunter');
           showDiscovery(btn.dataset.quoteSearch);
         });
       });
       panel.querySelectorAll('[data-quote-source]').forEach(link => {
-        link.addEventListener('click', () => unlockBadge('quote-hunter'));
+        link.addEventListener('click', () => recordInteraction('quote-hunter'));
       });
       document.getElementById('copyQuotesBtn')?.addEventListener('click', () => {
-        unlockBadge('quote-hunter');
+        recordInteraction('quote-hunter');
         copyText(quotes.map(q => `${q.speaker} (${q.date}, ${q.where}): "${q.quote}"\nWhy it matters: ${q.why}\nSource: ${q.url}`).join('\n\n'));
       });
     }
@@ -6291,7 +6269,7 @@
 
       panel.querySelectorAll('[data-constellation-node]').forEach(btn => {
         btn.addEventListener('click', () => {
-          unlockBadge('cartographer');
+          recordInteraction('cartographer');
           selectedThread = btn.dataset.constellationNode;
           renderThreadPanel(getVisibleEvidence());
           document.getElementById('threadPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -6299,13 +6277,13 @@
       });
       document.getElementById('openTopNodeBtn')?.addEventListener('click', () => {
         if (nodes[0]) {
-          unlockBadge('thread-puller');
+          recordInteraction('thread-puller');
           showDiscovery(nodes[0][0]);
         }
       });
       document.getElementById('saveVisibleBtn')?.addEventListener('click', () => {
         items.slice(0, 12).forEach(item => savedCards.add(item.id));
-        unlockBadge('archivist');
+        recordInteraction('archivist');
         renderSupportPanels(getVisibleEvidence());
         renderCards();
       });
@@ -6411,9 +6389,8 @@
       renderDiscoveryPanel();
     }
 
-    function unlockBadge(id) {
-      unlockedBadges.add(id);
-      renderMissionPanel(getVisibleEvidence());
+    function recordInteraction(id) {
+      return id;
     }
 
     function saveCard(id) {
@@ -6421,7 +6398,7 @@
         savedCards.delete(id);
       } else {
         savedCards.add(id);
-        unlockBadge('archivist');
+        recordInteraction('archivist');
       }
       renderCards();
       renderSupportPanels(getVisibleEvidence());
@@ -6431,7 +6408,7 @@
       compareCards = compareCards.filter(cardId => cardId !== id);
       compareCards.unshift(id);
       compareCards = compareCards.slice(0, 2);
-      unlockBadge('analyst');
+      recordInteraction('analyst');
       renderMissionPanel(getVisibleEvidence());
     }
 
@@ -6449,7 +6426,7 @@
       if (!nodes.length) return;
       const node = nodes[Math.floor(Math.random() * nodes.length)][0];
       selectedThread = node;
-      unlockBadge('thread-puller');
+      recordInteraction('thread-puller');
       renderThreadPanel(getVisibleEvidence());
       document.getElementById('threadPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
@@ -6505,7 +6482,7 @@
       panel.querySelectorAll('[data-timeline-id]').forEach(item => {
         item.addEventListener('click', () => {
           expandedCards = new Set([item.dataset.timelineId]);
-          unlockBadge('deep-diver');
+          recordInteraction('deep-diver');
           renderCards();
           document.querySelector(`[data-id="${item.dataset.timelineId}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
@@ -6517,7 +6494,7 @@
         expandedCards.delete(id);
       } else {
         expandedCards.add(id);
-        unlockBadge('deep-diver');
+        recordInteraction('deep-diver');
       }
       renderCards();
       renderSupportPanels(getVisibleEvidence());
@@ -6758,7 +6735,7 @@
         const visible = getVisibleEvidence();
         const allExpanded = visible.every(item => expandedCards.has(item.id));
         expandedCards = allExpanded ? new Set() : new Set(visible.map(item => item.id));
-        if (!allExpanded) unlockBadge('deep-diver');
+        if (!allExpanded) recordInteraction('deep-diver');
         renderCards();
         updateStats();
       });
