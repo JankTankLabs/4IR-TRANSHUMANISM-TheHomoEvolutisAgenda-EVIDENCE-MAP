@@ -5975,7 +5975,7 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `entity-graph-${profile.entity.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.json`;
+      a.download = `entity-graph-${sanitizeForFilename(profile.entity)}.json`;
       a.click();
       URL.revokeObjectURL(url);
     }
@@ -5994,8 +5994,12 @@
       const sharedTypes = [...primaryTypes].filter(type => secondaryTypes.has(type));
       const primaryDates = primary.allMatches.map(item => dateForSort(item.date)).filter(Boolean);
       const secondaryDates = secondary.allMatches.map(item => dateForSort(item.date)).filter(Boolean);
-      const overlapStart = Math.max(Math.min(...primaryDates, Infinity), Math.min(...secondaryDates, Infinity));
-      const overlapEnd = Math.min(Math.max(...primaryDates, 0), Math.max(...secondaryDates, 0));
+      const primaryStart = primaryDates.length ? Math.min(...primaryDates) : Infinity;
+      const secondaryStart = secondaryDates.length ? Math.min(...secondaryDates) : Infinity;
+      const primaryEnd = primaryDates.length ? Math.max(...primaryDates) : 0;
+      const secondaryEnd = secondaryDates.length ? Math.max(...secondaryDates) : 0;
+      const overlapStart = Math.max(primaryStart, secondaryStart);
+      const overlapEnd = Math.min(primaryEnd, secondaryEnd);
       const hasOverlap = Number.isFinite(overlapStart) && overlapStart <= overlapEnd;
       const overlapCards = hasOverlap ? [...primary.allMatches, ...secondary.allMatches]
         .filter(item => {
@@ -6038,23 +6042,25 @@
 
     function copyEntityComparison(primary, secondary, comparison) {
       if (!primary || !secondary || !comparison) return;
+      const primaryName = sanitizeForClipboardLine(primary.entity);
+      const secondaryName = sanitizeForClipboardLine(secondary.entity);
       const lines = [
-        `${primary.entity} ↔ ${secondary.entity}`,
+        `${primaryName} ↔ ${secondaryName}`,
         `Shared cards: ${comparison.shared.length}`,
-        `${primary.entity} unique cards: ${comparison.uniquePrimary.length}`,
-        `${secondary.entity} unique cards: ${comparison.uniqueSecondary.length}`,
+        `${primaryName} unique cards: ${comparison.uniquePrimary.length}`,
+        `${secondaryName} unique cards: ${comparison.uniqueSecondary.length}`,
         `Shared categories: ${comparison.sharedTypes.join(', ') || 'None'}`,
-        `Timeline overlap: ${comparison.overlapLabel} (${comparison.overlapCards.length} cards in overlap window)`,
-        `Source-link density: ${primary.entity} ${comparison.primaryDensity} links/card · ${secondary.entity} ${comparison.secondaryDensity} links/card`,
-        `Shared relationship bridges: ${comparison.sharedBridges.map(rel => rel.node).join(', ') || 'None'}`,
+        `Timeline overlap: ${sanitizeForClipboardLine(comparison.overlapLabel)} (${comparison.overlapCards.length} cards in overlap window)`,
+        `Source-link density: ${primaryName} ${comparison.primaryDensity} links/card · ${secondaryName} ${comparison.secondaryDensity} links/card`,
+        `Shared relationship bridges: ${comparison.sharedBridges.map(rel => sanitizeForClipboardLine(rel.node)).join(', ') || 'None'}`,
         '',
         'Shared evidence:',
         comparison.shared.map(item => `- ${formatDate(item.date)} · ${item.title}`).join('\n') || '- None',
         '',
-        `${primary.entity} unique evidence:`,
+        `${primaryName} unique evidence:`,
         comparison.uniquePrimary.slice(0, 12).map(item => `- ${formatDate(item.date)} · ${item.title}`).join('\n') || '- None',
         '',
-        `${secondary.entity} unique evidence:`,
+        `${secondaryName} unique evidence:`,
         comparison.uniqueSecondary.slice(0, 12).map(item => `- ${formatDate(item.date)} · ${item.title}`).join('\n') || '- None'
       ];
       copyText(lines.join('\n'));
@@ -6140,7 +6146,7 @@
           nodes: [
             { id: primary.entity, type: 'comparison-primary', cards: primary.allMatches.length, links: primary.links },
             { id: secondary.entity, type: 'comparison-secondary', cards: secondary.allMatches.length, links: secondary.links },
-            ...[...new Map([...primaryRelationships, ...secondaryRelationships].map(rel => [rel.node, rel])).values()]
+            ...deduplicateRelationshipsByNode([...primaryRelationships, ...secondaryRelationships])
               .map(rel => ({ id: rel.node, type: 'bridge-node', sharedCards: rel.count, links: rel.links, categories: rel.types }))
           ],
           edges: [
@@ -6153,7 +6159,7 @@
       const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      const slug = `${primary.entity}-vs-${secondary.entity}`.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      const slug = sanitizeForFilename(`${primary.entity}-vs-${secondary.entity}`);
       a.href = url;
       a.download = `entity-comparison-${slug}.json`;
       a.click();
@@ -6203,8 +6209,8 @@
               </button>
             `).join('')}
             ${comparisonCandidates.length ? `<div class="entity-meta" style="margin-top:8px;">Compare against</div>${comparisonCandidates.slice(0, 6).map(profile => `
-              <button class="entity-node ${comparisonProfile?.entity === profile.entity ? 'active' : ''}" type="button" data-entity-compare="${profile.entity}">
-                <strong>${profile.entity}</strong>
+              <button class="entity-node ${comparisonProfile?.entity === profile.entity ? 'active' : ''}" type="button" data-entity-compare="${escapeHtml(profile.entity)}">
+                <strong>${escapeHtml(profile.entity)}</strong>
                 <span class="entity-meta">${profile.allMatches.length} cards · ${profile.links} links</span>
               </button>
             `).join('')}` : ''}
@@ -6219,9 +6225,9 @@
             <div class="entity-meta">Related nodes: ${activeProfile.related.length ? activeProfile.related.map(([node]) => `<button class="tag-inline" type="button" data-entity-related="${node}">${node}</button>`).join(' ') : 'No repeated related nodes in this slice.'}</div>
             <div class="entity-bridge-grid">
               ${relationships.map(rel => `
-                <button class="entity-bridge" type="button" data-entity-bridge="${rel.node}">
-                  <strong>${rel.node}</strong>
-                  <span class="entity-meta">${rel.count} shared cards · ${rel.links} links · ${rel.types.slice(0, 3).join(' + ')}</span>
+                <button class="entity-bridge" type="button" data-entity-bridge="${escapeHtml(rel.node)}">
+                  <strong>${escapeHtml(rel.node)}</strong>
+                  <span class="entity-meta">${rel.count} shared cards · ${rel.links} links · ${escapeHtml(rel.types.slice(0, 3).join(' + '))}</span>
                 </button>
               `).join('')}
             </div>
@@ -6238,7 +6244,7 @@
             </div>
             ${comparison ? `
               <div class="entity-compare-panel">
-                <div class="entity-title">Entity comparison · ${activeProfile.entity} ↔ ${comparisonProfile.entity}</div>
+                <div class="entity-title">Entity comparison · ${escapeHtml(activeProfile.entity)} ↔ ${escapeHtml(comparisonProfile.entity)}</div>
                 <div class="entity-compare-grid">
                   <div class="entity-compare-metric"><strong>${comparison.shared.length}</strong><span class="entity-meta">shared cards</span></div>
                   <div class="entity-compare-metric"><strong>${comparison.uniquePrimary.length} / ${comparison.uniqueSecondary.length}</strong><span class="entity-meta">unique cards</span></div>
@@ -6248,11 +6254,11 @@
                   <div class="entity-compare-metric"><strong>${comparison.sharedBridges.length}</strong><span class="entity-meta">shared relationship bridges</span></div>
                 </div>
                 <div class="entity-meta" style="margin-top:10px;">Shared categories: ${comparison.sharedTypes.join(' · ') || 'None in current evidence set'}</div>
-                <div class="entity-meta" style="margin-top:6px;">Shared bridges: ${comparison.sharedBridges.map(rel => rel.node).join(' · ') || 'No repeated bridge nodes'}</div>
+                <div class="entity-meta" style="margin-top:6px;">Shared bridges: ${comparison.sharedBridges.map(rel => escapeHtml(rel.node)).join(' · ') || 'No repeated bridge nodes'}</div>
                 <div class="entity-actions">
                   <button class="toolbar-btn" type="button" id="compareSharedBtn">Open shared cards</button>
-                  <button class="toolbar-btn" type="button" id="compareUniquePrimaryBtn">Open ${activeProfile.entity} unique</button>
-                  <button class="toolbar-btn" type="button" id="compareUniqueSecondaryBtn">Open ${comparisonProfile.entity} unique</button>
+                  <button class="toolbar-btn" type="button" id="compareUniquePrimaryBtn">Open ${escapeHtml(activeProfile.entity)} unique</button>
+                  <button class="toolbar-btn" type="button" id="compareUniqueSecondaryBtn">Open ${escapeHtml(comparisonProfile.entity)} unique</button>
                   <button class="toolbar-btn" type="button" id="copyEntityCompareBtn">Copy comparison</button>
                   <button class="toolbar-btn" type="button" id="exportEntityCompareBtn">Export comparison JSON</button>
                 </div>
@@ -6323,8 +6329,8 @@
         document.getElementById('threadPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       });
       document.getElementById('copyEntityDossierBtn')?.addEventListener('click', () => {
-        const relatedText = activeProfile.related.map(([node, count]) => `${node} (${count})`).join(', ');
-        const relationshipText = relationships.map(rel => `${rel.node}: ${rel.count} shared cards / ${rel.links} links`).join('; ');
+        const relatedText = activeProfile.related.map(([node, count]) => `${sanitizeForClipboardLine(node)} (${count})`).join(', ');
+        const relationshipText = relationships.map(rel => `${sanitizeForClipboardLine(rel.node)}: ${rel.count} shared cards / ${rel.links} links`).join('; ');
         const timelineText = activeProfile.allMatches.map(item => `${formatDate(item.date)} — ${item.title}\n${item.description}\nLinks: ${(item.links || []).map(link => link.url).join(', ')}`).join('\n\n');
         copyText(`${activeProfile.entity}\nCards: ${activeProfile.allMatches.length}\nLinks: ${activeProfile.links}\nSpan: ${activeProfile.first} → ${activeProfile.last}\nTypes: ${activeProfile.types.join(', ')}\nRelated: ${relatedText}\nRelationship map: ${relationshipText}\n\n${timelineText}`);
       });
@@ -7034,10 +7040,6 @@
     }
 
     function recordInteraction(id) {
-      return id;
-    }
-
-    function recordInteraction(id) {
       unlockBadge(id);
       return id;
     }
@@ -7207,6 +7209,30 @@
       if (dateStr.includes('Present') || dateStr.includes('Ongoing') || dateStr.includes('Current')) return Date.now();
       const date = new Date(dateStr);
       return isNaN(date) ? 0 : date.getTime();
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function sanitizeForClipboardLine(value) {
+      return String(value ?? '').replace(/[\r\n\t]+/g, ' ').trim();
+    }
+
+    function sanitizeForFilename(value) {
+      return String(value ?? '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '') || 'export';
+    }
+
+    function deduplicateRelationshipsByNode(relationships) {
+      return [...new Map(relationships.map(rel => [rel.node, rel])).values()];
     }
 
     function getLinkDomains(links = []) {
