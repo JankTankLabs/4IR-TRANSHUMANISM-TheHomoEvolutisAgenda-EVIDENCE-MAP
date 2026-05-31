@@ -6666,7 +6666,13 @@
       renderDiscoveryPanel();
     }
 
+    function unlockBadge(id) {
+      unlockedBadges.add(id);
+      renderMissionPanel(getVisibleEvidence());
+    }
+
     function recordInteraction(id) {
+      unlockBadge(id);
       return id;
     }
 
