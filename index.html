@@ -389,7 +389,19 @@
       background: rgba(255,255,255,0.03);
       border: 1px solid var(--border);
       border-radius: 9px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-family: inherit;
       padding: 9px 10px;
+      text-align: left;
+    }
+
+    .source-audit-card:hover,
+    .source-audit-card:focus-visible {
+      border-color: var(--warning);
+      color: var(--text-primary);
+      outline: none;
+      transform: translateY(-1px);
     }
 
     .source-audit-card strong {
@@ -5662,6 +5674,7 @@
     let compareCards = [];
     let discoveryTerm = '';
     let discoveryMatches = [];
+    let discoveryGuidance = '';
 
     // ============================================
     // RENDER FUNCTIONS
@@ -6044,18 +6057,28 @@
 
 
 
+    function openDiscoverySet(term, items = [], guidance = '') {
+      discoveryTerm = term;
+      discoveryMatches = [...items].sort(sortEvidence);
+      discoveryGuidance = guidance;
+      renderDiscoveryPanel();
+      document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
     function openEntityComparisonSet(items = []) {
       if (!items.length) return;
       items.forEach(item => {
         openCategories.add(item.type);
         expandedCards.add(item.id);
       });
-      discoveryTerm = 'Entity comparison set';
-      discoveryMatches = items.sort(sortEvidence);
-      renderDiscoveryPanel();
+      openDiscoverySet('Entity comparison set', items, 'Comparison subset opened from Entity Intelligence. Use Open matching cards to expand the exact cards in-place.');
       renderCards();
       renderStateBar(getVisibleEvidence());
-      document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function openSourceHardeningDrawer(entity, label, items = [], guidance = '') {
+      openDiscoverySet(`${entity} · ${label}`, items, guidance);
+      renderStateBar(getVisibleEvidence());
     }
 
     function copyEntityComparison(primary, secondary, comparison) {
@@ -6323,11 +6346,11 @@
               <span class="state-chip">${activeProfile.types.slice(0, 3).join(' + ') || 'Mixed records'}</span>
             </div>
             <div class="source-audit-grid">
-              <div class="source-audit-card"><strong>${activeSourceAudit.primaryRatio}%</strong><span class="entity-meta">primary/official mix</span></div>
-              <div class="source-audit-card"><strong>${activeSourceAudit.sourceRich.length}</strong><span class="entity-meta">source-rich cards (3+ links)</span></div>
-              <div class="source-audit-card"><strong>${activeSourceAudit.weakLinks.length}</strong><span class="entity-meta">weak-link cards</span></div>
-              <div class="source-audit-card"><strong>${activeSourceAudit.archiveNeeds.length}</strong><span class="entity-meta">archive candidates</span></div>
-              <div class="source-audit-card"><strong>${activeSourceAudit.riskLabel}</strong><span class="entity-meta">provenance risk</span></div>
+              <button class="source-audit-card" type="button" data-source-audit="primary"><strong>${activeSourceAudit.primaryRatio}%</strong><span class="entity-meta">primary/official mix</span></button>
+              <button class="source-audit-card" type="button" data-source-audit="sourceRich"><strong>${activeSourceAudit.sourceRich.length}</strong><span class="entity-meta">source-rich cards (3+ links)</span></button>
+              <button class="source-audit-card" type="button" data-source-audit="weakLinks"><strong>${activeSourceAudit.weakLinks.length}</strong><span class="entity-meta">weak-link cards</span></button>
+              <button class="source-audit-card" type="button" data-source-audit="archiveNeeds"><strong>${activeSourceAudit.archiveNeeds.length}</strong><span class="entity-meta">archive candidates</span></button>
+              <button class="source-audit-card" type="button" data-source-audit="provenanceRisk"><strong>${activeSourceAudit.riskLabel}</strong><span class="entity-meta">provenance risk</span></button>
             </div>
             <div class="entity-meta" style="margin-top:8px;">Source audit: ${activeSourceAudit.primary.length} primary/official · ${activeSourceAudit.peerReviewed.length} peer-reviewed · ${activeSourceAudit.secondary.length} secondary/reference · ${activeSourceAudit.unlabeled.length} unlabeled</div>
             <div class="entity-meta">Related nodes: ${activeProfile.related.length ? activeProfile.related.map(([node]) => `<button class="tag-inline" type="button" data-entity-related="${node}">${node}</button>`).join(' ') : 'No repeated related nodes in this slice.'}</div>
@@ -6414,15 +6437,46 @@
         btn.addEventListener('click', () => {
           const relationship = relationships.find(rel => rel.node === btn.dataset.entityBridge);
           if (!relationship) return;
-          discoveryTerm = `${activeProfile.entity} ↔ ${relationship.node}`;
-          discoveryMatches = relationship.items.sort(sortEvidence);
-          renderDiscoveryPanel();
+          openDiscoverySet(`${activeProfile.entity} ↔ ${relationship.node}`, relationship.items, 'Relationship bridge opened from Entity Intelligence.');
           renderStateBar(getVisibleEvidence());
-          document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
       });
       panel.querySelectorAll('[data-entity-card]').forEach(btn => {
         btn.addEventListener('click', () => openCardById(btn.dataset.entityCard));
+      });
+      const sourceAuditBuckets = {
+        primary: {
+          label: 'Primary / official source cards',
+          items: activeSourceAudit.primary,
+          guidance: 'Cards classified as primary or official. Use this set as the strongest provenance baseline for the dossier.'
+        },
+        sourceRich: {
+          label: 'Source-rich cards',
+          items: activeSourceAudit.sourceRich,
+          guidance: 'Cards with three or more direct links. These are good candidates for report anchors and relationship-map evidence.'
+        },
+        weakLinks: {
+          label: 'Weak-link cards',
+          items: activeSourceAudit.weakLinks,
+          guidance: 'Cards with zero or one direct link. Add primary URLs, supporting sources, or archive mirrors before relying on these heavily.'
+        },
+        archiveNeeds: {
+          label: 'Archive candidates',
+          items: activeSourceAudit.archiveNeeds,
+          guidance: 'Cards lacking archive coverage or needing stronger source posture. Capture archive/perma links and add primary documentation where possible.'
+        },
+        provenanceRisk: {
+          label: `${activeSourceAudit.riskLabel} provenance-risk cards`,
+          items: [...new Map([...activeSourceAudit.weakLinks, ...activeSourceAudit.archiveNeeds, ...activeSourceAudit.secondary].map(item => [item.id, item])).values()],
+          guidance: 'Combined source-hardening queue: weak links, archive candidates, and secondary/reference-heavy records for this entity.'
+        }
+      };
+      panel.querySelectorAll('[data-source-audit]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const bucket = sourceAuditBuckets[btn.dataset.sourceAudit];
+          if (!bucket) return;
+          openSourceHardeningDrawer(activeProfile.entity, bucket.label, bucket.items, bucket.guidance);
+        });
       });
       document.getElementById('entityDiscoverBtn')?.addEventListener('click', () => showDiscovery(activeProfile.entity));
       document.getElementById('entityOpenCardsBtn')?.addEventListener('click', () => {
@@ -6739,10 +6793,7 @@
       panel.querySelectorAll('[data-domino-step]').forEach(btn => {
         btn.addEventListener('click', () => {
           const step = selected.dominoes[Number(btn.dataset.dominoStep)];
-          discoveryTerm = `${selected.title} · ${step.label}`;
-          discoveryMatches = [...new Map(step.terms.flatMap(term => getInlineMatches(term)).map(item => [item.id, item])).values()].sort(sortEvidence);
-          renderDiscoveryPanel();
-          document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          openDiscoverySet(`${selected.title} · ${step.label}`, [...new Map(step.terms.flatMap(term => getInlineMatches(term)).map(item => [item.id, item])).values()], 'Domino step cards opened without changing the global search.');
         });
       });
       document.getElementById('copyDominoBtn')?.addEventListener('click', () => {
@@ -6774,10 +6825,7 @@
       panel.querySelectorAll('[data-pathway-index]').forEach(card => {
         card.addEventListener('click', () => {
           const pathway = narrativePathways[Number(card.dataset.pathwayIndex)];
-          discoveryTerm = pathway.title;
-          discoveryMatches = [...new Map(pathway.terms.flatMap(term => getInlineMatches(term)).map(item => [item.id, item])).values()].sort(sortEvidence);
-          renderDiscoveryPanel();
-          document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          openDiscoverySet(pathway.title, [...new Map(pathway.terms.flatMap(term => getInlineMatches(term)).map(item => [item.id, item])).values()], 'Pathway cards opened without changing the global search.');
         });
       });
       document.getElementById('copyPathwaysBtn')?.addEventListener('click', () => {
@@ -6793,13 +6841,10 @@
       document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.classList.toggle('active', activeFilters.includes(btn.dataset.filter));
       });
-      discoveryTerm = lens.label;
-      discoveryMatches = [...new Map(lens.terms.flatMap(term => getInlineMatches(term)).map(item => [item.id, item])).values()].sort(sortEvidence);
+      openDiscoverySet(lens.label, [...new Map(lens.terms.flatMap(term => getInlineMatches(term)).map(item => [item.id, item])).values()], 'Lens preset opened a focused discovery drawer while preserving the search box.');
       expandedCards.clear();
       renderCards();
       updateStats();
-      renderDiscoveryPanel();
-      document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
     function getInlineMatches(term, items = evidence) {
@@ -6821,10 +6866,7 @@
     }
 
     function showDiscovery(term) {
-      discoveryTerm = term;
-      discoveryMatches = getInlineMatches(term);
-      renderDiscoveryPanel();
-      document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      openDiscoverySet(term, getInlineMatches(term), 'Inline discovery preserves your current search, filters, and scroll context.');
     }
 
     function renderDiscoveryPanel() {
@@ -6842,6 +6884,7 @@
           <div>
             <div class="discovery-title">Inline discovery · ${discoveryTerm}</div>
             <div class="discovery-subtitle">${discoveryMatches.length} matches without changing the main search or collapsing your current place${categories ? ' · ' + categories : ''}</div>
+            ${discoveryGuidance ? `<div class="discovery-subtitle">${discoveryGuidance}</div>` : ''}
           </div>
           <button class="toolbar-btn" type="button" id="closeDiscoveryBtn">Close</button>
         </div>
@@ -6862,6 +6905,7 @@
       document.getElementById('closeDiscoveryBtn')?.addEventListener('click', () => {
         discoveryTerm = '';
         discoveryMatches = [];
+        discoveryGuidance = '';
         renderDiscoveryPanel();
       });
       panel.querySelectorAll('[data-discovery-card]').forEach(btn => {
@@ -7236,10 +7280,7 @@
       panel.querySelectorAll('[data-timeline-domino-step]').forEach(item => {
         item.addEventListener('click', () => {
           const step = selected.dominoes[Number(item.dataset.timelineDominoStep)];
-          discoveryTerm = `${selected.title} · ${step.label}`;
-          discoveryMatches = [...new Map(step.terms.flatMap(term => getInlineMatches(term)).map(card => [card.id, card])).values()].sort(sortEvidence);
-          renderDiscoveryPanel();
-          document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          openDiscoverySet(`${selected.title} · ${step.label}`, [...new Map(step.terms.flatMap(term => getInlineMatches(term)).map(card => [card.id, card])).values()], 'Timeline domino cards opened without changing the global search.');
         });
       });
       panel.querySelectorAll('[data-timeline-id]').forEach(item => {
@@ -7380,6 +7421,7 @@
           if (btn.dataset.clearState === 'discovery') {
             discoveryTerm = '';
             discoveryMatches = [];
+            discoveryGuidance = '';
             renderDiscoveryPanel();
             renderStateBar(getVisibleEvidence());
           }
