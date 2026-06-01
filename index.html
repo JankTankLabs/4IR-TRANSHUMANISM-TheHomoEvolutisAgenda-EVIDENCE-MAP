@@ -378,6 +378,38 @@
       margin-bottom: 4px;
     }
 
+    .source-audit-grid {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      margin-top: 10px;
+    }
+
+    .source-audit-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-family: inherit;
+      padding: 9px 10px;
+      text-align: left;
+    }
+
+    .source-audit-card:hover,
+    .source-audit-card:focus-visible {
+      border-color: var(--warning);
+      color: var(--text-primary);
+      outline: none;
+      transform: translateY(-1px);
+    }
+
+    .source-audit-card strong {
+      color: var(--text-primary);
+      display: block;
+      font-size: 0.9rem;
+    }
+
     @media (max-width: 860px) {
       .entity-workspace { grid-template-columns: 1fr; }
     }
@@ -899,6 +931,63 @@
     .constellation-list {
       display: grid;
       gap: 8px;
+    }
+
+
+    .branch-board {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      margin-top: 12px;
+    }
+
+    .branch-column {
+      background: rgba(255,255,255,0.03);
+      border: 1px dashed rgba(255,255,255,0.18);
+      border-radius: 10px;
+      min-height: 140px;
+      padding: 10px;
+    }
+
+    .branch-column.is-drop-target {
+      border-color: var(--link-color);
+      box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.12) inset;
+    }
+
+    .branch-column-title {
+      color: var(--text-primary);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .branch-card {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      cursor: grab;
+      display: grid;
+      gap: 5px;
+      margin-bottom: 8px;
+      padding: 9px 10px;
+    }
+
+    .branch-card:active { cursor: grabbing; }
+
+    .branch-card strong {
+      color: var(--text-primary);
+      font-size: 0.8rem;
+    }
+
+    .branch-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
     }
 
     .quest-item,
@@ -5156,21 +5245,6 @@
 
 
 
-    const highValueContributions = [
-      '148 evidence cards with 459 direct links spanning policy, patents, funding, public health, bioengineering, digital identity, virtual-human systems, and legacy roots.',
-      'Convergence layers connect repeated nodes across money, patents, policy, quotes, deployments, and institutional lineages.',
-      'Inline discovery opens related cards in-place so keyword/entity exploration does not overwrite the main search or collapse the current view.',
-      'Every card keeps source posture visible through source-quality notes, facts, flags, details, quotes, and direct URLs.',
-      'Reusable research trails support saving, comparing, copying links, exporting JSON, and opening related clusters from the same workspace.'
-    ];
-
-    const presentationOptimizations = [
-      'Read top-down: orientation panels first, trajectory chains second, category accordions third, expanded source cards last.',
-      'Treat domino chains as navigation maps: they show chronological alignment and jump points, not proof of hidden motive by themselves.',
-      'Prioritize high-density categories in the Impact Matrix when a view has too many records to read linearly.',
-      'Use lenses for fast entry points into convergence, money, identity/pharma, virtual humans, bioengineering, and key-player networks.',
-      'Use caution labels, source-quality notes, and primary links to separate documented records from interpretation.'
-    ];
 
 
     const legacyLineages = [
@@ -5640,8 +5714,14 @@
     let focusMode = false;
     let savedCards = new Set();
     let compareCards = [];
+    let branchBoard = {
+      chain: [],
+      branch: [],
+      review: []
+    };
     let discoveryTerm = '';
     let discoveryMatches = [];
+    let discoveryGuidance = '';
 
     // ============================================
     // RENDER FUNCTIONS
@@ -6024,22 +6104,34 @@
 
 
 
+    function openDiscoverySet(term, items = [], guidance = '') {
+      discoveryTerm = term;
+      discoveryMatches = [...items].sort(sortEvidence);
+      discoveryGuidance = guidance;
+      renderDiscoveryPanel();
+      document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
     function openEntityComparisonSet(items = []) {
       if (!items.length) return;
       items.forEach(item => {
         openCategories.add(item.type);
         expandedCards.add(item.id);
       });
-      discoveryTerm = 'Entity comparison set';
-      discoveryMatches = items.sort(sortEvidence);
-      renderDiscoveryPanel();
+      openDiscoverySet('Entity comparison set', items, 'Comparison subset opened from Entity Intelligence. Use Open matching cards to expand the exact cards in-place.');
       renderCards();
       renderStateBar(getVisibleEvidence());
-      document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function openSourceHardeningDrawer(entity, label, items = [], guidance = '') {
+      openDiscoverySet(`${entity} · ${label}`, items, guidance);
+      renderStateBar(getVisibleEvidence());
     }
 
     function copyEntityComparison(primary, secondary, comparison) {
       if (!primary || !secondary || !comparison) return;
+      const primaryAudit = getSourceAudit(primary.allMatches);
+      const secondaryAudit = getSourceAudit(secondary.allMatches);
       const lines = [
         `${primary.entity} ↔ ${secondary.entity}`,
         `Shared cards: ${comparison.shared.length}`,
@@ -6048,6 +6140,7 @@
         `Shared categories: ${comparison.sharedTypes.join(', ') || 'None'}`,
         `Timeline overlap: ${comparison.overlapLabel} (${comparison.overlapCards.length} cards in overlap window)`,
         `Source-link density: ${primary.entity} ${comparison.primaryDensity} links/card · ${secondary.entity} ${comparison.secondaryDensity} links/card`,
+        `Source audit: ${primary.entity} ${primaryAudit.primaryRatio}% primary/official, ${primaryAudit.weakLinks.length} weak-link, ${primaryAudit.archiveNeeds.length} archive candidates · ${secondary.entity} ${secondaryAudit.primaryRatio}% primary/official, ${secondaryAudit.weakLinks.length} weak-link, ${secondaryAudit.archiveNeeds.length} archive candidates`,
         `Shared relationship bridges: ${comparison.sharedBridges.map(rel => rel.node).join(', ') || 'None'}`,
         '',
         'Shared evidence:',
@@ -6065,6 +6158,75 @@
 
 
 
+
+
+    function classifySourceQuality(item) {
+      const quality = (item.sourceQuality || '').toLowerCase();
+      const linkHosts = (item.links || []).map(link => {
+        try { return new URL(link.url).hostname.toLowerCase(); } catch (error) { return ''; }
+      });
+      const primaryTerms = ['primary', 'official', 'government', 'regulator', 'law', 'court', 'congress', 'agency', 'sec filing', 'patent', 'standards', 'who', 'nih', 'fda', 'funding database', 'archive center', 'university primary'];
+      const peerTerms = ['peer-reviewed', 'scientific', 'publication', 'research'];
+      const secondaryTerms = ['reporting', 'media', 'reference', 'biography', 'viral', 'local media', 'cjr', 'forbes', 'bloomberg', 'britannica'];
+      const archiveDomains = ['archive.org', 'webcache', 'perma.cc'];
+      return {
+        isPrimary: primaryTerms.some(term => quality.includes(term)) || linkHosts.some(host => host.endsWith('.gov') || host.includes('who.int') || host.includes('justice.gov') || host.includes('sec.gov')),
+        isPeerReviewed: peerTerms.some(term => quality.includes(term)),
+        isSecondary: secondaryTerms.some(term => quality.includes(term)),
+        hasArchive: linkHosts.some(host => archiveDomains.some(domain => host.includes(domain))),
+        linkCount: item.links?.length || 0,
+        quality: item.sourceQuality || 'Unlabeled source record'
+      };
+    }
+
+    function getSourceAudit(items = []) {
+      const audits = items.map(item => ({ item, source: classifySourceQuality(item) }));
+      const sourceRich = audits.filter(row => row.source.linkCount >= 3).map(row => row.item);
+      const weakLinks = audits.filter(row => row.source.linkCount <= 1).map(row => row.item);
+      const primary = audits.filter(row => row.source.isPrimary).map(row => row.item);
+      const peerReviewed = audits.filter(row => row.source.isPeerReviewed).map(row => row.item);
+      const secondary = audits.filter(row => row.source.isSecondary).map(row => row.item);
+      const archiveNeeds = audits
+        .filter(row => !row.source.hasArchive && (row.source.isSecondary || row.source.linkCount <= 1 || !row.source.isPrimary))
+        .map(row => row.item);
+      const provenanceRisk = weakLinks.length * 2 + archiveNeeds.length + secondary.length - primary.length;
+      const riskLabel = provenanceRisk > 10 ? 'High' : provenanceRisk > 4 ? 'Medium' : 'Low';
+      return {
+        total: items.length,
+        primary,
+        peerReviewed,
+        secondary,
+        sourceRich,
+        weakLinks,
+        archiveNeeds,
+        unlabeled: audits.filter(row => !row.item.sourceQuality).map(row => row.item),
+        riskLabel,
+        primaryRatio: items.length ? Math.round((primary.length / items.length) * 100) : 0,
+        secondaryRatio: items.length ? Math.round((secondary.length / items.length) * 100) : 0,
+        sourceRichRatio: items.length ? Math.round((sourceRich.length / items.length) * 100) : 0
+      };
+    }
+
+    function compactSourceAuditForExport(audit) {
+      return {
+        totalCards: audit.total,
+        primaryOrOfficialCards: audit.primary.length,
+        primaryOrOfficialRatio: audit.primaryRatio,
+        peerReviewedCards: audit.peerReviewed.length,
+        secondaryOrReferenceCards: audit.secondary.length,
+        secondaryOrReferenceRatio: audit.secondaryRatio,
+        sourceRichCards: audit.sourceRich.length,
+        sourceRichRatio: audit.sourceRichRatio,
+        weakLinkCards: audit.weakLinks.length,
+        archiveNeeds: audit.archiveNeeds.length,
+        unlabeledSourceQuality: audit.unlabeled.length,
+        provenanceRisk: audit.riskLabel,
+        weakLinkCardIds: audit.weakLinks.map(item => item.id),
+        archiveNeedCardIds: audit.archiveNeeds.map(item => item.id)
+      };
+    }
+
+
     function compactCardForExport(item) {
       return {
         id: item.id,
@@ -6080,6 +6242,50 @@
       };
     }
 
+    function getSourceHardeningRecommendations(item) {
+      const source = classifySourceQuality(item);
+      const recommendations = [];
+      if (source.linkCount === 0) recommendations.push('Add at least one direct source URL before using this card in a report.');
+      if (source.linkCount === 1) recommendations.push('Add corroborating links or a primary-source mirror to reduce single-link dependency.');
+      if (!source.hasArchive) recommendations.push('Capture an archive/perma mirror for link-rot protection.');
+      if (source.isSecondary && !source.isPrimary) recommendations.push('Find the underlying primary document, filing, patent, transcript, dataset, or official page behind this secondary/reference source.');
+      if (!item.sourceQuality) recommendations.push('Add a source-quality label so exports can distinguish primary, secondary, peer-reviewed, and archive-backed records.');
+      if (source.linkCount >= 3 && source.isPrimary) recommendations.push('Candidate anchor card: source-rich and primary/official-backed; verify links remain live.');
+      return recommendations.length ? recommendations : ['Review source posture and add archive mirrors where pages are likely to move.'];
+    }
+
+    function exportSourceHardeningChecklist(items = discoveryMatches, term = discoveryTerm, guidance = discoveryGuidance) {
+      if (!items.length) return;
+      const audit = getSourceAudit(items);
+      const payload = {
+        generatedAt: new Date().toISOString(),
+        drawer: term || 'Source hardening checklist',
+        guidance,
+        summary: compactSourceAuditForExport(audit),
+        cards: items.map(item => ({
+          id: item.id,
+          title: item.title,
+          type: item.type,
+          date: item.date,
+          jurisdiction: item.jurisdiction || '',
+          sourceQuality: item.sourceQuality || 'Unlabeled source record',
+          linkCount: item.links?.length || 0,
+          currentLinks: (item.links || []).map(link => ({ label: link.label, url: link.url })),
+          recommendedActions: getSourceHardeningRecommendations(item)
+        }))
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const slug = (term || 'source-hardening-checklist').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'source-hardening-checklist';
+      a.href = url;
+      a.download = `source-hardening-${slug}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
     function compactProfileForExport(profile) {
       return {
         entity: profile.entity,
@@ -6093,6 +6299,7 @@
           linksPerCard: profile.allMatches.length ? Number((profile.links / profile.allMatches.length).toFixed(2)) : 0
         },
         topRelatedNodes: profile.related.map(([node, count]) => ({ node, count })),
+        sourceAudit: compactSourceAuditForExport(getSourceAudit(profile.allMatches)),
         cards: profile.allMatches.map(compactCardForExport)
       };
     }
@@ -6123,6 +6330,12 @@
             secondaryLinksPerCard: Number(comparison.secondaryDensity),
             primaryTotalLinks: primary.links,
             secondaryTotalLinks: secondary.links
+          },
+          sourceQualityAudit: {
+            primary: compactSourceAuditForExport(getSourceAudit(primary.allMatches)),
+            secondary: compactSourceAuditForExport(getSourceAudit(secondary.allMatches)),
+            shared: compactSourceAuditForExport(getSourceAudit(comparison.shared)),
+            overlap: compactSourceAuditForExport(getSourceAudit(comparison.overlapCards))
           },
           sharedRelationshipBridges: comparison.sharedBridges.map(rel => ({
             node: rel.node,
@@ -6183,12 +6396,15 @@
       const facts = activeProfile.allMatches.flatMap(item => item.facts || []).slice(0, 4);
       const flags = activeProfile.allMatches.flatMap(item => item.flags || []).slice(0, 5);
       const relationships = getEntityRelationships(activeProfile);
+      const activeSourceAudit = getSourceAudit(activeProfile.allMatches);
       const comparisonCandidates = profiles.filter(profile => profile.entity !== activeProfile.entity);
       const comparisonProfile = (selectedComparisonEntity && selectedComparisonEntity !== activeProfile.entity)
         ? (profiles.find(profile => profile.entity === selectedComparisonEntity) || getEntityProfile(selectedComparisonEntity, items))
         : comparisonCandidates[0];
       if (comparisonProfile) selectedComparisonEntity = comparisonProfile.entity;
       const comparison = comparisonProfile ? getEntityComparison(activeProfile, comparisonProfile) : null;
+      const comparisonSourceAudit = comparisonProfile ? getSourceAudit(comparisonProfile.allMatches) : null;
+      const sharedSourceAudit = comparison ? getSourceAudit(comparison.shared) : null;
 
       panel.innerHTML = `
         <div class="entity-header">
@@ -6220,6 +6436,14 @@
               <span class="state-chip">${activeProfile.first} → ${activeProfile.last}</span>
               <span class="state-chip">${activeProfile.types.slice(0, 3).join(' + ') || 'Mixed records'}</span>
             </div>
+            <div class="source-audit-grid">
+              <button class="source-audit-card" type="button" data-source-audit="primary"><strong>${activeSourceAudit.primaryRatio}%</strong><span class="entity-meta">primary/official mix</span></button>
+              <button class="source-audit-card" type="button" data-source-audit="sourceRich"><strong>${activeSourceAudit.sourceRich.length}</strong><span class="entity-meta">source-rich cards (3+ links)</span></button>
+              <button class="source-audit-card" type="button" data-source-audit="weakLinks"><strong>${activeSourceAudit.weakLinks.length}</strong><span class="entity-meta">weak-link cards</span></button>
+              <button class="source-audit-card" type="button" data-source-audit="archiveNeeds"><strong>${activeSourceAudit.archiveNeeds.length}</strong><span class="entity-meta">archive candidates</span></button>
+              <button class="source-audit-card" type="button" data-source-audit="provenanceRisk"><strong>${activeSourceAudit.riskLabel}</strong><span class="entity-meta">provenance risk</span></button>
+            </div>
+            <div class="entity-meta" style="margin-top:8px;">Source audit: ${activeSourceAudit.primary.length} primary/official · ${activeSourceAudit.peerReviewed.length} peer-reviewed · ${activeSourceAudit.secondary.length} secondary/reference · ${activeSourceAudit.unlabeled.length} unlabeled</div>
             <div class="entity-meta">Related nodes: ${activeProfile.related.length ? activeProfile.related.map(([node]) => `<button class="tag-inline" type="button" data-entity-related="${node}">${node}</button>`).join(' ') : 'No repeated related nodes in this slice.'}</div>
             <div class="entity-bridge-grid">
               ${relationships.map(rel => `
@@ -6249,10 +6473,13 @@
                   <div class="entity-compare-metric"><strong>${comparison.sharedTypes.length}</strong><span class="entity-meta">shared categories</span></div>
                   <div class="entity-compare-metric"><strong>${comparison.overlapCards.length}</strong><span class="entity-meta">cards in overlap window<br>${comparison.overlapLabel}</span></div>
                   <div class="entity-compare-metric"><strong>${comparison.primaryDensity} / ${comparison.secondaryDensity}</strong><span class="entity-meta">links per card</span></div>
+                  <div class="entity-compare-metric"><strong>${activeSourceAudit.riskLabel} / ${comparisonSourceAudit.riskLabel}</strong><span class="entity-meta">provenance risk</span></div>
+                  <div class="entity-compare-metric"><strong>${sharedSourceAudit.primaryRatio}%</strong><span class="entity-meta">shared primary/official mix</span></div>
                   <div class="entity-compare-metric"><strong>${comparison.sharedBridges.length}</strong><span class="entity-meta">shared relationship bridges</span></div>
                 </div>
                 <div class="entity-meta" style="margin-top:10px;">Shared categories: ${comparison.sharedTypes.join(' · ') || 'None in current evidence set'}</div>
                 <div class="entity-meta" style="margin-top:6px;">Shared bridges: ${comparison.sharedBridges.map(rel => rel.node).join(' · ') || 'No repeated bridge nodes'}</div>
+                <div class="entity-meta" style="margin-top:6px;">Source audit: ${activeProfile.entity} ${activeSourceAudit.primaryRatio}% primary/official, ${activeSourceAudit.weakLinks.length} weak-link · ${comparisonProfile.entity} ${comparisonSourceAudit.primaryRatio}% primary/official, ${comparisonSourceAudit.weakLinks.length} weak-link · shared set ${sharedSourceAudit.archiveNeeds.length} archive candidates</div>
                 <div class="entity-actions">
                   <button class="toolbar-btn" type="button" id="compareSharedBtn">Open shared cards</button>
                   <button class="toolbar-btn" type="button" id="compareUniquePrimaryBtn">Open ${activeProfile.entity} unique</button>
@@ -6266,6 +6493,7 @@
               <button class="toolbar-btn" type="button" id="entityDiscoverBtn">Open inline discovery</button>
               <button class="toolbar-btn" type="button" id="entityOpenCardsBtn">Expand dossier cards</button>
               <button class="toolbar-btn" type="button" id="entityThreadBtn">Send to Thread Explorer</button>
+              <button class="toolbar-btn" type="button" id="entityPinBoardBtn">Pin entity to board</button>
               <button class="toolbar-btn" type="button" id="entityGraphBtn">Export graph JSON</button>
             </div>
           </div>
@@ -6301,15 +6529,46 @@
         btn.addEventListener('click', () => {
           const relationship = relationships.find(rel => rel.node === btn.dataset.entityBridge);
           if (!relationship) return;
-          discoveryTerm = `${activeProfile.entity} ↔ ${relationship.node}`;
-          discoveryMatches = relationship.items.sort(sortEvidence);
-          renderDiscoveryPanel();
+          openDiscoverySet(`${activeProfile.entity} ↔ ${relationship.node}`, relationship.items, 'Relationship bridge opened from Entity Intelligence.');
           renderStateBar(getVisibleEvidence());
-          document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
       });
       panel.querySelectorAll('[data-entity-card]').forEach(btn => {
         btn.addEventListener('click', () => openCardById(btn.dataset.entityCard));
+      });
+      const sourceAuditBuckets = {
+        primary: {
+          label: 'Primary / official source cards',
+          items: activeSourceAudit.primary,
+          guidance: 'Cards classified as primary or official. Use this set as the strongest provenance baseline for the dossier.'
+        },
+        sourceRich: {
+          label: 'Source-rich cards',
+          items: activeSourceAudit.sourceRich,
+          guidance: 'Cards with three or more direct links. These are good candidates for report anchors and relationship-map evidence.'
+        },
+        weakLinks: {
+          label: 'Weak-link cards',
+          items: activeSourceAudit.weakLinks,
+          guidance: 'Cards with zero or one direct link. Add primary URLs, supporting sources, or archive mirrors before relying on these heavily.'
+        },
+        archiveNeeds: {
+          label: 'Archive candidates',
+          items: activeSourceAudit.archiveNeeds,
+          guidance: 'Cards lacking archive coverage or needing stronger source posture. Capture archive/perma links and add primary documentation where possible.'
+        },
+        provenanceRisk: {
+          label: `${activeSourceAudit.riskLabel} provenance-risk cards`,
+          items: [...new Map([...activeSourceAudit.weakLinks, ...activeSourceAudit.archiveNeeds, ...activeSourceAudit.secondary].map(item => [item.id, item])).values()],
+          guidance: 'Combined source-hardening queue: weak links, archive candidates, and secondary/reference-heavy records for this entity.'
+        }
+      };
+      panel.querySelectorAll('[data-source-audit]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const bucket = sourceAuditBuckets[btn.dataset.sourceAudit];
+          if (!bucket) return;
+          openSourceHardeningDrawer(activeProfile.entity, bucket.label, bucket.items, bucket.guidance);
+        });
       });
       document.getElementById('entityDiscoverBtn')?.addEventListener('click', () => showDiscovery(activeProfile.entity));
       document.getElementById('entityOpenCardsBtn')?.addEventListener('click', () => {
@@ -6326,6 +6585,14 @@
         renderStateBar(getVisibleEvidence());
         document.getElementById('threadPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       });
+      document.getElementById('entityPinBoardBtn')?.addEventListener('click', () => {
+        addBoardItem('chain', {
+          kind: 'entity',
+          id: activeProfile.entity,
+          title: activeProfile.entity,
+          meta: `${activeProfile.allMatches.length} cards · ${activeProfile.links} links · ${activeProfile.first} → ${activeProfile.last}`
+        });
+      });
       document.getElementById('compareSharedBtn')?.addEventListener('click', () => openEntityComparisonSet(comparison?.shared || []));
       document.getElementById('compareUniquePrimaryBtn')?.addEventListener('click', () => openEntityComparisonSet(comparison?.uniquePrimary || []));
       document.getElementById('compareUniqueSecondaryBtn')?.addEventListener('click', () => openEntityComparisonSet(comparison?.uniqueSecondary || []));
@@ -6335,8 +6602,9 @@
       document.getElementById('copyEntityDossierBtn')?.addEventListener('click', () => {
         const relatedText = activeProfile.related.map(([node, count]) => `${node} (${count})`).join(', ');
         const relationshipText = relationships.map(rel => `${rel.node}: ${rel.count} shared cards / ${rel.links} links`).join('; ');
+        const auditText = `Source audit: ${activeSourceAudit.primaryRatio}% primary/official; ${activeSourceAudit.peerReviewed.length} peer-reviewed; ${activeSourceAudit.secondary.length} secondary/reference; ${activeSourceAudit.sourceRich.length} source-rich; ${activeSourceAudit.weakLinks.length} weak-link; ${activeSourceAudit.archiveNeeds.length} archive candidates; risk ${activeSourceAudit.riskLabel}`;
         const timelineText = activeProfile.allMatches.map(item => `${formatDate(item.date)} — ${item.title}\n${item.description}\nLinks: ${(item.links || []).map(link => link.url).join(', ')}`).join('\n\n');
-        copyText(`${activeProfile.entity}\nCards: ${activeProfile.allMatches.length}\nLinks: ${activeProfile.links}\nSpan: ${activeProfile.first} → ${activeProfile.last}\nTypes: ${activeProfile.types.join(', ')}\nRelated: ${relatedText}\nRelationship map: ${relationshipText}\n\n${timelineText}`);
+        copyText(`${activeProfile.entity}\nCards: ${activeProfile.allMatches.length}\nLinks: ${activeProfile.links}\nSpan: ${activeProfile.first} → ${activeProfile.last}\nTypes: ${activeProfile.types.join(', ')}\nRelated: ${relatedText}\nRelationship map: ${relationshipText}\n${auditText}\n\n${timelineText}`);
       });
     }
 
@@ -6410,25 +6678,32 @@
 
     function renderBriefPanel(items = getVisibleEvidence()) {
       const panel = document.getElementById('briefPanel');
+      const audit = getSourceAudit(items);
       panel.innerHTML = `
         <div class="brief-header">
           <div>
-            <div class="brief-title">Research orientation + source guardrails</div>
-            <div class="brief-subtitle">Finished reading layers for navigating the evidence without exposing implementation notes</div>
+            <div class="brief-title">Source provenance snapshot</div>
+            <div class="brief-subtitle">Live source-quality status for the current view; open weak-link or archive queues from Entity Intelligence for card-level remediation.</div>
           </div>
-          <button class="toolbar-btn" type="button" id="copyBriefBtn">Copy brief</button>
+          <button class="toolbar-btn" type="button" id="copyBriefBtn">Copy source snapshot</button>
         </div>
         <div class="brief-grid">
           <article class="brief-card">
-            <h4>Current map strengths</h4>
+            <h4>Current source mix</h4>
             <ol class="brief-list">
-              ${highValueContributions.map((item, index) => `<li><span class="brief-rank">${index + 1}</span>${item}</li>`).join('')}
+              <li><span class="brief-rank">${audit.primaryRatio}%</span>Primary / official source mix across ${audit.total} visible cards.</li>
+              <li><span class="brief-rank">${audit.peerReviewed.length}</span>Peer-reviewed or research-labeled records.</li>
+              <li><span class="brief-rank">${audit.secondary.length}</span>Secondary/reference-heavy records needing extra primary-source review.</li>
+              <li><span class="brief-rank">${audit.sourceRich.length}</span>Source-rich cards with three or more links.</li>
             </ol>
           </article>
           <article class="brief-card">
-            <h4>Source-reading guardrails</h4>
+            <h4>Hardening queue</h4>
             <ol class="brief-list">
-              ${presentationOptimizations.map((item, index) => `<li><span class="brief-rank">${index + 1}</span>${item}</li>`).join('')}
+              <li><span class="brief-rank">${audit.weakLinks.length}</span>Weak-link cards with zero or one direct link.</li>
+              <li><span class="brief-rank">${audit.archiveNeeds.length}</span>Cards that should receive archive/perma mirrors or stronger primary documentation.</li>
+              <li><span class="brief-rank">${audit.unlabeled.length}</span>Cards missing explicit source-quality labels.</li>
+              <li><span class="brief-rank">${audit.riskLabel}</span>Overall provenance-risk posture for the current view.</li>
             </ol>
           </article>
         </div>
@@ -6440,7 +6715,16 @@
         btn.addEventListener('click', () => applyLens(btn.dataset.lens));
       });
       document.getElementById('copyBriefBtn')?.addEventListener('click', () => {
-        copyText(`Current map strengths\n${highValueContributions.map((x, i) => `${i + 1}. ${x}`).join('\n')}\n\nSource-reading guardrails\n${presentationOptimizations.map((x, i) => `${i + 1}. ${x}`).join('\n')}`);
+        copyText(`Source provenance snapshot
+Visible cards: ${audit.total}
+Primary/official: ${audit.primary.length} (${audit.primaryRatio}%)
+Peer-reviewed/research: ${audit.peerReviewed.length}
+Secondary/reference: ${audit.secondary.length}
+Source-rich cards: ${audit.sourceRich.length}
+Weak-link cards: ${audit.weakLinks.length}
+Archive candidates: ${audit.archiveNeeds.length}
+Unlabeled source-quality: ${audit.unlabeled.length}
+Provenance risk: ${audit.riskLabel}`);
       });
     }
 
@@ -6625,10 +6909,7 @@
       panel.querySelectorAll('[data-domino-step]').forEach(btn => {
         btn.addEventListener('click', () => {
           const step = selected.dominoes[Number(btn.dataset.dominoStep)];
-          discoveryTerm = `${selected.title} · ${step.label}`;
-          discoveryMatches = [...new Map(step.terms.flatMap(term => getInlineMatches(term)).map(item => [item.id, item])).values()].sort(sortEvidence);
-          renderDiscoveryPanel();
-          document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          openDiscoverySet(`${selected.title} · ${step.label}`, [...new Map(step.terms.flatMap(term => getInlineMatches(term)).map(item => [item.id, item])).values()], 'Domino step cards opened without changing the global search.');
         });
       });
       document.getElementById('copyDominoBtn')?.addEventListener('click', () => {
@@ -6660,10 +6941,7 @@
       panel.querySelectorAll('[data-pathway-index]').forEach(card => {
         card.addEventListener('click', () => {
           const pathway = narrativePathways[Number(card.dataset.pathwayIndex)];
-          discoveryTerm = pathway.title;
-          discoveryMatches = [...new Map(pathway.terms.flatMap(term => getInlineMatches(term)).map(item => [item.id, item])).values()].sort(sortEvidence);
-          renderDiscoveryPanel();
-          document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          openDiscoverySet(pathway.title, [...new Map(pathway.terms.flatMap(term => getInlineMatches(term)).map(item => [item.id, item])).values()], 'Pathway cards opened without changing the global search.');
         });
       });
       document.getElementById('copyPathwaysBtn')?.addEventListener('click', () => {
@@ -6679,13 +6957,10 @@
       document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.classList.toggle('active', activeFilters.includes(btn.dataset.filter));
       });
-      discoveryTerm = lens.label;
-      discoveryMatches = [...new Map(lens.terms.flatMap(term => getInlineMatches(term)).map(item => [item.id, item])).values()].sort(sortEvidence);
+      openDiscoverySet(lens.label, [...new Map(lens.terms.flatMap(term => getInlineMatches(term)).map(item => [item.id, item])).values()], 'Lens preset opened a focused discovery drawer while preserving the search box.');
       expandedCards.clear();
       renderCards();
       updateStats();
-      renderDiscoveryPanel();
-      document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
     function getInlineMatches(term, items = evidence) {
@@ -6707,10 +6982,7 @@
     }
 
     function showDiscovery(term) {
-      discoveryTerm = term;
-      discoveryMatches = getInlineMatches(term);
-      renderDiscoveryPanel();
-      document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      openDiscoverySet(term, getInlineMatches(term), 'Inline discovery preserves your current search, filters, and scroll context.');
     }
 
     function renderDiscoveryPanel() {
@@ -6728,6 +7000,7 @@
           <div>
             <div class="discovery-title">Inline discovery · ${discoveryTerm}</div>
             <div class="discovery-subtitle">${discoveryMatches.length} matches without changing the main search or collapsing your current place${categories ? ' · ' + categories : ''}</div>
+            ${discoveryGuidance ? `<div class="discovery-subtitle">${discoveryGuidance}</div>` : ''}
           </div>
           <button class="toolbar-btn" type="button" id="closeDiscoveryBtn">Close</button>
         </div>
@@ -6742,12 +7015,14 @@
         <div class="discovery-actions">
           <button class="toolbar-btn" type="button" id="openDiscoveryBtn">Open matching cards</button>
           <button class="toolbar-btn" type="button" id="copyDiscoveryBtn">Copy matching links</button>
+          <button class="toolbar-btn" type="button" id="exportDiscoveryChecklistBtn">Export hardening checklist</button>
           <button class="toolbar-btn" type="button" id="convertDiscoveryBtn">Apply as global search</button>
         </div>
       `;
       document.getElementById('closeDiscoveryBtn')?.addEventListener('click', () => {
         discoveryTerm = '';
         discoveryMatches = [];
+        discoveryGuidance = '';
         renderDiscoveryPanel();
       });
       panel.querySelectorAll('[data-discovery-card]').forEach(btn => {
@@ -6762,6 +7037,7 @@
         renderCards();
       });
       document.getElementById('copyDiscoveryBtn')?.addEventListener('click', () => copyText(formatLinksForClipboard(discoveryMatches)));
+      document.getElementById('exportDiscoveryChecklistBtn')?.addEventListener('click', () => exportSourceHardeningChecklist(discoveryMatches, discoveryTerm, discoveryGuidance));
       document.getElementById('convertDiscoveryBtn')?.addEventListener('click', () => applySearch(discoveryTerm));
     }
 
@@ -6813,15 +7089,101 @@
       });
     }
 
+    function getBoardColumns() {
+      return [
+        { id: 'chain', title: 'Main chain', help: 'Primary sequence or argument spine' },
+        { id: 'branch', title: 'Branch / parallel', help: 'Related side trails and alternate threads' },
+        { id: 'review', title: 'Needs review', help: 'Cards/entities needing source or logic checks' }
+      ];
+    }
+
+    function getBoardItemKey(item) {
+      return `${item.kind}:${item.id}`;
+    }
+
+    function getBoardItemFromCard(item) {
+      return {
+        kind: 'card',
+        id: item.id,
+        title: item.title,
+        meta: `${formatType(item.type)} · ${formatDate(item.date)} · ${item.links?.length || 0} links`
+      };
+    }
+
+    function addBoardItem(columnId, item) {
+      if (!branchBoard[columnId]) branchBoard[columnId] = [];
+      const key = getBoardItemKey(item);
+      Object.keys(branchBoard).forEach(column => {
+        branchBoard[column] = branchBoard[column].filter(existing => getBoardItemKey(existing) !== key);
+      });
+      branchBoard[columnId].push(item);
+      renderMissionPanel(getVisibleEvidence());
+      renderStateBar(getVisibleEvidence());
+    }
+
+    function moveBoardItem(key, targetColumn) {
+      let moving = null;
+      Object.keys(branchBoard).forEach(column => {
+        const index = branchBoard[column].findIndex(item => getBoardItemKey(item) === key);
+        if (index >= 0) {
+          moving = branchBoard[column][index];
+          branchBoard[column].splice(index, 1);
+        }
+      });
+      if (moving && branchBoard[targetColumn]) branchBoard[targetColumn].push(moving);
+    }
+
+    function removeBoardItem(key) {
+      Object.keys(branchBoard).forEach(column => {
+        branchBoard[column] = branchBoard[column].filter(item => getBoardItemKey(item) !== key);
+      });
+      renderMissionPanel(getVisibleEvidence());
+      renderStateBar(getVisibleEvidence());
+    }
+
+    function getBranchBoardItemCount() {
+      return Object.values(branchBoard).reduce((sum, column) => sum + column.length, 0);
+    }
+
+    function exportBranchBoard() {
+      const payload = {
+        generatedAt: new Date().toISOString(),
+        columns: getBoardColumns().map(column => ({
+          id: column.id,
+          title: column.title,
+          help: column.help,
+          items: branchBoard[column.id]
+        }))
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `branch-board-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function copyBranchBoard() {
+      const text = getBoardColumns().map(column => {
+        const items = branchBoard[column.id].map((item, index) => `${index + 1}. [${item.kind}] ${item.title} — ${item.meta}`).join('\n') || 'No items yet';
+        return `${column.title}\n${items}`;
+      }).join('\n\n');
+      copyText(text);
+    }
+
     function renderMissionPanel(items = getVisibleEvidence()) {
       const panel = document.getElementById('missionPanel');
       const saved = [...savedCards].map(id => evidence.find(item => item.id === id)).filter(Boolean);
       const compared = compareCards.map(id => evidence.find(item => item.id === id)).filter(Boolean);
+      const boardCount = getBranchBoardItemCount();
       panel.innerHTML = `
         <div class="mission-header">
           <div>
             <div class="mission-title">Research Trail Console</div>
-            <div class="mission-subtitle">${items.length} visible cards · ${saved.length} saved · ${compared.length}/2 in compare tray</div>
+            <div class="mission-subtitle">${items.length} visible cards · ${saved.length} saved · ${compared.length}/2 in compare tray · ${boardCount} board items</div>
           </div>
           <button class="toolbar-btn" type="button" id="randomThreadBtn">Open recurring thread</button>
         </div>
@@ -6829,20 +7191,89 @@
         <div class="quest-list">
           ${consoleGuides.map(prompt => `<div class="quest-item"><span class="quest-check">→</span><span>${prompt}</span></div>`).join('')}
         </div>
+        <div class="mission-subtitle">Saved cards · drag onto the branch board</div>
         <div class="saved-list">
-          ${saved.length ? saved.map(item => `<button class="saved-chip" type="button" data-saved-card="${item.id}">📎 ${item.title}</button>`).join('') : '<div class="saved-chip">📎 Save cards to build a source trail</div>'}
+          ${saved.length ? saved.map(item => `<button class="saved-chip" type="button" draggable="true" data-board-card="${item.id}" data-saved-card="${item.id}">📎 ${item.title}</button>`).join('') : '<div class="saved-chip">📎 Save cards to build a source trail</div>'}
         </div>
         <div class="compare-tray ${compared.length ? 'is-active' : ''}">
-          <div class="mission-subtitle">Compare tray</div>
+          <div class="mission-subtitle">Compare tray · drag cards into side branches</div>
           <div class="saved-list">
-            ${compared.map(item => `<button class="saved-chip" type="button" data-saved-card="${item.id}">🧩 ${item.title}</button>`).join('')}
+            ${compared.map(item => `<button class="saved-chip" type="button" draggable="true" data-board-card="${item.id}" data-saved-card="${item.id}">🧩 ${item.title}</button>`).join('')}
           </div>
+        </div>
+        <div class="mission-subtitle">Branch board · arrange cards/entities side by side</div>
+        <div class="branch-board">
+          ${getBoardColumns().map(column => `
+            <div class="branch-column" data-board-column="${column.id}">
+              <div class="branch-column-title">${column.title}</div>
+              <div class="mission-subtitle">${column.help}</div>
+              ${(branchBoard[column.id] || []).map(item => `
+                <div class="branch-card" draggable="true" data-board-key="${getBoardItemKey(item)}">
+                  <strong>${item.title}</strong>
+                  <span class="discovery-meta">${item.kind} · ${item.meta}</span>
+                  <button class="toolbar-btn" type="button" data-remove-board="${getBoardItemKey(item)}">Remove</button>
+                </div>
+              `).join('') || '<div class="discovery-meta">Drop saved cards here, or pin an entity from Entity Intelligence.</div>'}
+            </div>
+          `).join('')}
+        </div>
+        <div class="branch-actions">
+          <button class="toolbar-btn" type="button" id="copyBranchBoardBtn">Copy board</button>
+          <button class="toolbar-btn" type="button" id="exportBranchBoardBtn">Export board JSON</button>
+          <button class="toolbar-btn" type="button" id="clearBranchBoardBtn">Clear board</button>
         </div>
       `;
 
       document.getElementById('randomThreadBtn')?.addEventListener('click', pullRandomThread);
       panel.querySelectorAll('[data-saved-card]').forEach(btn => {
         btn.addEventListener('click', () => openCardById(btn.dataset.savedCard));
+      });
+      panel.querySelectorAll('[data-board-card]').forEach(btn => {
+        btn.addEventListener('dragstart', event => {
+          const item = evidence.find(card => card.id === btn.dataset.boardCard);
+          if (!item) return;
+          event.dataTransfer.setData('text/plain', JSON.stringify(getBoardItemFromCard(item)));
+        });
+      });
+      panel.querySelectorAll('[data-board-key]').forEach(card => {
+        card.addEventListener('dragstart', event => {
+          event.dataTransfer.setData('text/plain', JSON.stringify({ boardKey: card.dataset.boardKey }));
+        });
+      });
+      panel.querySelectorAll('[data-board-column]').forEach(column => {
+        column.addEventListener('dragover', event => {
+          event.preventDefault();
+          column.classList.add('is-drop-target');
+        });
+        column.addEventListener('dragleave', () => column.classList.remove('is-drop-target'));
+        column.addEventListener('drop', event => {
+          event.preventDefault();
+          column.classList.remove('is-drop-target');
+          const raw = event.dataTransfer.getData('text/plain');
+          if (!raw) return;
+          const payload = JSON.parse(raw);
+          if (payload.boardKey) {
+            moveBoardItem(payload.boardKey, column.dataset.boardColumn);
+          } else {
+            addBoardItem(column.dataset.boardColumn, payload);
+            return;
+          }
+          renderMissionPanel(getVisibleEvidence());
+          renderStateBar(getVisibleEvidence());
+        });
+      });
+      panel.querySelectorAll('[data-remove-board]').forEach(btn => {
+        btn.addEventListener('click', event => {
+          event.stopPropagation();
+          removeBoardItem(btn.dataset.removeBoard);
+        });
+      });
+      document.getElementById('copyBranchBoardBtn')?.addEventListener('click', copyBranchBoard);
+      document.getElementById('exportBranchBoardBtn')?.addEventListener('click', exportBranchBoard);
+      document.getElementById('clearBranchBoardBtn')?.addEventListener('click', () => {
+        branchBoard = { chain: [], branch: [], review: [] };
+        renderMissionPanel(getVisibleEvidence());
+        renderStateBar(getVisibleEvidence());
       });
     }
 
@@ -7122,10 +7553,7 @@
       panel.querySelectorAll('[data-timeline-domino-step]').forEach(item => {
         item.addEventListener('click', () => {
           const step = selected.dominoes[Number(item.dataset.timelineDominoStep)];
-          discoveryTerm = `${selected.title} · ${step.label}`;
-          discoveryMatches = [...new Map(step.terms.flatMap(term => getInlineMatches(term)).map(card => [card.id, card])).values()].sort(sortEvidence);
-          renderDiscoveryPanel();
-          document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          openDiscoverySet(`${selected.title} · ${step.label}`, [...new Map(step.terms.flatMap(term => getInlineMatches(term)).map(card => [card.id, card])).values()], 'Timeline domino cards opened without changing the global search.');
         });
       });
       panel.querySelectorAll('[data-timeline-id]').forEach(item => {
@@ -7256,6 +7684,7 @@
       chips.push(`<button class="state-chip actionable" type="button" data-jump-state="domino">Trajectory: ${getSelectedTrajectoryTitle()}</button>`);
       if (savedCards.size) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="trail">Saved: ${savedCards.size}</button>`);
       if (compareCards.length) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="trail">Compare: ${compareCards.length}/2</button>`);
+      if (getBranchBoardItemCount()) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="trail">Board: ${getBranchBoardItemCount()}</button>`);
       if (focusMode) chips.push('<span class="state-chip">Focus mode active</span>');
       stateBar.innerHTML = `<span class="state-label">Current view</span>${chips.join('')}`;
       stateBar.querySelectorAll('[data-clear-state]').forEach(btn => {
@@ -7266,6 +7695,7 @@
           if (btn.dataset.clearState === 'discovery') {
             discoveryTerm = '';
             discoveryMatches = [];
+            discoveryGuidance = '';
             renderDiscoveryPanel();
             renderStateBar(getVisibleEvidence());
           }
@@ -7394,6 +7824,7 @@
       selectedEntity = null;
       selectedComparisonEntity = null;
       compareCards = [];
+      branchBoard = { chain: [], branch: [], review: [] };
       openCategories = new Set(['players', 'virtual', 'bioengineering']);
       viewDensity = 'compact';
       focusMode = false;
