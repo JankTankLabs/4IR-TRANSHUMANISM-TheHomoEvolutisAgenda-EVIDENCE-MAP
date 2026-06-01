@@ -933,6 +933,63 @@
       gap: 8px;
     }
 
+
+    .branch-board {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      margin-top: 12px;
+    }
+
+    .branch-column {
+      background: rgba(255,255,255,0.03);
+      border: 1px dashed rgba(255,255,255,0.18);
+      border-radius: 10px;
+      min-height: 140px;
+      padding: 10px;
+    }
+
+    .branch-column.is-drop-target {
+      border-color: var(--link-color);
+      box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.12) inset;
+    }
+
+    .branch-column-title {
+      color: var(--text-primary);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .branch-card {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      cursor: grab;
+      display: grid;
+      gap: 5px;
+      margin-bottom: 8px;
+      padding: 9px 10px;
+    }
+
+    .branch-card:active { cursor: grabbing; }
+
+    .branch-card strong {
+      color: var(--text-primary);
+      font-size: 0.8rem;
+    }
+
+    .branch-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
     .quest-item,
     .saved-chip,
     .quote-card,
@@ -5657,6 +5714,11 @@
     let focusMode = false;
     let savedCards = new Set();
     let compareCards = [];
+    let branchBoard = {
+      chain: [],
+      branch: [],
+      review: []
+    };
     let discoveryTerm = '';
     let discoveryMatches = [];
     let discoveryGuidance = '';
@@ -6431,6 +6493,7 @@
               <button class="toolbar-btn" type="button" id="entityDiscoverBtn">Open inline discovery</button>
               <button class="toolbar-btn" type="button" id="entityOpenCardsBtn">Expand dossier cards</button>
               <button class="toolbar-btn" type="button" id="entityThreadBtn">Send to Thread Explorer</button>
+              <button class="toolbar-btn" type="button" id="entityPinBoardBtn">Pin entity to board</button>
               <button class="toolbar-btn" type="button" id="entityGraphBtn">Export graph JSON</button>
             </div>
           </div>
@@ -6521,6 +6584,14 @@
         renderThreadPanel(getVisibleEvidence());
         renderStateBar(getVisibleEvidence());
         document.getElementById('threadPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+      document.getElementById('entityPinBoardBtn')?.addEventListener('click', () => {
+        addBoardItem('chain', {
+          kind: 'entity',
+          id: activeProfile.entity,
+          title: activeProfile.entity,
+          meta: `${activeProfile.allMatches.length} cards · ${activeProfile.links} links · ${activeProfile.first} → ${activeProfile.last}`
+        });
       });
       document.getElementById('compareSharedBtn')?.addEventListener('click', () => openEntityComparisonSet(comparison?.shared || []));
       document.getElementById('compareUniquePrimaryBtn')?.addEventListener('click', () => openEntityComparisonSet(comparison?.uniquePrimary || []));
@@ -7018,15 +7089,101 @@ Provenance risk: ${audit.riskLabel}`);
       });
     }
 
+    function getBoardColumns() {
+      return [
+        { id: 'chain', title: 'Main chain', help: 'Primary sequence or argument spine' },
+        { id: 'branch', title: 'Branch / parallel', help: 'Related side trails and alternate threads' },
+        { id: 'review', title: 'Needs review', help: 'Cards/entities needing source or logic checks' }
+      ];
+    }
+
+    function getBoardItemKey(item) {
+      return `${item.kind}:${item.id}`;
+    }
+
+    function getBoardItemFromCard(item) {
+      return {
+        kind: 'card',
+        id: item.id,
+        title: item.title,
+        meta: `${formatType(item.type)} · ${formatDate(item.date)} · ${item.links?.length || 0} links`
+      };
+    }
+
+    function addBoardItem(columnId, item) {
+      if (!branchBoard[columnId]) branchBoard[columnId] = [];
+      const key = getBoardItemKey(item);
+      Object.keys(branchBoard).forEach(column => {
+        branchBoard[column] = branchBoard[column].filter(existing => getBoardItemKey(existing) !== key);
+      });
+      branchBoard[columnId].push(item);
+      renderMissionPanel(getVisibleEvidence());
+      renderStateBar(getVisibleEvidence());
+    }
+
+    function moveBoardItem(key, targetColumn) {
+      let moving = null;
+      Object.keys(branchBoard).forEach(column => {
+        const index = branchBoard[column].findIndex(item => getBoardItemKey(item) === key);
+        if (index >= 0) {
+          moving = branchBoard[column][index];
+          branchBoard[column].splice(index, 1);
+        }
+      });
+      if (moving && branchBoard[targetColumn]) branchBoard[targetColumn].push(moving);
+    }
+
+    function removeBoardItem(key) {
+      Object.keys(branchBoard).forEach(column => {
+        branchBoard[column] = branchBoard[column].filter(item => getBoardItemKey(item) !== key);
+      });
+      renderMissionPanel(getVisibleEvidence());
+      renderStateBar(getVisibleEvidence());
+    }
+
+    function getBranchBoardItemCount() {
+      return Object.values(branchBoard).reduce((sum, column) => sum + column.length, 0);
+    }
+
+    function exportBranchBoard() {
+      const payload = {
+        generatedAt: new Date().toISOString(),
+        columns: getBoardColumns().map(column => ({
+          id: column.id,
+          title: column.title,
+          help: column.help,
+          items: branchBoard[column.id]
+        }))
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `branch-board-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function copyBranchBoard() {
+      const text = getBoardColumns().map(column => {
+        const items = branchBoard[column.id].map((item, index) => `${index + 1}. [${item.kind}] ${item.title} — ${item.meta}`).join('\n') || 'No items yet';
+        return `${column.title}\n${items}`;
+      }).join('\n\n');
+      copyText(text);
+    }
+
     function renderMissionPanel(items = getVisibleEvidence()) {
       const panel = document.getElementById('missionPanel');
       const saved = [...savedCards].map(id => evidence.find(item => item.id === id)).filter(Boolean);
       const compared = compareCards.map(id => evidence.find(item => item.id === id)).filter(Boolean);
+      const boardCount = getBranchBoardItemCount();
       panel.innerHTML = `
         <div class="mission-header">
           <div>
             <div class="mission-title">Research Trail Console</div>
-            <div class="mission-subtitle">${items.length} visible cards · ${saved.length} saved · ${compared.length}/2 in compare tray</div>
+            <div class="mission-subtitle">${items.length} visible cards · ${saved.length} saved · ${compared.length}/2 in compare tray · ${boardCount} board items</div>
           </div>
           <button class="toolbar-btn" type="button" id="randomThreadBtn">Open recurring thread</button>
         </div>
@@ -7034,20 +7191,89 @@ Provenance risk: ${audit.riskLabel}`);
         <div class="quest-list">
           ${consoleGuides.map(prompt => `<div class="quest-item"><span class="quest-check">→</span><span>${prompt}</span></div>`).join('')}
         </div>
+        <div class="mission-subtitle">Saved cards · drag onto the branch board</div>
         <div class="saved-list">
-          ${saved.length ? saved.map(item => `<button class="saved-chip" type="button" data-saved-card="${item.id}">📎 ${item.title}</button>`).join('') : '<div class="saved-chip">📎 Save cards to build a source trail</div>'}
+          ${saved.length ? saved.map(item => `<button class="saved-chip" type="button" draggable="true" data-board-card="${item.id}" data-saved-card="${item.id}">📎 ${item.title}</button>`).join('') : '<div class="saved-chip">📎 Save cards to build a source trail</div>'}
         </div>
         <div class="compare-tray ${compared.length ? 'is-active' : ''}">
-          <div class="mission-subtitle">Compare tray</div>
+          <div class="mission-subtitle">Compare tray · drag cards into side branches</div>
           <div class="saved-list">
-            ${compared.map(item => `<button class="saved-chip" type="button" data-saved-card="${item.id}">🧩 ${item.title}</button>`).join('')}
+            ${compared.map(item => `<button class="saved-chip" type="button" draggable="true" data-board-card="${item.id}" data-saved-card="${item.id}">🧩 ${item.title}</button>`).join('')}
           </div>
+        </div>
+        <div class="mission-subtitle">Branch board · arrange cards/entities side by side</div>
+        <div class="branch-board">
+          ${getBoardColumns().map(column => `
+            <div class="branch-column" data-board-column="${column.id}">
+              <div class="branch-column-title">${column.title}</div>
+              <div class="mission-subtitle">${column.help}</div>
+              ${(branchBoard[column.id] || []).map(item => `
+                <div class="branch-card" draggable="true" data-board-key="${getBoardItemKey(item)}">
+                  <strong>${item.title}</strong>
+                  <span class="discovery-meta">${item.kind} · ${item.meta}</span>
+                  <button class="toolbar-btn" type="button" data-remove-board="${getBoardItemKey(item)}">Remove</button>
+                </div>
+              `).join('') || '<div class="discovery-meta">Drop saved cards here, or pin an entity from Entity Intelligence.</div>'}
+            </div>
+          `).join('')}
+        </div>
+        <div class="branch-actions">
+          <button class="toolbar-btn" type="button" id="copyBranchBoardBtn">Copy board</button>
+          <button class="toolbar-btn" type="button" id="exportBranchBoardBtn">Export board JSON</button>
+          <button class="toolbar-btn" type="button" id="clearBranchBoardBtn">Clear board</button>
         </div>
       `;
 
       document.getElementById('randomThreadBtn')?.addEventListener('click', pullRandomThread);
       panel.querySelectorAll('[data-saved-card]').forEach(btn => {
         btn.addEventListener('click', () => openCardById(btn.dataset.savedCard));
+      });
+      panel.querySelectorAll('[data-board-card]').forEach(btn => {
+        btn.addEventListener('dragstart', event => {
+          const item = evidence.find(card => card.id === btn.dataset.boardCard);
+          if (!item) return;
+          event.dataTransfer.setData('text/plain', JSON.stringify(getBoardItemFromCard(item)));
+        });
+      });
+      panel.querySelectorAll('[data-board-key]').forEach(card => {
+        card.addEventListener('dragstart', event => {
+          event.dataTransfer.setData('text/plain', JSON.stringify({ boardKey: card.dataset.boardKey }));
+        });
+      });
+      panel.querySelectorAll('[data-board-column]').forEach(column => {
+        column.addEventListener('dragover', event => {
+          event.preventDefault();
+          column.classList.add('is-drop-target');
+        });
+        column.addEventListener('dragleave', () => column.classList.remove('is-drop-target'));
+        column.addEventListener('drop', event => {
+          event.preventDefault();
+          column.classList.remove('is-drop-target');
+          const raw = event.dataTransfer.getData('text/plain');
+          if (!raw) return;
+          const payload = JSON.parse(raw);
+          if (payload.boardKey) {
+            moveBoardItem(payload.boardKey, column.dataset.boardColumn);
+          } else {
+            addBoardItem(column.dataset.boardColumn, payload);
+            return;
+          }
+          renderMissionPanel(getVisibleEvidence());
+          renderStateBar(getVisibleEvidence());
+        });
+      });
+      panel.querySelectorAll('[data-remove-board]').forEach(btn => {
+        btn.addEventListener('click', event => {
+          event.stopPropagation();
+          removeBoardItem(btn.dataset.removeBoard);
+        });
+      });
+      document.getElementById('copyBranchBoardBtn')?.addEventListener('click', copyBranchBoard);
+      document.getElementById('exportBranchBoardBtn')?.addEventListener('click', exportBranchBoard);
+      document.getElementById('clearBranchBoardBtn')?.addEventListener('click', () => {
+        branchBoard = { chain: [], branch: [], review: [] };
+        renderMissionPanel(getVisibleEvidence());
+        renderStateBar(getVisibleEvidence());
       });
     }
 
@@ -7458,6 +7684,7 @@ Provenance risk: ${audit.riskLabel}`);
       chips.push(`<button class="state-chip actionable" type="button" data-jump-state="domino">Trajectory: ${getSelectedTrajectoryTitle()}</button>`);
       if (savedCards.size) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="trail">Saved: ${savedCards.size}</button>`);
       if (compareCards.length) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="trail">Compare: ${compareCards.length}/2</button>`);
+      if (getBranchBoardItemCount()) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="trail">Board: ${getBranchBoardItemCount()}</button>`);
       if (focusMode) chips.push('<span class="state-chip">Focus mode active</span>');
       stateBar.innerHTML = `<span class="state-label">Current view</span>${chips.join('')}`;
       stateBar.querySelectorAll('[data-clear-state]').forEach(btn => {
@@ -7597,6 +7824,7 @@ Provenance risk: ${audit.riskLabel}`);
       selectedEntity = null;
       selectedComparisonEntity = null;
       compareCards = [];
+      branchBoard = { chain: [], branch: [], review: [] };
       openCategories = new Set(['players', 'virtual', 'bioengineering']);
       viewDensity = 'compact';
       focusMode = false;
