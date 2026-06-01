@@ -41,3 +41,10 @@ These ideas were previously visible as a strategy-style brief. Keep them as inte
 3. Impact scoring: rank categories by links, facts, flags, and cross-entity density so the strongest areas surface first.
 4. Lens presets: one-click views for convergence, money, identity/pharma, virtual humans, bioengineering, and key players.
 5. Cognitive wayfinding: keep discovery local, preserve scroll context, and offer close/copy/open actions at the point of need.
+
+
+## Completed in this enrichment pass
+
+1. Added additional official-source cards for the European Health Data Space, digital euro package, NATO DIANA, DoD Replicator, California Age-Appropriate Design Code, and Florida online protections for minors.
+2. Added Health Data + AI, Identity + Money + Age Gates, and Defense Autonomy lens presets.
+3. Added new trajectory/domino maps for health-data/AI medicine, digital ID/payment/age assurance, and defence-autonomy procurement.
