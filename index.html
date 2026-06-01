@@ -249,6 +249,98 @@
 
 
 
+    .workspace-pages-panel {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin: -12px 0 28px;
+      padding: 16px 18px;
+    }
+
+    .workspace-pages-header {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .workspace-pages-title {
+      color: var(--text-primary);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.86rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .workspace-pages-subtitle {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      margin-top: 4px;
+    }
+
+    .workspace-page-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    }
+
+    .workspace-page-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: grab;
+      display: grid;
+      gap: 8px;
+      padding: 12px;
+    }
+
+    .workspace-page-card.active,
+    .workspace-page-card.is-drop-target {
+      border-color: var(--link-color);
+      box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.12) inset;
+    }
+
+    .workspace-page-card.is-compared {
+      border-color: var(--warning);
+    }
+
+    .workspace-page-name {
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+
+    .workspace-page-actions,
+    .workspace-compare-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .workspace-compare-panel {
+      background: rgba(212, 175, 55, 0.06);
+      border: 1px solid rgba(212, 175, 55, 0.18);
+      border-radius: 10px;
+      margin-top: 12px;
+      padding: 12px;
+    }
+
+    .workspace-compare-metric {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      padding: 9px 10px;
+    }
+
+    .workspace-compare-metric strong {
+      color: var(--text-primary);
+      display: block;
+      font-size: 0.9rem;
+    }
+
     .entity-panel {
       background: linear-gradient(135deg, rgba(255, 209, 102, 0.08), rgba(93, 173, 226, 0.06));
       border: 1px solid var(--border);
@@ -1922,6 +2014,8 @@
           <option value="comfortable">Comfortable cards</option>
         </select>
         <button class="toolbar-btn" id="focusModeBtn" type="button">Focus mode</button>
+        <button class="toolbar-btn" id="saveWorkspacePageBtn" type="button">Save page</button>
+        <button class="toolbar-btn" id="workspacePagesBtn" type="button">Pages</button>
       </div>
       <div class="toolbar-group">
         <button class="toolbar-btn" id="openAllCategoriesBtn" type="button">Open all tabs</button>
@@ -1939,6 +2033,8 @@
     <div class="stats-bar" id="statsBar"></div>
 
     <div class="state-bar" id="stateBar"></div>
+
+    <section class="workspace-pages-panel" id="workspacePagesPanel"></section>
 
     <section class="entity-panel" id="entityPanel"></section>
 
@@ -5382,6 +5478,259 @@
           { label: "Florida Chapter Law: Online Protections for Minors", url: "https://laws.flrules.org/node/9415", icon: "⚖️" },
           { label: "Governor Signing Release", url: "https://www.flgov.com/eog/news/press/2024/governor-desantis-signs-legislation-protect-children-and-uphold-parental-rights", icon: "📰" }
         ]
+      },
+      {
+        id: "legacy-committee-public-information-wwi-propaganda",
+        type: "legacy",
+        title: "U.S. Committee on Public Information — WWI Mass Persuasion, Creel Committee, Four Minute Men",
+        date: "1917-04-13",
+        jurisdiction: "United States / World War I / Public Information",
+        description: "The Committee on Public Information (CPI), also called the Creel Committee, was the U.S. government's World War I public-information and propaganda agency. It coordinated press, posters, films, speakers, and patriotic messaging to shape mass opinion. This is an early state communications node for the map: it does not prove later coordination, but it documents a modern template for government-scale narrative mobilisation before cybernetics, broadcast media, platform governance, and behavioural policy.",
+        quote: { text: "Committee on Public Information", source: "U.S. National Archives record group description" },
+        tags: ["Committee on Public Information", "Creel Committee", "Propaganda", "Four Minute Men", "Public Opinion", "WWI", "Mass Persuasion", "Narrative Infrastructure"],
+        relatedEntities: ["George Creel", "Woodrow Wilson", "Four Minute Men", "Edward Bernays", "Walter Lippmann", "Public Opinion", "Propaganda"],
+        sourceQuality: "U.S. National Archives record group + Library of Congress / historical source trail",
+        facts: [
+          { label: "Created", value: "April 1917" },
+          { label: "Mode", value: "Posters, press, film, speakers, pamphlets" },
+          { label: "Relevance", value: "Modern state mass-persuasion template" },
+          { label: "Caveat", value: "Historical propaganda node, not proof of continuity by itself" }
+        ],
+        flags: ["State mass persuasion", "Wartime narrative mobilisation", "Public-opinion engineering precursor", "Use as historical template only", "Avoid overclaiming direct lineage"],
+        details: [
+          "This card gives the map an early modern propaganda root before Bernays, Lippmann, and later behavioural-policy documents.",
+          "It should be used to ask how state communications systems evolved, not to claim that all later public-health or technology messaging is identical to wartime propaganda."
+        ],
+        links: [
+          { label: "National Archives RG 63: Committee on Public Information", url: "https://www.archives.gov/research/guide-fed-records/groups/063.html", icon: "🏛️" },
+          { label: "Library of Congress: World War I Posters", url: "https://www.loc.gov/pictures/collection/wwipos/", icon: "🖼️" },
+          { label: "National WWI Museum: Four Minute Men", url: "https://www.theworldwar.org/learn/about-wwi/four-minute-men", icon: "🎙️" }
+        ]
+      },
+      {
+        id: "legacy-lippmann-public-opinion-manufacture-consent",
+        type: "legacy",
+        title: "Walter Lippmann — Public Opinion, Stereotypes, and the Manufacture of Consent",
+        date: "1922-01-01",
+        jurisdiction: "United States / Media Theory / Public Opinion",
+        description: "Walter Lippmann's 1922 book Public Opinion is a root text for media, democracy, expertise, stereotypes, and the gap between the world and the pictures in people's heads. It popularised the phrase 'manufacture of consent' in democratic governance debates. In this map it is an early intellectual node for mediated reality, expert administration, mass publics, and later communication-control concerns.",
+        quote: { text: "the pictures in our heads", source: "Walter Lippmann, Public Opinion" },
+        tags: ["Walter Lippmann", "Public Opinion", "Manufacture of Consent", "Stereotypes", "Media Theory", "Democracy", "Expert Governance"],
+        relatedEntities: ["Walter Lippmann", "Edward Bernays", "Public Opinion", "Committee on Public Information", "Council on Foreign Relations", "Media"],
+        sourceQuality: "Public-domain book text + Library of Congress authority/context records",
+        facts: [
+          { label: "Book", value: "Public Opinion (1922)" },
+          { label: "Core idea", value: "People act on mediated pictures of reality" },
+          { label: "Phrase", value: "Manufacture of consent" },
+          { label: "Bridge", value: "Media theory → expert governance → narrative systems" }
+        ],
+        flags: ["Media-theory root", "Expert-governance debate", "Public-opinion management", "Conceptual lineage not operational proof", "Read primary text directly"],
+        details: [
+          "The card gives users a sourceable book-level origin for recurring claims about reality mediation and expert-led consent formation.",
+          "It should sit beside Bernays and CPI as an intellectual layer, not a claim of a single coordinated plan."
+        ],
+        links: [
+          { label: "Project Gutenberg: Public Opinion", url: "https://www.gutenberg.org/ebooks/6456", icon: "📖" },
+          { label: "Library of Congress Name Authority: Walter Lippmann", url: "https://id.loc.gov/authorities/names/n79018774.html", icon: "🏛️" },
+          { label: "Internet Archive: Public Opinion", url: "https://archive.org/details/PublicOpinionWalterLippmann", icon: "📚" }
+        ]
+      },
+      {
+        id: "legacy-bernays-propaganda-engineering-consent",
+        type: "legacy",
+        title: "Edward Bernays — Crystallizing Public Opinion / Propaganda and Engineering Consent",
+        date: "1923-1928",
+        jurisdiction: "United States / Public Relations / Mass Persuasion",
+        description: "Edward Bernays' early public-relations books Crystallizing Public Opinion (1923) and Propaganda (1928) are core texts for modern PR and public-opinion engineering. The map uses Bernays as a culture-setting node: mass psychology, media channels, campaigns, and expert-managed consent become professional techniques that later reappear in public-health messaging, corporate communications, governance campaigns, and platform-era influence debates.",
+        quote: { text: "engineering of consent", source: "Edward Bernays public-relations vocabulary" },
+        tags: ["Edward Bernays", "Propaganda", "Public Relations", "Engineering Consent", "Crystallizing Public Opinion", "Mass Psychology", "Culture Setting"],
+        relatedEntities: ["Edward Bernays", "Sigmund Freud", "Walter Lippmann", "Committee on Public Information", "Public Relations", "Media Funding", "Behavioural Insights Team"],
+        sourceQuality: "Public-domain book scans + academic/library context",
+        facts: [
+          { label: "Books", value: "Crystallizing Public Opinion (1923), Propaganda (1928)" },
+          { label: "Domain", value: "Public relations / mass persuasion" },
+          { label: "Bridge", value: "PR techniques → governance/corporate narrative operations" },
+          { label: "Caution", value: "Influence techniques are documented; intent must be sourced case-by-case" }
+        ],
+        flags: ["PR and propaganda root", "Mass psychology", "Consent engineering vocabulary", "Corporate/state communications bridge", "Avoid using as blanket proof"],
+        details: [
+          "This card adds the public-relations professionalization layer between WWI propaganda and later behavioural/public-health messaging systems.",
+          "Use it to compare techniques and vocabulary; do not infer that every later communications effort is Bernays-derived unless documented."
+        ],
+        links: [
+          { label: "Internet Archive: Propaganda (1928)", url: "https://archive.org/details/Propaganda_Edward_L_Bernays_1928", icon: "📖" },
+          { label: "Internet Archive: Crystallizing Public Opinion", url: "https://archive.org/details/in.ernet.dli.2015.1607", icon: "📚" },
+          { label: "Encyclopaedia Britannica: Edward Bernays", url: "https://www.britannica.com/biography/Edward-Bernays", icon: "🧠" }
+        ]
+      },
+      {
+        id: "legacy-tavistock-institute-social-science-systems",
+        type: "legacy",
+        title: "Tavistock Institute — Social Science, Group Relations, Work Systems, and Postwar Organizational Psychology",
+        date: "1947-09-20",
+        jurisdiction: "United Kingdom / Social Science / Organizational Psychology",
+        description: "The Tavistock Institute of Human Relations was founded after World War II and became associated with group relations, organizational psychology, socio-technical systems, and applied social research. In the map it functions as a documented institutional node for studying groups, organisations, social systems, and behaviour—useful for early social-programming questions, while requiring care because many internet claims about Tavistock exceed what the sources establish.",
+        quote: { text: "social science in action", source: "Tavistock Institute official framing" },
+        tags: ["Tavistock Institute", "Group Relations", "Socio-Technical Systems", "Organizational Psychology", "Social Science", "Postwar", "Systems"],
+        relatedEntities: ["Tavistock Institute", "Kurt Lewin", "Group Relations", "Cybernetics", "Behavioural Insights Team", "Organizational Psychology"],
+        sourceQuality: "Official institute history + Wellcome archive catalogue + academic context",
+        facts: [
+          { label: "Founded", value: "1947" },
+          { label: "Fields", value: "Group relations + organizational psychology + socio-technical systems" },
+          { label: "Bridge", value: "Postwar social science → behaviour/organisation governance" },
+          { label: "Caution", value: "Do not treat unsourced Tavistock lore as evidence" }
+        ],
+        flags: ["Postwar social-science institution", "Group-behaviour research", "Socio-technical systems", "Frequently overclaimed online", "Use official/archive records"],
+        details: [
+          "This card is intentionally conservative: Tavistock is relevant because its documented work addresses groups, institutions, and socio-technical systems, not because every viral claim is reliable.",
+          "It helps connect cybernetics/systems language to organisational behaviour and later behavioural-policy frameworks."
+        ],
+        links: [
+          { label: "Tavistock Institute: About / History", url: "https://www.tavinstitute.org/about-us/history/", icon: "🏛️" },
+          { label: "Wellcome Collection: Tavistock Institute Archives", url: "https://wellcomecollection.org/works/jmvrpw7y", icon: "📚" },
+          { label: "Tavistock Institute Publications", url: "https://www.tavinstitute.org/publications/", icon: "📄" }
+        ]
+      },
+      {
+        id: "documents-mindspace-behavioural-insights-policy",
+        type: "documents",
+        title: "MINDSPACE / Behavioural Insights — Cabinet Office Behaviour Change Framework",
+        date: "2010-03-02",
+        jurisdiction: "United Kingdom / Cabinet Office / Behavioural Policy",
+        description: "The MINDSPACE report by the UK Cabinet Office and Institute for Government summarised behavioural-science influences on policy using the mnemonic Messenger, Incentives, Norms, Defaults, Salience, Priming, Affect, Commitments, and Ego. It is a later governance bridge from older propaganda/public-opinion roots into modern 'nudge' and behavioural-policy frameworks used in health, finance, climate, and digital-services contexts.",
+        quote: { text: "influencing behaviour through public policy", source: "MINDSPACE report subtitle" },
+        tags: ["MINDSPACE", "Behavioural Insights", "Nudge", "Cabinet Office", "Institute for Government", "Behaviour Change", "Defaults", "Priming"],
+        relatedEntities: ["UK Cabinet Office", "Institute for Government", "Behavioural Insights Team", "Nudge", "Public Health", "Digital Government"],
+        sourceQuality: "Official/think-tank policy report + UK Behavioural Insights Team context",
+        facts: [
+          { label: "Report", value: "MINDSPACE (2010)" },
+          { label: "Mechanisms", value: "Messenger, incentives, norms, defaults, salience, priming, affect, commitments, ego" },
+          { label: "Bridge", value: "Behavioural science → public policy design" },
+          { label: "Trajectory", value: "Propaganda/public opinion → nudge governance" }
+        ],
+        flags: ["Behavioural policy", "Defaults and priming", "Public-sector influence toolkit", "Useful bridge to pandemic/climate/digital-service messaging", "Requires case-specific evidence for misuse"],
+        details: [
+          "This is a modern policy-framework card that lets users connect early public-opinion theory to explicit behaviour-change tools without needing speculative continuity claims.",
+          "Pair with public-health communications, online-safety design defaults, climate nudges, and digital-government service design records."
+        ],
+        links: [
+          { label: "Institute for Government: MINDSPACE", url: "https://www.instituteforgovernment.org.uk/publication/mindspace", icon: "🧠" },
+          { label: "MINDSPACE PDF", url: "https://www.instituteforgovernment.org.uk/sites/default/files/publications/MINDSPACE.pdf", icon: "📜" },
+          { label: "Behavioural Insights Team: About", url: "https://www.bi.team/about-us/", icon: "🔬" }
+        ]
+      },
+      {
+        id: "documents-who-infodemic-management-covid",
+        type: "documents",
+        title: "WHO Infodemic Management — COVID-19, Social Listening, Behavioural Signals, and Public-Health Communications",
+        date: "2020-02-15",
+        jurisdiction: "World Health Organization / Global Public Health",
+        description: "WHO's COVID-era infodemic-management work is a key bridge from older public-opinion and behavioural-policy roots into modern public-health communications. WHO defines an infodemic as an overabundance of information, including false or misleading information, during a disease outbreak. This card tracks the institutionalisation of social listening, risk communication, behavioural insights, and platform-era health messaging.",
+        quote: { text: "overabundance of information", source: "WHO Infodemic health topic page" },
+        tags: ["WHO", "Infodemic", "COVID-19", "Social Listening", "Risk Communication", "Behavioural Insights", "Public Health", "Misinformation"],
+        relatedEntities: ["World Health Organization", "OpenWHO", "Sylvie Briand", "Public Health", "Behavioural Insights", "COVID-19", "Social Media"],
+        sourceQuality: "Official WHO health-topic page + WHO conference/report records",
+        facts: [
+          { label: "Term", value: "Infodemic management" },
+          { label: "Context", value: "COVID-19 public-health communications" },
+          { label: "Mechanisms", value: "Social listening + risk communication + behaviour signals" },
+          { label: "Bridge", value: "Public opinion / behavioural policy → health governance" }
+        ],
+        flags: ["Public-health information governance", "Social-listening infrastructure", "Platform-era health messaging", "Can protect against falsehoods but creates censorship/overreach debates", "Requires source-specific caveats"],
+        details: [
+          "This card connects the propaganda/behaviour roots to the pandemic era without assuming bad intent: WHO frames the work as outbreak response and risk communication.",
+          "The concern to study is governance scope: who defines misinformation, how social listening is operationalized, and how corrections interact with uncertainty and changing science."
+        ],
+        links: [
+          { label: "WHO Health Topic: Infodemic", url: "https://www.who.int/health-topics/infodemic", icon: "🌐" },
+          { label: "WHO Infodemic Management Conference Record", url: "https://iris.who.int/handle/10665/349341", icon: "📘" },
+          { label: "WHO Infodemic Management Update PDF", url: "https://www.who.int/docs/default-source/coronaviruse/risk-comms-updates/update43-infodemic-management.pdf?download=true&sfvrsn=1237275f_25", icon: "📜" }
+        ]
+      },
+      {
+        id: "documents-surgeon-general-health-misinformation-advisory-2021",
+        type: "documents",
+        title: "U.S. Surgeon General Advisory — Confronting Health Misinformation",
+        date: "2021-07-15",
+        jurisdiction: "United States / HHS / Public Health Communications",
+        description: "The U.S. Surgeon General's 2021 advisory Confronting Health Misinformation framed health misinformation as an urgent public-health threat and called on individuals, health professionals, researchers, educators, media, technology platforms, and governments to act. It is a high-value card for the COVID-era governance chain because it explicitly links health, platforms, algorithms, research, and government communications.",
+        quote: { text: "urgent threat to public health", source: "U.S. Surgeon General advisory" },
+        tags: ["Surgeon General", "Health Misinformation", "COVID-19", "Social Media", "Platforms", "Algorithms", "Public Health", "Vivek Murthy"],
+        relatedEntities: ["Vivek Murthy", "HHS", "CDC", "Social Media Platforms", "Public Health", "COVID-19", "Misinformation"],
+        sourceQuality: "Official HHS / Surgeon General advisory PDF + toolkit",
+        facts: [
+          { label: "Advisory", value: "Confronting Health Misinformation" },
+          { label: "Date", value: "15 July 2021" },
+          { label: "Framing", value: "Health misinformation as urgent public-health threat" },
+          { label: "Actors", value: "Public, platforms, media, researchers, governments" }
+        ],
+        flags: ["Platform governance pressure", "Public-health communications", "Algorithm and amplification concerns", "First Amendment / censorship debates", "Changing-science caveat"],
+        details: [
+          "Use this card with WHO infodemic management, EU disinformation code, and CISA MDM records to map how health and security institutions treated information flows as a governance domain.",
+          "It is especially important to preserve the caveat that public-health claims can change over time; enforcement systems built around certainty need careful audit."
+        ],
+        links: [
+          { label: "Surgeon General Advisory PDF", url: "https://www.hhs.gov/sites/default/files/surgeon-general-misinformation-advisory.pdf", icon: "📜" },
+          { label: "Health Misinformation Toolkit PDF", url: "https://www.hhs.gov/sites/default/files/health-misinformation-toolkit-english.pdf", icon: "🧰" },
+          { label: "HHS Health Misinformation Page", url: "https://www.hhs.gov/surgeongeneral/priorities/health-misinformation/index.html", icon: "🏥" }
+        ]
+      },
+      {
+        id: "documents-cisa-mdm-foreign-influence-critical-infrastructure",
+        type: "documents",
+        title: "CISA MDM / Foreign Influence Operations — Critical Infrastructure and Election Information Resilience",
+        date: "2022-02-18",
+        jurisdiction: "United States / CISA / Critical Infrastructure / Elections",
+        description: "CISA's mis-, dis-, and malinformation (MDM) resources and foreign-influence guidance frame information manipulation as a risk to critical infrastructure, election systems, and national critical functions. This card adds the security-state branch of information governance: not health misinformation, but infrastructure resilience, influence operations, and public confidence in systems.",
+        quote: { text: "misinformation, disinformation, and malinformation", source: "CISA foreign influence guidance" },
+        tags: ["CISA", "MDM", "Misinformation", "Disinformation", "Malinformation", "Foreign Influence", "Critical Infrastructure", "Election Infrastructure"],
+        relatedEntities: ["CISA", "Jen Easterly", "FBI", "ODNI", "Election Infrastructure", "Critical Infrastructure", "Foreign Influence Operations"],
+        sourceQuality: "Official CISA resources + guidance PDFs",
+        facts: [
+          { label: "Frame", value: "Information manipulation as infrastructure risk" },
+          { label: "Terms", value: "Mis-, dis-, and malinformation (MDM)" },
+          { label: "Domains", value: "Critical infrastructure + elections" },
+          { label: "Caveat", value: "Domestic speech governance concerns require legal scrutiny" }
+        ],
+        flags: ["Security-state information governance", "Critical-infrastructure framing", "Election information operations", "MDM definitions contested", "Civil-liberties and government-platform coordination concern"],
+        details: [
+          "This card is useful because it shows information governance becoming a cybersecurity and critical-infrastructure issue, not only a media or public-health issue.",
+          "The card should be read with First Amendment litigation/reporting and official CISA caveats; the existence of foreign influence risks does not settle domestic moderation boundaries."
+        ],
+        links: [
+          { label: "CISA Foreign Influence / Critical Infrastructure Guidance", url: "https://www.cisa.gov/resources-tools/resources/cisa-insights-preparing-and-mitigating-foreign-influence-operations-targeting-critical", icon: "🛡️" },
+          { label: "CISA Release on Foreign Influence Operations", url: "https://www.cisa.gov/news-events/news/cisa-releases-new-insight-help-critical-infrastructure-owners-prepare-and-mitigate-foreign-influence", icon: "📣" },
+          { label: "CISA Foreign Influence Taxonomy", url: "https://www.cisa.gov/resources-tools/resources/foreign-influence-taxonomy", icon: "🧾" },
+          { label: "CISA Election Influence Guidance PDF", url: "https://www.cisa.gov/sites/default/files/2024-04/Securing_Election_Infrastructure_Against_the_Tactics_of_Foreign_Malign_Influence_Operations_2024FINAL_508c.pdf", icon: "📜" }
+        ]
+      },
+      {
+        id: "documents-eu-code-practice-disinformation-dsa",
+        type: "documents",
+        title: "EU Code of Practice on Disinformation — Platforms, Fact-Checking, Ads, DSA Code-of-Conduct Integration",
+        date: "2022-06-16/2025-02-13",
+        jurisdiction: "European Union / Digital Services Act / Platform Governance",
+        description: "The EU's strengthened Code of Practice on Disinformation was signed in June 2022 and later integrated as a Code of Conduct under the Digital Services Act framework in February 2025. It is a key platform-governance card because it ties disinformation policy to online advertising, platform integrity, fact-checking, researcher access, crisis response, and DSA accountability mechanisms.",
+        quote: { text: "Code of Practice on Disinformation", source: "European Commission digital strategy page" },
+        tags: ["EU Code of Practice on Disinformation", "Digital Services Act", "Disinformation", "Fact-Checking", "Platforms", "Advertising", "Crisis Response", "VLOPs"],
+        relatedEntities: ["European Commission", "European Board for Digital Services", "Digital Services Act", "Very Large Online Platforms", "Fact-Checkers", "Google", "Meta", "Microsoft"],
+        sourceQuality: "Official European Commission pages + Publications Office record",
+        facts: [
+          { label: "Strengthened Code", value: "Signed 16 June 2022" },
+          { label: "DSA integration", value: "Endorsed 13 Feb. 2025 as Code of Conduct" },
+          { label: "Mechanisms", value: "Ads, integrity, fact-checking, researcher access, crisis response" },
+          { label: "Pattern", value: "Voluntary code moves toward regulatory framework" }
+        ],
+        flags: ["Platform governance", "Fact-checking integration", "Advertising and demonetization controls", "Researcher-data access", "Free-expression and institutional-trust tradeoffs"],
+        details: [
+          "This is the EU platform-governance counterpart to WHO/HHS/CISA information-governance cards: a formal code structure around platform obligations and disinformation response.",
+          "The 2025 DSA integration is important because it shifts the code from voluntary self-regulation toward recognized code-of-conduct status under a wider legal framework."
+        ],
+        links: [
+          { label: "European Commission: Code of Practice on Disinformation", url: "https://digital-strategy.ec.europa.eu/en/policies/code-practice-disinformation", icon: "🇪🇺" },
+          { label: "2022 Strengthened Code Library Page", url: "https://digital-strategy.ec.europa.eu/en/library/2022-strengthened-code-practice-disinformation", icon: "📚" },
+          { label: "EU Publications Office Record", url: "https://op.europa.eu/en/publication-detail/-/publication/c1c55f26-063e-11ed-acce-01aa75ed71a1/language-en", icon: "📜" }
+        ]
       }
 
 
@@ -5514,6 +5863,8 @@
       { id: 'gates-timing', label: 'Gates Timing Window', terms: ['Microsoft Antitrust', 'Gates Foundation', 'Gavi', 'Gates Institute', 'Rockefeller Foundation', 'Standard Oil'], types: ['legacy', 'funding', 'players', 'documents'] },
       { id: 'covid-patterns', label: 'COVID Pattern Stack', terms: ['Event 201', 'Crimson Contagion', 'SPARS', 'Milken', 'Wuhan', 'Fauci', 'Gates Foundation'], types: ['documents', 'speeches', 'outbreaks', 'funding', 'players'] },
       { id: 'legacy', label: 'Legacy Roots', terms: ['Julian Huxley', 'Rockefeller', 'Eugenics', 'Cybernetics', 'Population Council', 'Bilderberg', 'King John', 'Presidents', 'Bush Family', 'Kennedy Family', 'Hollywood Dynasty', 'Walton Family', 'Epstein', 'Ghislaine Maxwell', 'JPMorgan', 'MIT Media Lab'], types: ['legacy', 'players', 'funding', 'documents'] },
+      { id: 'propaganda-roots', label: 'Propaganda / Behaviour Roots', terms: ['Committee on Public Information', 'Edward Bernays', 'Walter Lippmann', 'Tavistock Institute', 'MINDSPACE', 'Public Opinion', 'Behavioural Insights'], types: ['legacy', 'documents', 'speeches', 'research'] },
+      { id: 'infodemic-platform-governance', label: 'Infodemic + Platform Governance', terms: ['WHO Infodemic', 'Surgeon General', 'Health Misinformation', 'CISA', 'MDM', 'EU Code of Practice on Disinformation', 'Digital Services Act'], types: ['documents', 'legislation', 'research', 'leaks', 'corporate'] },
       { id: 'convergence', label: 'Convergence Stack', terms: ['WEF', 'Digital ID', 'AI', 'Biotechnology', 'World ID', 'Brain'], types: ['players', 'virtual', 'bioengineering', 'documents', 'funding'] },
       { id: 'money', label: 'Money & Influence', terms: ['Gates Foundation', 'Pritzker', 'Funding', 'Gavi', 'Microsoft', 'Meta'], types: ['funding', 'players', 'corporate', 'pharma', 'identity'] },
       { id: 'bio', label: 'Bio / Vector / Outbreak', terms: ['DARPA', 'Gene Drive', 'Mosquitoes', 'Hantavirus', 'EcoHealth', 'CRISPR'], types: ['bioengineering', 'outbreaks', 'funding', 'leaks', 'documents'] },
@@ -5544,6 +5895,16 @@
         title: 'Ideology → family philanthropy → institutions → governance',
         terms: ['Francis Galton', 'Julian Huxley', 'Rockefeller', 'Population Council', 'Macy Conferences', 'Bilderberg', 'King John', 'Presidents', 'Bush Family', 'Kennedy Family', 'Hollywood Dynasty', 'Walton Family', 'Epstein', 'Ghislaine Maxwell', 'JPMorgan', 'MIT Media Lab'],
         why: 'Shows the earliest documented roots: eugenics terminology, evolutionary humanism, family philanthropy, cybernetics meetings, population policy, and elite convening.'
+      },
+      {
+        title: 'Wartime propaganda → public relations → behavioural policy',
+        terms: ['Committee on Public Information', 'Walter Lippmann', 'Edward Bernays', 'Tavistock Institute', 'MINDSPACE', 'Behavioural Insights'],
+        why: 'Adds the culture-setting and mindset-setting roots: wartime public information, media theory, PR engineering, postwar group relations, and modern nudge policy.'
+      },
+      {
+        title: 'Infodemic management → MDM security → platform code-of-conduct governance',
+        terms: ['WHO Infodemic', 'Surgeon General', 'Health Misinformation', 'CISA', 'MDM', 'EU Code of Practice on Disinformation', 'Digital Services Act'],
+        why: 'Connects the pandemic-era information-governance stack: health misinformation advisories, social listening, security-state MDM framing, and platform disinformation codes.'
       },
       {
         title: 'Elite governance → technology policy → identity infrastructure',
@@ -5588,6 +5949,46 @@
     ];
 
     const dominoTrajectories = [
+      {
+        id: 'ultimate-transhuman-stack',
+        title: 'Ultimate stack → ideology, persuasion, systems, bio/digital body, identity, autonomy',
+        arc: 'A high-level master trajectory that nests the smaller chains: human-improvement ideology, mass persuasion, systems governance, population/biology institutions, digital identity/payment, health-data AI, body digitization, ecological bioengineering, and autonomous command systems.',
+        terms: ['Transhumanism', 'Eugenics', 'Propaganda', 'Cybernetics', 'Rockefeller', 'Gates Foundation', 'Digital ID', 'European Health Data Space', 'Digital Twin', 'Gene Drive', 'Replicator'],
+        dominoes: [
+          { date: '1883-1957', label: 'Human-improvement ideology', summary: 'Eugenics terminology, Huxley evolutionary humanism, UNESCO philosophy, and explicit transhumanism language create the oldest conceptual layer.', terms: ['Francis Galton', 'Julian Huxley', 'UNESCO', 'Transhumanism'] },
+          { date: '1917-2010', label: 'Mass persuasion and behaviour design', summary: 'CPI, Lippmann, Bernays, Tavistock, and MINDSPACE document a century of public-opinion, PR, group-relations, and nudge-policy tools.', terms: ['Committee on Public Information', 'Walter Lippmann', 'Edward Bernays', 'Tavistock Institute', 'MINDSPACE'] },
+          { date: '1946-1972', label: 'Systems and planetary modeling', summary: 'Cybernetics, Macy meetings, and Limits to Growth recast people, institutions, economies, and ecologies as governable systems.', terms: ['Macy Conferences', 'Cybernetics', 'Club of Rome', 'Limits to Growth'] },
+          { date: '1913-2000', label: 'Foundation-built health/population rails', summary: 'Rockefeller and Gates-era institutions build public-health, population, vaccine, and global-health partnership infrastructure.', terms: ['Rockefeller Foundation', 'Population Council', 'Gates Institute', 'Gavi'] },
+          { date: '2016-2029+', label: 'Machine-readable health and identity', summary: 'Digital ID, digital euro, EHDS, AI medical devices, and digital twins move records, money, bodies, and services into interoperable data layers.', terms: ['Digital ID', 'Digital Euro', 'European Health Data Space', 'FDA AI', 'Digital Twin'] },
+          { date: '2016-2026+', label: 'Bio/vector and autonomy deployment', summary: 'Gene drives, vector releases, AI governance, NATO DIANA, and Replicator add ecological modification and autonomous command/procurement layers.', terms: ['Gene Drive', 'Oxitec', 'NATO DIANA', 'Replicator', 'Autonomous Systems'] }
+        ]
+      },
+      {
+        id: 'propaganda-behaviour-governance',
+        title: 'Wartime propaganda → PR → behaviour policy → platform governance',
+        arc: 'A culture-setting trajectory from state wartime messaging and public-relations theory into behavioural-policy defaults, platform design, public-health communications, and age/identity governance.',
+        terms: ['Committee on Public Information', 'Walter Lippmann', 'Edward Bernays', 'Tavistock Institute', 'MINDSPACE', 'Age Appropriate Design Code', 'Public Health'],
+        dominoes: [
+          { date: '1917-1919', label: 'CPI wartime mobilisation', summary: 'The Creel Committee demonstrates modern state-scale public information using posters, press, films, and speaker networks.', terms: ['Committee on Public Information', 'Creel Committee', 'Four Minute Men'] },
+          { date: '1922-1928', label: 'Public opinion + PR texts', summary: 'Lippmann and Bernays formalize mediated reality, stereotypes, propaganda, and public-relations engineering vocabulary.', terms: ['Walter Lippmann', 'Edward Bernays', 'Public Opinion', 'Propaganda'] },
+          { date: '1947-1970s', label: 'Group relations and socio-technical systems', summary: 'Tavistock and adjacent social-science fields study organizations, group behaviour, and systems in postwar institutions.', terms: ['Tavistock Institute', 'Group Relations', 'Socio-Technical Systems'] },
+          { date: '2010', label: 'MINDSPACE behaviour policy', summary: 'Messenger, incentives, norms, defaults, salience, priming, affect, commitments, and ego become explicit public-policy design tools.', terms: ['MINDSPACE', 'Behavioural Insights', 'Nudge'] },
+          { date: '2020-2026', label: 'Platform, health, and age governance', summary: 'Public-health messaging, online-safety codes, age assurance, and digital-service design become modern places where behaviour-policy and identity systems meet.', terms: ['Public Health', 'Age Verification', 'Digital ID', 'Online Safety'] }
+        ]
+      },
+      {
+        id: 'infodemic-mdm-platform-governance',
+        title: 'Infodemic → MDM security → platform governance',
+        arc: 'A trajectory from pandemic health-information management into security-state MDM frameworks and EU platform code-of-conduct governance.',
+        terms: ['WHO Infodemic', 'Surgeon General', 'Health Misinformation', 'CISA', 'MDM', 'EU Code of Practice on Disinformation', 'Digital Services Act'],
+        dominoes: [
+          { date: '2020', label: 'WHO infodemic management', summary: 'WHO formalizes infodemic management, social listening, and risk communication as public-health tools during COVID-19.', terms: ['WHO Infodemic', 'COVID-19', 'Social Listening'] },
+          { date: '2021', label: 'Surgeon General health misinformation advisory', summary: 'The U.S. advisory frames health misinformation as an urgent public-health threat involving platforms, algorithms, researchers, and governments.', terms: ['Surgeon General', 'Health Misinformation', 'Platforms'] },
+          { date: '2022', label: 'CISA MDM and infrastructure resilience', summary: 'CISA frames mis-, dis-, and malinformation as a foreign-influence and critical-infrastructure resilience problem.', terms: ['CISA', 'MDM', 'Critical Infrastructure'] },
+          { date: '2022-2025', label: 'EU disinformation code + DSA integration', summary: 'The EU disinformation code moves from strengthened platform commitments toward Code-of-Conduct integration under the Digital Services Act.', terms: ['EU Code of Practice on Disinformation', 'Digital Services Act', 'Fact-Checking'] },
+          { date: '2024-2026', label: 'Age, health, election, and crisis-response convergence', summary: 'Health, elections, child safety, crisis response, and platform accountability increasingly share information-governance tools.', terms: ['Age Verification', 'Public Health', 'Election Infrastructure', 'Platform Governance'] }
+        ]
+      },
       {
         id: 'legacy-to-governance',
         title: 'Ideology → foundations → systems governance',
@@ -5927,7 +6328,7 @@
       }
     ];
 
-    const quickSearches = ['Microsoft Antitrust', 'Timing Pattern', 'Gavi', 'Gates Institute', 'Media Funding', 'Rockefeller Foundation', 'Investment Convergence', 'Founders Fund', 'Breakthrough Energy', 'BlackRock', 'a16z', 'Eric Schmidt', 'Palantir', 'Anduril', 'Event 201', 'Crimson Contagion', 'SPARS', 'Milken', 'Wuhan Games', 'Universal Flu Vaccine', 'Jeffrey Epstein', 'Ghislaine Maxwell', 'Epstein Emails', 'JPMorgan', 'MIT Media Lab', 'Maxwell Family', 'Les Wexner', 'Bush Family', 'Kennedy Family', 'Roosevelt Family', 'Gates Family', 'Walton Family', 'Hollywood Dynasty', 'Coppola Family', 'King John', 'Presidents', 'Plantagenet', 'Royal Descent', 'Julian Huxley', 'Rockefeller', 'Eugenics', 'Cybernetics', 'Population Council', 'Bilderberg', 'Klaus Schwab', 'Bill Gates', 'Yuval Harari', 'Sam Altman', 'Pritzker', 'Young Global Leaders', 'Digital Twin', 'Mind Uploading', 'Brain Transparency', 'Israel', 'World ID', 'Gene Drive'];
+    const quickSearches = ['Microsoft Antitrust', 'Timing Pattern', 'Gavi', 'Gates Institute', 'Media Funding', 'Rockefeller Foundation', 'Investment Convergence', 'Founders Fund', 'Breakthrough Energy', 'BlackRock', 'a16z', 'Eric Schmidt', 'Palantir', 'Anduril', 'Event 201', 'Crimson Contagion', 'SPARS', 'Milken', 'Wuhan Games', 'Universal Flu Vaccine', 'Jeffrey Epstein', 'Ghislaine Maxwell', 'Epstein Emails', 'JPMorgan', 'MIT Media Lab', 'Maxwell Family', 'Les Wexner', 'Bush Family', 'Kennedy Family', 'Roosevelt Family', 'Gates Family', 'Walton Family', 'Hollywood Dynasty', 'Coppola Family', 'King John', 'Presidents', 'Plantagenet', 'Royal Descent', 'Julian Huxley', 'Rockefeller', 'Eugenics', 'Cybernetics', 'Population Council', 'Bilderberg', 'Klaus Schwab', 'Bill Gates', 'Yuval Harari', 'Sam Altman', 'Pritzker', 'Young Global Leaders', 'Digital Twin', 'Mind Uploading', 'Brain Transparency', 'Israel', 'World ID', 'Gene Drive', 'Committee on Public Information', 'Edward Bernays', 'Walter Lippmann', 'Tavistock Institute', 'MINDSPACE', 'Ultimate Stack', 'WHO Infodemic', 'Health Misinformation', 'CISA MDM', 'EU Disinformation Code'];
 
     let activeFilters = [...allTypes];
     let searchQuery = '';
@@ -5936,7 +6337,7 @@
     let selectedThread = null;
     let selectedEntity = null;
     let selectedComparisonEntity = null;
-    let selectedDominoTrajectory = 'gates-antitrust-global-health';
+    let selectedDominoTrajectory = 'ultimate-transhuman-stack';
     let openCategories = new Set(['legacy', 'players', 'virtual', 'bioengineering']);
     let viewDensity = 'compact';
     let focusMode = false;
@@ -5950,6 +6351,9 @@
     let discoveryTerm = '';
     let discoveryMatches = [];
     let discoveryGuidance = '';
+    let workspacePages = [];
+    let activeWorkspacePageId = null;
+    let comparedWorkspacePageIds = [];
 
     // ============================================
     // RENDER FUNCTIONS
@@ -7681,7 +8085,207 @@ Provenance risk: ${audit.riskLabel}`);
       });
     }
 
+    function getWorkspacePageCards(page) {
+      const ids = new Set(page.cardIds || []);
+      return evidence.filter(item => ids.has(item.id));
+    }
+
+    function getWorkspacePageName() {
+      if (searchQuery) return `Search: ${searchQuery}`;
+      if (discoveryTerm) return `Discovery: ${discoveryTerm}`;
+      return getSelectedTrajectoryTitle();
+    }
+
+    function createWorkspacePage(label = getWorkspacePageName()) {
+      const visible = getVisibleEvidence();
+      if (!visible.length) return;
+      const page = {
+        id: `page-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+        label,
+        createdAt: new Date().toISOString(),
+        searchQuery,
+        activeFilters: [...activeFilters],
+        sortMode,
+        viewDensity,
+        selectedDominoTrajectory,
+        selectedEntity,
+        selectedThread,
+        discoveryTerm,
+        cardIds: visible.map(item => item.id),
+        sourceAudit: compactSourceAuditForExport(getSourceAudit(visible)),
+        stats: {
+          cards: visible.length,
+          links: visible.reduce((sum, item) => sum + (item.links?.length || 0), 0),
+          categories: [...new Set(visible.map(item => item.type))]
+        }
+      };
+      workspacePages.unshift(page);
+      workspacePages = workspacePages.slice(0, 8);
+      activeWorkspacePageId = page.id;
+      comparedWorkspacePageIds = [page.id, ...comparedWorkspacePageIds.filter(id => id !== page.id)].slice(0, 2);
+      renderWorkspacePagesPanel();
+      renderStateBar(getVisibleEvidence());
+    }
+
+    function applyWorkspacePage(pageId) {
+      const page = workspacePages.find(item => item.id === pageId);
+      if (!page) return;
+      activeWorkspacePageId = page.id;
+      activeFilters = [...page.activeFilters];
+      searchQuery = page.searchQuery || '';
+      sortMode = page.sortMode || 'newest';
+      viewDensity = page.viewDensity || 'compact';
+      selectedDominoTrajectory = page.selectedDominoTrajectory || selectedDominoTrajectory;
+      selectedEntity = page.selectedEntity || selectedEntity;
+      selectedThread = page.selectedThread || selectedThread;
+      document.getElementById('searchInput').value = searchQuery;
+      document.getElementById('sortSelect').value = sortMode;
+      document.getElementById('densitySelect').value = viewDensity;
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.toggle('active', activeFilters.includes(btn.dataset.filter)));
+      openCategories = new Set(page.stats?.categories || page.activeFilters || []);
+      expandedCards = new Set(page.cardIds || []);
+      renderCards();
+      updateStats();
+      document.getElementById('workspacePagesPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function removeWorkspacePage(pageId) {
+      workspacePages = workspacePages.filter(page => page.id !== pageId);
+      comparedWorkspacePageIds = comparedWorkspacePageIds.filter(id => id !== pageId);
+      if (activeWorkspacePageId === pageId) activeWorkspacePageId = workspacePages[0]?.id || null;
+      renderWorkspacePagesPanel();
+      renderStateBar(getVisibleEvidence());
+    }
+
+    function toggleWorkspaceCompare(pageId) {
+      if (comparedWorkspacePageIds.includes(pageId)) {
+        comparedWorkspacePageIds = comparedWorkspacePageIds.filter(id => id !== pageId);
+      } else {
+        comparedWorkspacePageIds = [pageId, ...comparedWorkspacePageIds].slice(0, 2);
+      }
+      renderWorkspacePagesPanel();
+      renderStateBar(getVisibleEvidence());
+    }
+
+    function moveWorkspacePage(sourceId, targetId) {
+      const sourceIndex = workspacePages.findIndex(page => page.id === sourceId);
+      const targetIndex = workspacePages.findIndex(page => page.id === targetId);
+      if (sourceIndex < 0 || targetIndex < 0 || sourceIndex === targetIndex) return;
+      const [page] = workspacePages.splice(sourceIndex, 1);
+      workspacePages.splice(targetIndex, 0, page);
+      renderWorkspacePagesPanel();
+    }
+
+    function getWorkspacePageComparison() {
+      const [a, b] = comparedWorkspacePageIds.map(id => workspacePages.find(page => page.id === id));
+      if (!a || !b) return null;
+      const aIds = new Set(a.cardIds || []);
+      const bIds = new Set(b.cardIds || []);
+      const sharedIds = [...aIds].filter(id => bIds.has(id));
+      const aCards = getWorkspacePageCards(a);
+      const bCards = getWorkspacePageCards(b);
+      const sharedCards = evidence.filter(item => sharedIds.includes(item.id));
+      const sharedCategories = [...new Set(sharedCards.map(item => item.type))];
+      const sharedEntities = getThreadNodes(sharedCards).slice(0, 6).map(([node, count]) => `${node} (${count})`);
+      return {
+        a,
+        b,
+        sharedIds,
+        sharedCategories,
+        sharedEntities,
+        aUnique: [...aIds].filter(id => !bIds.has(id)),
+        bUnique: [...bIds].filter(id => !aIds.has(id)),
+        aAudit: getSourceAudit(aCards),
+        bAudit: getSourceAudit(bCards),
+        sharedAudit: getSourceAudit(sharedCards)
+      };
+    }
+
+    function exportWorkspacePages() {
+      const payload = {
+        generatedAt: new Date().toISOString(),
+        activeWorkspacePageId,
+        comparedWorkspacePageIds,
+        pages: workspacePages,
+        comparison: getWorkspacePageComparison()
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `workspace-pages-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function renderWorkspacePagesPanel() {
+      const panel = document.getElementById('workspacePagesPanel');
+      if (!panel) return;
+      const comparison = getWorkspacePageComparison();
+      panel.innerHTML = `
+        <div class="workspace-pages-header">
+          <div>
+            <div class="workspace-pages-title">Workspace Pages · side-by-side comparison</div>
+            <div class="workspace-pages-subtitle">Save different searches, lenses, trajectories, or entity states as moveable pages. Drag to reorder; compare two pages for overlap, source posture, shared entities, and meaning-density.</div>
+          </div>
+          <div class="workspace-page-actions">
+            <button class="toolbar-btn" type="button" id="createWorkspacePageBtn">Save current page</button>
+            <button class="toolbar-btn" type="button" id="exportWorkspacePagesBtn">Export pages JSON</button>
+          </div>
+        </div>
+        <div class="workspace-page-grid">
+          ${workspacePages.length ? workspacePages.map(page => `
+            <article class="workspace-page-card ${page.id === activeWorkspacePageId ? 'active' : ''} ${comparedWorkspacePageIds.includes(page.id) ? 'is-compared' : ''}" draggable="true" data-workspace-page="${page.id}">
+              <div class="workspace-page-name">${page.label}</div>
+              <div class="workspace-pages-subtitle">${page.stats.cards} cards · ${page.stats.links} links · ${page.stats.categories.map(formatType).join(' + ') || 'mixed'}</div>
+              <div class="workspace-pages-subtitle">Risk ${page.sourceAudit.provenanceRisk} · ${page.sourceAudit.primaryOrOfficialRatio}% primary/official · ${page.sourceAudit.weakLinkCards} weak-link</div>
+              <div class="workspace-page-actions">
+                <button class="toolbar-btn" type="button" data-open-workspace-page="${page.id}">Open</button>
+                <button class="toolbar-btn" type="button" data-compare-workspace-page="${page.id}">${comparedWorkspacePageIds.includes(page.id) ? 'Compared ✓' : 'Compare'}</button>
+                <button class="toolbar-btn" type="button" data-remove-workspace-page="${page.id}">Remove</button>
+              </div>
+            </article>
+          `).join('') : '<div class="workspace-pages-subtitle">No saved pages yet. Save the current view, then try a different lens/search and save another page for comparison.</div>'}
+        </div>
+        ${comparison ? `
+          <div class="workspace-compare-panel">
+            <div class="workspace-pages-title">Meaning comparison · ${comparison.a.label} ↔ ${comparison.b.label}</div>
+            <div class="workspace-compare-grid">
+              <div class="workspace-compare-metric"><strong>${comparison.sharedIds.length}</strong>shared cards</div>
+              <div class="workspace-compare-metric"><strong>${comparison.aUnique.length} / ${comparison.bUnique.length}</strong>unique cards</div>
+              <div class="workspace-compare-metric"><strong>${comparison.sharedCategories.length}</strong>shared categories</div>
+              <div class="workspace-compare-metric"><strong>${comparison.sharedAudit.primaryRatio}%</strong>shared primary/official mix</div>
+              <div class="workspace-compare-metric"><strong>${comparison.aAudit.riskLabel} / ${comparison.bAudit.riskLabel}</strong>provenance risk</div>
+            </div>
+            <div class="workspace-pages-subtitle" style="margin-top:8px;">Shared categories: ${comparison.sharedCategories.map(formatType).join(' · ') || 'None'}</div>
+            <div class="workspace-pages-subtitle">Shared entities: ${comparison.sharedEntities.join(' · ') || 'No repeated entities in overlap'}</div>
+          </div>
+        ` : ''}
+      `;
+      document.getElementById('createWorkspacePageBtn')?.addEventListener('click', () => createWorkspacePage());
+      document.getElementById('exportWorkspacePagesBtn')?.addEventListener('click', exportWorkspacePages);
+      panel.querySelectorAll('[data-open-workspace-page]').forEach(btn => btn.addEventListener('click', () => applyWorkspacePage(btn.dataset.openWorkspacePage)));
+      panel.querySelectorAll('[data-compare-workspace-page]').forEach(btn => btn.addEventListener('click', () => toggleWorkspaceCompare(btn.dataset.compareWorkspacePage)));
+      panel.querySelectorAll('[data-remove-workspace-page]').forEach(btn => btn.addEventListener('click', () => removeWorkspacePage(btn.dataset.removeWorkspacePage)));
+      panel.querySelectorAll('[data-workspace-page]').forEach(card => {
+        card.addEventListener('dragstart', event => event.dataTransfer.setData('text/plain', card.dataset.workspacePage));
+        card.addEventListener('dragover', event => {
+          event.preventDefault();
+          card.classList.add('is-drop-target');
+        });
+        card.addEventListener('dragleave', () => card.classList.remove('is-drop-target'));
+        card.addEventListener('drop', event => {
+          event.preventDefault();
+          card.classList.remove('is-drop-target');
+          moveWorkspacePage(event.dataTransfer.getData('text/plain'), card.dataset.workspacePage);
+        });
+      });
+    }
+
     function renderSupportPanels(items = getVisibleEvidence()) {
+      renderWorkspacePagesPanel();
       renderEntityPanel(items);
       renderBriefPanel(items);
       renderImpactPanel(items);
@@ -7913,6 +8517,7 @@ Provenance risk: ${audit.riskLabel}`);
       if (savedCards.size) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="trail">Saved: ${savedCards.size}</button>`);
       if (compareCards.length) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="trail">Compare: ${compareCards.length}/2</button>`);
       if (getBranchBoardItemCount()) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="trail">Board: ${getBranchBoardItemCount()}</button>`);
+      if (workspacePages.length) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="pages">Pages: ${workspacePages.length}</button>`);
       if (focusMode) chips.push('<span class="state-chip">Focus mode active</span>');
       stateBar.innerHTML = `<span class="state-label">Current view</span>${chips.join('')}`;
       stateBar.querySelectorAll('[data-clear-state]').forEach(btn => {
@@ -7935,7 +8540,8 @@ Provenance risk: ${audit.riskLabel}`);
             entity: 'entityPanel',
             thread: 'threadPanel',
             domino: 'dominoPanel',
-            trail: 'missionPanel'
+            trail: 'missionPanel',
+            pages: 'workspacePagesPanel'
           };
           document.getElementById(targets[btn.dataset.jumpState])?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
@@ -8053,6 +8659,9 @@ Provenance risk: ${audit.riskLabel}`);
       selectedComparisonEntity = null;
       compareCards = [];
       branchBoard = { chain: [], branch: [], review: [] };
+      workspacePages = [];
+      activeWorkspacePageId = null;
+      comparedWorkspacePageIds = [];
       openCategories = new Set(['players', 'virtual', 'bioengineering']);
       viewDensity = 'compact';
       focusMode = false;
@@ -8094,6 +8703,12 @@ Provenance risk: ${audit.riskLabel}`);
         updateFocusMode();
         renderStateBar(getVisibleEvidence());
         document.getElementById('dominoPanel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      document.getElementById('saveWorkspacePageBtn').addEventListener('click', () => createWorkspacePage());
+      document.getElementById('workspacePagesBtn').addEventListener('click', () => {
+        renderWorkspacePagesPanel();
+        document.getElementById('workspacePagesPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       });
 
       document.getElementById('openAllCategoriesBtn').addEventListener('click', () => {

@@ -48,3 +48,25 @@ These ideas were previously visible as a strategy-style brief. Keep them as inte
 1. Added additional official-source cards for the European Health Data Space, digital euro package, NATO DIANA, DoD Replicator, California Age-Appropriate Design Code, and Florida online protections for minors.
 2. Added Health Data + AI, Identity + Money + Age Gates, and Defense Autonomy lens presets.
 3. Added new trajectory/domino maps for health-data/AI medicine, digital ID/payment/age assurance, and defence-autonomy procurement.
+
+
+## Completed in this foundations pass
+
+1. Added early mass-persuasion / mindset-setting source cards: Committee on Public Information, Walter Lippmann, Edward Bernays, Tavistock Institute, and MINDSPACE behavioural-policy framework.
+2. Added a Propaganda / Behaviour Roots lens and narrative pathway.
+3. Added an ultimate transhuman-stack domino trajectory that nests ideology, persuasion, systems, foundations, health/identity data layers, bio/vector engineering, and autonomy procurement.
+4. Added a dedicated propaganda/behaviour-governance domino trajectory from WWI public information through PR, group relations, behavioural policy, and platform/age-governance systems.
+
+
+## Completed in this information-governance pass
+
+1. Added WHO infodemic management, U.S. Surgeon General health misinformation advisory, CISA MDM/foreign influence, and EU Code of Practice on Disinformation cards.
+2. Added an Infodemic + Platform Governance lens and narrative pathway.
+3. Added an Infodemic → MDM security → platform governance domino trajectory tying health, security, elections, online safety, and platform accountability into one source-grounded chain.
+
+
+## Completed in this workspace-pages pass
+
+1. Added multi-page workspace snapshots so users can save distinct searches, lenses, trajectories, or entity states as moveable pages.
+2. Added side-by-side page comparison metrics for shared cards, unique cards, shared categories, source posture, and shared entities.
+3. Added drag-to-reorder workspace pages and JSON export of the page set plus comparison context.
