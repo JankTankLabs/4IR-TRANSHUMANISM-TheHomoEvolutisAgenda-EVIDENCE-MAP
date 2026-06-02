@@ -70,28 +70,3 @@ These ideas were previously visible as a strategy-style brief. Keep them as inte
 1. Added multi-page workspace snapshots so users can save distinct searches, lenses, trajectories, or entity states as moveable pages.
 2. Added side-by-side page comparison metrics for shared cards, unique cards, shared categories, source posture, and shared entities.
 3. Added drag-to-reorder workspace pages and JSON export of the page set plus comparison context.
-
-## Completed in this YGL roster pass
-
-1. Added a source-tiered Young Global Leaders roster index with official WEF 2020, 2021, 2022, 2023, 2024, 2025, and 2026 cohort entries.
-2. Added a separated older/high-interest verification queue so speculative or commonly cited alumni names are not mixed with confirmed official cohort lists.
-3. Added user-facing YGL roster copy/export actions and a YGL lens/quick-search path for discovery without hijacking the global search state.
-
-
-## Expanded in this YGL roster follow-up
-
-1. Added official WEF 2020, 2021, and 2022 YGL cohorts to the roster panel, increasing source-tiered coverage beyond the 2023-2026 groups.
-2. Updated the YGL evidence card, lens terms, quick searches, README, and roster export path so the product communicates 2020-2026 official-cohort coverage plus a separate verification queue.
-3. Remaining gap: older Global Leaders for Tomorrow / early YGL-era lists still require archive-backed harvesting before the app can honestly claim every historical member is captured.
-
-## Completed in this YGL deepening pass
-
-1. Added high-value YGL-linked profile cards for Omar Al Olama, Mykhailo Fedorov, Joy Buolamwini, and Sanna Marin because they connect the roster to concrete AI-governance, digital-state, biometric-AI oversight, and executive political domains already represented in the map.
-2. Updated YGL roster metadata and quick-search terms so these deeper cards are discoverable from the roster layer.
-3. Maintained the all-time coverage caveat: the app has strong official 2020-2026 cohort coverage, but older Global Leaders for Tomorrow / early YGL archives still need a dedicated source-harvesting pass.
-
-## Completed in this second YGL deepening pass
-
-1. Added high-value YGL-linked profile cards for Michael Kratsios, Shou Zi Chew, Han Bicheng / BrainCo, and Kaitlyn Sadtler.
-2. These cards expand the roster into federal AI policy, platform governance / children and privacy, non-invasive BCI / neurotechnology, and NIH immunoengineering / regenerative-medicine domains.
-3. Updated roster metadata and quick-search terms so the newest YGL-linked profile cards can be reached from the same discovery layer.
