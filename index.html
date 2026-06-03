@@ -49,6 +49,36 @@
     a { color: var(--link-color); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 18px;
+    }
+
+    button, input, select, a, [role="button"] {
+      -webkit-tap-highlight-color: rgba(93, 173, 226, 0.18);
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    a:focus-visible,
+    [role="button"]:focus-visible {
+      outline: 2px solid var(--link-color);
+      outline-offset: 3px;
+    }
+
+    .sr-only {
+      border: 0;
+      clip: rect(0, 0, 0, 0);
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      padding: 0;
+      position: absolute;
+      white-space: nowrap;
+      width: 1px;
+    }
+
     .container {
       max-width: 1400px;
       margin: 0 auto;
@@ -250,6 +280,7 @@
 
 
     .workspace-pages-panel {
+      scroll-margin-top: 18px;
       background: var(--bg-secondary);
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -342,6 +373,7 @@
     }
 
     .entity-panel {
+      scroll-margin-top: 18px;
       background: linear-gradient(135deg, rgba(255, 209, 102, 0.08), rgba(93, 173, 226, 0.06));
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -558,6 +590,82 @@
       outline: none;
     }
 
+    .section-wheel {
+      background: linear-gradient(135deg, rgba(93, 173, 226, 0.10), rgba(255, 209, 102, 0.06));
+      border: 1px solid rgba(93, 173, 226, 0.18);
+      border-radius: 14px;
+      margin: -8px 0 24px;
+      padding: 14px;
+    }
+
+    .section-wheel-header {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .section-wheel-title {
+      color: var(--text-primary);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .section-wheel-hint {
+      color: var(--text-muted);
+      font-size: 0.76rem;
+    }
+
+    .section-wheel-track {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 2px 2px 6px;
+      scroll-snap-type: x proximity;
+    }
+
+    .section-wheel-chip {
+      align-items: center;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: inline-flex;
+      flex: 0 0 auto;
+      font-family: inherit;
+      font-size: 0.78rem;
+      gap: 7px;
+      padding: 8px 12px;
+      scroll-snap-align: start;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+    }
+
+    .section-wheel-chip:hover {
+      background: rgba(93, 173, 226, 0.12);
+      border-color: rgba(93, 173, 226, 0.44);
+      color: var(--text-primary);
+      transform: translateY(-1px);
+    }
+
+    .section-wheel-dot {
+      border-radius: 50%;
+      box-shadow: 0 0 10px currentColor;
+      height: 8px;
+      width: 8px;
+    }
+
+    .section-wheel-count {
+      color: var(--text-muted);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+    }
+
     .quick-links {
       display: flex;
       flex-wrap: wrap;
@@ -629,6 +737,7 @@
     .impact-panel,
     .pathway-panel,
     .domino-panel {
+      scroll-margin-top: 18px;
       background: var(--bg-secondary);
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -870,6 +979,7 @@
 
     /* Inline discovery drawer */
     .discovery-panel {
+      scroll-margin-top: 18px;
       border: 1px solid rgba(93, 173, 226, 0.22);
       background: linear-gradient(135deg, rgba(93, 173, 226, 0.08), rgba(255, 209, 102, 0.05));
       border-radius: 12px;
@@ -947,6 +1057,7 @@
     }
 
     .narrative-panel {
+      scroll-margin-top: 18px;
       background: var(--bg-secondary);
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -956,6 +1067,7 @@
 
     /* Research Trail Console */
     .mission-grid {
+      scroll-margin-top: 18px;
       display: grid;
       grid-template-columns: minmax(260px, 0.9fr) minmax(320px, 1.1fr);
       gap: 16px;
@@ -1175,6 +1287,7 @@
 
     /* Timeline */
     .timeline-panel {
+      scroll-margin-top: 18px;
       margin-bottom: 28px;
       padding: 18px 20px;
       background: var(--bg-secondary);
@@ -1231,6 +1344,7 @@
 
     /* Thread Explorer */
     .thread-panel {
+      scroll-margin-top: 18px;
       margin-bottom: 28px;
       padding: 18px 20px;
       background: linear-gradient(135deg, rgba(255, 209, 102, 0.08), rgba(93, 173, 226, 0.06));
@@ -1343,6 +1457,7 @@
     }
 
     .category-section {
+      scroll-margin-top: 18px;
       background: var(--bg-secondary);
       border: 1px solid var(--border);
       border-radius: 14px;
@@ -1439,6 +1554,7 @@
 
     /* Evidence Card */
     .evidence-card {
+      scroll-margin-top: 18px;
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 10px;
@@ -1448,7 +1564,8 @@
       transition: all 0.2s ease;
     }
 
-    .evidence-card:hover {
+    .evidence-card:hover,
+    .evidence-card:focus-visible {
       border-color: var(--text-muted);
       transform: translateY(-2px);
     }
@@ -1934,6 +2051,7 @@
           <span>Primary Source Documentation Database</span>
         </div>
         <div class="search-box">
+          <label class="sr-only" for="searchInput">Search evidence database</label>
           <input type="text" class="search-input" placeholder="Search patents, legislation, documents..." id="searchInput">
         </div>
       </div>
@@ -2027,7 +2145,9 @@
       </div>
     </div>
 
-    <div class="quick-links" id="quickLinks"></div>
+    <nav class="section-wheel" id="sectionWheel" aria-label="Jump to major sections and evidence categories"></nav>
+
+    <div class="quick-links" id="quickLinks" aria-label="Quick discovery searches"></div>
 
 
     <div class="stats-bar" id="statsBar"></div>
@@ -6380,6 +6500,63 @@
       return dateForSort(b.date) - dateForSort(a.date);
     }
 
+    function scrollToElement(element, options = {}) {
+      if (!element) return;
+      const { focus = false, behavior = 'smooth' } = options;
+      element.scrollIntoView({ behavior, block: 'start', inline: 'nearest' });
+      if (focus && typeof element.focus === 'function') {
+        if (!element.matches('a, button, input, select, textarea, [tabindex]')) element.setAttribute('tabindex', '-1');
+        window.setTimeout(() => element.focus({ preventScroll: true }), 250);
+      }
+    }
+
+    function escapeAttribute(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function renderSectionWheel(filtered = getVisibleEvidence(), grouped = groupByType(filtered)) {
+      const wheel = document.getElementById('sectionWheel');
+      if (!wheel) return;
+      const supportLinks = [
+        { label: 'Entity map', target: 'entityPanel', icon: '◎' },
+        { label: 'Brief', target: 'briefPanel', icon: '▣' },
+        { label: 'Impact', target: 'impactPanel', icon: '◈' },
+        { label: 'Pathways', target: 'pathwayPanel', icon: '⟲' },
+        { label: 'Dominoes', target: 'dominoPanel', icon: '⛓' },
+        { label: 'Discovery', target: 'discoveryPanel', icon: '⌕' },
+        { label: 'Timeline', target: 'timelinePanel', icon: '◷' },
+        { label: 'Threads', target: 'threadPanel', icon: '⌘' },
+        { label: 'Evidence', target: 'cardsGrid', icon: '▤' }
+      ];
+      const categoryLinks = allTypes
+        .filter(type => grouped[type]?.length)
+        .map(type => ({ type, label: formatTypePlural(type), count: grouped[type].length }));
+
+      wheel.innerHTML = `
+        <div class="section-wheel-header">
+          <div class="section-wheel-title">Jump index</div>
+          <div class="section-wheel-hint">Open any section from its top — no more landing mid-panel.</div>
+        </div>
+        <div class="section-wheel-track">
+          ${supportLinks.map(link => `
+            <button class="section-wheel-chip" type="button" data-scroll-target="${link.target}">
+              <span aria-hidden="true">${link.icon}</span><span>${link.label}</span>
+            </button>
+          `).join('')}
+          ${categoryLinks.map(link => `
+            <button class="section-wheel-chip" type="button" data-scroll-category="${link.type}">
+              <span class="section-wheel-dot filter-dot ${link.type}" aria-hidden="true"></span>
+              <span>${link.label}</span><span class="section-wheel-count">${link.count}</span>
+            </button>
+          `).join('')}
+        </div>
+      `;
+    }
+
     function renderCards() {
       const grid = document.getElementById('cardsGrid');
       const filtered = getVisibleEvidence();
@@ -6387,6 +6564,7 @@
       grid.classList.toggle('view-density-comfortable', viewDensity === 'comfortable');
 
       if (filtered.length === 0) {
+        renderSectionWheel([], {});
         grid.innerHTML = '<div style="text-align: center; padding: 60px; color: var(--text-muted);">No results found. Try adjusting your filters or search.</div>';
         renderTimeline([]);
         renderThreadPanel([]);
@@ -6394,6 +6572,7 @@
       }
 
       const grouped = groupByType(filtered);
+      renderSectionWheel(filtered, grouped);
       grid.innerHTML = allTypes
         .filter(type => grouped[type]?.length)
         .map(type => renderCategorySection(type, grouped[type]))
@@ -6425,6 +6604,11 @@
 
       grid.querySelectorAll('.evidence-card').forEach(card => {
         card.addEventListener('click', () => toggleCard(card.dataset.id));
+        card.addEventListener('keydown', (event) => {
+          if (event.key !== 'Enter' && event.key !== ' ') return;
+          event.preventDefault();
+          toggleCard(card.dataset.id);
+        });
       });
 
       grid.querySelectorAll('a, button, .card-tag, .entity-chip').forEach(el => {
@@ -6485,13 +6669,14 @@
       `;
     }
 
-    function toggleCategory(type) {
+    function toggleCategory(type, shouldScroll = false) {
       if (openCategories.has(type)) {
         openCategories.delete(type);
       } else {
         openCategories.add(type);
       }
       renderCards();
+      if (shouldScroll) requestAnimationFrame(() => scrollToElement(document.querySelector(`[data-category-section="${type}"]`), { focus: true }));
     }
 
     function renderCard(e) {
@@ -6501,7 +6686,7 @@
       const sourceCount = e.links?.length || 0;
 
       return `
-        <article class="evidence-card ${expandedClass}" data-id="${e.id}">
+        <article class="evidence-card ${expandedClass}" data-id="${e.id}" role="button" tabindex="0" aria-expanded="${isExpanded}" aria-label="${isExpanded ? 'Collapse' : 'Expand'} evidence card: ${escapeAttribute(e.title)}">
           <div class="card-header">
             <span class="card-type-badge ${e.type}">${formatType(e.type)}</span>
             <h3 class="card-title">${e.title}</h3>
@@ -6558,7 +6743,7 @@
 
           <div class="card-links">
             ${e.links.map(link => `
-              <a href="${link.url}" target="_blank" rel="noopener" class="source-link">
+              <a href="${link.url}" target="_blank" rel="noopener" class="source-link" aria-label="Open source link: ${escapeAttribute(link.label)}">
                 <span class="source-link-icon">${link.icon}</span>
                 <span class="source-link-text">
                   <span class="source-link-label">${link.label}</span>
@@ -6740,7 +6925,7 @@
       discoveryMatches = [...items].sort(sortEvidence);
       discoveryGuidance = guidance;
       renderDiscoveryPanel();
-      document.getElementById('discoveryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      scrollToElement(document.getElementById('discoveryPanel'), { focus: true });
     }
 
     function openEntityComparisonSet(items = []) {
@@ -7214,7 +7399,7 @@
         selectedThread = activeProfile.entity;
         renderThreadPanel(getVisibleEvidence());
         renderStateBar(getVisibleEvidence());
-        document.getElementById('threadPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        scrollToElement(document.getElementById('threadPanel'), { focus: true });
       });
       document.getElementById('entityPinBoardBtn')?.addEventListener('click', () => {
         addBoardItem('chain', {
@@ -7292,17 +7477,17 @@
       });
 
       panel.querySelectorAll('[data-thread-card]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          expandedCards.add(btn.dataset.threadCard);
-          renderCards();
-          document.querySelector(`[data-id="${btn.dataset.threadCard}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        });
+        btn.addEventListener('click', () => openCardById(btn.dataset.threadCard));
       });
 
       document.getElementById('threadSearchBtn')?.addEventListener('click', () => showDiscovery(active));
       document.getElementById('threadExpandBtn')?.addEventListener('click', () => {
-        matches.forEach(item => expandedCards.add(item.id));
+        matches.forEach(item => {
+          openCategories.add(item.type);
+          expandedCards.add(item.id);
+        });
         renderCards();
+        requestAnimationFrame(() => scrollToElement(document.getElementById('cardsGrid'), { focus: true }));
       });
       document.getElementById('threadCopyBtn')?.addEventListener('click', () => copyText(formatLinksForClipboard(matches)));
     }
@@ -7409,8 +7594,8 @@ Provenance risk: ${audit.riskLabel}`);
       panel.querySelectorAll('[data-impact-type]').forEach(btn => {
         btn.addEventListener('click', () => {
           openCategories.add(btn.dataset.impactType);
-          document.querySelector(`[data-category-section="${btn.dataset.impactType}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
           renderCards();
+          requestAnimationFrame(() => scrollToElement(document.querySelector(`[data-category-section="${btn.dataset.impactType}"]`), { focus: true }));
         });
       });
       document.getElementById('openHighestImpactBtn')?.addEventListener('click', () => {
@@ -7981,7 +8166,7 @@ Provenance risk: ${audit.riskLabel}`);
           selectedThread = btn.dataset.constellationNode;
           renderThreadPanel(getVisibleEvidence());
           renderStateBar(getVisibleEvidence());
-          document.getElementById('threadPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          scrollToElement(document.getElementById('threadPanel'), { focus: true });
         });
       });
       document.getElementById('openTopNodeBtn')?.addEventListener('click', () => {
@@ -8145,7 +8330,7 @@ Provenance risk: ${audit.riskLabel}`);
       expandedCards = new Set(page.cardIds || []);
       renderCards();
       updateStats();
-      document.getElementById('workspacePagesPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      scrollToElement(document.getElementById('workspacePagesPanel'), { focus: true });
     }
 
     function removeWorkspacePage(pageId) {
@@ -8328,7 +8513,7 @@ Provenance risk: ${audit.riskLabel}`);
       openCategories.add(item.type);
       expandedCards.add(id);
       renderCards();
-      document.querySelector(`[data-id="${id}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      scrollToElement(document.querySelector(`[data-id="${id}"]`), { focus: true });
     }
 
     function pullRandomThread() {
@@ -8339,7 +8524,7 @@ Provenance risk: ${audit.riskLabel}`);
       recordInteraction('thread-puller');
       renderThreadPanel(getVisibleEvidence());
       renderStateBar(getVisibleEvidence());
-      document.getElementById('threadPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      scrollToElement(document.getElementById('threadPanel'), { focus: true });
     }
 
     function renderTimeline(items = getVisibleEvidence()) {
@@ -8391,13 +8576,16 @@ Provenance risk: ${audit.riskLabel}`);
         item.addEventListener('click', () => {
           expandedCards = new Set([item.dataset.timelineId]);
           recordInteraction('deep-diver');
+          const timelineItem = evidence.find(entry => entry.id === item.dataset.timelineId);
+          if (timelineItem) openCategories.add(timelineItem.type);
           renderCards();
-          document.querySelector(`[data-id="${item.dataset.timelineId}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          requestAnimationFrame(() => scrollToElement(document.querySelector(`[data-id="${item.dataset.timelineId}"]`), { focus: true }));
         });
       });
     }
 
     function toggleCard(id) {
+      const isOpening = !expandedCards.has(id);
       if (expandedCards.has(id)) {
         expandedCards.delete(id);
       } else {
@@ -8406,6 +8594,7 @@ Provenance risk: ${audit.riskLabel}`);
       }
       renderCards();
       renderSupportPanels(getVisibleEvidence());
+      if (isOpening) requestAnimationFrame(() => scrollToElement(document.querySelector(`[data-id="${id}"]`), { focus: true }));
     }
 
     function formatType(type) {
@@ -8542,7 +8731,7 @@ Provenance risk: ${audit.riskLabel}`);
             trail: 'missionPanel',
             pages: 'workspacePagesPanel'
           };
-          document.getElementById(targets[btn.dataset.jumpState])?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          scrollToElement(document.getElementById(targets[btn.dataset.jumpState]), { focus: true });
         });
       });
     }
@@ -8701,13 +8890,13 @@ Provenance risk: ${audit.riskLabel}`);
         focusMode = !focusMode;
         updateFocusMode();
         renderStateBar(getVisibleEvidence());
-        document.getElementById('dominoPanel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        scrollToElement(document.getElementById('dominoPanel'), { focus: true });
       });
 
       document.getElementById('saveWorkspacePageBtn').addEventListener('click', () => createWorkspacePage());
       document.getElementById('workspacePagesBtn').addEventListener('click', () => {
         renderWorkspacePagesPanel();
-        document.getElementById('workspacePagesPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        scrollToElement(document.getElementById('workspacePagesPanel'), { focus: true });
       });
 
       document.getElementById('openAllCategoriesBtn').addEventListener('click', () => {
@@ -8737,6 +8926,21 @@ Provenance risk: ${audit.riskLabel}`);
 
       document.getElementById('exportJsonBtn').addEventListener('click', exportVisibleJson);
       document.getElementById('resetBtn').addEventListener('click', resetView);
+
+      document.getElementById('sectionWheel').addEventListener('click', (event) => {
+        const targetChip = event.target.closest('[data-scroll-target]');
+        if (targetChip) {
+          scrollToElement(document.getElementById(targetChip.dataset.scrollTarget), { focus: true });
+          return;
+        }
+        const categoryChip = event.target.closest('[data-scroll-category]');
+        if (categoryChip) {
+          const type = categoryChip.dataset.scrollCategory;
+          openCategories.add(type);
+          renderCards();
+          requestAnimationFrame(() => scrollToElement(document.querySelector(`[data-category-section="${type}"]`), { focus: true }));
+        }
+      });
 
       document.getElementById('quickLinks').addEventListener('click', (event) => {
         const chip = event.target.closest('[data-search-term]');
