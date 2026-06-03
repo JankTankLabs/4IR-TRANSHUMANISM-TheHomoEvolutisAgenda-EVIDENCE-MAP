@@ -1513,24 +1513,90 @@
 
     /* Evidence Card */
     .evidence-card {
+      --card-accent: var(--link-color);
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 10px;
       cursor: pointer;
       min-height: 190px;
+      overflow: hidden;
       padding: 16px;
-      transition: all 0.2s ease;
+      position: relative;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, background 0.2s ease;
+    }
+
+    .evidence-card::before {
+      background: linear-gradient(180deg, var(--card-accent), transparent 82%);
+      content: '';
+      inset: 0 auto 0 0;
+      opacity: 0;
+      position: absolute;
+      transition: opacity 0.2s ease;
+      width: 4px;
     }
 
     .evidence-card:hover {
-      border-color: var(--text-muted);
+      border-color: color-mix(in srgb, var(--card-accent) 50%, var(--text-muted));
       transform: translateY(-2px);
     }
 
     .evidence-card.expanded {
-      border-color: rgba(255, 255, 255, 0.2);
+      background:
+        radial-gradient(circle at top left, color-mix(in srgb, var(--card-accent) 16%, transparent), transparent 42%),
+        var(--bg-card);
+      border-color: color-mix(in srgb, var(--card-accent) 78%, #111827);
+      box-shadow:
+        0 0 0 1px color-mix(in srgb, var(--card-accent) 35%, transparent),
+        0 22px 54px rgba(0, 0, 0, 0.38),
+        0 0 34px color-mix(in srgb, var(--card-accent) 16%, transparent);
       grid-column: span 2;
       min-height: 0;
+    }
+
+    .evidence-card.expanded::before {
+      opacity: 0.95;
+    }
+
+    .evidence-card.just-opened {
+      animation: cardOpenPulse 2.25s ease-out 1;
+    }
+
+    .evidence-card.just-opened::after {
+      border: 1px solid color-mix(in srgb, var(--card-accent) 70%, transparent);
+      border-radius: 10px;
+      content: '';
+      inset: 3px;
+      opacity: 0.75;
+      pointer-events: none;
+      position: absolute;
+    }
+
+    @keyframes cardOpenPulse {
+      0% {
+        box-shadow:
+          0 0 0 0 color-mix(in srgb, var(--card-accent) 56%, transparent),
+          0 22px 54px rgba(0, 0, 0, 0.38);
+        transform: translateY(-2px) scale(1.01);
+      }
+      45% {
+        box-shadow:
+          0 0 0 7px color-mix(in srgb, var(--card-accent) 18%, transparent),
+          0 22px 54px rgba(0, 0, 0, 0.38),
+          0 0 40px color-mix(in srgb, var(--card-accent) 22%, transparent);
+      }
+      100% {
+        box-shadow:
+          0 0 0 1px color-mix(in srgb, var(--card-accent) 35%, transparent),
+          0 22px 54px rgba(0, 0, 0, 0.38),
+          0 0 34px color-mix(in srgb, var(--card-accent) 16%, transparent);
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .evidence-card.just-opened {
+        animation: none;
+      }
     }
 
     .view-density-compact .evidence-card:not(.expanded) .card-description {
@@ -1877,6 +1943,36 @@
 
     .source-link-arrow {
       color: var(--text-muted);
+    }
+
+    .card-open-status {
+      align-items: center;
+      background: color-mix(in srgb, var(--card-accent) 14%, rgba(255, 255, 255, 0.03));
+      border: 1px solid color-mix(in srgb, var(--card-accent) 40%, var(--border));
+      border-radius: 999px;
+      color: var(--text-secondary);
+      display: none;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      gap: 6px;
+      letter-spacing: 0.08em;
+      margin: -2px 0 12px;
+      padding: 6px 9px;
+      text-transform: uppercase;
+      width: fit-content;
+    }
+
+    .card-open-status::before {
+      background: var(--card-accent);
+      border-radius: 999px;
+      box-shadow: 0 0 12px color-mix(in srgb, var(--card-accent) 55%, transparent);
+      content: '';
+      height: 7px;
+      width: 7px;
+    }
+
+    .evidence-card.expanded .card-open-status {
+      display: inline-flex;
     }
 
     .card-expand-hint {
@@ -9233,6 +9329,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     let searchQuery = '';
     let sortMode = 'newest';
     let expandedCards = new Set();
+    let highlightedCards = new Set();
     let selectedThread = null;
     let selectedEntity = null;
     let selectedComparisonEntity = null;
@@ -9396,12 +9493,15 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
 
     function renderCard(e) {
       const isExpanded = expandedCards.has(e.id);
+      const isHighlighted = highlightedCards.has(e.id);
       const expandedClass = isExpanded ? 'expanded' : '';
+      const highlightClass = isHighlighted ? 'just-opened' : '';
       const sourceQuality = e.sourceQuality || 'Primary sources';
       const sourceCount = e.links?.length || 0;
+      const cardAccent = `var(--${e.type}, var(--link-color))`;
 
       return `
-        <article class="evidence-card ${expandedClass}" id="${e.id}" data-id="${e.id}">
+        <article class="evidence-card ${expandedClass} ${highlightClass}" id="${e.id}" data-id="${e.id}" style="--card-accent: ${cardAccent};">
           <div class="card-header">
             <span class="card-type-badge ${e.type}">${formatType(e.type)}</span>
             <h3 class="card-title">${e.title}</h3>
@@ -9413,6 +9513,8 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
             <span class="card-meta-item"><strong>Sources:</strong> ${sourceCount}</span>
             <span class="source-quality">✓ ${sourceQuality}</span>
           </div>
+
+          <div class="card-open-status">Opened ${formatType(e.type)} focus</div>
 
           <p class="card-description">${e.description}</p>
 
@@ -9635,6 +9737,20 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
 
 
 
+    function highlightOpenedCards(ids = []) {
+      highlightedCards = new Set(ids.filter(Boolean));
+    }
+
+    function expandAndHighlightCards(items = []) {
+      const ids = items.map(item => item.id).filter(Boolean);
+      items.forEach(item => {
+        openCategories.add(item.type);
+        expandedCards.add(item.id);
+      });
+      highlightOpenedCards(ids);
+      return ids;
+    }
+
     function openDiscoverySet(term, items = [], guidance = '') {
       discoveryTerm = term;
       discoveryMatches = [...items].sort(sortEvidence);
@@ -9645,10 +9761,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
 
     function openEntityComparisonSet(items = []) {
       if (!items.length) return;
-      items.forEach(item => {
-        openCategories.add(item.type);
-        expandedCards.add(item.id);
-      });
+      expandAndHighlightCards(items);
       openDiscoverySet('Entity comparison set', items, 'Comparison subset opened from Entity Intelligence. Use Open matching cards to expand the exact cards in-place.');
       renderCards();
       renderStateBar(getVisibleEvidence());
@@ -10192,16 +10305,12 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       });
 
       panel.querySelectorAll('[data-thread-card]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          expandedCards.add(btn.dataset.threadCard);
-          renderCards();
-          document.querySelector(`[data-id="${btn.dataset.threadCard}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        });
+        btn.addEventListener('click', () => openCardById(btn.dataset.threadCard));
       });
 
       document.getElementById('threadSearchBtn')?.addEventListener('click', () => showDiscovery(active));
       document.getElementById('threadExpandBtn')?.addEventListener('click', () => {
-        matches.forEach(item => expandedCards.add(item.id));
+        expandAndHighlightCards(matches);
         renderCards();
       });
       document.getElementById('threadCopyBtn')?.addEventListener('click', () => copyText(formatLinksForClipboard(matches)));
@@ -10560,10 +10669,7 @@ Provenance risk: ${audit.riskLabel}`);
         btn.addEventListener('click', () => openCardById(btn.dataset.discoveryCard));
       });
       document.getElementById('openDiscoveryBtn')?.addEventListener('click', () => {
-        discoveryMatches.slice(0, 24).forEach(item => {
-          openCategories.add(item.type);
-          expandedCards.add(item.id);
-        });
+        expandAndHighlightCards(discoveryMatches.slice(0, 24));
         recordInteraction('deep-diver');
         renderCards();
       });
@@ -11495,6 +11601,7 @@ Provenance risk: ${audit.riskLabel}`);
       if (!item) return;
       openCategories.add(item.type);
       expandedCards.add(id);
+      highlightOpenedCards([id]);
       renderCards();
       document.querySelector(`[data-id="${id}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
@@ -11558,6 +11665,7 @@ Provenance risk: ${audit.riskLabel}`);
       panel.querySelectorAll('[data-timeline-id]').forEach(item => {
         item.addEventListener('click', () => {
           expandedCards = new Set([item.dataset.timelineId]);
+          highlightOpenedCards([item.dataset.timelineId]);
           recordInteraction('deep-diver');
           renderCards();
           document.querySelector(`[data-id="${item.dataset.timelineId}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -11568,8 +11676,10 @@ Provenance risk: ${audit.riskLabel}`);
     function toggleCard(id) {
       if (expandedCards.has(id)) {
         expandedCards.delete(id);
+        highlightedCards.delete(id);
       } else {
         expandedCards.add(id);
+        highlightOpenedCards([id]);
         recordInteraction('deep-diver');
       }
       renderCards();

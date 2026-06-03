@@ -161,3 +161,9 @@ These ideas were previously visible as a strategy-style brief. Keep them as inte
 1. Added Mythos & Folklore cards for comparative religion / savior-hero archetypes, contested Jesus-parallels claim sets, dying/rising and descent-return figures, prophet/lawgiver/civilizer archetypes, hero-pattern scholarship, and apocalypse/world-renewal scripts.
 2. Added comparative-belief narrative, domino trajectory, Signal Stack Radar entry, quick-search terms, and Mythos track terms so the section is connected to existing discovery rather than isolated.
 3. Preserved source and respect guardrails: living religious traditions are treated as distinct contexts, broad motifs are separated from one-to-one sameness claims, and viral parallel lists are marked contested unless primary-source evidence supports them.
+
+## Completed in this card-focus affordance pass
+
+1. Added category-coloured outlines, left-edge accent rails, and opened-state pills for expanded evidence cards so the active information panel is visually anchored to its source category.
+2. Added a subtle reduced-motion-safe focus pulse for newly opened cards from direct clicks, Timeline, Thread Explorer, Entity Intelligence, and Discovery drawer actions.
+3. Centralized multi-card expansion/highlighting so opened comparison, thread, and discovery sets can be visually distinguished without changing the global search state.
