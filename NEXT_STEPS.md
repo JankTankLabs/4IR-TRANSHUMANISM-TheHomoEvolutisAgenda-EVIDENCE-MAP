@@ -173,3 +173,27 @@ These ideas were previously visible as a strategy-style brief. Keep them as inte
 1. Fixed oversized Signal Stack / Research Track meter rendering by making mini-bars block-level, bounded, and scoped to direct fill spans.
 2. Added draggable/resizable floating windows for expanded-card source links, tags, and related entities so users can compare multiple pieces of evidence side by side without being forced into a page jump.
 3. Added close/minimize controls, bottom dock tabs, drag-to-group tab behavior, and JSON export for individual floating windows or grouped comparison tabs.
+
+## Completed in this dataset hardening pass
+
+1. Added high-value bridge cards for HGP/ELSI, NIH All of Us, NIST SP 800-63, mDL/ISO 18013-5, WHO DDCC, Buck v. Bell, Population Council/Norplant, authority/conformity experiments, and HAARP.
+2. Strengthened thin categories: human, research, identity, documents, environment, pharma, social, and legacy now have more primary-source anchors and better cross-domain connective value.
+3. Added quick-search/lens bridge terms for digital identity standards, health certificates, precision-medicine datasets, forced-sterilization precedent, contraceptive implants, classic compliance studies, and ionospheric boundary-case research.
+
+## Completed in this second dataset hardening pass
+
+1. Fixed the persistent Signal Stack / Track Router bar rendering defect by replacing generic nested spans with bounded `.mini-bar-fill` elements and explicit 7px height constraints.
+2. Added high-value bridge cards for Belmont/Common Rule, UK Biobank, FIDO/WebAuthn/passkeys, and DHS fusion centers.
+3. Extended health-data, identity, and surveillance search/lens terms so the new cards connect to existing EHDS, All of Us, mDL, NIST, age-assurance, CISA, and platform-governance pathways.
+
+## Completed in this workspace presentation pass
+
+1. Added a draggable Workspace Index for the main analysis panels so users can reorder, open, and collapse major sections without scrolling through every box.
+2. Added top-level Open workspace / Collapse workspace controls and automatic collapsed-state shells for major panels while preserving the source-card category accordion.
+3. Improved Trajectory Domino readability with darker layered backgrounds, stronger contrast, and text-shadow treatment for domino steps and metadata.
+
+## Completed in this third dataset hardening pass
+
+1. Added high-value bridge cards for REAL ID modernization / digital-ID acceptance, Genomics England / 100,000 Genomes Project, FTC EdTech/COPPA student-data safeguards, and Axon Fusus real-time crime center infrastructure.
+2. Strengthened identity, genomics/health-data, education-surveillance, and local-policing data-fusion pathways with official-source anchors.
+3. Added quick-search/lens bridge terms for REAL ID, Genomics England, EdTech/COPPA, Axon/Fusus, and real-time crime-center infrastructure.
