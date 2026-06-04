@@ -239,3 +239,9 @@ These ideas were previously visible as a strategy-style brief. Keep them as inte
 1. Increased Domino/Trajectory text contrast and title readability so chain cards no longer inherit low-contrast dark text.
 2. Routed internal jumps through a top-aligned scroll helper so opened cards, drawers, panels, state-bar targets, and Domino/Bridge/Timeline links land at the visible top of the viewport.
 3. Hardened the left Workspace Index drawer/tab with stronger stacking, focus outlines, outside-click close behavior, updated ARIA labels, and drawer-close-on-chip navigation.
+
+## Completed in this index/category-collapse repair pass
+
+1. Restored reliable Workspace Index tab behavior, outside-click closing, and open/collapse-all workspace controls.
+2. Kept workspace panels closed by default and reapplied panel shells after dynamic panel rerenders to prevent blank collapsed bars.
+3. Added drag-reorder persistence for the colored category index so card sections automatically follow the saved category order.

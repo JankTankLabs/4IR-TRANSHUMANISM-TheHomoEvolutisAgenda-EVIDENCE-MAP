@@ -145,6 +145,15 @@
       color: var(--text-primary);
     }
 
+    .filter-btn[draggable="true"] {
+      cursor: grab;
+    }
+
+    .filter-btn.is-drop-target {
+      border-color: var(--warning);
+      box-shadow: 0 0 0 2px rgba(255, 209, 102, 0.14) inset;
+    }
+
     .filter-btn.active {
       border-color: currentColor;
       color: var(--text-primary);
@@ -941,7 +950,12 @@
     }
 
     .workspace-section.is-collapsed {
+      min-height: 0 !important;
       padding-bottom: 12px;
+    }
+
+    .workspace-section.is-collapsed > .workspace-section-toggle {
+      margin-bottom: 0;
     }
 
     .workspace-section.is-collapsed > :not(.workspace-section-toggle) {
@@ -8854,7 +8868,8 @@
     // APPLICATION STATE
     // ============================================
 
-    const allTypes = ['legacy', 'mythos', 'social', 'players', 'patents', 'legislation', 'documents', 'speeches', 'corporate', 'leaks', 'research', 'funding', 'bioengineering', 'outbreaks', 'environment', 'human', 'virtual', 'identity', 'pharma'];
+    const defaultCategoryOrder = ['patents', 'legislation', 'documents', 'speeches', 'corporate', 'leaks', 'research', 'funding', 'bioengineering', 'outbreaks', 'environment', 'human', 'virtual', 'identity', 'pharma', 'players', 'legacy', 'social', 'mythos'];
+    const allTypes = [...defaultCategoryOrder];
     const categorySummaries = {
       legacy: 'Original ideologies, founding documents, meetings, families, and institutional roots',
       mythos: 'Ancient literature, folklore, mythic archetypes, radio/film roots, and speculative symbolic shelves',
@@ -10658,6 +10673,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     ];
 
     let workspacePanelOrder = workspacePanels.map(panel => panel.id);
+    let categoryOrder = [...defaultCategoryOrder];
     let collapsedWorkspacePanels = new Set(workspacePanels.map(panel => panel.id));
 
     const bridgeConvergenceMaps = [
@@ -10702,7 +10718,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     let selectedEntity = null;
     let selectedComparisonEntity = null;
     let selectedDominoTrajectory = 'ultimate-transhuman-stack';
-    let openCategories = new Set(['legacy', 'mythos', 'social', 'players', 'virtual', 'bioengineering']);
+    let openCategories = new Set();
     let viewDensity = 'compact';
     let focusMode = false;
     let savedCards = new Set();
@@ -11139,6 +11155,9 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
 
     function init() {
       loadFloatingLayoutPreference();
+      loadSavedWorkspaceOrder();
+      loadSavedCategoryOrder();
+      renderFilterBar();
       renderQuickLinks();
       renderCards();
       updateStats();
@@ -11156,7 +11175,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       if (sortMode === 'oldest') return dateForSort(a.date) - dateForSort(b.date);
       if (sortMode === 'title') return a.title.localeCompare(b.title);
       if (sortMode === 'sources') return (b.links?.length || 0) - (a.links?.length || 0) || b.title.localeCompare(a.title);
-      if (sortMode === 'category') return a.type.localeCompare(b.type) || dateForSort(b.date) - dateForSort(a.date);
+      if (sortMode === 'category') return categoryOrder.indexOf(a.type) - categoryOrder.indexOf(b.type) || dateForSort(b.date) - dateForSort(a.date);
       return dateForSort(b.date) - dateForSort(a.date);
     }
 
@@ -11174,7 +11193,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       }
 
       const grouped = groupByType(filtered);
-      grid.innerHTML = allTypes
+      grid.innerHTML = categoryOrder
         .filter(type => grouped[type]?.length)
         .map(type => renderCategorySection(type, grouped[type]))
         .join('');
@@ -11378,6 +11397,117 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
           <div class="card-expand-hint">Click to expand and view source links</div>
         </article>
       `;
+    }
+
+    function normalizeSavedOrder(saved, fallback) {
+      const list = Array.isArray(saved) ? saved.filter(id => fallback.includes(id)) : [];
+      return [...list, ...fallback.filter(id => !list.includes(id))];
+    }
+
+    function loadJsonPreference(key) {
+      try {
+        return JSON.parse(localStorage.getItem(key) || 'null');
+      } catch {
+        return null;
+      }
+    }
+
+    function saveJsonPreference(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function loadSavedWorkspaceOrder() {
+      workspacePanelOrder = normalizeSavedOrder(loadJsonPreference('evidenceWorkspacePanelOrder'), workspacePanels.map(panel => panel.id));
+    }
+
+    function saveWorkspacePanelOrder() {
+      saveJsonPreference('evidenceWorkspacePanelOrder', workspacePanelOrder);
+    }
+
+    function loadSavedCategoryOrder() {
+      categoryOrder = normalizeSavedOrder(loadJsonPreference('evidenceCategoryOrder'), defaultCategoryOrder);
+    }
+
+    function saveCategoryOrder() {
+      saveJsonPreference('evidenceCategoryOrder', categoryOrder);
+    }
+
+    function syncFilterButtons() {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.toggle('active', activeFilters.includes(btn.dataset.filter));
+      });
+    }
+
+    function formatFilterLabel(type) {
+      const labels = {
+        patents: 'Patents',
+        legislation: 'Legislation',
+        documents: 'Official Documents',
+        speeches: 'Speeches & Statements',
+        corporate: 'Corporate Filings',
+        leaks: 'Leaks & Declassified',
+        research: 'Research Studies',
+        funding: 'Funding Trails',
+        bioengineering: 'Bioengineering & Vectors',
+        outbreaks: 'Outbreaks & Pathogens',
+        environment: 'Environment & Weather',
+        human: 'Human Genome Editing',
+        virtual: 'Virtual Humans & Digital Twins',
+        identity: 'Identity & Gender Medicine',
+        pharma: 'Pharma & Endocrine Tech',
+        players: 'Key Players & Networks',
+        legacy: 'Legacy Roots & Families',
+        social: 'Social Engineering',
+        mythos: 'Mythos & Folklore'
+      };
+      return labels[type] || formatTypePlural(type);
+    }
+
+    function renderFilterBar() {
+      const bar = document.getElementById('filterBar');
+      if (!bar) return;
+      bar.innerHTML = categoryOrder.map(type => `
+        <button class="filter-btn ${activeFilters.includes(type) ? 'active' : ''} ${type}" type="button" draggable="true" data-filter="${type}">
+          <span class="filter-dot ${type}"></span> ${formatFilterLabel(type)}
+        </button>
+      `).join('');
+      bar.querySelectorAll('[data-filter]').forEach(btn => {
+        btn.addEventListener('dragstart', event => event.dataTransfer.setData('text/plain', btn.dataset.filter));
+        btn.addEventListener('dragover', event => {
+          event.preventDefault();
+          btn.classList.add('is-drop-target');
+        });
+        btn.addEventListener('dragleave', () => btn.classList.remove('is-drop-target'));
+        btn.addEventListener('drop', event => {
+          event.preventDefault();
+          btn.classList.remove('is-drop-target');
+          moveCategory(event.dataTransfer.getData('text/plain'), btn.dataset.filter);
+        });
+      });
+    }
+
+    function moveCategory(sourceType, targetType) {
+      if (!sourceType || !targetType || sourceType === targetType) return;
+      categoryOrder = categoryOrder.filter(type => type !== sourceType);
+      const targetIndex = categoryOrder.indexOf(targetType);
+      categoryOrder.splice(targetIndex < 0 ? categoryOrder.length : targetIndex, 0, sourceType);
+      saveCategoryOrder();
+      renderFilterBar();
+      renderCards();
+      updateStats();
+    }
+
+    function setAllCategories(open) {
+      openCategories = open ? new Set(getVisibleEvidence().map(item => item.type)) : new Set();
+      renderCards();
+      renderStateBar(getVisibleEvidence());
+      updateExpandButton();
+    }
+
+    function setAllWorkspacePanels(open) {
+      collapsedWorkspacePanels = open ? new Set() : new Set(workspacePanels.map(item => item.id));
+      applyWorkspacePanelShells();
+      renderWorkspaceIndex();
     }
 
     function renderQuickLinks() {
@@ -13375,7 +13505,7 @@ Provenance risk: ${audit.riskLabel}`);
       document.getElementById('searchInput').value = searchQuery;
       document.getElementById('sortSelect').value = sortMode;
       document.getElementById('densitySelect').value = viewDensity;
-      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.toggle('active', activeFilters.includes(btn.dataset.filter)));
+      syncFilterButtons();
       openCategories = new Set(page.stats?.categories || page.activeFilters || []);
       expandedCards = new Set(page.cardIds || []);
       renderCards();
@@ -13605,18 +13735,11 @@ Provenance risk: ${audit.riskLabel}`);
           moveWorkspacePanel(event.dataTransfer.getData('text/plain'), chip.dataset.workspaceChip);
         });
       });
-      document.getElementById('openWorkspacePanelsBtn')?.addEventListener('click', () => {
-        collapsedWorkspacePanels.clear();
-        applyWorkspacePanelShells();
-        renderWorkspaceIndex();
-      });
-      document.getElementById('collapseWorkspacePanelsBtn')?.addEventListener('click', () => {
-        collapsedWorkspacePanels = new Set(workspacePanels.map(item => item.id));
-        applyWorkspacePanelShells();
-        renderWorkspaceIndex();
-      });
+      document.getElementById('openWorkspacePanelsBtn')?.addEventListener('click', () => setAllWorkspacePanels(true));
+      document.getElementById('collapseWorkspacePanelsBtn')?.addEventListener('click', () => setAllWorkspacePanels(false));
       document.getElementById('resetWorkspaceOrderBtn')?.addEventListener('click', () => {
         workspacePanelOrder = workspacePanels.map(item => item.id);
+        saveWorkspacePanelOrder();
         reorderWorkspacePanels();
         applyWorkspacePanelShells();
         renderWorkspaceIndex();
@@ -13628,6 +13751,7 @@ Provenance risk: ${audit.riskLabel}`);
       workspacePanelOrder = workspacePanelOrder.filter(id => id !== sourceId);
       const targetIndex = workspacePanelOrder.indexOf(targetId);
       workspacePanelOrder.splice(targetIndex < 0 ? workspacePanelOrder.length : targetIndex, 0, sourceId);
+      saveWorkspacePanelOrder();
       reorderWorkspacePanels();
       applyWorkspacePanelShells();
       renderWorkspaceIndex();
@@ -13828,6 +13952,7 @@ Provenance risk: ${audit.riskLabel}`);
         identity: 'Identity Medicine',
         pharma: 'Pharma',
         players: 'Key Player',
+        legacy: 'Legacy Root',
         social: 'Social Engineering',
         mythos: 'Mythos'
       };
@@ -13852,6 +13977,7 @@ Provenance risk: ${audit.riskLabel}`);
         identity: 'Identity & Gender Medicine',
         pharma: 'Pharma & Endocrine Tech',
         players: 'Key Players & Networks',
+        legacy: 'Legacy Roots & Families',
         social: 'Social Engineering',
         mythos: 'Mythos & Folklore'
       };
@@ -14005,6 +14131,8 @@ Provenance risk: ${audit.riskLabel}`);
       renderStateBar(visible);
       renderTimeline(visible);
       renderThreadPanel(visible);
+      applyWorkspacePanelShells();
+      renderWorkspaceIndex();
       updateExpandButton(visible);
     }
 
@@ -14079,14 +14207,14 @@ Provenance risk: ${audit.riskLabel}`);
       workspacePages = [];
       activeWorkspacePageId = null;
       comparedWorkspacePageIds = [];
-      openCategories = new Set(['social', 'players', 'virtual', 'bioengineering']);
+      openCategories = new Set();
       viewDensity = 'compact';
       focusMode = false;
       updateFocusMode();
       document.getElementById('searchInput').value = '';
       document.getElementById('sortSelect').value = 'newest';
       document.getElementById('densitySelect').value = 'compact';
-      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.add('active'));
+      renderFilterBar();
       renderCards();
       updateStats();
     }
@@ -14128,7 +14256,10 @@ Provenance risk: ${audit.riskLabel}`);
         scrollToElementTop('workspacePagesPanel');
       });
 
-      document.getElementById('workspaceDrawerTab')?.addEventListener('click', toggleWorkspaceDrawer);
+      document.getElementById('workspaceDrawerTab')?.addEventListener('click', event => {
+        event.stopPropagation();
+        toggleWorkspaceDrawer();
+      });
       document.getElementById('workspaceDrawerClose')?.addEventListener('click', () => setWorkspaceDrawer(false));
       document.addEventListener('click', event => {
         if (!document.body.classList.contains('workspace-drawer-open')) return;
@@ -14141,29 +14272,13 @@ Provenance risk: ${audit.riskLabel}`);
         if (event.key === 'Escape') setWorkspaceDrawer(false);
       });
 
-      document.getElementById('openWorkspaceTopBtn').addEventListener('click', () => {
-        collapsedWorkspacePanels.clear();
-        applyWorkspacePanelShells();
-        renderWorkspaceIndex();
-      });
+      document.getElementById('openWorkspaceTopBtn')?.addEventListener('click', () => setAllWorkspacePanels(true));
 
-      document.getElementById('collapseWorkspaceTopBtn').addEventListener('click', () => {
-        collapsedWorkspacePanels = new Set(workspacePanels.map(item => item.id));
-        applyWorkspacePanelShells();
-        renderWorkspaceIndex();
-      });
+      document.getElementById('collapseWorkspaceTopBtn')?.addEventListener('click', () => setAllWorkspacePanels(false));
 
-      document.getElementById('openAllCategoriesBtn').addEventListener('click', () => {
-        openCategories = new Set(getVisibleEvidence().map(item => item.type));
-        renderCards();
-        renderStateBar(getVisibleEvidence());
-      });
+      document.getElementById('openAllCategoriesBtn')?.addEventListener('click', () => setAllCategories(true));
 
-      document.getElementById('closeAllCategoriesBtn').addEventListener('click', () => {
-        openCategories.clear();
-        renderCards();
-        renderStateBar(getVisibleEvidence());
-      });
+      document.getElementById('closeAllCategoriesBtn')?.addEventListener('click', () => setAllCategories(false));
 
       document.getElementById('expandAllBtn').addEventListener('click', () => {
         const visible = getVisibleEvidence();
@@ -14186,22 +14301,21 @@ Provenance risk: ${audit.riskLabel}`);
         if (chip) showDiscovery(chip.dataset.searchTerm);
       });
 
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const filter = btn.dataset.filter;
-          btn.classList.toggle('active');
-
-          if (activeFilters.includes(filter)) {
-            activeFilters = activeFilters.filter(f => f !== filter);
-          } else {
-            activeFilters.push(filter);
-            openCategories.add(filter);
-          }
-
-          expandedCards.clear();
-          renderCards();
-          updateStats();
-        });
+      document.getElementById('filterBar').addEventListener('click', event => {
+        const btn = event.target.closest('[data-filter]');
+        if (!btn) return;
+        const filter = btn.dataset.filter;
+        if (activeFilters.includes(filter)) {
+          activeFilters = activeFilters.filter(f => f !== filter);
+          openCategories.delete(filter);
+        } else {
+          activeFilters.push(filter);
+          openCategories.add(filter);
+        }
+        syncFilterButtons();
+        expandedCards.clear();
+        renderCards();
+        updateStats();
       });
     }
 
