@@ -227,3 +227,9 @@ These ideas were previously visible as a strategy-style brief. Keep them as inte
 1. Added optional floating-layout persistence so users can choose whether saved comparison layouts survive reloads or remain session-only.
 2. Added a compact Bridge Map route-to-Domino visual graph so route cards and trajectory chains are visibly connected, not only connected through buttons.
 3. Added a persistent state-bar provenance-risk chip for medium/high source-hardening risk, linking directly back to the source snapshot.
+
+## Completed in this graph/persistence/source-risk completion pass
+
+1. Added zoom controls to the Bridge Map route-to-Domino visual graph so users can inspect the relationship canvas more closely.
+2. Upgraded floating layout restoration to store term/source payloads and regenerate window content from current evidence data when layouts are restored.
+3. Changed the persistent source-risk state chip from a passive jump target into a direct current-view provenance-risk drawer opener.

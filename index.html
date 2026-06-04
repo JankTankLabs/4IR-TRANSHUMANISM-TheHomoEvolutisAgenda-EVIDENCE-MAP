@@ -2648,6 +2648,30 @@
       padding: 10px;
     }
 
+    .bridge-graph-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      justify-content: flex-end;
+      margin-bottom: 8px;
+    }
+
+    .bridge-graph-controls button {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font: inherit;
+      font-size: 0.74rem;
+      padding: 7px 10px;
+    }
+
+    .bridge-graph-controls button:hover {
+      border-color: var(--link-color);
+      color: var(--text-primary);
+    }
+
     .bridge-graph svg {
       display: block;
       height: auto;
@@ -10673,6 +10697,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     let floatingWindowCounter = 0;
     let savedFloatingLayout = null;
     let persistFloatingLayout = false;
+    let bridgeGraphZoom = 1;
 
 
 
@@ -10748,7 +10773,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       return floatingWindows.find(win => win.id === id);
     }
 
-    function openTermWindow(term, originCardId = '') {
+    function buildTermWindowSnapshot(term, originCardId = '') {
       const matches = getInlineMatches(term, evidence).sort(sortEvidence);
       const linkCount = matches.reduce((sum, item) => sum + (item.links?.length || 0), 0);
       const categories = [...new Set(matches.map(item => formatType(item.type)))].slice(0, 8);
@@ -10759,60 +10784,78 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
           <span class="discovery-meta">${escapeHtml(formatDate(item.date))} · ${item.links?.length || 0} links · ${escapeHtml(item.sourceQuality || 'source record')}</span>
         </button>
       `).join('') || '<span class="discovery-meta">No matching cards found.</span>';
-      const body = `
-        <div class="floating-fact-grid">
-          <div class="floating-fact"><strong>Matches</strong>${matches.length} cards</div>
-          <div class="floating-fact"><strong>Links</strong>${linkCount} source links</div>
-          <div class="floating-fact"><strong>Categories</strong>${escapeHtml(categories.join(' + ') || 'Mixed')}</div>
-          <div class="floating-fact"><strong>Opened from</strong>${escapeHtml(origin?.title || 'Inline entity / tag')}</div>
-        </div>
-        <div class="floating-list">${topCards}</div>
-        <div class="floating-action-row">
-          <button type="button" data-window-discovery="${escapeHtml(term)}">Open discovery drawer</button>
-          <button type="button" data-window-expand-term="${escapeHtml(term)}">Expand strongest cards</button>
-          <button type="button" data-window-copy-term="${escapeHtml(term)}">Copy matching links</button>
-          <button type="button" data-window-export-current="true">Export window JSON</button>
-        </div>
-      `;
-      createFloatingWindow({
+      return {
         title: `Entity / tag · ${term}`,
         subtitle: `${matches.length} cards · ${linkCount} links · draggable comparison note`,
         type: origin?.type || matches[0]?.type || 'documents',
-        body,
+        body: `
+          <div class="floating-fact-grid">
+            <div class="floating-fact"><strong>Matches</strong>${matches.length} cards</div>
+            <div class="floating-fact"><strong>Links</strong>${linkCount} source links</div>
+            <div class="floating-fact"><strong>Categories</strong>${escapeHtml(categories.join(' + ') || 'Mixed')}</div>
+            <div class="floating-fact"><strong>Opened from</strong>${escapeHtml(origin?.title || 'Inline entity / tag')}</div>
+          </div>
+          <div class="floating-list">${topCards}</div>
+          <div class="floating-action-row">
+            <button type="button" data-window-discovery="${escapeHtml(term)}">Open discovery drawer</button>
+            <button type="button" data-window-expand-term="${escapeHtml(term)}">Expand strongest cards</button>
+            <button type="button" data-window-copy-term="${escapeHtml(term)}">Copy matching links</button>
+            <button type="button" data-window-export-current="true">Export window JSON</button>
+          </div>
+        `,
         payload: { kind: 'term', term, originCardId, matchIds: matches.map(item => item.id) }
-      });
+      };
     }
 
-    function openSourceLinkWindow(cardId, linkIndex = 0) {
+    function buildSourceLinkWindowSnapshot(cardId, linkIndex = 0) {
       const item = evidence.find(entry => entry.id === cardId);
       const link = item?.links?.[linkIndex];
-      if (!item || !link) return;
-      const body = `
-        <div class="floating-fact-grid">
-          <div class="floating-fact"><strong>Source label</strong>${escapeHtml(link.label)}</div>
-          <div class="floating-fact"><strong>Parent card</strong>${escapeHtml(item.title)}</div>
-          <div class="floating-fact"><strong>Source posture</strong>${escapeHtml(item.sourceQuality || 'source record')}</div>
-          <div class="floating-fact"><strong>Category</strong>${escapeHtml(formatType(item.type))}</div>
-        </div>
-        <p>${escapeHtml(item.description)}</p>
-        <div class="floating-list">
-          <button type="button" data-window-card="${escapeHtml(item.id)}"><strong>Open parent card in map</strong><br><span class="discovery-meta">Expands and highlights the source card without closing this window.</span></button>
-          <button type="button" data-window-copy-card="${escapeHtml(item.id)}"><strong>Copy parent citation + links</strong><br><span class="discovery-meta">Use this for side-by-side report building.</span></button>
-        </div>
-        <div class="floating-action-row">
-          <a href="${escapeHtml(link.url)}" target="_blank" rel="noopener">Open source in new tab ↗</a>
-          <button type="button" data-window-copy-url="${escapeHtml(link.url)}">Copy source URL</button>
-          <button type="button" data-window-export-current="true">Export window JSON</button>
-        </div>
-        <div class="discovery-meta">${escapeHtml(link.url)}</div>
-      `;
-      createFloatingWindow({
+      if (!item || !link) return null;
+      return {
         title: `Source link · ${link.label}`,
         subtitle: `${formatType(item.type)} · ${item.links?.length || 0} links on parent card`,
         type: item.type,
-        body,
+        body: `
+          <div class="floating-fact-grid">
+            <div class="floating-fact"><strong>Source label</strong>${escapeHtml(link.label)}</div>
+            <div class="floating-fact"><strong>Parent card</strong>${escapeHtml(item.title)}</div>
+            <div class="floating-fact"><strong>Source posture</strong>${escapeHtml(item.sourceQuality || 'source record')}</div>
+            <div class="floating-fact"><strong>Category</strong>${escapeHtml(formatType(item.type))}</div>
+          </div>
+          <p>${escapeHtml(item.description)}</p>
+          <div class="floating-list">
+            <button type="button" data-window-card="${escapeHtml(item.id)}"><strong>Open parent card in map</strong><br><span class="discovery-meta">Expands and highlights the source card without closing this window.</span></button>
+            <button type="button" data-window-copy-card="${escapeHtml(item.id)}"><strong>Copy parent citation + links</strong><br><span class="discovery-meta">Use this for side-by-side report building.</span></button>
+          </div>
+          <div class="floating-action-row">
+            <a href="${escapeHtml(link.url)}" target="_blank" rel="noopener">Open source in new tab ↗</a>
+            <button type="button" data-window-copy-url="${escapeHtml(link.url)}">Copy source URL</button>
+            <button type="button" data-window-export-current="true">Export window JSON</button>
+          </div>
+          <div class="discovery-meta">${escapeHtml(link.url)}</div>
+        `,
         payload: { kind: 'source-link', cardId, linkIndex, link }
-      });
+      };
+    }
+
+    function refreshFloatingWindowFromPayload(win) {
+      const payload = win?.payload || {};
+      const fresh = payload.kind === 'term'
+        ? buildTermWindowSnapshot(payload.term, payload.originCardId)
+        : payload.kind === 'source-link'
+          ? buildSourceLinkWindowSnapshot(payload.cardId, payload.linkIndex)
+          : null;
+      if (fresh) Object.assign(win, { title: fresh.title, subtitle: fresh.subtitle, type: fresh.type, body: fresh.body, payload: fresh.payload });
+      return win;
+    }
+
+    function openTermWindow(term, originCardId = '') {
+      createFloatingWindow(buildTermWindowSnapshot(term, originCardId));
+    }
+
+    function openSourceLinkWindow(cardId, linkIndex = 0) {
+      const snapshot = buildSourceLinkWindowSnapshot(cardId, linkIndex);
+      if (snapshot) createFloatingWindow(snapshot);
     }
 
     function renderFloatingWorkspace() {
@@ -10890,7 +10933,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     }
 
     function saveFloatingLayout(render = true) {
-      savedFloatingLayout = floatingWindows.map(win => ({ id: win.id, x: win.x, y: win.y, width: win.width, height: win.height, minimized: win.minimized, group: win.group }));
+      savedFloatingLayout = floatingWindows.map(win => ({ id: win.id, title: win.title, subtitle: win.subtitle, type: win.type, body: win.body, payload: win.payload, x: win.x, y: win.y, width: win.width, height: win.height, minimized: win.minimized, group: win.group }));
       persistFloatingLayoutIfEnabled();
       if (render) renderFloatingWorkspace();
     }
@@ -10898,9 +10941,28 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     function restoreFloatingLayout() {
       if (!savedFloatingLayout) return;
       savedFloatingLayout.forEach((saved, index) => {
-        const win = getFloatingWindow(saved.id) || floatingWindows[index];
-        if (win) Object.assign(win, { x: saved.x, y: saved.y, width: saved.width, height: saved.height, minimized: saved.minimized, group: saved.group });
+        let win = getFloatingWindow(saved.id) || floatingWindows[index];
+        if (!win) {
+          win = {
+            id: saved.id || `float-${++floatingWindowCounter}`,
+            title: saved.title || 'Restored window',
+            subtitle: saved.subtitle || '',
+            type: saved.type || 'documents',
+            body: saved.body || '',
+            payload: saved.payload || {},
+            x: saved.x || 80,
+            y: saved.y || 90,
+            width: saved.width || 520,
+            height: saved.height || 420,
+            minimized: Boolean(saved.minimized),
+            group: saved.group || null
+          };
+          floatingWindows.push(win);
+        }
+        refreshFloatingWindowFromPayload(win);
+        Object.assign(win, { x: saved.x, y: saved.y, width: saved.width, height: saved.height, minimized: saved.minimized, group: saved.group });
       });
+      activeFloatingWindowId = floatingWindows.find(win => !win.minimized)?.id || floatingWindows[0]?.id || null;
       renderFloatingWorkspace();
     }
 
@@ -12185,7 +12247,13 @@ Provenance risk: ${audit.riskLabel}`);
       })).join('');
       return `
         <div class="bridge-graph" aria-label="Bridge routes connected to Domino trajectories">
+          <div class="bridge-graph-controls">
+            <button type="button" data-bridge-zoom="in">Zoom +</button>
+            <button type="button" data-bridge-zoom="out">Zoom −</button>
+            <button type="button" data-bridge-zoom="reset">Reset graph</button>
+          </div>
           <svg viewBox="0 0 740 250" role="img">
+            <g transform="translate(${370 - (370 * bridgeGraphZoom)} ${125 - (125 * bridgeGraphZoom)}) scale(${bridgeGraphZoom})">
             ${lines}
             ${routeNodes.map(route => `
               <g class="bridge-node" data-bridge-open="${route.index}" transform="translate(${route.x}, ${route.y})">
@@ -12199,6 +12267,7 @@ Provenance risk: ${audit.riskLabel}`);
                 <text x="16" y="4">${escapeHtml(node.trajectory.title.slice(0, 44))}</text>
               </g>
             `).join('')}
+            </g>
           </svg>
         </div>
       `;
@@ -12245,6 +12314,15 @@ Provenance risk: ${audit.riskLabel}`);
         </div>
       `;
 
+      panel.querySelectorAll('[data-bridge-zoom]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const action = btn.dataset.bridgeZoom;
+          if (action === 'in') bridgeGraphZoom = Math.min(2.4, Number((bridgeGraphZoom + 0.2).toFixed(2)));
+          if (action === 'out') bridgeGraphZoom = Math.max(0.7, Number((bridgeGraphZoom - 0.2).toFixed(2)));
+          if (action === 'reset') bridgeGraphZoom = 1;
+          renderBridgeMapPanel(getVisibleEvidence());
+        });
+      });
       panel.querySelectorAll('[data-bridge-term]').forEach(btn => {
         btn.addEventListener('click', () => showDiscovery(btn.dataset.bridgeTerm));
       });
@@ -13788,7 +13866,7 @@ Provenance risk: ${audit.riskLabel}`);
       chips.push(`<span class="state-chip">Open tabs: ${openCategories.size}</span>`);
       const currentAudit = getSourceAudit(visible);
       if (currentAudit.riskLabel !== 'Low') {
-        chips.push(`<button class="state-chip actionable risk-${currentAudit.riskLabel.toLowerCase()}" type="button" data-jump-state="sourceRisk">Risk: ${currentAudit.riskLabel} · ${currentAudit.weakLinks.length} weak · ${currentAudit.archiveNeeds.length} archive</button>`);
+        chips.push(`<button class="state-chip actionable risk-${currentAudit.riskLabel.toLowerCase()}" type="button" data-source-risk-chip="true">Risk: ${currentAudit.riskLabel} · ${currentAudit.weakLinks.length} weak · ${currentAudit.archiveNeeds.length} archive</button>`);
       }
       if (searchQuery) chips.push(`<button class="state-chip actionable" type="button" data-clear-state="search">Search: ${searchQuery} ×</button>`);
       if (discoveryTerm) chips.push(`<button class="state-chip actionable" type="button" data-clear-state="discovery">Discovery: ${discoveryTerm} ×</button>`);
@@ -13814,6 +13892,13 @@ Provenance risk: ${audit.riskLabel}`);
             renderDiscoveryPanel();
             renderStateBar(getVisibleEvidence());
           }
+        });
+      });
+      stateBar.querySelectorAll('[data-source-risk-chip]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const audit = getSourceAudit(getVisibleEvidence());
+          const queue = [...new Map([...audit.weakLinks, ...audit.archiveNeeds, ...audit.secondary].map(item => [item.id, item])).values()];
+          openSourceHardeningDrawer('Current view', `${audit.riskLabel} provenance-risk queue`, queue, 'Opened from the persistent state-bar risk chip: weak-link, archive-candidate, and secondary/reference-heavy cards in the current view.');
         });
       });
       stateBar.querySelectorAll('[data-jump-state]').forEach(btn => {
