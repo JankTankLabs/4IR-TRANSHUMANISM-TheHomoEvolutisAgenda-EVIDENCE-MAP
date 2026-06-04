@@ -197,3 +197,33 @@ These ideas were previously visible as a strategy-style brief. Keep them as inte
 1. Added high-value bridge cards for REAL ID modernization / digital-ID acceptance, Genomics England / 100,000 Genomes Project, FTC EdTech/COPPA student-data safeguards, and Axon Fusus real-time crime center infrastructure.
 2. Strengthened identity, genomics/health-data, education-surveillance, and local-policing data-fusion pathways with official-source anchors.
 3. Added quick-search/lens bridge terms for REAL ID, Genomics England, EdTech/COPPA, Axon/Fusus, and real-time crime-center infrastructure.
+
+## Completed in this left drawer workspace index pass
+
+1. Moved Workspace Index out of the main content flow into a slim fixed left drawer opened by a vertical side tab.
+2. Converted the index chips to a readable downward column while preserving drag-reorder and open/collapse controls.
+3. Added close/Escape affordances and responsive sizing so the navigation drawer improves wayfinding without forcing users to scroll past another large panel.
+
+## Completed in this bridge-map/data-interconnection pass
+
+1. Added a Bridge Map panel to expose multi-section routes across DPI, health-data/genomics, social-engineering/platform governance, local surveillance fusion, and bioethics/enhancement.
+2. Added missing-link cards for World Bank ID4D, MOSIP, UNDP/50-in-5 DPI, and GovStack so digital ID, payments, data exchange, and service-delivery rails connect to existing identity, health-certificate, and governance records.
+3. Extended lens and quick-search terms so the new DPI cards are discoverable through the existing identity-money-age and route-based exploration flows.
+
+## Completed in this workspace route-preset pass
+
+1. Added route presets inside the left Workspace Index drawer for Connection Map, Source Hardening, Report Path, and Evidence Cards.
+2. Grouped index chips by workspace purpose and added section descriptions/open-state labels so users can understand the workspace faster without opening every panel.
+3. Preserved drag-reorder and open/collapse behavior while reducing scroll friction through one-click panel sets.
+
+## Completed in this layout/bridge/source-hardening UX pass
+
+1. Added floating-window layout controls for tile, cascade, save, restore, minimize-all, and export-all workflows.
+2. Connected Bridge Map routes to matching Domino trajectories so users can jump from a route card into the larger timeline chain.
+3. Added prominent source-hardening risk banners in the source snapshot when the current view has medium/high provenance risk, with direct weak-link/archive/export actions.
+
+## Completed in this persistent-layout/graph-risk pass
+
+1. Added optional floating-layout persistence so users can choose whether saved comparison layouts survive reloads or remain session-only.
+2. Added a compact Bridge Map route-to-Domino visual graph so route cards and trajectory chains are visibly connected, not only connected through buttons.
+3. Added a persistent state-bar provenance-risk chip for medium/high source-hardening risk, linking directly back to the source snapshot.

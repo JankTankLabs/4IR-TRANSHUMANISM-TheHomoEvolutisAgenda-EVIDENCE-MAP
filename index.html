@@ -235,6 +235,18 @@
       text-transform: uppercase;
     }
 
+    .state-chip.risk-high {
+      background: rgba(231, 76, 60, 0.16);
+      border-color: rgba(231, 76, 60, 0.46);
+      color: var(--text-primary);
+    }
+
+    .state-chip.risk-medium {
+      background: rgba(212, 175, 55, 0.14);
+      border-color: rgba(212, 175, 55, 0.42);
+      color: var(--text-primary);
+    }
+
     .state-chip {
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--border);
@@ -646,12 +658,84 @@
     }
 
 
+    .workspace-index-drawer {
+      background: radial-gradient(circle at top left, rgba(93, 173, 226, 0.16), transparent 36%), rgba(15, 18, 24, 0.98);
+      border-right: 1px solid rgba(93, 173, 226, 0.35);
+      box-shadow: 18px 0 55px rgba(0, 0, 0, 0.45);
+      height: 100vh;
+      left: 0;
+      max-width: calc(100vw - 52px);
+      overflow-y: auto;
+      padding: 14px;
+      position: fixed;
+      top: 0;
+      transform: translateX(-100%);
+      transition: transform 220ms ease, box-shadow 220ms ease;
+      width: 320px;
+      z-index: 1000;
+    }
+
+    body.workspace-drawer-open .workspace-index-drawer {
+      transform: translateX(0);
+    }
+
+    .workspace-drawer-tab {
+      align-items: center;
+      background: linear-gradient(180deg, rgba(93, 173, 226, 0.95), rgba(212, 175, 55, 0.90));
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-left: 0;
+      border-radius: 0 12px 12px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.42);
+      color: #071017;
+      cursor: pointer;
+      display: flex;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 800;
+      gap: 7px;
+      left: 0;
+      letter-spacing: 0.08em;
+      padding: 13px 10px;
+      position: fixed;
+      text-transform: uppercase;
+      top: 42%;
+      transform: translateY(-50%);
+      writing-mode: vertical-rl;
+      z-index: 1001;
+    }
+
+    body.workspace-drawer-open .workspace-drawer-tab {
+      left: 320px;
+    }
+
+    .workspace-drawer-top {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .workspace-drawer-close {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font: inherit;
+      padding: 8px 10px;
+    }
+
+    .workspace-drawer-close:hover {
+      border-color: var(--link-color);
+      color: var(--text-primary);
+    }
+
     .workspace-index-panel {
-      background: radial-gradient(circle at top left, rgba(93, 173, 226, 0.10), transparent 34%), var(--bg-secondary);
+      background: rgba(255, 255, 255, 0.035);
       border: 1px solid var(--border);
       border-radius: 12px;
-      margin: -6px 0 24px;
-      padding: 14px 16px;
+      margin: 0;
+      padding: 14px 12px;
     }
 
     .workspace-index-header {
@@ -685,6 +769,63 @@
       gap: 8px;
     }
 
+    .workspace-index-drawer .workspace-index-actions,
+    .workspace-index-drawer .workspace-index-list {
+      flex-direction: column;
+      flex-wrap: nowrap;
+    }
+
+    .workspace-index-drawer .workspace-index-actions .toolbar-btn {
+      justify-content: center;
+      min-height: 40px;
+      width: 100%;
+    }
+
+    .workspace-index-presets {
+      display: grid;
+      gap: 8px;
+      margin: 10px 0 14px;
+    }
+
+    .workspace-preset-btn {
+      background: linear-gradient(135deg, rgba(93, 173, 226, 0.13), rgba(212, 175, 55, 0.08));
+      border: 1px solid rgba(93, 173, 226, 0.25);
+      border-radius: 10px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font: inherit;
+      padding: 10px 11px;
+      text-align: left;
+    }
+
+    .workspace-preset-btn strong {
+      color: var(--text-primary);
+      display: block;
+      font-size: 0.86rem;
+      margin-bottom: 3px;
+    }
+
+    .workspace-preset-btn span {
+      color: var(--text-muted);
+      display: block;
+      font-size: 0.74rem;
+      line-height: 1.35;
+    }
+
+    .workspace-preset-btn:hover {
+      border-color: var(--link-color);
+      color: var(--text-primary);
+    }
+
+    .workspace-group-heading {
+      color: var(--text-muted);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      margin: 12px 2px 2px;
+      text-transform: uppercase;
+    }
+
     .workspace-index-chip {
       align-items: center;
       background: rgba(255, 255, 255, 0.04);
@@ -697,6 +838,33 @@
       font-size: 0.76rem;
       gap: 6px;
       padding: 7px 10px;
+    }
+
+    .workspace-index-drawer .workspace-index-chip {
+      align-items: flex-start;
+      border-radius: 10px;
+      cursor: grab;
+      flex-direction: column;
+      font-size: 0.84rem;
+      justify-content: center;
+      line-height: 1.35;
+      min-height: 56px;
+      padding: 10px 11px;
+      text-align: left;
+      width: 100%;
+    }
+
+    .workspace-chip-line {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .workspace-chip-desc {
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      margin-top: 3px;
     }
 
     .workspace-index-chip.is-open {
@@ -2354,6 +2522,44 @@
       z-index: 1001;
     }
 
+    .floating-layout-tools {
+      align-items: center;
+      background: rgba(18, 21, 26, 0.96);
+      border: 1px solid rgba(93, 173, 226, 0.28);
+      border-radius: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      max-width: 760px;
+      padding: 7px;
+      pointer-events: auto;
+    }
+
+    .floating-layout-tools span {
+      color: var(--text-muted);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      padding: 0 5px;
+      text-transform: uppercase;
+    }
+
+    .floating-layout-tools button {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font: inherit;
+      font-size: 0.73rem;
+      padding: 7px 10px;
+    }
+
+    .floating-layout-tools button:hover {
+      border-color: var(--link-color);
+      color: var(--text-primary);
+    }
+
     .floating-tab,
     .floating-dock-group {
       background: rgba(18, 21, 26, 0.96);
@@ -2385,6 +2591,97 @@
       font-size: 0.68rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
+    }
+
+    .source-risk-banner {
+      background: linear-gradient(135deg, rgba(231, 76, 60, 0.16), rgba(212, 175, 55, 0.10));
+      border: 1px solid rgba(231, 76, 60, 0.38);
+      border-radius: 12px;
+      display: grid;
+      gap: 10px;
+      margin: 12px 0 16px;
+      padding: 12px;
+    }
+
+    .source-risk-banner.is-medium {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.16), rgba(93, 173, 226, 0.08));
+      border-color: rgba(212, 175, 55, 0.38);
+    }
+
+    .source-risk-banner strong {
+      color: var(--text-primary);
+      display: block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      margin-bottom: 3px;
+      text-transform: uppercase;
+    }
+
+    .source-risk-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .source-risk-actions button {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font: inherit;
+      padding: 8px 11px;
+    }
+
+    .source-risk-actions button:hover {
+      border-color: var(--link-color);
+      color: var(--text-primary);
+    }
+
+    .bridge-graph {
+      background: radial-gradient(circle at center, rgba(93, 173, 226, 0.09), transparent 58%), rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin: 12px 0 18px;
+      overflow: hidden;
+      padding: 10px;
+    }
+
+    .bridge-graph svg {
+      display: block;
+      height: auto;
+      width: 100%;
+    }
+
+    .bridge-graph line {
+      stroke: rgba(93, 173, 226, 0.34);
+      stroke-width: 2;
+    }
+
+    .bridge-node {
+      cursor: pointer;
+    }
+
+    .bridge-node circle {
+      fill: rgba(18, 21, 26, 0.98);
+      stroke: var(--link-color);
+      stroke-width: 2;
+    }
+
+    .bridge-node.is-domino circle {
+      stroke: var(--accent);
+    }
+
+    .bridge-node text {
+      fill: var(--text-secondary);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 11px;
+      pointer-events: none;
+    }
+
+    .bridge-node:hover circle {
+      filter: drop-shadow(0 0 10px rgba(93, 173, 226, 0.65));
     }
 
     @media (max-width: 700px) {
@@ -2428,6 +2725,14 @@
 
     /* Responsive */
     @media (max-width: 600px) {
+      .workspace-index-drawer {
+        width: 286px;
+      }
+
+      body.workspace-drawer-open .workspace-drawer-tab {
+        left: min(286px, calc(100vw - 52px));
+      }
+
       .cards-grid {
         grid-template-columns: 1fr;
       }
@@ -2443,6 +2748,14 @@
   </style>
 </head>
 <body>
+  <button class="workspace-drawer-tab" id="workspaceDrawerTab" type="button" aria-controls="workspaceIndexDrawer" aria-expanded="false">Index</button>
+  <aside class="workspace-index-drawer" id="workspaceIndexDrawer" aria-hidden="true">
+    <div class="workspace-drawer-top">
+      <div class="workspace-index-title">Main sections</div>
+      <button class="workspace-drawer-close" id="workspaceDrawerClose" type="button" aria-label="Close workspace index">×</button>
+    </div>
+    <section class="workspace-index-panel" id="workspaceIndexPanel"></section>
+  </aside>
   <div class="container">
     <header>
       <div class="header-top">
@@ -2559,8 +2872,6 @@
 
     <div class="state-bar" id="stateBar"></div>
 
-    <section class="workspace-index-panel" id="workspaceIndexPanel"></section>
-
     <section class="workspace-pages-panel" id="workspacePagesPanel"></section>
 
     <section class="entity-panel" id="entityPanel"></section>
@@ -2569,6 +2880,8 @@
     <section class="brief-panel" id="briefPanel"></section>
 
     <section class="impact-panel" id="impactPanel"></section>
+
+    <section class="impact-panel" id="bridgeMapPanel"></section>
 
     <section class="impact-panel" id="investmentPanel"></section>
 
@@ -7976,6 +8289,118 @@
         ]
       },
       {
+        id: "identity-world-bank-id4d-digital-identification",
+        type: "identity",
+        title: "World Bank ID4D — Development Finance, Civil Registration, and Digital Identification Systems",
+        date: "2014-Present",
+        jurisdiction: "World Bank Group / Global Digital Development",
+        description: "The World Bank Identification for Development initiative is a high-value bridge because it links civil registration, national ID, digital authentication, social protection, health, agriculture, financial inclusion, governance, gender, data protection, and development finance. It strengthens the map's identity layer by adding the global financing and technical-assistance channel behind population-scale ID systems.",
+        tags: ["World Bank", "ID4D", "Digital ID", "Civil Registration", "Digital Public Infrastructure", "Financial Inclusion", "Social Protection", "Data Protection"],
+        relatedEntities: ["World Bank", "ID4D", "Digital Public Infrastructure", "MOSIP", "Aadhaar", "Gates Foundation", "UNDP", "GovStack", "Financial Inclusion"],
+        sourceQuality: "Official World Bank ID4D pages and datasets",
+        facts: [
+          { label: "Layer", value: "Civil registration + foundational ID + digital ID" },
+          { label: "Institution", value: "World Bank Group initiative" },
+          { label: "Domains", value: "Social protection, health, finance, governance, gender, data protection" },
+          { label: "Bridge", value: "Development finance → national ID infrastructure" }
+        ],
+        flags: ["Digital ID finance", "Civil registration", "Financial inclusion", "Social-protection access", "Global DPI bridge"],
+        details: [
+          "This card documents a development-finance and technical-assistance pathway, not a claim that every ID4D-supported system has the same design or risk profile.",
+          "Use with Aadhaar, MOSIP, NIST identity proofing, REAL ID, WHO DDCC, digital payments, and social-protection records."
+        ],
+        links: [
+          { label: "World Bank ID4D Home", url: "https://id4d.worldbank.org/", icon: "🏦" },
+          { label: "World Bank ID4D About", url: "https://id4d.worldbank.org/about-us", icon: "📘" },
+          { label: "ID4D Global Dataset", url: "https://id4d.worldbank.org/global-dataset", icon: "📊" },
+          { label: "ID4D Diagnostics", url: "https://id4d.worldbank.org/country-action/id4d-diagnostics", icon: "🧭" }
+        ]
+      },
+      {
+        id: "identity-mosip-open-source-national-id-platform",
+        type: "identity",
+        title: "MOSIP — Modular Open-Source Identity Platform for National Digital ID Systems",
+        date: "2018-Present",
+        jurisdiction: "International / Open-Source Digital ID",
+        description: "MOSIP is an open-source, open-standards foundational identity platform for countries building national ID systems. It is a missing-link card because it connects biometric/foundational identity, digital public infrastructure, open-source governance, country implementation, wallet/credential interoperability, and development-sector identity modernization.",
+        tags: ["MOSIP", "Modular Open Source Identity Platform", "Digital ID", "Foundational ID", "Biometrics", "Open Source", "Digital Public Infrastructure", "Credentials"],
+        relatedEntities: ["MOSIP", "World Bank ID4D", "Digital Public Goods Alliance", "Aadhaar", "GovStack", "UNDP", "Biometrics", "National ID"],
+        sourceQuality: "Official MOSIP documentation and source repositories",
+        facts: [
+          { label: "Model", value: "Open-source, modular identity platform" },
+          { label: "Use case", value: "Foundational national ID systems" },
+          { label: "Standards", value: "Open standards and credential interoperability" },
+          { label: "Bridge", value: "Biometric enrollment → digital credential ecosystems" }
+        ],
+        flags: ["National ID platform", "Open-source DPI", "Biometric identity", "Credential interoperability", "Bridge to ID4D and GovStack"],
+        details: [
+          "This card separates platform documentation from country-level deployment claims; specific implementations require their own source cards.",
+          "Use with ID4D, Aadhaar, mDL, NIST, eIDAS wallets, and WHO health-certificate credentials to compare identity architecture patterns."
+        ],
+        links: [
+          { label: "MOSIP Website", url: "https://www.mosip.io/", icon: "🪪" },
+          { label: "MOSIP Documentation", url: "https://docs.mosip.io/", icon: "📚" },
+          { label: "MOSIP GitHub", url: "https://github.com/mosip", icon: "💻" },
+          { label: "MOSIP Standards and Specifications", url: "https://docs.mosip.io/1.2.0/readme/standards-and-specifications", icon: "📜" }
+        ]
+      },
+      {
+        id: "documents-undp-50-in-5-digital-public-infrastructure",
+        type: "documents",
+        title: "UNDP / 50-in-5 Campaign — Digital Public Infrastructure Adoption Stack",
+        date: "2023-11-08",
+        jurisdiction: "UNDP / Global DPI Campaign",
+        description: "The 50-in-5 campaign is a high-convergence bridge because it packages digital public infrastructure as reusable rails for identity, payments, and data exchange, with UNDP collaboration and partners including the Gates Foundation, Co-Develop, Centre for Digital Public Infrastructure, Digital Public Goods Alliance, GovStack, Inter-American Development Bank, and UNICEF.",
+        tags: ["UNDP", "50-in-5", "Digital Public Infrastructure", "DPI", "Digital Public Goods", "Gates Foundation", "GovStack", "Data Exchange", "Digital Payments", "Digital ID"],
+        relatedEntities: ["UNDP", "Gates Foundation", "Co-Develop", "Digital Public Goods Alliance", "GovStack", "World Bank ID4D", "MOSIP", "Digital ID", "Digital Payments"],
+        sourceQuality: "Official UNDP campaign release + partner pages",
+        facts: [
+          { label: "Campaign", value: "50 countries in 5 years" },
+          { label: "Core rails", value: "Digital ID, payments, and data exchange patterns" },
+          { label: "Partners", value: "UNDP, Gates Foundation, CDPI, Co-Develop, DPGA, GovStack, IDB, UNICEF" },
+          { label: "Bridge", value: "DPI strategy → country implementation playbooks" }
+        ],
+        flags: ["Digital public infrastructure", "Public-private partnership", "ID/payment/data rails", "Development-sector rollout", "High-value identity/payment bridge"],
+        details: [
+          "This card documents the campaign and partner stack; it does not claim a single uniform technical architecture across all countries.",
+          "Use with ID4D, MOSIP, GovStack, Aadhaar/India Stack, digital payments, eIDAS, and WHO credential cards."
+        ],
+        links: [
+          { label: "UNDP 50-in-5 Launch Release", url: "https://www.undp.org/news/11-first-mover-countries-launch-50-5-campaign-accelerate-digital-public-infrastructure-adoption-around-world", icon: "🌐" },
+          { label: "50-in-5 Campaign", url: "https://50in5.net/", icon: "🧭" },
+          { label: "Digital Public Goods Alliance", url: "https://digitalpublicgoods.net/", icon: "📦" },
+          { label: "Co-Develop", url: "https://www.codevelop.fund/", icon: "🤝" }
+        ]
+      },
+      {
+        id: "documents-govstack-dpi-building-blocks",
+        type: "documents",
+        title: "GovStack — Digital Government Building Blocks and Whole-of-Government DPI Architecture",
+        date: "2020-Present",
+        jurisdiction: "GovStack / ITU / GIZ / Digital Government",
+        description: "GovStack is a bridge card for the architecture layer: it frames digital government as interoperable building blocks that can be reused across sectors and high-priority use cases. It helps connect digital ID, registries, payments, consent/data exchange, service delivery, and government platform modernization without needing each deployment to be treated as a separate silo.",
+        tags: ["GovStack", "Digital Public Infrastructure", "Digital Government", "Building Blocks", "Interoperability", "Whole of Government", "Digital Public Goods", "Data Exchange"],
+        relatedEntities: ["GovStack", "ITU", "GIZ", "Digital Public Goods Alliance", "UNDP", "World Bank ID4D", "MOSIP", "Digital ID", "Digital Payments"],
+        sourceQuality: "Official GovStack specifications and partner documentation",
+        facts: [
+          { label: "Model", value: "Reusable digital-government building blocks" },
+          { label: "Architecture", value: "Whole-of-government interoperability" },
+          { label: "Use case", value: "Cross-sector digital service delivery" },
+          { label: "Bridge", value: "ID + data exchange + payment + service rails" }
+        ],
+        flags: ["Digital-government architecture", "Interoperable building blocks", "DPI implementation layer", "Cross-sector service delivery", "Bridge between policy and deployment"],
+        details: [
+          "This card is useful because it shows the technical design language used to make government platforms modular and reusable across domains.",
+          "Use with 50-in-5, ID4D, MOSIP, eIDAS, digital euro, EHDS, and smart-city/service-delivery cards."
+        ],
+        links: [
+          { label: "GovStack Home", url: "https://www.govstack.global/", icon: "🏗️" },
+          { label: "GovStack Specifications", url: "https://specs.govstack.global/", icon: "📜" },
+          { label: "GovStack Building Block Approach", url: "https://specs.govstack.global/architecture/3-govstack-architecture/4.4-building-block-approach", icon: "🧱" },
+          { label: "GovStack GitHub", url: "https://github.com/GovStackWorkingGroup", icon: "💻" }
+        ]
+      },
+      {
         id: "documents-who-ddcc-smart-health-certificates",
         type: "documents",
         title: "WHO Digital Documentation of COVID-19 Certificates (DDCC) — Health Certificates, Identity Linkage, and SMART Guidelines",
@@ -9475,7 +9900,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       { id: 'identity', label: 'Identity + Pharma', terms: ['WPATH', 'Puberty Blockers', 'Pritzker', 'Gender', 'Endocrine', 'Cass Review'], types: ['identity', 'pharma', 'legislation', 'documents'] },
       { id: 'virtual', label: 'Virtual Human / Machine', terms: ['Digital Twin', 'Mind Uploading', 'BINA48', 'Human Brain Project', 'Living Heart', 'Metaverse'], types: ['virtual', 'patents', 'human', 'players'] },
       { id: 'health-data-ai', label: 'Health Data + AI', terms: ['European Health Data Space', 'EHDS', 'All of Us', 'UK Biobank', 'Genomics England', 'Human Genome Project', 'Belmont Report', 'Common Rule', 'HealthData@EU', 'FDA AI', 'AI-Enabled Medical Devices', 'Digital Twin'], types: ['legislation', 'documents', 'research', 'virtual', 'human'] },
-      { id: 'identity-money-age', label: 'Identity + Money + Age Gates', terms: ['REAL ID', 'NIST SP 800-63', 'Passkeys', 'FIDO', 'mDL', 'eIDAS', 'Digital Euro', 'Age Verification', 'California', 'Florida HB 3', 'Australia Social Media'], types: ['legislation', 'documents', 'identity', 'patents'] },
+      { id: 'identity-money-age', label: 'Identity + Money + Age Gates', terms: ['REAL ID', 'World Bank ID4D', 'MOSIP', 'Digital Public Infrastructure', 'NIST SP 800-63', 'Passkeys', 'FIDO', 'mDL', 'eIDAS', 'Digital Euro', 'Age Verification', 'California', 'Florida HB 3', 'Australia Social Media'], types: ['legislation', 'documents', 'identity', 'patents'] },
       { id: 'defense-autonomy', label: 'Defense Autonomy', terms: ['Replicator', 'NATO DIANA', 'Palantir', 'Anduril', 'Autonomous Systems', 'AI'], types: ['corporate', 'documents', 'funding', 'players', 'patents'] }
     ];
 
@@ -10151,13 +10576,14 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     ];
 
 
-    const quickSearches = ['Microsoft Antitrust', 'Timing Pattern', 'Gavi', 'Gates Institute', 'Media Funding', 'Rockefeller Foundation', 'Investment Convergence', 'Founders Fund', 'Breakthrough Energy', 'BlackRock', 'a16z', 'Eric Schmidt', 'Palantir', 'Anduril', 'Event 201', 'Crimson Contagion', 'SPARS', 'Milken', 'Wuhan Games', 'Universal Flu Vaccine', 'Jeffrey Epstein', 'Ghislaine Maxwell', 'Epstein Emails', 'JPMorgan', 'MIT Media Lab', 'Maxwell Family', 'Les Wexner', 'Bush Family', 'Kennedy Family', 'Roosevelt Family', 'Gates Family', 'Walton Family', 'Hollywood Dynasty', 'Coppola Family', 'King John', 'Presidents', 'Plantagenet', 'Royal Descent', 'Julian Huxley', 'Rockefeller', 'Eugenics', 'Cybernetics', 'Population Council', 'Bilderberg', 'Klaus Schwab', 'Bill Gates', 'Yuval Harari', 'Sam Altman', 'Pritzker', 'Young Global Leaders', 'YGL Roster', 'YGL Archive Targets', 'Global Leaders for Tomorrow', 'Predecessor GLT Targets', 'Exposé Reports', 'Social Engineering', 'Comparative Religion', 'Jesus Parallels', 'Savior Hero', 'Dying and Rising', 'Prophet Lawgiver', 'Monomyth', 'Apocalypse', 'Mythos', 'Folklore', 'Lost Civilisations', 'Atlantis', 'Tartaria', 'Tartary', 'Lemuria', 'Mu', 'Gilgamesh', 'Prometheus', 'Golem', 'Pygmalion', 'Frankenstein', 'R.U.R.', 'War of the Worlds', 'Plato Cave', 'H. G. Wells', 'World Brain', 'Open Conspiracy', 'Things to Come', 'Haldane', 'Daedalus', 'Ectogenesis', 'Bernal', 'Stapledon', 'Metropolis', 'Propaganda', 'Indoctrination', 'Machine Empathy', 'Human Devaluation', 'Future Warfare', 'Dennis Bushnell', 'Bio-Nano Age', 'Earth as Farm', 'Planetary Extraction', 'Entertainment Conditioning', 'Civilisational Stages', 'YGL Tech Bridge', 'Federal AI Policy', 'Platform Governance', 'Immunoengineering', 'Conversational AI', 'Quantum Computing', 'Civic Data', 'Aakrit Vaish', 'Marissa Giustina', 'Miku Hirano', 'Annalena Baerbock', 'Alicia Garza', 'Camille François', 'May Habib', 'Sofia Elizondo', 'Vilas Dhar', 'Information Integrity', 'AI Bioactives', 'AI Philanthropy', 'Omar Al Olama', 'Mykhailo Fedorov', 'Joy Buolamwini', 'Sanna Marin', 'Michael Kratsios', 'Shou Zi Chew', 'Chew Shou Zi', 'Han Bicheng', 'Bicheng Han', 'BrainCo', 'Kaitlyn Sadtler', 'Class of 2026', 'Class of 2025', 'Class of 2022', 'Class of 2021', 'Class of 2020', 'Verification Queue', 'Digital Twin', 'Mind Uploading', 'Brain Transparency', 'Israel', 'World ID', 'Gene Drive', 'Committee on Public Information', 'Edward Bernays', 'Walter Lippmann', 'Milgram', 'Asch', 'Tavistock Institute', 'MINDSPACE', 'Ultimate Stack', 'WHO Infodemic', 'Health Misinformation', 'CISA MDM', 'EU Disinformation Code', 'Belmont Report', 'Common Rule', 'UK Biobank', 'Passkeys', 'FIDO', 'Fusion Centers', 'Real-Time Crime Centers', 'REAL ID', 'Genomics England', 'EdTech', 'COPPA', 'Axon', 'Fusus'];
+    const quickSearches = ['Microsoft Antitrust', 'Timing Pattern', 'Gavi', 'Gates Institute', 'Media Funding', 'Rockefeller Foundation', 'Investment Convergence', 'Founders Fund', 'Breakthrough Energy', 'BlackRock', 'a16z', 'Eric Schmidt', 'Palantir', 'Anduril', 'Event 201', 'Crimson Contagion', 'SPARS', 'Milken', 'Wuhan Games', 'Universal Flu Vaccine', 'Jeffrey Epstein', 'Ghislaine Maxwell', 'Epstein Emails', 'JPMorgan', 'MIT Media Lab', 'Maxwell Family', 'Les Wexner', 'Bush Family', 'Kennedy Family', 'Roosevelt Family', 'Gates Family', 'Walton Family', 'Hollywood Dynasty', 'Coppola Family', 'King John', 'Presidents', 'Plantagenet', 'Royal Descent', 'Julian Huxley', 'Rockefeller', 'Eugenics', 'Cybernetics', 'Population Council', 'Bilderberg', 'Klaus Schwab', 'Bill Gates', 'Yuval Harari', 'Sam Altman', 'Pritzker', 'Young Global Leaders', 'YGL Roster', 'YGL Archive Targets', 'Global Leaders for Tomorrow', 'Predecessor GLT Targets', 'Exposé Reports', 'Social Engineering', 'Comparative Religion', 'Jesus Parallels', 'Savior Hero', 'Dying and Rising', 'Prophet Lawgiver', 'Monomyth', 'Apocalypse', 'Mythos', 'Folklore', 'Lost Civilisations', 'Atlantis', 'Tartaria', 'Tartary', 'Lemuria', 'Mu', 'Gilgamesh', 'Prometheus', 'Golem', 'Pygmalion', 'Frankenstein', 'R.U.R.', 'War of the Worlds', 'Plato Cave', 'H. G. Wells', 'World Brain', 'Open Conspiracy', 'Things to Come', 'Haldane', 'Daedalus', 'Ectogenesis', 'Bernal', 'Stapledon', 'Metropolis', 'Propaganda', 'Indoctrination', 'Machine Empathy', 'Human Devaluation', 'Future Warfare', 'Dennis Bushnell', 'Bio-Nano Age', 'Earth as Farm', 'Planetary Extraction', 'Entertainment Conditioning', 'Civilisational Stages', 'YGL Tech Bridge', 'Federal AI Policy', 'Platform Governance', 'Immunoengineering', 'Conversational AI', 'Quantum Computing', 'Civic Data', 'Aakrit Vaish', 'Marissa Giustina', 'Miku Hirano', 'Annalena Baerbock', 'Alicia Garza', 'Camille François', 'May Habib', 'Sofia Elizondo', 'Vilas Dhar', 'Information Integrity', 'AI Bioactives', 'AI Philanthropy', 'Omar Al Olama', 'Mykhailo Fedorov', 'Joy Buolamwini', 'Sanna Marin', 'Michael Kratsios', 'Shou Zi Chew', 'Chew Shou Zi', 'Han Bicheng', 'Bicheng Han', 'BrainCo', 'Kaitlyn Sadtler', 'Class of 2026', 'Class of 2025', 'Class of 2022', 'Class of 2021', 'Class of 2020', 'Verification Queue', 'Digital Twin', 'Mind Uploading', 'Brain Transparency', 'Israel', 'World ID', 'Gene Drive', 'Committee on Public Information', 'Edward Bernays', 'Walter Lippmann', 'Milgram', 'Asch', 'Tavistock Institute', 'MINDSPACE', 'Ultimate Stack', 'WHO Infodemic', 'Health Misinformation', 'CISA MDM', 'EU Disinformation Code', 'Belmont Report', 'Common Rule', 'UK Biobank', 'Passkeys', 'FIDO', 'Fusion Centers', 'Real-Time Crime Centers', 'REAL ID', 'Genomics England', 'EdTech', 'COPPA', 'Axon', 'Fusus', 'World Bank ID4D', 'MOSIP', 'Digital Public Infrastructure', '50-in-5', 'GovStack', 'DPI'];
 
     const workspacePanels = [
       { id: 'workspacePagesPanel', label: 'Workspace Pages', group: 'Workspace', desc: 'Saved views and page comparisons' },
       { id: 'entityPanel', label: 'Entity Intelligence', group: 'Entity', desc: 'High-convergence dossiers and comparisons' },
       { id: 'briefPanel', label: 'Executive Brief', group: 'Synthesis', desc: 'Fast summary of the current map state' },
       { id: 'impactPanel', label: 'Impact Matrix', group: 'Synthesis', desc: 'Highest-density categories first' },
+      { id: 'bridgeMapPanel', label: 'Bridge Map', group: 'Synthesis', desc: 'Cross-domain connection routes and missing links' },
       { id: 'investmentPanel', label: 'Investment Convergence', group: 'Money', desc: 'Portfolio, funding, and timing stacks' },
       { id: 'pathwayPanel', label: 'High-Convergence Pathways', group: 'Paths', desc: 'Narrative bridges across cards' },
       { id: 'dominoPanel', label: 'Trajectory Domino Map', group: 'Timeline', desc: 'Macro chains and domino steps' },
@@ -10173,8 +10599,48 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       { id: 'threadPanel', label: 'Thread Explorer', group: 'Entity', desc: 'Recurring people, orgs, and concepts' }
     ];
 
+    const workspaceNavigationPresets = [
+      { id: 'connections', label: 'Connection map', desc: 'Bridge + entity + domino routes', panels: ['bridgeMapPanel', 'entityPanel', 'dominoPanel', 'threadPanel'], target: 'bridgeMapPanel' },
+      { id: 'source-hardening', label: 'Source hardening', desc: 'Provenance snapshot + entity audit queues', panels: ['briefPanel', 'entityPanel', 'workspacePagesPanel'], target: 'briefPanel' },
+      { id: 'reports', label: 'Report path', desc: 'Pathways + exposé + narratives + quotes', panels: ['pathwayPanel', 'reportPanel', 'narrativePanel', 'quotePanel'], target: 'pathwayPanel' },
+      { id: 'cards', label: 'Evidence cards', desc: 'Jump to source-card accordion', panels: [], target: 'cardsGrid', preservePanels: true }
+    ];
+
     let workspacePanelOrder = workspacePanels.map(panel => panel.id);
     let collapsedWorkspacePanels = new Set(workspacePanels.map(panel => panel.id));
+
+    const bridgeConvergenceMaps = [
+      {
+        title: 'DPI identity/payment/data rails',
+        summary: 'Shows the missing architecture layer between identity cards and deployment: ID4D, MOSIP, GovStack, 50-in-5, digital payments, data exchange, health certificates, and national service delivery.',
+        terms: ['World Bank ID4D', 'MOSIP', '50-in-5', 'GovStack', 'Digital Public Infrastructure', 'Aadhaar', 'Digital Euro', 'WHO DDCC'],
+        domains: ['Digital ID', 'Payments', 'Data exchange', 'Health credentials', 'Government services']
+      },
+      {
+        title: 'Health-genomics → AI medicine → identity proofs',
+        summary: 'Connects HGP/ELSI, All of Us, UK Biobank, Genomics England, EHDS, Palantir NHS FDP, WHO DDCC, and AI medical-device governance into one health-data pathway.',
+        terms: ['Human Genome Project', 'All of Us', 'UK Biobank', 'Genomics England', 'European Health Data Space', 'Palantir NHS', 'WHO DDCC', 'FDA AI'],
+        domains: ['Genomics', 'Health data', 'AI medicine', 'Certificates', 'Research governance']
+      },
+      {
+        title: 'Social engineering → platform moderation → child/data governance',
+        summary: 'Bridges older propaganda and behavioural-policy roots into modern platform governance, misinformation systems, EdTech data limits, child-safety laws, and age-assurance pressure.',
+        terms: ['Committee on Public Information', 'Edward Bernays', 'MINDSPACE', 'WHO Infodemic', 'CISA MDM', 'FTC Education Technology', 'COPPA', 'Age Verification'],
+        domains: ['Propaganda', 'Behavioural policy', 'Platform governance', 'EdTech', 'Age gates']
+      },
+      {
+        title: 'Local surveillance → fusion centers → real-time operations',
+        summary: 'Connects cameras, real-time crime centers, Axon Fusus, DHS fusion centers, Palantir, Ring, spyware, and predictive-policing concepts into a surveillance-infrastructure chain.',
+        terms: ['Axon Fusus', 'Real-Time Crime Centers', 'DHS Fusion Centers', 'Palantir', 'Ring', 'Pegasus', 'Predictive Policing'],
+        domains: ['Cameras', 'RTCC', 'Fusion centers', 'Data fusion', 'Spyware/policing']
+      },
+      {
+        title: 'Early ideology → bioethics safeguards → modern enhancement research',
+        summary: 'Keeps the roots-to-guardrails route visible: eugenics, Buck v. Bell, Population Council, Belmont/Common Rule, HGP/ELSI, genome editing, BRAIN Initiative, and neurotechnology.',
+        terms: ['Eugenics', 'Buck v. Bell', 'Population Council', 'Belmont Report', 'Common Rule', 'Human Genome Project ELSI', 'WHO Human Genome Editing', 'NIH BRAIN'],
+        domains: ['Eugenics history', 'Bioethics', 'Genomics', 'Enhancement', 'Neurotechnology']
+      }
+    ];
 
     let activeFilters = [...allTypes];
     let searchQuery = '';
@@ -10201,9 +10667,12 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     let workspacePages = [];
     let activeWorkspacePageId = null;
     let comparedWorkspacePageIds = [];
+    const floatingLayoutStorageKey = 'evidence-map-floating-layout';
     let floatingWindows = [];
     let activeFloatingWindowId = null;
     let floatingWindowCounter = 0;
+    let savedFloatingLayout = null;
+    let persistFloatingLayout = false;
 
 
 
@@ -10218,6 +10687,39 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
 
     function windowAccentForType(type = '') {
       return `var(--${type}, var(--link-color))`;
+    }
+
+    function loadFloatingLayoutPreference() {
+      try {
+        const stored = JSON.parse(localStorage.getItem(floatingLayoutStorageKey) || 'null');
+        if (stored?.persist && Array.isArray(stored.layout)) {
+          persistFloatingLayout = true;
+          savedFloatingLayout = stored.layout;
+        }
+      } catch (error) {
+        persistFloatingLayout = false;
+        savedFloatingLayout = null;
+      }
+    }
+
+    function persistFloatingLayoutIfEnabled() {
+      if (!persistFloatingLayout) return;
+      try {
+        localStorage.setItem(floatingLayoutStorageKey, JSON.stringify({ persist: true, layout: savedFloatingLayout || [] }));
+      } catch (error) {
+        // Keep the in-session layout even if localStorage is unavailable.
+      }
+    }
+
+    function toggleFloatingLayoutPersistence() {
+      persistFloatingLayout = !persistFloatingLayout;
+      if (persistFloatingLayout) {
+        if (!savedFloatingLayout) saveFloatingLayout(false);
+        persistFloatingLayoutIfEnabled();
+      } else {
+        try { localStorage.removeItem(floatingLayoutStorageKey); } catch (error) {}
+      }
+      renderFloatingWorkspace();
     }
 
     function createFloatingWindow({ title, subtitle = '', type = 'documents', body = '', payload = {} }) {
@@ -10338,17 +10840,101 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
         if (!groups.has(key)) groups.set(key, []);
         groups.get(key).push(win);
       });
-      dock.innerHTML = [...groups.entries()].map(([group, wins]) => {
+      const dockTools = floatingWindows.length ? `
+        <div class="floating-layout-tools">
+          <span>Window layout</span>
+          <button type="button" data-floating-layout="tile">Tile</button>
+          <button type="button" data-floating-layout="cascade">Cascade</button>
+          <button type="button" data-floating-layout="save">Save layout</button>
+          <button type="button" data-floating-layout="restore" ${savedFloatingLayout ? '' : 'disabled'}>Restore</button>
+          <button type="button" data-floating-layout="persist">${persistFloatingLayout ? 'Persistence on' : 'Persistence off'}</button>
+          <button type="button" data-floating-layout="minimize">Minimize all</button>
+          <button type="button" data-floating-layout="export">Export all</button>
+        </div>
+      ` : '';
+      const dockTabs = [...groups.entries()].map(([group, wins]) => {
         if (wins.length === 1 && group === wins[0].id) {
           const win = wins[0];
           return `<button class="floating-tab" type="button" draggable="true" data-window-tab="${win.id}" data-window-restore="${win.id}" style="--tab-accent:${windowAccentForType(win.type)};">${escapeHtml(win.title)}</button>`;
         }
         return `<div class="floating-dock-group" data-window-group="${escapeHtml(group)}"><span class="floating-dock-label">Group Tab · ${wins.length} items</span>${wins.map(win => `<button class="floating-tab" type="button" draggable="true" data-window-tab="${win.id}" data-window-restore="${win.id}" style="--tab-accent:${windowAccentForType(win.type)};">${escapeHtml(win.title)}</button>`).join('')}</div>`;
       }).join('');
+      dock.innerHTML = `${dockTools}${dockTabs}`;
       wireFloatingWorkspace();
     }
 
+    function tileFloatingWindows() {
+      const open = floatingWindows.filter(win => !win.minimized);
+      if (!open.length) return;
+      const columns = Math.min(3, Math.max(1, Math.ceil(Math.sqrt(open.length))));
+      const width = Math.max(320, Math.floor((window.innerWidth - 56 - (columns - 1) * 14) / columns));
+      open.forEach((win, index) => {
+        const col = index % columns;
+        const row = Math.floor(index / columns);
+        win.x = 18 + col * (width + 14);
+        win.y = 64 + row * 300;
+        win.width = Math.min(width, 560);
+        win.height = 280;
+      });
+      renderFloatingWorkspace();
+    }
+
+    function cascadeFloatingWindows() {
+      floatingWindows.filter(win => !win.minimized).forEach((win, index) => {
+        win.x = 80 + index * 34;
+        win.y = 86 + index * 30;
+        win.width = Math.min(520, Math.max(360, window.innerWidth - 80));
+        win.height = 420;
+      });
+      renderFloatingWorkspace();
+    }
+
+    function saveFloatingLayout(render = true) {
+      savedFloatingLayout = floatingWindows.map(win => ({ id: win.id, x: win.x, y: win.y, width: win.width, height: win.height, minimized: win.minimized, group: win.group }));
+      persistFloatingLayoutIfEnabled();
+      if (render) renderFloatingWorkspace();
+    }
+
+    function restoreFloatingLayout() {
+      if (!savedFloatingLayout) return;
+      savedFloatingLayout.forEach((saved, index) => {
+        const win = getFloatingWindow(saved.id) || floatingWindows[index];
+        if (win) Object.assign(win, { x: saved.x, y: saved.y, width: saved.width, height: saved.height, minimized: saved.minimized, group: saved.group });
+      });
+      renderFloatingWorkspace();
+    }
+
+    function exportAllFloatingWindows() {
+      if (!floatingWindows.length) return;
+      const payload = {
+        exportedAt: new Date().toISOString(),
+        mode: 'floating-workspace-layout',
+        layout: floatingWindows.map(win => ({ id: win.id, title: win.title, subtitle: win.subtitle, type: win.type, x: win.x, y: win.y, width: win.width, height: win.height, minimized: win.minimized, group: win.group, payload: win.payload }))
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `floating-layout-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function handleFloatingLayoutAction(action) {
+      if (action === 'tile') tileFloatingWindows();
+      if (action === 'cascade') cascadeFloatingWindows();
+      if (action === 'save') saveFloatingLayout();
+      if (action === 'restore') restoreFloatingLayout();
+      if (action === 'persist') toggleFloatingLayoutPersistence();
+      if (action === 'minimize') {
+        floatingWindows.forEach(win => { win.minimized = true; });
+        renderFloatingWorkspace();
+      }
+      if (action === 'export') exportAllFloatingWindows();
+    }
+
     function wireFloatingWorkspace() {
+      document.querySelectorAll('[data-floating-layout]').forEach(btn => btn.addEventListener('click', () => handleFloatingLayoutAction(btn.dataset.floatingLayout)));
       document.querySelectorAll('[data-window-close]').forEach(btn => btn.addEventListener('click', () => {
         floatingWindows = floatingWindows.filter(win => win.id !== btn.dataset.windowClose);
         renderFloatingWorkspace();
@@ -10463,6 +11049,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     // ============================================
 
     function init() {
+      loadFloatingLayoutPreference();
       renderQuickLinks();
       renderCards();
       updateStats();
@@ -11448,6 +12035,19 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
           </div>
           <button class="toolbar-btn" type="button" id="copyBriefBtn">Copy source snapshot</button>
         </div>
+        ${audit.riskLabel !== 'Low' ? `
+          <div class="source-risk-banner ${audit.riskLabel === 'Medium' ? 'is-medium' : ''}">
+            <div>
+              <strong>${audit.riskLabel} source-hardening priority</strong>
+              <span class="entity-meta">${audit.weakLinks.length} weak-link cards · ${audit.archiveNeeds.length} archive candidates · ${audit.secondary.length} secondary/reference-heavy records in the current view.</span>
+            </div>
+            <div class="source-risk-actions">
+              <button type="button" data-current-source-risk="weakLinks">Open weak-link queue</button>
+              <button type="button" data-current-source-risk="archiveNeeds">Open archive queue</button>
+              <button type="button" data-current-source-risk="export">Export hardening checklist</button>
+            </div>
+          </div>
+        ` : ''}
         <div class="brief-grid">
           <article class="brief-card">
             <h4>Current source mix</h4>
@@ -11474,6 +12074,14 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       `;
       panel.querySelectorAll('[data-lens]').forEach(btn => {
         btn.addEventListener('click', () => applyLens(btn.dataset.lens));
+      });
+      panel.querySelectorAll('[data-current-source-risk]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const action = btn.dataset.currentSourceRisk;
+          if (action === 'weakLinks') openSourceHardeningDrawer('Current view', 'weak-link cards', audit.weakLinks, 'Current-view weak-link cards need more direct source URLs before they are used heavily.');
+          if (action === 'archiveNeeds') openSourceHardeningDrawer('Current view', 'archive candidates', audit.archiveNeeds, 'Current-view archive candidates need archive/perma mirrors or stronger primary-source posture.');
+          if (action === 'export') exportSourceHardeningChecklist(getVisibleEvidence(), 'Current view source-hardening queue', 'Current view source-hardening checklist opened from the Source provenance snapshot.');
+        });
       });
       document.getElementById('copyBriefBtn')?.addEventListener('click', () => {
         copyText(`Source provenance snapshot
@@ -11546,6 +12154,118 @@ Provenance risk: ${audit.riskLabel}`);
       document.getElementById('openHighestImpactBtn')?.addEventListener('click', () => {
         ranked.slice(0, 3).forEach(row => openCategories.add(row.type));
         renderCards();
+      });
+    }
+
+    function getBridgeDominoLinks(map) {
+      return dominoTrajectories.map(trajectory => {
+        const trajectoryTerms = [...trajectory.terms, ...trajectory.dominoes.flatMap(step => step.terms || [])];
+        const directHits = map.terms.filter(term => trajectoryTerms.some(t => t.toLowerCase().includes(term.toLowerCase()) || term.toLowerCase().includes(t.toLowerCase()))).length;
+        const cardOverlap = getDominoMatches(trajectory, evidence).filter(item => map.terms.some(term => matchesTerm(item, term))).length;
+        return { trajectory, score: directHits * 3 + cardOverlap, directHits, cardOverlap };
+      }).filter(row => row.score > 0).sort((a, b) => b.score - a.score).slice(0, 3);
+    }
+
+    function activateBridgeDomino(id) {
+      selectedDominoTrajectory = id;
+      renderDominoPanel(getVisibleEvidence());
+      renderTimeline(getVisibleEvidence());
+      document.getElementById('dominoPanel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function renderBridgeDominoGraph(ranked) {
+      const routeNodes = ranked.slice(0, 5).map((map, index) => ({ ...map, index, x: 95, y: 38 + index * 42 }));
+      const dominoLinks = routeNodes.map(route => ({ route, links: getBridgeDominoLinks(route).slice(0, 2) }));
+      const dominoNodes = [...new Map(dominoLinks.flatMap(row => row.links.map(link => [link.trajectory.id, link.trajectory])).map(([id, trajectory]) => [id, trajectory])).values()]
+        .slice(0, 5)
+        .map((trajectory, index) => ({ trajectory, x: 640, y: 42 + index * 42 }));
+      const lines = dominoLinks.flatMap(row => row.links.map(link => {
+        const target = dominoNodes.find(node => node.trajectory.id === link.trajectory.id);
+        return target ? `<line x1="190" y1="${row.route.y}" x2="555" y2="${target.y}" />` : '';
+      })).join('');
+      return `
+        <div class="bridge-graph" aria-label="Bridge routes connected to Domino trajectories">
+          <svg viewBox="0 0 740 250" role="img">
+            ${lines}
+            ${routeNodes.map(route => `
+              <g class="bridge-node" data-bridge-open="${route.index}" transform="translate(${route.x}, ${route.y})">
+                <circle r="10"></circle>
+                <text x="16" y="4">${escapeHtml(route.title.slice(0, 46))}</text>
+              </g>
+            `).join('')}
+            ${dominoNodes.map(node => `
+              <g class="bridge-node is-domino" data-bridge-domino="${escapeHtml(node.trajectory.id)}" transform="translate(${node.x}, ${node.y})">
+                <circle r="10"></circle>
+                <text x="16" y="4">${escapeHtml(node.trajectory.title.slice(0, 44))}</text>
+              </g>
+            `).join('')}
+          </svg>
+        </div>
+      `;
+    }
+
+    function renderBridgeMapPanel(items = getVisibleEvidence()) {
+      const panel = document.getElementById('bridgeMapPanel');
+      if (!panel) return;
+      const visibleText = items.map(item => `${item.title} ${item.description} ${(item.tags || []).join(' ')} ${(item.relatedEntities || []).join(' ')}`).join(' ').toLowerCase();
+      const ranked = bridgeConvergenceMaps.map(map => {
+        const matches = [...new Map(map.terms.flatMap(term => getInlineMatches(term, evidence)).map(item => [item.id, item])).values()].sort(sortEvidence);
+        const visibleHits = map.terms.filter(term => visibleText.includes(term.toLowerCase())).length;
+        const links = matches.reduce((sum, item) => sum + (item.links?.length || 0), 0);
+        const categories = [...new Set(matches.map(item => formatType(item.type)))];
+        return { ...map, matches, visibleHits, links, categories };
+      }).sort((a, b) => b.visibleHits - a.visibleHits || b.matches.length - a.matches.length);
+
+      panel.innerHTML = `
+        <div class="impact-header">
+          <div>
+            <div class="impact-title">Bridge Map · Interconnection Routes</div>
+            <div class="impact-subtitle">Multi-section routes that expose how otherwise separate cards connect through shared infrastructure, institutions, standards, and deployment pathways</div>
+          </div>
+          <button class="toolbar-btn" type="button" id="copyBridgeMapBtn">Copy bridge map</button>
+        </div>
+        ${renderBridgeDominoGraph(ranked)}
+        <div class="impact-grid">
+          ${ranked.map((map, index) => `
+            <article class="impact-card">
+              <h4>${index + 1}. ${map.title}</h4>
+              <ul class="brief-list">
+                <li><span class="brief-rank">${map.matches.length}</span>Linked cards · ${map.links} source links · ${map.visibleHits} visible hits</li>
+                <li><span class="brief-rank">Domains</span>${map.domains.join(' → ')}</li>
+                <li><span class="brief-rank">Why</span>${map.summary}</li>
+                <li><span class="brief-rank">Terms</span>${map.terms.map(term => `<button class="tag-inline" type="button" data-bridge-term="${escapeHtml(term)}">${escapeHtml(term)}</button>`).join(' ')}</li>
+                <li><span class="brief-rank">Domino</span>${getBridgeDominoLinks(map).length ? getBridgeDominoLinks(map).map(link => `<button class="tag-inline" type="button" data-bridge-domino="${escapeHtml(link.trajectory.id)}">${escapeHtml(link.trajectory.title)} · ${link.cardOverlap} overlaps</button>`).join(' ') : 'No strong trajectory match yet'}</li>
+              </ul>
+              <div class="floating-action-row">
+                <button type="button" data-bridge-open="${index}">Open route drawer</button>
+                <button type="button" data-bridge-expand="${index}">Expand route cards</button>
+              </div>
+            </article>
+          `).join('')}
+        </div>
+      `;
+
+      panel.querySelectorAll('[data-bridge-term]').forEach(btn => {
+        btn.addEventListener('click', () => showDiscovery(btn.dataset.bridgeTerm));
+      });
+      panel.querySelectorAll('[data-bridge-domino]').forEach(btn => {
+        btn.addEventListener('click', () => activateBridgeDomino(btn.dataset.bridgeDomino));
+      });
+      panel.querySelectorAll('[data-bridge-open]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const map = ranked[Number(btn.dataset.bridgeOpen)];
+          openDiscoverySet(map.title, map.matches, `Bridge route: ${map.summary}`);
+        });
+      });
+      panel.querySelectorAll('[data-bridge-expand]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const map = ranked[Number(btn.dataset.bridgeExpand)];
+          expandAndHighlightCards(map.matches.slice(0, 20));
+          renderCards();
+        });
+      });
+      document.getElementById('copyBridgeMapBtn')?.addEventListener('click', () => {
+        copyText(ranked.map((map, index) => `${index + 1}. ${map.title}\nDomains: ${map.domains.join(' -> ')}\nCards: ${map.matches.length}; links: ${map.links}; visible hits: ${map.visibleHits}\nTerms: ${map.terms.join(', ')}\nWhy: ${map.summary}`).join('\n\n'));
       });
     }
 
@@ -12674,15 +13394,52 @@ Provenance risk: ${audit.riskLabel}`);
       });
     }
 
+    function setWorkspaceDrawer(open) {
+      document.body.classList.toggle('workspace-drawer-open', open);
+      document.getElementById('workspaceIndexDrawer')?.setAttribute('aria-hidden', String(!open));
+      document.getElementById('workspaceDrawerTab')?.setAttribute('aria-expanded', String(open));
+    }
+
+    function toggleWorkspaceDrawer() {
+      setWorkspaceDrawer(!document.body.classList.contains('workspace-drawer-open'));
+    }
+
+    function openWorkspacePreset(id) {
+      const preset = workspaceNavigationPresets.find(item => item.id === id);
+      if (!preset) return;
+      if (!preset.preservePanels) {
+        collapsedWorkspacePanels = new Set(workspacePanels.map(item => item.id).filter(panelId => !preset.panels.includes(panelId)));
+        applyWorkspacePanelShells();
+        renderWorkspaceIndex();
+      }
+      const target = document.getElementById(preset.target) || document.getElementById('cardsGrid');
+      target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setWorkspaceDrawer(false);
+    }
+
+    function groupedWorkspaceIndexItems(ordered) {
+      const groups = [];
+      ordered.forEach((item, index) => {
+        let group = groups.find(row => row.group === item.group);
+        if (!group) {
+          group = { group: item.group, items: [] };
+          groups.push(group);
+        }
+        group.items.push({ ...item, index });
+      });
+      return groups;
+    }
+
     function renderWorkspaceIndex() {
       const panel = document.getElementById('workspaceIndexPanel');
       if (!panel) return;
       const ordered = workspacePanelOrder.map(id => workspacePanels.find(panel => panel.id === id)).filter(Boolean);
+      const grouped = groupedWorkspaceIndexItems(ordered);
       panel.innerHTML = `
         <div class="workspace-index-header">
           <div>
             <div class="workspace-index-title">Workspace Index</div>
-            <div class="workspace-index-subtitle">Drag chips to reorder major sections. Click a chip to open/close that section without scrolling through every panel.</div>
+            <div class="workspace-index-subtitle">Use presets for fast routes, or drag sections to reshape the workspace.</div>
           </div>
           <div class="workspace-index-actions">
             <button class="toolbar-btn" type="button" id="openWorkspacePanelsBtn">Open workspace</button>
@@ -12690,14 +13447,29 @@ Provenance risk: ${audit.riskLabel}`);
             <button class="toolbar-btn" type="button" id="resetWorkspaceOrderBtn">Reset order</button>
           </div>
         </div>
-        <div class="workspace-index-list">
-          ${ordered.map((item, index) => `
-            <button class="workspace-index-chip ${collapsedWorkspacePanels.has(item.id) ? '' : 'is-open'}" type="button" draggable="true" data-workspace-chip="${item.id}">
-              <span>${index + 1}. ${item.label}</span><span class="discovery-meta">${item.group}</span>
+        <div class="workspace-index-presets">
+          ${workspaceNavigationPresets.map(preset => `
+            <button class="workspace-preset-btn" type="button" data-workspace-preset="${preset.id}">
+              <strong>${preset.label}</strong>
+              <span>${preset.desc}</span>
             </button>
           `).join('')}
         </div>
+        <div class="workspace-index-list">
+          ${grouped.map(group => `
+            <div class="workspace-group-heading">${group.group}</div>
+            ${group.items.map(item => `
+              <button class="workspace-index-chip ${collapsedWorkspacePanels.has(item.id) ? '' : 'is-open'}" type="button" draggable="true" data-workspace-chip="${item.id}">
+                <span class="workspace-chip-line"><span>${item.index + 1}. ${item.label}</span><span class="discovery-meta">${collapsedWorkspacePanels.has(item.id) ? 'closed' : 'open'}</span></span>
+                <span class="workspace-chip-desc">${item.desc}</span>
+              </button>
+            `).join('')}
+          `).join('')}
+        </div>
       `;
+      panel.querySelectorAll('[data-workspace-preset]').forEach(btn => {
+        btn.addEventListener('click', () => openWorkspacePreset(btn.dataset.workspacePreset));
+      });
       panel.querySelectorAll('[data-workspace-chip]').forEach(chip => {
         chip.addEventListener('click', () => toggleWorkspacePanel(chip.dataset.workspaceChip, true));
         chip.addEventListener('dragstart', event => event.dataTransfer.setData('text/plain', chip.dataset.workspaceChip));
@@ -12780,6 +13552,7 @@ Provenance risk: ${audit.riskLabel}`);
       renderEntityPanel(items);
       renderBriefPanel(items);
       renderImpactPanel(items);
+      renderBridgeMapPanel(items);
       renderInvestmentPanel(items);
       renderPathwayPanel(items);
       renderDominoPanel(items);
@@ -13013,6 +13786,10 @@ Provenance risk: ${audit.riskLabel}`);
       chips.push(`<span class="state-chip">Sort: ${sortMode}</span>`);
       chips.push(`<span class="state-chip">Density: ${viewDensity}</span>`);
       chips.push(`<span class="state-chip">Open tabs: ${openCategories.size}</span>`);
+      const currentAudit = getSourceAudit(visible);
+      if (currentAudit.riskLabel !== 'Low') {
+        chips.push(`<button class="state-chip actionable risk-${currentAudit.riskLabel.toLowerCase()}" type="button" data-jump-state="sourceRisk">Risk: ${currentAudit.riskLabel} · ${currentAudit.weakLinks.length} weak · ${currentAudit.archiveNeeds.length} archive</button>`);
+      }
       if (searchQuery) chips.push(`<button class="state-chip actionable" type="button" data-clear-state="search">Search: ${searchQuery} ×</button>`);
       if (discoveryTerm) chips.push(`<button class="state-chip actionable" type="button" data-clear-state="discovery">Discovery: ${discoveryTerm} ×</button>`);
       if (selectedEntity) chips.push(`<button class="state-chip actionable" type="button" data-jump-state="entity">Entity: ${selectedEntity}</button>`);
@@ -13046,7 +13823,8 @@ Provenance risk: ${audit.riskLabel}`);
             thread: 'threadPanel',
             domino: 'dominoPanel',
             trail: 'missionPanel',
-            pages: 'workspacePagesPanel'
+            pages: 'workspacePagesPanel',
+            sourceRisk: 'briefPanel'
           };
           document.getElementById(targets[btn.dataset.jumpState])?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
@@ -13214,6 +13992,12 @@ Provenance risk: ${audit.riskLabel}`);
       document.getElementById('workspacePagesBtn').addEventListener('click', () => {
         renderWorkspacePagesPanel();
         document.getElementById('workspacePagesPanel')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+
+      document.getElementById('workspaceDrawerTab')?.addEventListener('click', toggleWorkspaceDrawer);
+      document.getElementById('workspaceDrawerClose')?.addEventListener('click', () => setWorkspaceDrawer(false));
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape') setWorkspaceDrawer(false);
       });
 
       document.getElementById('openWorkspaceTopBtn').addEventListener('click', () => {
