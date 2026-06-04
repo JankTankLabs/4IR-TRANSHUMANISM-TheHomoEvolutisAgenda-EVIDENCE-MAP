@@ -233,3 +233,15 @@ These ideas were previously visible as a strategy-style brief. Keep them as inte
 1. Added zoom controls to the Bridge Map route-to-Domino visual graph so users can inspect the relationship canvas more closely.
 2. Upgraded floating layout restoration to store term/source payloads and regenerate window content from current evidence data when layouts are restored.
 3. Changed the persistent source-risk state chip from a passive jump target into a direct current-view provenance-risk drawer opener.
+
+## Completed in this domino readability/index-scroll polish pass
+
+1. Increased Domino/Trajectory text contrast and title readability so chain cards no longer inherit low-contrast dark text.
+2. Routed internal jumps through a top-aligned scroll helper so opened cards, drawers, panels, state-bar targets, and Domino/Bridge/Timeline links land at the visible top of the viewport.
+3. Hardened the left Workspace Index drawer/tab with stronger stacking, focus outlines, outside-click close behavior, updated ARIA labels, and drawer-close-on-chip navigation.
+
+## Completed in this index/category-collapse repair pass
+
+1. Restored reliable Workspace Index tab behavior, outside-click closing, and open/collapse-all workspace controls.
+2. Kept workspace panels closed by default and reapplied panel shells after dynamic panel rerenders to prevent blank collapsed bars.
+3. Added drag-reorder persistence for the colored category index so card sections automatically follow the saved category order.
