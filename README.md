@@ -45,6 +45,18 @@ python3 -m http.server 8000
 
 Then visit <http://localhost:8000>.
 
+For a desktop-style launcher, copy the repository folder wherever you want and double-click `Open_Evidence_Map.cmd` on Windows. Linux/macOS users can run `./Open_Evidence_Map.sh` to open the same `index.html` in the default browser.
+
+## Testing
+
+Run the static smoke suite with:
+
+```bash
+node tests/smoke-test.js
+```
+
+The smoke suite checks the inline JavaScript syntax path, dataset/card schema, source-link shape, category/workspace defaults, open/close helpers, persisted category reordering, required workspace panel elements, and key UX guard markers.
+
 ## Notes
 
 This project is for research and educational use. Links may change over time; if a primary URL is unavailable, check official archives or the Internet Archive.
