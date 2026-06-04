@@ -847,28 +847,19 @@
       background: var(--bg-card);
       border-radius: 999px;
       display: block;
-      height: 7px !important;
-      line-height: 0;
+      height: 7px;
       margin-top: 6px;
-      max-height: 7px !important;
       max-width: 100%;
-      min-height: 7px !important;
       overflow: hidden;
-      position: relative;
       width: 100%;
     }
 
-    .mini-bar-fill {
+    .mini-bar > span {
       background: linear-gradient(90deg, var(--players), var(--virtual));
       display: block;
-      height: 7px !important;
-      left: 0;
-      max-height: 7px !important;
+      height: 100%;
       max-width: 100%;
-      min-height: 7px !important;
       min-width: 4px;
-      position: absolute;
-      top: 0;
     }
 
     .pathway-card {
@@ -4840,62 +4831,6 @@
         ]
       },
       {
-        id: "human-human-genome-project-elsi-data-foundation",
-        type: "human",
-        title: "Human Genome Project + ELSI — Big-Science Genome Map and Ethics Infrastructure",
-        date: "1990-2003",
-        jurisdiction: "United States / NIH + DOE / International Consortium",
-        description: "The Human Genome Project is a foundational human-data card: a publicly funded international project to sequence the human genome, paired with the ELSI program for ethical, legal, and social implications. It anchors the transition from older heredity/eugenics ideology to modern genomics, precision medicine, biobanks, and human-editing governance.",
-        tags: ["Human Genome Project", "NHGRI", "DOE", "ELSI", "Genomics", "Precision Medicine", "Human Data", "Bioethics"],
-        relatedEntities: ["NHGRI", "NIH", "Department of Energy", "Human Genome Project", "All of Us", "WHO Human Genome Editing", "Francis Galton", "Eugenics"],
-        sourceQuality: "Official NHGRI/NIH history + primary project pages",
-        facts: [
-          { label: "Launch", value: "1990" },
-          { label: "Completion", value: "April 2003" },
-          { label: "Ethics layer", value: "ELSI attached to genome research" },
-          { label: "Bridge", value: "Eugenics history → genomics governance → precision medicine" }
-        ],
-        flags: ["Human genomic blueprint", "Ethics/governance infrastructure", "Big-science biology", "Precision-medicine foundation", "Bridge to All of Us and CRISPR governance"],
-        details: [
-          "This card strengthens the early-ideology-to-modern-deployment chain without claiming the Human Genome Project was eugenics; it documents the infrastructure shift from heredity ideology to genome-scale data science.",
-          "Use with Galton, ERO, WHO genome-editing, He Jiankui, and All of Us to track how human heredity moved from classification to sequencing, databases, and governance."
-        ],
-        links: [
-          { label: "NHGRI HGP Completion FAQ", url: "https://www.genome.gov/human-genome-project/Completion-FAQ", icon: "🧬" },
-          { label: "NHGRI HGP Timeline", url: "https://www.genome.gov/human-genome-project/Timeline-of-Events", icon: "🕰️" },
-          { label: "NIH NHGRI Almanac", url: "https://www.nih.gov/about-nih/nih-almanac/national-human-genome-research-institute-nhgri", icon: "🏛️" },
-          { label: "NHGRI ELSI Program", url: "https://www.genome.gov/Funded-Programs-Projects/ELSI-Research-Program-ethical-legal-social-implications", icon: "⚖️" }
-        ]
-      },
-      {
-        id: "research-nih-all-of-us-genomics-workbench",
-        type: "research",
-        title: "NIH All of Us — Precision-Medicine Biobank, Genomics, EHR, Surveys, Wearables, and Cloud Workbench",
-        date: "2015-Present",
-        jurisdiction: "United States / NIH",
-        description: "NIH's All of Us program is a major precision-medicine infrastructure node combining participant surveys, electronic health records, physical measurements, biospecimens, genomic data, wearables data, and a secure cloud Researcher Workbench. It is high-value because it connects human genomic scale, health-data secondary use, cloud research infrastructure, and AI-ready biomedical datasets.",
-        tags: ["All of Us", "NIH", "Precision Medicine", "Biobank", "Genomics", "EHR", "Wearables", "Researcher Workbench", "Health Data"],
-        relatedEntities: ["NIH", "All of Us", "NHGRI", "Vanderbilt", "Verily", "Broad Institute", "Color Health", "Mayo Clinic", "European Health Data Space"],
-        sourceQuality: "Official NIH program pages + peer-reviewed genomic data paper",
-        facts: [
-          { label: "Target", value: "1M+ participants" },
-          { label: "Data types", value: "EHR + surveys + biospecimens + genomics + wearables" },
-          { label: "Access layer", value: "Researcher Workbench" },
-          { label: "Bridge", value: "Human genome + health data + cloud research" }
-        ],
-        flags: ["Precision-medicine infrastructure", "Large-scale human data", "Genomic secondary use", "Cloud research platform", "AI/biomedical-data bridge"],
-        details: [
-          "This is not framed as malign intent; it is included because the evidence map needs a concrete U.S. counterpart to EHDS-style health-data infrastructure.",
-          "Use against EHDS, FDA AI-device records, HGP, and digital twin cards to compare how bodies become analyzable datasets."
-        ],
-        links: [
-          { label: "NIH All of Us", url: "https://www.nih.gov/allofus", icon: "🏛️" },
-          { label: "All of Us Research Projects / Data", url: "https://allofus.nih.gov/protecting-data-and-privacy/research-projects-all-us-data", icon: "📊" },
-          { label: "All of Us Partners", url: "https://www.nih.gov/allofus/about/partners", icon: "🤝" },
-          { label: "Genomic Data in All of Us", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC10937371/", icon: "🧬" }
-        ]
-      },
-      {
         id: "environment-weather-modification-reporting",
         type: "environment",
         title: "NOAA Weather Modification Reporting Act Records",
@@ -4935,34 +4870,6 @@
           { label: "White House Research Plan PDF", url: "https://www.whitehouse.gov/wp-content/uploads/2023/06/Congressionally-Mandated-Report-on-Solar-Radiation-Modification.pdf", icon: "☀️" },
           { label: "OSTP Reports and Documents", url: "https://www.whitehouse.gov/ostp/reports-and-documents/", icon: "🏛️" },
           { label: "National Academies SRM Report", url: "https://nap.nationalacademies.org/catalog/25762/reflecting-sunlight-recommendations-for-solar-geoengineering-research-and-research-governance", icon: "📚" }
-        ]
-      },
-      {
-        id: "environment-haarp-ionosphere-research-facility",
-        type: "environment",
-        title: "HAARP — Ionospheric Research Facility, Radio Propagation, and Conspiracy-Control Boundary Case",
-        date: "1993-Present",
-        jurisdiction: "United States / Alaska / University of Alaska Fairbanks",
-        description: "HAARP is included as a boundary-case environment card: an official high-frequency ionospheric research facility with military origins and public conspiracy claims. The useful evidence value is separating documented ionospheric/radio-science experimentation from unsupported claims about weather control or global mind control.",
-        tags: ["HAARP", "Ionosphere", "Radio Propagation", "UAF", "Air Force Research Laboratory", "Environmental Intervention", "Conspiracy Boundary"],
-        relatedEntities: ["University of Alaska Fairbanks", "Air Force Research Laboratory", "DARPA", "NOAA Weather Modification", "Solar Radiation Modification"],
-        sourceQuality: "Official UAF HAARP pages + public FAQ; speculative claims explicitly separated",
-        facts: [
-          { label: "Facility", value: "High-frequency Active Auroral Research Program" },
-          { label: "Transfer", value: "UAF operation after 2015" },
-          { label: "Domain", value: "Ionospheric/radio science" },
-          { label: "Guardrail", value: "Not weather-control proof" }
-        ],
-        flags: ["Natural-phenomena research", "Military-to-university transition", "Radio/communications science", "Conspiracy-claim boundary", "Use to harden weak environmental claims"],
-        details: [
-          "This card deliberately improves source discipline: HAARP is real, but many viral claims go far beyond what official facility materials support.",
-          "Use beside NOAA weather-modification reports and SRM governance to distinguish documented environmental research categories."
-        ],
-        links: [
-          { label: "HAARP Official Site", url: "https://haarp.gi.alaska.edu/", icon: "📡" },
-          { label: "HAARP FAQ", url: "https://haarp.gi.alaska.edu/faq", icon: "❓" },
-          { label: "HAARP Brochure PDF", url: "https://haarp.gi.alaska.edu/sites/default/files/inline-files/HAARP_brochure.pdf", icon: "📄" },
-          { label: "UAF Geophysical Institute", url: "https://www.gi.alaska.edu/", icon: "🏛️" }
         ]
       },
       {
@@ -6330,91 +6237,6 @@
         ]
       },
       {
-        id: "legacy-buck-v-bell-forced-sterilization-precedent",
-        type: "legacy",
-        title: "Buck v. Bell (1927) — Supreme Court Forced-Sterilization Precedent and Eugenics Law Anchor",
-        date: "1927-05-02",
-        jurisdiction: "United States / Supreme Court / Virginia Eugenics Law",
-        description: "Buck v. Bell is a hard legal anchor for population-management history: the U.S. Supreme Court upheld Virginia's compulsory sterilization law, making coercive eugenics a judicially legitimized policy pathway. This belongs in the map because it shows how heredity ideology became state power before later bioethics and genomics governance tried to constrain similar abuses.",
-        quote: { text: "Three generations of imbeciles are enough.", source: "Justice Oliver Wendell Holmes Jr., Buck v. Bell" },
-        tags: ["Buck v. Bell", "Carrie Buck", "Forced Sterilization", "Eugenics", "Supreme Court", "Population Management", "Bioethics"],
-        relatedEntities: ["Carrie Buck", "Supreme Court", "Virginia", "Eugenics Record Office", "Francis Galton", "Population Council", "Human Genome Project ELSI"],
-        sourceQuality: "Primary Supreme Court opinion + legal references; morally condemned historical precedent",
-        facts: [
-          { label: "Decision", value: "274 U.S. 200" },
-          { label: "Policy", value: "Compulsory sterilization" },
-          { label: "Legacy", value: "Eugenics law and bioethics warning" },
-          { label: "Bridge", value: "Heredity ideology → state coercion → modern safeguards" }
-        ],
-        flags: ["Coercive population policy", "Eugenics law", "Human-rights abuse", "Bioethics guardrail", "Foundational warning for human enhancement governance"],
-        details: [
-          "This is one of the strongest early legal anchors for the map's population-management layer.",
-          "Use it as a contrast point against ELSI, Belmont, Common Rule, WHO genome-editing governance, and consent/registry safeguards."
-        ],
-        links: [
-          { label: "Cornell LII Opinion Text", url: "https://www.law.cornell.edu/supremecourt/text/274/200", icon: "⚖️" },
-          { label: "Oyez Case Page", url: "https://www.oyez.org/cases/1900-1940/274us200", icon: "🏛️" },
-          { label: "Britannica: Buck v. Bell", url: "https://www.britannica.com/topic/Buck-v-Bell", icon: "📚" },
-          { label: "NHGRI Eugenics Timeline", url: "https://www.genome.gov/about-genomics/educational-resources/timelines/eugenics", icon: "🧬" }
-        ]
-      },
-      {
-        id: "pharma-population-council-norplant-contraceptive-implants",
-        type: "pharma",
-        title: "Population Council / Norplant — Long-Acting Contraceptive Implant Technology and Reproductive-Policy Bridge",
-        date: "1966-2002",
-        jurisdiction: "Population Council / FDA / Global Reproductive Health",
-        description: "Norplant gives the population-policy layer a concrete pharmaceutical technology bridge: the Population Council developed long-acting subdermal contraceptive implants, with FDA approval in 1990 and global rollout debates around efficacy, informed consent, lawsuits, and use in development settings. This card connects foundation-backed fertility research to body-embedded reproductive technology.",
-        tags: ["Population Council", "Norplant", "Contraceptive Implant", "Fertility", "Reproductive Technology", "FDA", "LARC", "Population Policy"],
-        relatedEntities: ["Population Council", "Rockefeller Foundation", "John D. Rockefeller III", "FDA", "World Bank", "PATH", "Family Health International"],
-        sourceQuality: "National Academies review + PubMed literature + policy/history sources",
-        facts: [
-          { label: "Development start", value: "Mid-1960s Population Council concept" },
-          { label: "FDA approval", value: "1990" },
-          { label: "Technology", value: "Provider-inserted long-acting implant" },
-          { label: "Bridge", value: "Fertility policy → pharma device → consent debates" }
-        ],
-        flags: ["Reproductive technology", "Long-acting body implant", "Population-policy bridge", "Consent and coercion concerns", "Foundation/fertility research continuity"],
-        details: [
-          "This does not claim all contraception is coercive; it documents why provider-controlled long-acting fertility technologies belong near population-policy and bioethics cards.",
-          "Use with Population Council, Buck v. Bell, Rockefeller, Gates/JHU reproductive-health funding, and pharma/endocrine cards."
-        ],
-        links: [
-          { label: "National Academies: Lessons From Norplant", url: "https://www.nationalacademies.org/read/5946/page/109", icon: "📚" },
-          { label: "PubMed: Recent Developments in Contraceptive Implants", url: "https://pubmed.ncbi.nlm.nih.gov/11861061/", icon: "🔬" },
-          { label: "KFF Contraceptive Implants Fact Sheet", url: "https://www.kff.org/womens-health-policy/fact-sheet/contraceptive-implants/", icon: "📄" },
-          { label: "Population Council Official Site", url: "https://popcouncil.org/", icon: "🌐" }
-        ]
-      },
-      {
-        id: "social-milgram-asch-zimbardo-authority-conformity-lab-anchors",
-        type: "social",
-        title: "Authority and Conformity Experiments — Asch, Milgram, Stanford Prison, and Behavioural-Compliance Guardrails",
-        date: "1951-1971",
-        jurisdiction: "United States / Social Psychology",
-        description: "This card adds classic behavioural-programming anchors: Asch conformity studies, Milgram obedience experiments, and the Stanford Prison Experiment. They are included because later social-engineering, nudging, platform moderation, and crisis messaging debates repeatedly depend on authority, conformity, role pressure, group norms, and compliance under institutional framing.",
-        tags: ["Asch", "Milgram", "Stanford Prison Experiment", "Authority", "Conformity", "Obedience", "Social Psychology", "Behavioural Programming"],
-        relatedEntities: ["Solomon Asch", "Stanley Milgram", "Philip Zimbardo", "Behavioural Insights", "MINDSPACE", "Tavistock", "Platform Governance"],
-        sourceQuality: "Classic peer-reviewed / institutional research records; modern interpretations debated",
-        facts: [
-          { label: "Asch", value: "Conformity pressure" },
-          { label: "Milgram", value: "Obedience to authority" },
-          { label: "Stanford Prison", value: "Role/institutional pressure; heavily critiqued" },
-          { label: "Bridge", value: "Lab psychology → policy nudges → platform/crisis behaviour" }
-        ],
-        flags: ["Behavioural compliance", "Authority bias", "Conformity", "Institutional role pressure", "Methodology caveats"],
-        details: [
-          "The experiments are not proof that modern policy is a lab experiment; they are sourceable anchors for behavioural mechanisms used in later interpretation.",
-          "Use with MINDSPACE, Bernays, Tavistock, WHO infodemic, and platform-moderation cards."
-        ],
-        links: [
-          { label: "Yale: Milgram Obedience Study", url: "https://archives.yale.edu/repositories/12/resources/3510", icon: "🎓" },
-          { label: "Simply Psychology: Asch Study overview", url: "https://www.simplypsychology.org/asch-conformity.html", icon: "📚" },
-          { label: "Stanford Prison Experiment Archive", url: "https://exhibits.stanford.edu/spe", icon: "🏛️" },
-          { label: "APA: Obedience and ethics context", url: "https://www.apa.org/monitor/2009/03/milgram", icon: "🧠" }
-        ]
-      },
-      {
         id: "legacy-macy-cybernetics-conferences",
         type: "legacy",
         title: "Macy Cybernetics Conferences — Control, Communication, Brains, Machines, and Social Science",
@@ -7556,202 +7378,6 @@
           { label: "European Commission Digital Euro Package", url: "https://finance.ec.europa.eu/publications/digital-euro-package_en", icon: "€" },
           { label: "EU Publications Office Proposal", url: "https://op.europa.eu/en/publication-detail/-/publication/6f2f669f-1686-11ee-806b-01aa75ed71a1/", icon: "📜" },
           { label: "European Commission Digital Euro Page", url: "https://finance.ec.europa.eu/digital-finance/digital-euro_en", icon: "🏦" }
-        ]
-      },
-      {
-        id: "documents-belmont-common-rule-human-subjects-guardrail",
-        type: "documents",
-        title: "Belmont Report + Common Rule — Human-Subjects Consent, IRB, and Bioethics Guardrails",
-        date: "1979-1991",
-        jurisdiction: "United States / HHS / OHRP",
-        description: "The Belmont Report and Common Rule are core safeguards for human-subjects research: respect for persons, beneficence, justice, informed consent, IRB review, and federal oversight. This card strengthens the map by adding the consent/ethics layer that sits between eugenics abuses, human experimentation, genomics, AI health systems, and human-enhancement research.",
-        tags: ["Belmont Report", "Common Rule", "Human Subjects Research", "IRB", "Informed Consent", "Bioethics", "OHRP", "45 CFR 46"],
-        relatedEntities: ["HHS", "OHRP", "NIH", "IRB", "Buck v. Bell", "Human Genome Project ELSI", "WHO Human Genome Editing", "All of Us"],
-        sourceQuality: "Official HHS/OHRP records + eCFR regulation",
-        facts: [
-          { label: "Belmont", value: "Respect for persons / beneficence / justice" },
-          { label: "Common Rule", value: "Federal human-subjects protections" },
-          { label: "Mechanism", value: "IRB review + consent requirements" },
-          { label: "Bridge", value: "Abuse history → research governance" }
-        ],
-        flags: ["Human-subjects guardrail", "Consent infrastructure", "IRB oversight", "Bioethics anchor", "Counterweight to enhancement/deployment pressure"],
-        details: [
-          "This is a necessary guardrail card: it makes the map stronger by showing the official safeguards that emerged after abusive research and coercive population policies.",
-          "Use with Buck v. Bell, Tuskegee/context records, HGP/ELSI, All of Us, He Jiankui, and AI-health/device governance."
-        ],
-        links: [
-          { label: "HHS Belmont Report", url: "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html", icon: "⚖️" },
-          { label: "OHRP Common Rule", url: "https://www.hhs.gov/ohrp/regulations-and-policy/regulations/common-rule/index.html", icon: "📜" },
-          { label: "eCFR 45 CFR 46", url: "https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-A/part-46", icon: "🏛️" },
-          { label: "OHRP Regulations", url: "https://www.hhs.gov/ohrp/regulations-and-policy/regulations/index.html", icon: "📘" }
-        ]
-      },
-      {
-        id: "research-uk-biobank-genomics-health-data-platform",
-        type: "research",
-        title: "UK Biobank — Population-Scale Genomics, Imaging, EHR Linkage, and Research Access",
-        date: "2006-Present",
-        jurisdiction: "United Kingdom / Biomedical Research Infrastructure",
-        description: "UK Biobank is a major biomedical data platform linking participant health records, genetics, imaging, biomarkers, lifestyle data, and researcher access. It strengthens the health-data track by adding a non-U.S. population-scale dataset beside NIH All of Us and EHDS.",
-        tags: ["UK Biobank", "Genomics", "Biobank", "Health Data", "EHR Linkage", "Imaging", "Population Data", "Precision Medicine"],
-        relatedEntities: ["UK Biobank", "NHS", "Wellcome Trust", "Medical Research Council", "All of Us", "European Health Data Space", "Human Genome Project"],
-        sourceQuality: "Official UK Biobank pages + peer-reviewed/source publications",
-        facts: [
-          { label: "Scale", value: "~500,000 participants" },
-          { label: "Data types", value: "Genetics + imaging + health records + biomarkers" },
-          { label: "Access", value: "Approved researcher platform" },
-          { label: "Bridge", value: "Population data → precision medicine / AI research" }
-        ],
-        flags: ["Population-scale health data", "Genomic infrastructure", "Research access governance", "AI-ready biomedical dataset", "Compare with All of Us and EHDS"],
-        details: [
-          "This card adds depth without speculation: UK Biobank is an official research resource, but it raises the same governance questions around consent, secondary use, linkage, and data access.",
-          "Use beside All of Us, EHDS, Palantir NHS FDP, and digital twin records."
-        ],
-        links: [
-          { label: "UK Biobank Official Site", url: "https://www.ukbiobank.ac.uk/", icon: "🏥" },
-          { label: "UK Biobank About", url: "https://www.ukbiobank.ac.uk/learn-more-about-uk-biobank/about-us", icon: "📘" },
-          { label: "UK Biobank Access", url: "https://www.ukbiobank.ac.uk/enable-your-research/apply-for-access", icon: "🔐" },
-          { label: "Nature: UK Biobank resource", url: "https://www.nature.com/articles/s41586-018-0579-z", icon: "📚" }
-        ]
-      },
-      {
-        id: "identity-fido-webauthn-passkeys-biometric-authentication",
-        type: "identity",
-        title: "FIDO / WebAuthn / Passkeys — Passwordless Authentication, Device Biometrics, and Platform Identity Rails",
-        date: "2014-Present",
-        jurisdiction: "W3C / FIDO Alliance / Platform Ecosystem",
-        description: "FIDO, WebAuthn, and passkeys are a technical identity layer for passwordless authentication using public-key cryptography, authenticators, platform accounts, and often device biometrics for local unlock. This is a high-value bridge between digital ID, phone-based credentials, biometrics, platform lock-in, and relying-party authentication infrastructure.",
-        tags: ["FIDO", "WebAuthn", "Passkeys", "Passwordless", "Biometrics", "Authentication", "Platform Identity", "Public Key Cryptography"],
-        relatedEntities: ["FIDO Alliance", "W3C", "Apple", "Google", "Microsoft", "NIST", "mDL", "Digital ID"],
-        sourceQuality: "Official FIDO/W3C documentation + platform-primary records",
-        facts: [
-          { label: "Standard", value: "W3C WebAuthn + FIDO credentials" },
-          { label: "Mode", value: "Public-key authentication" },
-          { label: "Local factor", value: "Device PIN/biometric unlock often used" },
-          { label: "Bridge", value: "Platform accounts → relying-party identity" }
-        ],
-        flags: ["Passwordless identity", "Biometric local unlock", "Platform credential ecosystem", "Relying-party authentication", "Bridge to digital wallets"],
-        details: [
-          "This card does not claim passkeys are government IDs; it documents the authentication rails that can sit underneath wallets, age checks, enterprise access, and platform identity.",
-          "Use with NIST 800-63, mDL, eIDAS, age assurance, and biometric cards."
-        ],
-        links: [
-          { label: "FIDO Alliance Passkeys", url: "https://fidoalliance.org/passkeys/", icon: "🔐" },
-          { label: "W3C WebAuthn", url: "https://www.w3.org/TR/webauthn-3/", icon: "📜" },
-          { label: "Google Passkeys", url: "https://developers.google.com/identity/passkeys", icon: "🔑" },
-          { label: "Microsoft Passkeys", url: "https://support.microsoft.com/en-us/windows/passkeys-in-windows-2f4a0fbd-5335-4f6a-9831-7f3a099d36a7", icon: "🪟" }
-        ]
-      },
-      {
-        id: "documents-dhs-fusion-centers-information-sharing-network",
-        type: "documents",
-        title: "DHS Fusion Centers — State/Local/Federal Information-Sharing Nodes and Surveillance Governance",
-        date: "2003-Present",
-        jurisdiction: "United States / DHS / State and Local Law Enforcement",
-        description: "Fusion centers are post-9/11 information-sharing hubs connecting state, local, tribal, territorial, federal, and private-sector partners. They strengthen the surveillance-infrastructure track by adding the institutional layer between national-security intelligence, policing, emergency management, suspicious-activity reporting, and local operational data flows.",
-        tags: ["Fusion Centers", "DHS", "Information Sharing", "Surveillance", "Suspicious Activity Reporting", "Law Enforcement", "Homeland Security", "Public Private Partnership"],
-        relatedEntities: ["DHS", "FBI", "Information Sharing Environment", "CISA", "Real-Time Crime Centers", "Palantir", "Fusus", "NSO Pegasus"],
-        sourceQuality: "Official DHS/fusion-center pages + congressional oversight report",
-        facts: [
-          { label: "Layer", value: "State/local/federal information sharing" },
-          { label: "Domain", value: "Homeland security + law enforcement + emergency management" },
-          { label: "Governance issue", value: "Privacy, civil liberties, effectiveness" },
-          { label: "Bridge", value: "National security → local data fusion" }
-        ],
-        flags: ["Surveillance infrastructure", "Information-sharing network", "Public-private data flow", "Civil-liberties concerns", "Bridge to RTCC and platform policing"],
-        details: [
-          "This card adds institutional plumbing: it is not a single tool but a network model for moving threat, policing, and emergency data across jurisdictions.",
-          "Use beside Palantir, predictive policing, Ring, Pegasus, CISA MDM, and real-time crime center records."
-        ],
-        links: [
-          { label: "DHS Fusion Centers", url: "https://www.dhs.gov/fusion-centers", icon: "🏛️" },
-          { label: "National Network of Fusion Centers", url: "https://www.dhs.gov/national-network-fusion-centers-fact-sheet", icon: "🧭" },
-          { label: "ISE Fusion Centers", url: "https://www.ise.gov/fusion-centers", icon: "🔎" },
-          { label: "Senate PSI Fusion Center Report PDF", url: "https://www.hsgac.senate.gov/wp-content/uploads/imo/media/doc/10-3-2012%20PSI%20STAFF%20REPORT%20re%20FUSION%20CENTERS.2.pdf", icon: "📄" }
-        ]
-      },
-      {
-        id: "documents-nist-sp800-63-digital-identity-guidelines",
-        type: "documents",
-        title: "NIST SP 800-63 Digital Identity Guidelines — Identity Proofing, Authentication, Federation, and Wallet-Ready Standards",
-        date: "2017-2025",
-        jurisdiction: "United States / NIST",
-        description: "NIST SP 800-63 is a core digital-identity standards anchor covering identity proofing, authenticators, federation, and risk-based identity assurance. It strengthens the map by connecting digital ID laws and wallets to the technical trust rules that agencies, vendors, and relying parties use to decide who a person is online.",
-        tags: ["NIST", "SP 800-63", "Digital Identity", "Identity Proofing", "Authentication", "Federation", "IAL", "AAL", "FAL", "Biometrics"],
-        relatedEntities: ["NIST", "Digital Identity", "eIDAS", "ID2020", "Aadhaar", "AAMVA mDL", "TSA Digital ID"],
-        sourceQuality: "Official NIST standards page + publication record",
-        facts: [
-          { label: "Core docs", value: "800-63, 63A, 63B, 63C" },
-          { label: "Assurance model", value: "IAL / AAL / FAL" },
-          { label: "Bridge", value: "Policy wallets → technical trust architecture" },
-          { label: "Risk", value: "Biometric and remote-proofing safeguards matter" }
-        ],
-        flags: ["Digital ID standards", "Identity proofing", "Authentication", "Federation", "Biometric policy", "High-value bridge to wallets and age assurance"],
-        details: [
-          "This card gives the identity section a technical standards backbone rather than only country-specific laws.",
-          "Use it with eIDAS 2.0, ID2020, Aadhaar, age-assurance cards, and mDL records to compare assurance models and relying-party trust."
-        ],
-        links: [
-          { label: "NIST SP 800-63 Digital Identity Guidelines", url: "https://www.nist.gov/identity-access-management/nist-special-publication-800-63-digital-identity-guidelines", icon: "🪪" },
-          { label: "NIST SP 800-63 Page", url: "https://www.nist.gov/itl/applied-cybersecurity/special-publication-800-63", icon: "📘" },
-          { label: "NIST SP 800-63-3 Publication", url: "https://www.nist.gov/publications/digital-identity-guidelines-includes-updates-03-02-2020", icon: "📄" },
-          { label: "NIST SP 800-63-4 PDF", url: "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-63-4.pdf", icon: "📥" }
-        ]
-      },
-      {
-        id: "identity-aamva-mdl-iso18013-digital-trust-service",
-        type: "identity",
-        title: "Mobile Driver License (mDL) — ISO 18013-5, AAMVA Guidance, TSA Digital ID, and Relying-Party Trust",
-        date: "2021-Present",
-        jurisdiction: "United States / ISO / AAMVA / TSA",
-        description: "Mobile driver licenses are a practical bridge between physical ID, phone-based credentials, selective disclosure, federal acceptance, airports, relying-party trust services, and digital-wallet ecosystems. This card strengthens the digital ID section with a concrete deployment pathway: driver's licenses moving from plastic cards into interoperable mobile credentials.",
-        tags: ["mDL", "Mobile Driver License", "ISO 18013-5", "AAMVA", "Digital ID", "TSA", "REAL ID", "Selective Disclosure", "Wallet"],
-        relatedEntities: ["AAMVA", "ISO", "TSA", "DHS", "NIST", "eIDAS", "Digital ID", "Age Verification"],
-        sourceQuality: "Official AAMVA + TSA/DHS + ISO standard pages",
-        facts: [
-          { label: "Standard", value: "ISO/IEC 18013-5" },
-          { label: "Use case", value: "Driver license on mobile device" },
-          { label: "Relying party", value: "Verification by airports, businesses, agencies" },
-          { label: "Bridge", value: "ID wallet + age/credential proofing" }
-        ],
-        flags: ["Mobile credential", "Relying-party ecosystem", "Age assurance pressure", "Digital wallet convergence", "Federal travel / REAL ID bridge"],
-        details: [
-          "mDLs are a high-value missing bridge because they are everyday credentials that can normalize phone-based proofing and selective disclosure.",
-          "Use with TSA Digital ID, NIST 800-63, eIDAS wallets, and age-verification laws."
-        ],
-        links: [
-          { label: "AAMVA Mobile Driver License", url: "https://www.aamva.org/topics/mobile-driver-license", icon: "🪪" },
-          { label: "AAMVA mDL Guidelines v1.4", url: "https://www.aamva.org/publications-news/aamva-news/now-available-mobile-driver-s-license-%28mdl%29-implementation-guidelines%2C-version-1-4", icon: "📘" },
-          { label: "TSA Digital ID", url: "https://www.tsa.gov/digital-id", icon: "✈️" },
-          { label: "ISO/IEC 18013-5", url: "https://www.iso.org/standard/69084.html", icon: "📜" }
-        ]
-      },
-      {
-        id: "documents-who-ddcc-smart-health-certificates",
-        type: "documents",
-        title: "WHO Digital Documentation of COVID-19 Certificates (DDCC) — Health Certificates, Identity Linkage, and SMART Guidelines",
-        date: "2021-08-27",
-        jurisdiction: "World Health Organization / Global Digital Health",
-        description: "WHO's DDCC guidance documents technical specifications for standards-based interoperable digital COVID-19 vaccination certificates and later SMART guideline artifacts. It is a key pandemic-era control-systems bridge because it connects immunization records, digital health certificates, QR-style verification, identity linkage, and cross-border continuity-of-care/proof workflows.",
-        tags: ["WHO", "DDCC", "COVID-19 Certificates", "Digital Health", "Vaccine Certificates", "SMART Guidelines", "Health Certificate", "Digital ID"],
-        relatedEntities: ["WHO", "SMART Health Cards", "IHR", "Pandemic Agreement", "Digital ID", "European Health Data Space"],
-        sourceQuality: "Official WHO guidance + SMART implementation pages",
-        facts: [
-          { label: "Guidance date", value: "27 Aug. 2021" },
-          { label: "Function", value: "Digital proof of vaccination / health certificate data" },
-          { label: "Data layer", value: "Core data dictionary + implementation guidance" },
-          { label: "Bridge", value: "Pandemic governance → digital health credentials" }
-        ],
-        flags: ["Pandemic certificate infrastructure", "Health-data identity linkage", "Interoperability", "Cross-border verification", "Useful with IHR/Pandemic Agreement"],
-        details: [
-          "This card documents official certificate infrastructure; it does not claim every country used the same system or that certificates were a permanent ID mandate.",
-          "Use with IHR, WHO Pandemic Agreement, EHDS, ID2020, and age/identity rails to compare health-status credential pathways."
-        ],
-        links: [
-          { label: "WHO DDCC Publication", url: "https://www.who.int/publications/i/item/WHO-2019-nCoV-Digital_certificates-vaccination-2021.1", icon: "🌐" },
-          { label: "WHO DDCC PDF", url: "https://iris.who.int/bitstream/handle/10665/343361/WHO-2019-nCoV-Digital-certificates-vaccination-2021.1-eng.pdf", icon: "📄" },
-          { label: "WHO SMART DDCC Downloads", url: "https://smart.who.int/ddcc/downloads.html", icon: "🧾" },
-          { label: "WHO SMART DDCC Concepts", url: "https://smart.who.int/ddcc/1.0.0/concepts.html", icon: "🔎" }
         ]
       },
       {
@@ -9217,16 +8843,16 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       { id: 'mythos', label: 'Mythos / Folklore Roots', terms: ['Jesus Parallels', 'Comparative Religion', 'Savior Hero', 'Dying and Rising', 'Prophet Lawgiver', 'Monomyth', 'Apocalypse', 'Gilgamesh', 'Atlantis', 'Tartaria', 'Lemuria', 'H. G. Wells', 'Haldane', 'Bernal', 'Stapledon', 'Metropolis', 'Prometheus', 'Icarus', 'Faust', 'Plato', 'Golem', 'Pygmalion', 'Frankenstein', 'R.U.R.', 'War of the Worlds'], types: ['mythos', 'social', 'legacy', 'documents'] },
       { id: 'social-engineering', label: 'Social Engineering', terms: ['Propaganda', 'MINDSPACE', 'Machine Empathy', 'Dennis Bushnell', 'Future Warfare', 'Entertainment Conditioning', 'Civilisational Stages', 'Earth as Farm'], types: ['social', 'legacy', 'documents', 'speeches', 'players'] },
       { id: 'legacy', label: 'Legacy Roots', terms: ['Julian Huxley', 'Rockefeller', 'Eugenics', 'Cybernetics', 'Population Council', 'Bilderberg', 'King John', 'Presidents', 'Bush Family', 'Kennedy Family', 'Hollywood Dynasty', 'Walton Family', 'Epstein', 'Ghislaine Maxwell', 'JPMorgan', 'MIT Media Lab'], types: ['legacy', 'players', 'funding', 'documents'] },
-      { id: 'propaganda-roots', label: 'Propaganda / Behaviour Roots', terms: ['Committee on Public Information', 'Edward Bernays', 'Walter Lippmann', 'Milgram', 'Asch', 'Tavistock Institute', 'MINDSPACE', 'Public Opinion', 'Behavioural Insights'], types: ['legacy', 'documents', 'speeches', 'research'] },
+      { id: 'propaganda-roots', label: 'Propaganda / Behaviour Roots', terms: ['Committee on Public Information', 'Edward Bernays', 'Walter Lippmann', 'Tavistock Institute', 'MINDSPACE', 'Public Opinion', 'Behavioural Insights'], types: ['legacy', 'documents', 'speeches', 'research'] },
       { id: 'infodemic-platform-governance', label: 'Infodemic + Platform Governance', terms: ['WHO Infodemic', 'Surgeon General', 'Health Misinformation', 'CISA', 'MDM', 'EU Code of Practice on Disinformation', 'Digital Services Act'], types: ['documents', 'legislation', 'research', 'leaks', 'corporate'] },
       { id: 'convergence', label: 'Convergence Stack', terms: ['WEF', 'Digital ID', 'AI', 'Biotechnology', 'World ID', 'Brain'], types: ['players', 'virtual', 'bioengineering', 'documents', 'funding'] },
-      { id: 'ygl-roster', label: 'YGL Roster', terms: ['Young Global Leaders', 'YGL Roster', 'NIST SP 800-63', 'mDL', 'DDCC', 'All of Us', 'Human Genome Project', 'Buck v. Bell', 'Norplant', 'Milgram', 'Asch', 'HAARP', 'Class of 2026', 'Class of 2025', 'Class of 2024', 'Class of 2023', 'Class of 2022', 'Class of 2021', 'Class of 2020', 'Verification Queue'], types: ['players', 'funding', 'documents', 'legacy'] },
+      { id: 'ygl-roster', label: 'YGL Roster', terms: ['Young Global Leaders', 'YGL Roster', 'Class of 2026', 'Class of 2025', 'Class of 2024', 'Class of 2023', 'Class of 2022', 'Class of 2021', 'Class of 2020', 'Verification Queue'], types: ['players', 'funding', 'documents', 'legacy'] },
       { id: 'money', label: 'Money & Influence', terms: ['Gates Foundation', 'Pritzker', 'Funding', 'Gavi', 'Microsoft', 'Meta'], types: ['funding', 'players', 'corporate', 'pharma', 'identity'] },
       { id: 'bio', label: 'Bio / Vector / Outbreak', terms: ['DARPA', 'Gene Drive', 'Mosquitoes', 'Hantavirus', 'EcoHealth', 'CRISPR'], types: ['bioengineering', 'outbreaks', 'funding', 'leaks', 'documents'] },
       { id: 'identity', label: 'Identity + Pharma', terms: ['WPATH', 'Puberty Blockers', 'Pritzker', 'Gender', 'Endocrine', 'Cass Review'], types: ['identity', 'pharma', 'legislation', 'documents'] },
       { id: 'virtual', label: 'Virtual Human / Machine', terms: ['Digital Twin', 'Mind Uploading', 'BINA48', 'Human Brain Project', 'Living Heart', 'Metaverse'], types: ['virtual', 'patents', 'human', 'players'] },
-      { id: 'health-data-ai', label: 'Health Data + AI', terms: ['European Health Data Space', 'EHDS', 'All of Us', 'UK Biobank', 'Human Genome Project', 'Belmont Report', 'Common Rule', 'HealthData@EU', 'FDA AI', 'AI-Enabled Medical Devices', 'Digital Twin'], types: ['legislation', 'documents', 'research', 'virtual', 'human'] },
-      { id: 'identity-money-age', label: 'Identity + Money + Age Gates', terms: ['NIST SP 800-63', 'Passkeys', 'FIDO', 'mDL', 'eIDAS', 'Digital Euro', 'Age Verification', 'California', 'Florida HB 3', 'Australia Social Media'], types: ['legislation', 'documents', 'identity', 'patents'] },
+      { id: 'health-data-ai', label: 'Health Data + AI', terms: ['European Health Data Space', 'EHDS', 'HealthData@EU', 'FDA AI', 'AI-Enabled Medical Devices', 'Digital Twin'], types: ['legislation', 'documents', 'research', 'virtual', 'human'] },
+      { id: 'identity-money-age', label: 'Identity + Money + Age Gates', terms: ['eIDAS', 'Digital Euro', 'Age Verification', 'California', 'Florida HB 3', 'Australia Social Media'], types: ['legislation', 'documents', 'identity', 'patents'] },
       { id: 'defense-autonomy', label: 'Defense Autonomy', terms: ['Replicator', 'NATO DIANA', 'Palantir', 'Anduril', 'Autonomous Systems', 'AI'], types: ['corporate', 'documents', 'funding', 'players', 'patents'] }
     ];
 
@@ -9902,7 +9528,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     ];
 
 
-    const quickSearches = ['Microsoft Antitrust', 'Timing Pattern', 'Gavi', 'Gates Institute', 'Media Funding', 'Rockefeller Foundation', 'Investment Convergence', 'Founders Fund', 'Breakthrough Energy', 'BlackRock', 'a16z', 'Eric Schmidt', 'Palantir', 'Anduril', 'Event 201', 'Crimson Contagion', 'SPARS', 'Milken', 'Wuhan Games', 'Universal Flu Vaccine', 'Jeffrey Epstein', 'Ghislaine Maxwell', 'Epstein Emails', 'JPMorgan', 'MIT Media Lab', 'Maxwell Family', 'Les Wexner', 'Bush Family', 'Kennedy Family', 'Roosevelt Family', 'Gates Family', 'Walton Family', 'Hollywood Dynasty', 'Coppola Family', 'King John', 'Presidents', 'Plantagenet', 'Royal Descent', 'Julian Huxley', 'Rockefeller', 'Eugenics', 'Cybernetics', 'Population Council', 'Bilderberg', 'Klaus Schwab', 'Bill Gates', 'Yuval Harari', 'Sam Altman', 'Pritzker', 'Young Global Leaders', 'YGL Roster', 'YGL Archive Targets', 'Global Leaders for Tomorrow', 'Predecessor GLT Targets', 'Exposé Reports', 'Social Engineering', 'Comparative Religion', 'Jesus Parallels', 'Savior Hero', 'Dying and Rising', 'Prophet Lawgiver', 'Monomyth', 'Apocalypse', 'Mythos', 'Folklore', 'Lost Civilisations', 'Atlantis', 'Tartaria', 'Tartary', 'Lemuria', 'Mu', 'Gilgamesh', 'Prometheus', 'Golem', 'Pygmalion', 'Frankenstein', 'R.U.R.', 'War of the Worlds', 'Plato Cave', 'H. G. Wells', 'World Brain', 'Open Conspiracy', 'Things to Come', 'Haldane', 'Daedalus', 'Ectogenesis', 'Bernal', 'Stapledon', 'Metropolis', 'Propaganda', 'Indoctrination', 'Machine Empathy', 'Human Devaluation', 'Future Warfare', 'Dennis Bushnell', 'Bio-Nano Age', 'Earth as Farm', 'Planetary Extraction', 'Entertainment Conditioning', 'Civilisational Stages', 'YGL Tech Bridge', 'Federal AI Policy', 'Platform Governance', 'Immunoengineering', 'Conversational AI', 'Quantum Computing', 'Civic Data', 'Aakrit Vaish', 'Marissa Giustina', 'Miku Hirano', 'Annalena Baerbock', 'Alicia Garza', 'Camille François', 'May Habib', 'Sofia Elizondo', 'Vilas Dhar', 'Information Integrity', 'AI Bioactives', 'AI Philanthropy', 'Omar Al Olama', 'Mykhailo Fedorov', 'Joy Buolamwini', 'Sanna Marin', 'Michael Kratsios', 'Shou Zi Chew', 'Chew Shou Zi', 'Han Bicheng', 'Bicheng Han', 'BrainCo', 'Kaitlyn Sadtler', 'Class of 2026', 'Class of 2025', 'Class of 2022', 'Class of 2021', 'Class of 2020', 'Verification Queue', 'Digital Twin', 'Mind Uploading', 'Brain Transparency', 'Israel', 'World ID', 'Gene Drive', 'Committee on Public Information', 'Edward Bernays', 'Walter Lippmann', 'Milgram', 'Asch', 'Tavistock Institute', 'MINDSPACE', 'Ultimate Stack', 'WHO Infodemic', 'Health Misinformation', 'CISA MDM', 'EU Disinformation Code', 'Belmont Report', 'Common Rule', 'UK Biobank', 'Passkeys', 'FIDO', 'Fusion Centers', 'Real-Time Crime Centers'];
+    const quickSearches = ['Microsoft Antitrust', 'Timing Pattern', 'Gavi', 'Gates Institute', 'Media Funding', 'Rockefeller Foundation', 'Investment Convergence', 'Founders Fund', 'Breakthrough Energy', 'BlackRock', 'a16z', 'Eric Schmidt', 'Palantir', 'Anduril', 'Event 201', 'Crimson Contagion', 'SPARS', 'Milken', 'Wuhan Games', 'Universal Flu Vaccine', 'Jeffrey Epstein', 'Ghislaine Maxwell', 'Epstein Emails', 'JPMorgan', 'MIT Media Lab', 'Maxwell Family', 'Les Wexner', 'Bush Family', 'Kennedy Family', 'Roosevelt Family', 'Gates Family', 'Walton Family', 'Hollywood Dynasty', 'Coppola Family', 'King John', 'Presidents', 'Plantagenet', 'Royal Descent', 'Julian Huxley', 'Rockefeller', 'Eugenics', 'Cybernetics', 'Population Council', 'Bilderberg', 'Klaus Schwab', 'Bill Gates', 'Yuval Harari', 'Sam Altman', 'Pritzker', 'Young Global Leaders', 'YGL Roster', 'YGL Archive Targets', 'Global Leaders for Tomorrow', 'Predecessor GLT Targets', 'Exposé Reports', 'Social Engineering', 'Comparative Religion', 'Jesus Parallels', 'Savior Hero', 'Dying and Rising', 'Prophet Lawgiver', 'Monomyth', 'Apocalypse', 'Mythos', 'Folklore', 'Lost Civilisations', 'Atlantis', 'Tartaria', 'Tartary', 'Lemuria', 'Mu', 'Gilgamesh', 'Prometheus', 'Golem', 'Pygmalion', 'Frankenstein', 'R.U.R.', 'War of the Worlds', 'Plato Cave', 'H. G. Wells', 'World Brain', 'Open Conspiracy', 'Things to Come', 'Haldane', 'Daedalus', 'Ectogenesis', 'Bernal', 'Stapledon', 'Metropolis', 'Propaganda', 'Indoctrination', 'Machine Empathy', 'Human Devaluation', 'Future Warfare', 'Dennis Bushnell', 'Bio-Nano Age', 'Earth as Farm', 'Planetary Extraction', 'Entertainment Conditioning', 'Civilisational Stages', 'YGL Tech Bridge', 'Federal AI Policy', 'Platform Governance', 'Immunoengineering', 'Conversational AI', 'Quantum Computing', 'Civic Data', 'Aakrit Vaish', 'Marissa Giustina', 'Miku Hirano', 'Annalena Baerbock', 'Alicia Garza', 'Camille François', 'May Habib', 'Sofia Elizondo', 'Vilas Dhar', 'Information Integrity', 'AI Bioactives', 'AI Philanthropy', 'Omar Al Olama', 'Mykhailo Fedorov', 'Joy Buolamwini', 'Sanna Marin', 'Michael Kratsios', 'Shou Zi Chew', 'Chew Shou Zi', 'Han Bicheng', 'Bicheng Han', 'BrainCo', 'Kaitlyn Sadtler', 'Class of 2026', 'Class of 2025', 'Class of 2022', 'Class of 2021', 'Class of 2020', 'Verification Queue', 'Digital Twin', 'Mind Uploading', 'Brain Transparency', 'Israel', 'World ID', 'Gene Drive', 'Committee on Public Information', 'Edward Bernays', 'Walter Lippmann', 'Tavistock Institute', 'MINDSPACE', 'Ultimate Stack', 'WHO Infodemic', 'Health Misinformation', 'CISA MDM', 'EU Disinformation Code'];
 
     let activeFilters = [...allTypes];
     let searchQuery = '';
@@ -11247,7 +10873,7 @@ Provenance risk: ${audit.riskLabel}`);
             <div class="impact-list">
               ${ranked.map(row => `
                 <button class="impact-row" type="button" data-impact-type="${row.type}">
-                  <span>${formatTypePlural(row.type)}<span class="discovery-meta">${row.entries.length} cards · ${row.links} links · ${row.flags} flags · ${row.entities} entities</span><span class="mini-bar" aria-hidden="true"><span class="mini-bar-fill" style="width:${Math.round((row.score / maxScore) * 100)}%"></span></span></span>
+                  <span>${formatTypePlural(row.type)}<span class="discovery-meta">${row.entries.length} cards · ${row.links} links · ${row.flags} flags · ${row.entities} entities</span><span class="mini-bar"><span style="width:${Math.round((row.score / maxScore) * 100)}%"></span></span></span>
                   <span class="impact-score">${row.score}</span>
                 </button>
               `).join('')}
@@ -11612,7 +11238,7 @@ Provenance risk: ${audit.riskLabel}`);
             <article class="narrative-card" style="cursor: default;">
               <strong>${track.label}</strong>
               <span class="narrative-meta">${track.priority}<br>${track.allMatches.length} cards · ${track.links} links · ${track.categories.join(' + ') || 'mixed'}<br>${track.guidance}</span>
-              <span class="mini-bar" aria-hidden="true"><span class="mini-bar-fill" style="width:${Math.min(100, Math.round(((track.allMatches.length + track.links) / max) * 100))}%"></span></span>
+              <span class="mini-bar"><span style="width:${Math.min(100, Math.round(((track.allMatches.length + track.links) / max) * 100))}%"></span></span>
               <div class="card-tags" style="margin-top:10px;">
                 ${track.terms.slice(0, 9).map(term => `<span class="card-tag" data-track-term="${term}">${term}</span>`).join('')}
               </div>
@@ -11665,7 +11291,7 @@ Provenance risk: ${audit.riskLabel}`);
             <article class="narrative-card" style="cursor: default;">
               <strong>${stack.title}</strong>
               <span class="narrative-meta">${stack.confidence}<br>${stack.allMatches.length} cards · ${stack.sourceLinks} links · ${stack.categories.join(' + ') || 'mixed'}<br>${stack.why}</span>
-              <span class="mini-bar" aria-hidden="true"><span class="mini-bar-fill" style="width:${Math.min(100, Math.round(((stack.allMatches.length + stack.sourceLinks) / max) * 100))}%"></span></span>
+              <span class="mini-bar"><span style="width:${Math.min(100, Math.round(((stack.allMatches.length + stack.sourceLinks) / max) * 100))}%"></span></span>
               <div class="card-tags" style="margin-top:10px;">
                 ${stack.stages.map(stage => `<span class="card-tag" data-signal-term="${stage}">${stage}</span>`).join('')}
               </div>
