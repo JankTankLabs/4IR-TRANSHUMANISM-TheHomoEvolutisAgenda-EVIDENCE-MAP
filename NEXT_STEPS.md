@@ -167,3 +167,9 @@ These ideas were previously visible as a strategy-style brief. Keep them as inte
 1. Added category-coloured outlines, left-edge accent rails, and opened-state pills for expanded evidence cards so the active information panel is visually anchored to its source category.
 2. Added a subtle reduced-motion-safe focus pulse for newly opened cards from direct clicks, Timeline, Thread Explorer, Entity Intelligence, and Discovery drawer actions.
 3. Centralized multi-card expansion/highlighting so opened comparison, thread, and discovery sets can be visually distinguished without changing the global search state.
+
+## Completed in this floating comparison workspace pass
+
+1. Fixed oversized Signal Stack / Research Track meter rendering by making mini-bars block-level, bounded, and scoped to direct fill spans.
+2. Added draggable/resizable floating windows for expanded-card source links, tags, and related entities so users can compare multiple pieces of evidence side by side without being forced into a page jump.
+3. Added close/minimize controls, bottom dock tabs, drag-to-group tab behavior, and JSON export for individual floating windows or grouped comparison tabs.

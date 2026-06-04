@@ -846,15 +846,20 @@
     .mini-bar {
       background: var(--bg-card);
       border-radius: 999px;
+      display: block;
       height: 7px;
       margin-top: 6px;
+      max-width: 100%;
       overflow: hidden;
+      width: 100%;
     }
 
-    .mini-bar span {
+    .mini-bar > span {
       background: linear-gradient(90deg, var(--players), var(--virtual));
       display: block;
       height: 100%;
+      max-width: 100%;
+      min-width: 4px;
     }
 
     .pathway-card {
@@ -2050,6 +2055,204 @@
       margin-left: auto;
     }
 
+
+
+    /* Floating comparison workspace */
+    .floating-layer {
+      inset: 0;
+      pointer-events: none;
+      position: fixed;
+      z-index: 1000;
+    }
+
+    .floating-window {
+      background: rgba(15, 17, 20, 0.96);
+      border: 1px solid color-mix(in srgb, var(--window-accent, var(--link-color)) 58%, var(--border));
+      border-radius: 14px;
+      box-shadow: 0 22px 70px rgba(0, 0, 0, 0.56), 0 0 32px color-mix(in srgb, var(--window-accent, var(--link-color)) 15%, transparent);
+      color: var(--text-secondary);
+      max-height: min(72vh, 680px);
+      min-height: 230px;
+      min-width: 300px;
+      overflow: auto;
+      pointer-events: auto;
+      position: fixed;
+      resize: both;
+    }
+
+    .floating-window.is-active {
+      box-shadow: 0 26px 82px rgba(0, 0, 0, 0.64), 0 0 0 1px color-mix(in srgb, var(--window-accent, var(--link-color)) 45%, transparent), 0 0 42px color-mix(in srgb, var(--window-accent, var(--link-color)) 22%, transparent);
+    }
+
+    .floating-window-header {
+      align-items: center;
+      background: linear-gradient(90deg, color-mix(in srgb, var(--window-accent, var(--link-color)) 16%, rgba(255, 255, 255, 0.03)), rgba(255, 255, 255, 0.02));
+      border-bottom: 1px solid var(--border);
+      cursor: grab;
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      padding: 10px 12px;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    .floating-window-title {
+      color: var(--text-primary);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      line-height: 1.35;
+      text-transform: uppercase;
+    }
+
+    .floating-window-subtitle {
+      color: var(--text-muted);
+      display: block;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0;
+      margin-top: 2px;
+      text-transform: none;
+    }
+
+    .floating-window-controls {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .floating-control {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.74rem;
+      padding: 5px 8px;
+    }
+
+    .floating-control:hover {
+      border-color: var(--window-accent, var(--link-color));
+      color: var(--text-primary);
+    }
+
+    .floating-window-body {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+    }
+
+    .floating-fact-grid {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    }
+
+    .floating-fact {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 9px;
+    }
+
+    .floating-fact strong {
+      color: var(--text-primary);
+      display: block;
+      font-size: 0.78rem;
+      margin-bottom: 3px;
+    }
+
+    .floating-list {
+      display: grid;
+      gap: 7px;
+    }
+
+    .floating-list button,
+    .floating-action-row button,
+    .floating-action-row a {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font: inherit;
+      padding: 8px 10px;
+      text-align: left;
+    }
+
+    .floating-list button:hover,
+    .floating-action-row button:hover,
+    .floating-action-row a:hover {
+      border-color: var(--window-accent, var(--link-color));
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .floating-action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .floating-dock {
+      align-items: flex-end;
+      bottom: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      left: 14px;
+      pointer-events: none;
+      position: fixed;
+      right: 14px;
+      z-index: 1001;
+    }
+
+    .floating-tab,
+    .floating-dock-group {
+      background: rgba(18, 21, 26, 0.96);
+      border: 1px solid color-mix(in srgb, var(--tab-accent, var(--link-color)) 45%, var(--border));
+      border-radius: 999px;
+      color: var(--text-secondary);
+      cursor: grab;
+      font-size: 0.76rem;
+      max-width: 260px;
+      overflow: hidden;
+      padding: 8px 11px;
+      pointer-events: auto;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .floating-dock-group {
+      border-radius: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      max-width: 520px;
+    }
+
+    .floating-dock-label {
+      color: var(--text-primary);
+      flex-basis: 100%;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 700px) {
+      .floating-window {
+        left: 12px !important;
+        right: 12px;
+        width: calc(100vw - 24px) !important;
+      }
+    }
+
     /* Footer */
     footer {
       margin-top: 80px;
@@ -2263,6 +2466,8 @@
       </div>
     </footer>
   </div>
+  <div class="floating-layer" id="floatingLayer" aria-live="polite"></div>
+  <div class="floating-dock" id="floatingDock" aria-label="Minimized comparison windows"></div>
 
   <script>
     // ============================================
@@ -9350,6 +9555,262 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     let workspacePages = [];
     let activeWorkspacePageId = null;
     let comparedWorkspacePageIds = [];
+    let floatingWindows = [];
+    let activeFloatingWindowId = null;
+    let floatingWindowCounter = 0;
+
+
+
+    function escapeHtml(value = '') {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function windowAccentForType(type = '') {
+      return `var(--${type}, var(--link-color))`;
+    }
+
+    function createFloatingWindow({ title, subtitle = '', type = 'documents', body = '', payload = {} }) {
+      const id = `float-${++floatingWindowCounter}`;
+      const offset = floatingWindows.length % 6;
+      floatingWindows.push({
+        id,
+        title,
+        subtitle,
+        type,
+        body,
+        payload,
+        x: 80 + offset * 34,
+        y: 90 + offset * 28,
+        width: Math.min(520, Math.max(360, window.innerWidth - 48)),
+        height: 420,
+        minimized: false,
+        group: null
+      });
+      activeFloatingWindowId = id;
+      renderFloatingWorkspace();
+      return id;
+    }
+
+    function getFloatingWindow(id) {
+      return floatingWindows.find(win => win.id === id);
+    }
+
+    function openTermWindow(term, originCardId = '') {
+      const matches = getInlineMatches(term, evidence).sort(sortEvidence);
+      const linkCount = matches.reduce((sum, item) => sum + (item.links?.length || 0), 0);
+      const categories = [...new Set(matches.map(item => formatType(item.type)))].slice(0, 8);
+      const origin = evidence.find(item => item.id === originCardId);
+      const topCards = matches.slice(0, 10).map(item => `
+        <button type="button" data-window-card="${escapeHtml(item.id)}">
+          <strong>${escapeHtml(formatType(item.type))}</strong> · ${escapeHtml(item.title)}<br>
+          <span class="discovery-meta">${escapeHtml(formatDate(item.date))} · ${item.links?.length || 0} links · ${escapeHtml(item.sourceQuality || 'source record')}</span>
+        </button>
+      `).join('') || '<span class="discovery-meta">No matching cards found.</span>';
+      const body = `
+        <div class="floating-fact-grid">
+          <div class="floating-fact"><strong>Matches</strong>${matches.length} cards</div>
+          <div class="floating-fact"><strong>Links</strong>${linkCount} source links</div>
+          <div class="floating-fact"><strong>Categories</strong>${escapeHtml(categories.join(' + ') || 'Mixed')}</div>
+          <div class="floating-fact"><strong>Opened from</strong>${escapeHtml(origin?.title || 'Inline entity / tag')}</div>
+        </div>
+        <div class="floating-list">${topCards}</div>
+        <div class="floating-action-row">
+          <button type="button" data-window-discovery="${escapeHtml(term)}">Open discovery drawer</button>
+          <button type="button" data-window-expand-term="${escapeHtml(term)}">Expand strongest cards</button>
+          <button type="button" data-window-copy-term="${escapeHtml(term)}">Copy matching links</button>
+          <button type="button" data-window-export-current="true">Export window JSON</button>
+        </div>
+      `;
+      createFloatingWindow({
+        title: `Entity / tag · ${term}`,
+        subtitle: `${matches.length} cards · ${linkCount} links · draggable comparison note`,
+        type: origin?.type || matches[0]?.type || 'documents',
+        body,
+        payload: { kind: 'term', term, originCardId, matchIds: matches.map(item => item.id) }
+      });
+    }
+
+    function openSourceLinkWindow(cardId, linkIndex = 0) {
+      const item = evidence.find(entry => entry.id === cardId);
+      const link = item?.links?.[linkIndex];
+      if (!item || !link) return;
+      const body = `
+        <div class="floating-fact-grid">
+          <div class="floating-fact"><strong>Source label</strong>${escapeHtml(link.label)}</div>
+          <div class="floating-fact"><strong>Parent card</strong>${escapeHtml(item.title)}</div>
+          <div class="floating-fact"><strong>Source posture</strong>${escapeHtml(item.sourceQuality || 'source record')}</div>
+          <div class="floating-fact"><strong>Category</strong>${escapeHtml(formatType(item.type))}</div>
+        </div>
+        <p>${escapeHtml(item.description)}</p>
+        <div class="floating-list">
+          <button type="button" data-window-card="${escapeHtml(item.id)}"><strong>Open parent card in map</strong><br><span class="discovery-meta">Expands and highlights the source card without closing this window.</span></button>
+          <button type="button" data-window-copy-card="${escapeHtml(item.id)}"><strong>Copy parent citation + links</strong><br><span class="discovery-meta">Use this for side-by-side report building.</span></button>
+        </div>
+        <div class="floating-action-row">
+          <a href="${escapeHtml(link.url)}" target="_blank" rel="noopener">Open source in new tab ↗</a>
+          <button type="button" data-window-copy-url="${escapeHtml(link.url)}">Copy source URL</button>
+          <button type="button" data-window-export-current="true">Export window JSON</button>
+        </div>
+        <div class="discovery-meta">${escapeHtml(link.url)}</div>
+      `;
+      createFloatingWindow({
+        title: `Source link · ${link.label}`,
+        subtitle: `${formatType(item.type)} · ${item.links?.length || 0} links on parent card`,
+        type: item.type,
+        body,
+        payload: { kind: 'source-link', cardId, linkIndex, link }
+      });
+    }
+
+    function renderFloatingWorkspace() {
+      const layer = document.getElementById('floatingLayer');
+      const dock = document.getElementById('floatingDock');
+      if (!layer || !dock) return;
+      layer.innerHTML = floatingWindows
+        .filter(win => !win.minimized)
+        .map(win => `
+          <section class="floating-window ${win.id === activeFloatingWindowId ? 'is-active' : ''}" data-window-id="${win.id}" style="--window-accent:${windowAccentForType(win.type)}; left:${win.x}px; top:${win.y}px; width:${win.width}px; height:${win.height}px; z-index:${1000 + floatingWindows.indexOf(win)};">
+            <div class="floating-window-header" data-window-drag="${win.id}">
+              <div class="floating-window-title">${escapeHtml(win.title)}<span class="floating-window-subtitle">${escapeHtml(win.subtitle)}</span></div>
+              <div class="floating-window-controls">
+                <button class="floating-control" type="button" data-window-minimize="${win.id}">—</button>
+                <button class="floating-control" type="button" data-window-export="${win.id}">JSON</button>
+                <button class="floating-control" type="button" data-window-close="${win.id}">×</button>
+              </div>
+            </div>
+            <div class="floating-window-body">${win.body}</div>
+          </section>
+        `).join('');
+      const groups = new Map();
+      floatingWindows.filter(win => win.minimized).forEach(win => {
+        const key = win.group || win.id;
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(win);
+      });
+      dock.innerHTML = [...groups.entries()].map(([group, wins]) => {
+        if (wins.length === 1 && group === wins[0].id) {
+          const win = wins[0];
+          return `<button class="floating-tab" type="button" draggable="true" data-window-tab="${win.id}" data-window-restore="${win.id}" style="--tab-accent:${windowAccentForType(win.type)};">${escapeHtml(win.title)}</button>`;
+        }
+        return `<div class="floating-dock-group" data-window-group="${escapeHtml(group)}"><span class="floating-dock-label">Group Tab · ${wins.length} items</span>${wins.map(win => `<button class="floating-tab" type="button" draggable="true" data-window-tab="${win.id}" data-window-restore="${win.id}" style="--tab-accent:${windowAccentForType(win.type)};">${escapeHtml(win.title)}</button>`).join('')}</div>`;
+      }).join('');
+      wireFloatingWorkspace();
+    }
+
+    function wireFloatingWorkspace() {
+      document.querySelectorAll('[data-window-close]').forEach(btn => btn.addEventListener('click', () => {
+        floatingWindows = floatingWindows.filter(win => win.id !== btn.dataset.windowClose);
+        renderFloatingWorkspace();
+      }));
+      document.querySelectorAll('[data-window-minimize]').forEach(btn => btn.addEventListener('click', () => {
+        const win = getFloatingWindow(btn.dataset.windowMinimize);
+        if (win) win.minimized = true;
+        renderFloatingWorkspace();
+      }));
+      document.querySelectorAll('[data-window-restore]').forEach(btn => btn.addEventListener('click', () => {
+        const win = getFloatingWindow(btn.dataset.windowRestore);
+        if (win) {
+          win.minimized = false;
+          activeFloatingWindowId = win.id;
+        }
+        renderFloatingWorkspace();
+      }));
+      document.querySelectorAll('[data-window-export], [data-window-export-current]').forEach(btn => btn.addEventListener('click', () => {
+        const id = btn.dataset.windowExport || btn.closest('.floating-window')?.dataset.windowId;
+        exportFloatingWindow(id);
+      }));
+      document.querySelectorAll('[data-window-card]').forEach(btn => btn.addEventListener('click', () => openCardById(btn.dataset.windowCard)));
+      document.querySelectorAll('[data-window-copy-card]').forEach(btn => btn.addEventListener('click', () => copyCardLinks(btn.dataset.windowCopyCard)));
+      document.querySelectorAll('[data-window-copy-url]').forEach(btn => btn.addEventListener('click', () => copyText(btn.dataset.windowCopyUrl)));
+      document.querySelectorAll('[data-window-discovery]').forEach(btn => btn.addEventListener('click', () => showDiscovery(btn.dataset.windowDiscovery)));
+      document.querySelectorAll('[data-window-expand-term]').forEach(btn => btn.addEventListener('click', () => {
+        expandAndHighlightCards(getInlineMatches(btn.dataset.windowExpandTerm, evidence).slice(0, 12));
+        renderCards();
+      }));
+      document.querySelectorAll('[data-window-copy-term]').forEach(btn => btn.addEventListener('click', () => copyText(formatLinksForClipboard(getInlineMatches(btn.dataset.windowCopyTerm, evidence)))));
+      document.querySelectorAll('.floating-window').forEach(winEl => {
+        winEl.addEventListener('mousedown', () => {
+          activeFloatingWindowId = winEl.dataset.windowId;
+        });
+      });
+      document.querySelectorAll('[data-window-drag]').forEach(header => {
+        header.addEventListener('mousedown', startFloatingDrag);
+      });
+      document.querySelectorAll('[data-window-tab]').forEach(tab => {
+        tab.addEventListener('dragstart', event => event.dataTransfer.setData('text/plain', tab.dataset.windowTab));
+        tab.addEventListener('dragover', event => event.preventDefault());
+        tab.addEventListener('drop', event => {
+          event.preventDefault();
+          const sourceId = event.dataTransfer.getData('text/plain');
+          groupFloatingTabs(sourceId, tab.dataset.windowTab);
+        });
+      });
+    }
+
+    function startFloatingDrag(event) {
+      if (event.target.closest('.floating-control')) return;
+      event.preventDefault();
+      const id = event.currentTarget.dataset.windowDrag;
+      const win = getFloatingWindow(id);
+      const el = document.querySelector(`[data-window-id="${id}"]`);
+      if (!win || !el) return;
+      activeFloatingWindowId = id;
+      const startX = event.clientX;
+      const startY = event.clientY;
+      const startLeft = win.x;
+      const startTop = win.y;
+      const move = moveEvent => {
+        win.x = Math.max(8, Math.min(window.innerWidth - 80, startLeft + moveEvent.clientX - startX));
+        win.y = Math.max(8, Math.min(window.innerHeight - 80, startTop + moveEvent.clientY - startY));
+        el.style.left = `${win.x}px`;
+        el.style.top = `${win.y}px`;
+      };
+      const up = () => {
+        win.width = Math.round(el.getBoundingClientRect().width);
+        win.height = Math.round(el.getBoundingClientRect().height);
+        window.removeEventListener('mousemove', move);
+        window.removeEventListener('mouseup', up);
+      };
+      window.addEventListener('mousemove', move);
+      window.addEventListener('mouseup', up);
+    }
+
+    function groupFloatingTabs(sourceId, targetId) {
+      if (!sourceId || !targetId || sourceId === targetId) return;
+      const source = getFloatingWindow(sourceId);
+      const target = getFloatingWindow(targetId);
+      if (!source || !target) return;
+      const groupName = target.group || source.group || `group-${Date.now()}`;
+      source.group = groupName;
+      target.group = groupName;
+      source.minimized = true;
+      target.minimized = true;
+      renderFloatingWorkspace();
+    }
+
+    function exportFloatingWindow(id) {
+      const win = getFloatingWindow(id);
+      if (!win) return;
+      const grouped = win.group ? floatingWindows.filter(item => item.group === win.group) : [win];
+      const payload = {
+        exportedAt: new Date().toISOString(),
+        mode: win.group ? 'floating-window-group' : 'floating-window',
+        count: grouped.length,
+        windows: grouped.map(item => ({ title: item.title, subtitle: item.subtitle, type: item.type, payload: item.payload }))
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `floating-workspace-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
 
     // ============================================
     // RENDER FUNCTIONS
@@ -9429,7 +9890,21 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       });
 
       grid.querySelectorAll('[data-search-term]').forEach(el => {
-        el.addEventListener('click', () => showDiscovery(el.dataset.searchTerm));
+        el.addEventListener('click', () => {
+          const card = el.closest('.evidence-card');
+          if (card && expandedCards.has(card.dataset.id)) {
+            openTermWindow(el.dataset.searchTerm, card.dataset.id);
+          } else {
+            showDiscovery(el.dataset.searchTerm);
+          }
+        });
+      });
+
+      grid.querySelectorAll('[data-source-link-card]').forEach(el => {
+        el.addEventListener('click', (event) => {
+          event.preventDefault();
+          openSourceLinkWindow(el.dataset.sourceLinkCard, Number(el.dataset.sourceLinkIndex || 0));
+        });
       });
 
       grid.querySelectorAll('[data-copy-id]').forEach(btn => {
@@ -9559,8 +10034,8 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
           </div>
 
           <div class="card-links">
-            ${e.links.map(link => `
-              <a href="${link.url}" target="_blank" rel="noopener" class="source-link">
+            ${e.links.map((link, index) => `
+              <a href="${link.url}" target="_blank" rel="noopener" class="source-link" data-source-link-card="${e.id}" data-source-link-index="${index}">
                 <span class="source-link-icon">${link.icon}</span>
                 <span class="source-link-text">
                   <span class="source-link-label">${link.label}</span>

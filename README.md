@@ -25,7 +25,7 @@ The Social Engineering section is a source-aware research layer for propaganda h
 
 - Search across titles, descriptions, jurisdictions, tags, research flags, details, related entities, source quality notes, and source URLs.
 - Collapsible category tabs replace the old wall of tiles, so each major topic starts folded and can be opened only when needed.
-- Compact/comfortable density controls plus per-category enlarge/shrink actions make it easier to scan many entries at a glance; newly opened cards now receive category-coloured outlines, a subtle focus pulse, and an opened-state pill so users can immediately see what changed.
+- Compact/comfortable density controls plus per-category enlarge/shrink actions make it easier to scan many entries at a glance; newly opened cards now receive category-coloured outlines, a subtle focus pulse, and an opened-state pill so users can immediately see what changed. Source links and expanded-card entities can open draggable floating comparison windows that can be rearranged, resized, minimized into bottom tabs, grouped by dragging tabs together, and exported as JSON.
 - Category filters and quick-search chips for high-value topics including Comparative Religion, Jesus Parallels, Savior Hero, Monomyth, Apocalypse, Mythos, Folklore, Gilgamesh, Prometheus, Golem, Frankenstein, War of the Worlds, Social Engineering, propaganda, machine empathy, Dennis Bushnell, bio-nano age, earth-as-farm speculation, Rothblatt, Pritzker, digital twins, mind uploading, virtual humans, puberty blockers, WPATH, and pathogen/vector topics.
 - Sort controls for newest, oldest, title, category, and most source links.
 - Expand/collapse visible cards and open/close all category tabs.
