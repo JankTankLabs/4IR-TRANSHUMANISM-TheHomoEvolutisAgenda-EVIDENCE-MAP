@@ -103,11 +103,18 @@ assert(localStore.has('evidenceCategoryOrder'), 'category order should persist t
 
 assert(html.includes('.workspace-section.is-collapsed > :not(.workspace-section-toggle)'), 'collapsed panel content CSS guard missing');
 assert(html.includes('padding: 0 !important;'), 'collapsed workspace panels should not leave padded blank rows');
+assert(html.includes('content: attr(data-panel-label);'), 'collapsed workspace panels should render visible label fallback text');
 assert(/setupEventListeners\(\);\s*try \{\s*renderSupportPanels\(getVisibleEvidence\(\)\);/.test(html), 'init should bind core listeners before support-panel rendering can fail');
 assert(html.includes('function matchesTerm'), 'Bridge Map domino matching helper missing');
 assert(app.getBridgeDominoLinks(app.bridgeConvergenceMaps[0]).length > 0, 'Bridge Map to Domino links should render without missing helper errors');
 assert(html.includes('function scrollToElementTop'), 'top-aligned scroll helper missing');
-assert(html.includes('workspaceDrawerTab'), 'workspace drawer tab missing');
-assert(/workspaceDrawerTab[\s\S]*event\.preventDefault\(\);[\s\S]*event\.stopPropagation\(\);[\s\S]*toggleWorkspaceDrawer\(\);/.test(html), 'workspace drawer tab click should not be swallowed by outside-click handling');
+assert(html.includes('workspaceDrawerToggle'), 'workspace drawer checkbox fallback missing');
+assert(html.includes('#workspaceDrawerToggle:checked ~ #workspaceIndexDrawer'), 'workspace drawer should have a CSS-only checked fallback');
+assert(html.includes('#impactDrawerToggle:checked ~ #impactDrawer'), 'impact drawer should have a CSS-only checked fallback');
+assert(html.includes('#sourceDrawerToggle:checked ~ #sourceDrawer'), 'source drawer should have a CSS-only checked fallback');
+assert(/workspaceDrawerToggle[\s\S]*addEventListener\('change'[\s\S]*setWorkspaceDrawer\(event\.target\.checked\)/.test(html), 'workspace drawer checkbox change should sync JS state');
+assert(/workspaceDrawerTab[\s\S]*addEventListener\('keydown'[\s\S]*toggleWorkspaceDrawer\(\);/.test(html), 'workspace drawer tab should remain keyboard-toggleable');
+assert(html.includes('id="impactDrawerTab"') && html.includes('id="sourceDrawerTab"'), 'impact/source side drawer tabs missing');
+assert(html.includes("setSideDrawer('impact'") && html.includes("setSideDrawer('source'"), 'impact/source drawer sync handlers missing');
 
 console.log(`Smoke tests passed: ${app.evidence.length} cards, ${app.allTypes.length} categories, ${app.workspacePanels.length} workspace panels.`);

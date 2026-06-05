@@ -667,6 +667,14 @@
     }
 
 
+    .workspace-drawer-toggle {
+      height: 1px;
+      left: -9999px;
+      opacity: 0;
+      position: fixed;
+      width: 1px;
+    }
+
     .workspace-index-drawer {
       background: radial-gradient(circle at top left, rgba(93, 173, 226, 0.16), transparent 36%), rgba(15, 18, 24, 0.98);
       border-right: 1px solid rgba(93, 173, 226, 0.35);
@@ -684,7 +692,10 @@
       z-index: 1400;
     }
 
-    body.workspace-drawer-open .workspace-index-drawer {
+    body.workspace-drawer-open .workspace-index-drawer,
+    #workspaceDrawerToggle:checked ~ #workspaceIndexDrawer,
+    #impactDrawerToggle:checked ~ #impactDrawer,
+    #sourceDrawerToggle:checked ~ #sourceDrawer {
       transform: translateX(0);
     }
 
@@ -722,9 +733,40 @@
       outline-offset: 3px;
     }
 
-    body.workspace-drawer-open .workspace-drawer-tab {
+    body.workspace-drawer-open #workspaceDrawerTab,
+    #workspaceDrawerToggle:checked ~ #workspaceDrawerTab,
+    #impactDrawerToggle:checked ~ #impactDrawerTab,
+    #sourceDrawerToggle:checked ~ #sourceDrawerTab {
       left: 320px;
     }
+
+    .impact-drawer-tab { top: calc(42% + 86px); }
+    .source-drawer-tab { top: calc(42% + 172px); }
+
+    .side-owned-panel { display: none !important; }
+
+    .workspace-section.is-collapsed > .workspace-section-toggle {
+      min-height: 46px;
+    }
+
+    .workspace-section.is-collapsed > .workspace-section-toggle .workspace-section-label {
+      color: #f4f7fb;
+      text-shadow: 0 0 12px rgba(93, 173, 226, 0.35);
+    }
+    .workspace-section.is-collapsed > .workspace-section-toggle::before {
+      color: #f4f7fb;
+      content: attr(data-panel-label);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .workspace-section.is-collapsed > .workspace-section-toggle > span:first-child {
+      display: none;
+    }
+
 
     .workspace-drawer-top {
       align-items: center;
@@ -2817,13 +2859,32 @@
   </style>
 </head>
 <body>
-  <button class="workspace-drawer-tab" id="workspaceDrawerTab" type="button" aria-controls="workspaceIndexDrawer" aria-expanded="false" aria-label="Open workspace index">Index</button>
+  <input class="workspace-drawer-toggle" id="workspaceDrawerToggle" type="checkbox" aria-hidden="true">
+  <input class="workspace-drawer-toggle" id="impactDrawerToggle" type="checkbox" aria-hidden="true">
+  <input class="workspace-drawer-toggle" id="sourceDrawerToggle" type="checkbox" aria-hidden="true">
+  <label class="workspace-drawer-tab" id="workspaceDrawerTab" for="workspaceDrawerToggle" role="button" tabindex="0" aria-controls="workspaceIndexDrawer" aria-expanded="false" aria-label="Open workspace index">Index</label>
+  <label class="workspace-drawer-tab impact-drawer-tab" id="impactDrawerTab" for="impactDrawerToggle" role="button" tabindex="0" aria-controls="impactDrawer" aria-expanded="false" aria-label="Open impact matrix">Impact</label>
+  <label class="workspace-drawer-tab source-drawer-tab" id="sourceDrawerTab" for="sourceDrawerToggle" role="button" tabindex="0" aria-controls="sourceDrawer" aria-expanded="false" aria-label="Open source provenance">Sources</label>
   <aside class="workspace-index-drawer" id="workspaceIndexDrawer" aria-hidden="true">
     <div class="workspace-drawer-top">
       <div class="workspace-index-title">Main sections</div>
-      <button class="workspace-drawer-close" id="workspaceDrawerClose" type="button" aria-label="Close workspace index">×</button>
+      <label class="workspace-drawer-close" id="workspaceDrawerClose" for="workspaceDrawerToggle" role="button" tabindex="0" aria-label="Close workspace index">×</label>
     </div>
     <section class="workspace-index-panel" id="workspaceIndexPanel"></section>
+  </aside>
+  <aside class="workspace-index-drawer" id="impactDrawer" aria-hidden="true">
+    <div class="workspace-drawer-top">
+      <div class="workspace-index-title">Impact Matrix</div>
+      <label class="workspace-drawer-close" id="impactDrawerClose" for="impactDrawerToggle" role="button" tabindex="0" aria-label="Close impact matrix">×</label>
+    </div>
+    <section class="impact-panel" id="impactDrawerPanel"></section>
+  </aside>
+  <aside class="workspace-index-drawer" id="sourceDrawer" aria-hidden="true">
+    <div class="workspace-drawer-top">
+      <div class="workspace-index-title">Sources</div>
+      <label class="workspace-drawer-close" id="sourceDrawerClose" for="sourceDrawerToggle" role="button" tabindex="0" aria-label="Close source provenance">×</label>
+    </div>
+    <section class="brief-panel" id="sourceDrawerPanel"></section>
   </aside>
   <div class="container">
     <header>
@@ -2946,9 +3007,9 @@
     <section class="entity-panel" id="entityPanel"></section>
 
 
-    <section class="brief-panel" id="briefPanel"></section>
+    <section class="brief-panel side-owned-panel" id="briefPanel" hidden></section>
 
-    <section class="impact-panel" id="impactPanel"></section>
+    <section class="impact-panel side-owned-panel" id="impactPanel" hidden></section>
 
     <section class="impact-panel" id="bridgeMapPanel"></section>
 
@@ -10878,8 +10939,6 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     const workspacePanels = [
       { id: 'workspacePagesPanel', label: 'Workspace Pages', group: 'Workspace', desc: 'Saved views and page comparisons' },
       { id: 'entityPanel', label: 'Entity Intelligence', group: 'Entity', desc: 'High-convergence dossiers and comparisons' },
-      { id: 'briefPanel', label: 'Executive Brief', group: 'Synthesis', desc: 'Fast summary of the current map state' },
-      { id: 'impactPanel', label: 'Impact Matrix', group: 'Synthesis', desc: 'Highest-density categories first' },
       { id: 'bridgeMapPanel', label: 'Bridge Map', group: 'Synthesis', desc: 'Cross-domain connection routes and missing links' },
       { id: 'investmentPanel', label: 'Investment Convergence', group: 'Money', desc: 'Portfolio, funding, and timing stacks' },
       { id: 'pathwayPanel', label: 'High-Convergence Pathways', group: 'Paths', desc: 'Narrative bridges across cards' },
@@ -12511,8 +12570,9 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       document.getElementById('threadCopyBtn')?.addEventListener('click', () => copyText(formatLinksForClipboard(matches)));
     }
 
-    function renderBriefPanel(items = getVisibleEvidence()) {
-      const panel = document.getElementById('briefPanel');
+    function renderBriefPanel(items = getVisibleEvidence(), panelId = 'sourceDrawerPanel') {
+      const panel = document.getElementById(panelId);
+      if (!panel) return;
       const audit = getSourceAudit(items);
       panel.innerHTML = `
         <div class="brief-header">
@@ -12570,7 +12630,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
           if (action === 'export') exportSourceHardeningChecklist(getVisibleEvidence(), 'Current view source-hardening queue', 'Current view source-hardening checklist opened from the Source provenance snapshot.');
         });
       });
-      document.getElementById('copyBriefBtn')?.addEventListener('click', () => {
+      panel.querySelector('#copyBriefBtn')?.addEventListener('click', () => {
         copyText(`Source provenance snapshot
 Visible cards: ${audit.total}
 Primary/official: ${audit.primary.length} (${audit.primaryRatio}%)
@@ -12596,8 +12656,9 @@ Provenance risk: ${audit.riskLabel}`);
       }).sort((a, b) => b.score - a.score);
     }
 
-    function renderImpactPanel(items = getVisibleEvidence()) {
-      const panel = document.getElementById('impactPanel');
+    function renderImpactPanel(items = getVisibleEvidence(), panelId = 'impactDrawerPanel') {
+      const panel = document.getElementById(panelId);
+      if (!panel) return;
       const ranked = getCategoryImpact(items).slice(0, 8);
       const maxScore = Math.max(...ranked.map(row => row.score), 1);
       panel.innerHTML = `
@@ -12638,7 +12699,7 @@ Provenance risk: ${audit.riskLabel}`);
           requestAnimationFrame(() => scrollToElementTop(document.querySelector(`[data-category-section="${btn.dataset.impactType}"]`)));
         });
       });
-      document.getElementById('openHighestImpactBtn')?.addEventListener('click', () => {
+      panel.querySelector('#openHighestImpactBtn')?.addEventListener('click', () => {
         ranked.slice(0, 3).forEach(row => openCategories.add(row.type));
         renderCards();
         requestAnimationFrame(() => scrollToElementTop(document.querySelector(`[data-category-section="${ranked[0]?.type}"]`)));
@@ -12648,7 +12709,6 @@ Provenance risk: ${audit.riskLabel}`);
     function matchesTerm(item, term) {
       return getInlineMatches(term, [item]).length > 0;
     }
-
 
     function getBridgeDominoLinks(map) {
       return dominoTrajectories.map(trajectory => {
@@ -13912,6 +13972,8 @@ Provenance risk: ${audit.riskLabel}`);
       if (open) renderWorkspaceIndex();
       document.body.classList.toggle('workspace-drawer-open', open);
       document.getElementById('workspaceIndexDrawer')?.setAttribute('aria-hidden', String(!open));
+      const checkbox = document.getElementById('workspaceDrawerToggle');
+      if (checkbox) checkbox.checked = open;
       const tab = document.getElementById('workspaceDrawerTab');
       tab?.setAttribute('aria-expanded', String(open));
       tab?.setAttribute('aria-label', open ? 'Close workspace index' : 'Open workspace index');
@@ -13920,6 +13982,21 @@ Provenance risk: ${audit.riskLabel}`);
 
     function toggleWorkspaceDrawer() {
       setWorkspaceDrawer(!document.body.classList.contains('workspace-drawer-open'));
+    }
+
+    function setSideDrawer(name, open) {
+      const config = {
+        impact: { toggle: 'impactDrawerToggle', drawer: 'impactDrawer', tab: 'impactDrawerTab', render: () => renderImpactPanel(getVisibleEvidence(), 'impactDrawerPanel') },
+        source: { toggle: 'sourceDrawerToggle', drawer: 'sourceDrawer', tab: 'sourceDrawerTab', render: () => renderBriefPanel(getVisibleEvidence(), 'sourceDrawerPanel') }
+      }[name];
+      if (!config) return;
+      if (open) config.render();
+      const checkbox = document.getElementById(config.toggle);
+      if (checkbox) checkbox.checked = open;
+      document.getElementById(config.drawer)?.setAttribute('aria-hidden', String(!open));
+      const tab = document.getElementById(config.tab);
+      tab?.setAttribute('aria-expanded', String(open));
+      tab?.classList.toggle('is-open', open);
     }
 
     function openWorkspacePreset(id) {
@@ -14046,6 +14123,7 @@ Provenance risk: ${audit.riskLabel}`);
         const node = document.getElementById(item.id);
         if (!node) return;
         node.classList.add('workspace-section');
+        node.dataset.panelLabel = item.label;
         node.classList.toggle('is-collapsed', collapsedWorkspacePanels.has(item.id));
         const existing = node.querySelector(':scope > .workspace-section-toggle');
         if (existing) existing.remove();
@@ -14053,6 +14131,7 @@ Provenance risk: ${audit.riskLabel}`);
         toggle.className = 'workspace-section-toggle';
         toggle.type = 'button';
         toggle.dataset.workspacePanelToggle = item.id;
+        toggle.dataset.panelLabel = item.label;
         toggle.innerHTML = `<span><span class="workspace-section-label">${item.label}</span><span class="workspace-section-desc">${item.group} · ${item.desc}</span></span><span class="workspace-section-chevron">›</span>`;
         toggle.addEventListener('click', () => toggleWorkspacePanel(item.id));
         node.insertBefore(toggle, node.firstChild);
@@ -14518,12 +14597,33 @@ Provenance risk: ${audit.riskLabel}`);
         scrollToElementTop('workspacePagesPanel');
       });
 
-      document.getElementById('workspaceDrawerTab')?.addEventListener('click', event => {
+      document.getElementById('workspaceDrawerToggle')?.addEventListener('change', event => {
+        setWorkspaceDrawer(event.target.checked);
+      });
+      document.getElementById('impactDrawerToggle')?.addEventListener('change', event => {
+        setSideDrawer('impact', event.target.checked);
+      });
+      document.getElementById('sourceDrawerToggle')?.addEventListener('change', event => {
+        setSideDrawer('source', event.target.checked);
+      });
+      document.getElementById('workspaceDrawerTab')?.addEventListener('keydown', event => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
         event.preventDefault();
-        event.stopPropagation();
         toggleWorkspaceDrawer();
       });
-      document.getElementById('workspaceDrawerClose')?.addEventListener('click', () => setWorkspaceDrawer(false));
+      document.getElementById('workspaceDrawerClose')?.addEventListener('keydown', event => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        setWorkspaceDrawer(false);
+      });
+      [['impactDrawerTab', 'impact', true], ['impactDrawerClose', 'impact', false], ['sourceDrawerTab', 'source', true], ['sourceDrawerClose', 'source', false]].forEach(([id, name, toggle]) => {
+        document.getElementById(id)?.addEventListener('keydown', event => {
+          if (event.key !== 'Enter' && event.key !== ' ') return;
+          event.preventDefault();
+          const checkbox = document.getElementById(`${name}DrawerToggle`);
+          setSideDrawer(name, toggle ? !(checkbox?.checked) : false);
+        });
+      });
       document.addEventListener('click', event => {
         if (!document.body.classList.contains('workspace-drawer-open')) return;
         const drawer = document.getElementById('workspaceIndexDrawer');
