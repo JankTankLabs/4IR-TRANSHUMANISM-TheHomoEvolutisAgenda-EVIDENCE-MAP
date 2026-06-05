@@ -245,3 +245,9 @@ These ideas were previously visible as a strategy-style brief. Keep them as inte
 1. Restored reliable Workspace Index tab behavior, outside-click closing, and open/collapse-all workspace controls.
 2. Kept workspace panels closed by default and reapplied panel shells after dynamic panel rerenders to prevent blank collapsed bars.
 3. Added drag-reorder persistence for the colored category index so card sections automatically follow the saved category order.
+
+## Completed in this standards/interconnection enrichment pass
+
+1. Added high-value primary-source cards for EUDI Wallet ARF, W3C VC/DID credential standards, WHO GDHCN, OECD AI Principles, ISO/IEC 42001, Council of Europe AI Convention, GA4GH, and WEF Global Shapers.
+2. Strengthened bridge routes linking DPI identity/payment/data rails, health-genomics/AI medicine, credential wallets, health certificates, AI governance standards, and recruitment-hub networks.
+3. Extended quick searches, lens presets, narrative pathways, Bridge Map terms, and Domino route terms so the new cards connect to existing identity, health-data, AI governance, YGL/WEF, and genomics tracks.

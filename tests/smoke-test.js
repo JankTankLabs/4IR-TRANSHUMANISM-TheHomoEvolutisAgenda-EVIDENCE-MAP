@@ -102,7 +102,10 @@ assert.strictEqual(app.categoryOrder[0], second, 'dragged category should move b
 assert(localStore.has('evidenceCategoryOrder'), 'category order should persist to localStorage');
 
 assert(html.includes('.workspace-section.is-collapsed > :not(.workspace-section-toggle)'), 'collapsed panel content CSS guard missing');
+assert(html.includes('padding: 0 !important;'), 'collapsed workspace panels should not leave padded blank rows');
+assert(/renderCards\(\);\s*renderSupportPanels\(getVisibleEvidence\(\)\);\s*updateStats\(\);/.test(html), 'init should render and collapse workspace support panels before first paint');
 assert(html.includes('function scrollToElementTop'), 'top-aligned scroll helper missing');
 assert(html.includes('workspaceDrawerTab'), 'workspace drawer tab missing');
+assert(/workspaceDrawerTab[\s\S]*event\.preventDefault\(\);[\s\S]*event\.stopPropagation\(\);[\s\S]*toggleWorkspaceDrawer\(\);/.test(html), 'workspace drawer tab click should not be swallowed by outside-click handling');
 
 console.log(`Smoke tests passed: ${app.evidence.length} cards, ${app.allTypes.length} categories, ${app.workspacePanels.length} workspace panels.`);

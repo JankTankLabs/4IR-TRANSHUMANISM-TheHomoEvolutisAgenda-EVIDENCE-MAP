@@ -950,12 +950,16 @@
     }
 
     .workspace-section.is-collapsed {
+      background: transparent !important;
+      border-color: transparent !important;
+      box-shadow: none !important;
+      display: block !important;
       min-height: 0 !important;
-      padding-bottom: 12px;
+      padding: 0 !important;
     }
 
     .workspace-section.is-collapsed > .workspace-section-toggle {
-      margin-bottom: 0;
+      margin: 0 0 12px;
     }
 
     .workspace-section.is-collapsed > :not(.workspace-section-toggle) {
@@ -8859,8 +8863,230 @@
           { label: "2022 Strengthened Code Library Page", url: "https://digital-strategy.ec.europa.eu/en/library/2022-strengthened-code-practice-disinformation", icon: "📚" },
           { label: "EU Publications Office Record", url: "https://op.europa.eu/en/publication-detail/-/publication/c1c55f26-063e-11ed-acce-01aa75ed71a1/language-en", icon: "📜" }
         ]
+      },
+      {
+        id: "identity-eudi-wallet-arf-2025",
+        type: "identity",
+        title: "EU Digital Identity Wallet Architecture & Reference Framework — Wallet Roles, Attestations, and Cross-Border Credential Rails",
+        date: "2023-2025",
+        jurisdiction: "European Union / eIDAS / Digital Identity",
+        description: "The European Digital Identity Wallet Architecture and Reference Framework (ARF) is a high-value identity bridge because it turns eIDAS policy into implementation language: wallet providers, relying parties, person identification data, electronic attestations of attributes, trust lists, certification, and cross-border credential presentation. It connects digital ID law, mDL-style wallets, W3C credential standards, age assurance, payments, and health-data credentials without claiming any single use case is mandatory everywhere.",
+        tags: ["EU Digital Identity Wallet", "EUDI Wallet", "eIDAS 2.0", "Digital ID", "Wallet", "Attestations", "Relying Parties", "Selective Disclosure", "Age Assurance"],
+        relatedEntities: ["European Commission", "eIDAS", "EUDI Wallet", "W3C Verifiable Credentials", "mDL", "Digital Euro", "Age Verification", "NIST SP 800-63"],
+        sourceQuality: "Official European Commission ARF and EUDI Wallet reference pages",
+        facts: [
+          { label: "Framework", value: "Architecture and Reference Framework for the EUDI Wallet" },
+          { label: "Credential layer", value: "Person identification data + electronic attestations of attributes" },
+          { label: "Trust roles", value: "Wallet providers, issuers, relying parties, trust lists, certification" },
+          { label: "Bridge", value: "Digital ID law → wallet technical implementation" }
+        ],
+        flags: ["Digital ID wallet implementation", "Relying-party ecosystem", "Attribute attestations", "Age-assurance/payment/health credential bridge", "Privacy and voluntary-use claims require implementation-level scrutiny"],
+        details: [
+          "This card strengthens the identity-money-age route by adding the technical wallet architecture between eIDAS legislation and relying-party deployment.",
+          "Use with mDL, NIST SP 800-63, W3C VC/DID, Digital Euro, WHO GDHCN, and age-verification laws to track how portable credential wallets can become multi-domain infrastructure."
+        ],
+        links: [
+          { label: "European Commission ARF Library Page", url: "https://digital-strategy.ec.europa.eu/en/library/european-digital-identity-wallet-architecture-and-reference-framework", icon: "🇪🇺" },
+          { label: "EUDI Wallet Home", url: "https://ec.europa.eu/digital-building-blocks/sites/display/EUDIGITALIDENTITYWALLET/EU%2BDigital%2BIdentity%2BWallet%2BHome", icon: "🪪" },
+          { label: "EUDI Wallet GitHub", url: "https://github.com/eu-digital-identity-wallet", icon: "💻" },
+          { label: "Regulation (EU) 2024/1183", url: "https://eur-lex.europa.eu/eli/reg/2024/1183/oj", icon: "⚖️" }
+        ]
+      },
+      {
+        id: "documents-w3c-vc-did-credential-standards",
+        type: "documents",
+        title: "W3C Verifiable Credentials + Decentralized Identifiers — Portable Credential and Identifier Standards",
+        date: "2019-2025",
+        jurisdiction: "W3C / Web Standards / Digital Credentials",
+        description: "W3C Verifiable Credentials and Decentralized Identifiers are a standards-layer bridge for digital credentials: they define how claims, issuers, holders, verifiers, identifiers, cryptographic proofs, status, and selective disclosure can be represented on the web. This adds a neutral standards backbone connecting digital ID wallets, education credentials, health certificates, age assurance, device/agent identity, and cross-border trust networks.",
+        tags: ["W3C", "Verifiable Credentials", "Decentralized Identifiers", "DID", "Digital Credentials", "Selective Disclosure", "Digital Wallet", "Credential Verification"],
+        relatedEntities: ["W3C", "EUDI Wallet", "WHO GDHCN", "SMART Health Cards", "mDL", "Digital ID", "FIDO Alliance", "Passkeys"],
+        sourceQuality: "W3C Recommendations and official standards pages",
+        facts: [
+          { label: "VC model", value: "W3C Verifiable Credentials Data Model" },
+          { label: "DID standard", value: "DID Core W3C Recommendation" },
+          { label: "Function", value: "Issuer-holder-verifier credential exchange" },
+          { label: "Bridge", value: "Wallets + credentials + trust proofs across domains" }
+        ],
+        flags: ["Portable credential infrastructure", "Selective disclosure", "Issuer/verifier trust model", "Health/education/identity credential bridge", "Truth of claims remains separate from cryptographic verification"],
+        details: [
+          "This is a standards card, not an intent claim: the value is that many separate identity and credential systems can converge on compatible issuer-holder-verifier patterns.",
+          "Use with EUDI Wallet, WHO digital health certificates, SMART Health Cards, mDL, passkeys/FIDO, and education credential records."
+        ],
+        links: [
+          { label: "W3C Verifiable Credentials Data Model v2.0", url: "https://www.w3.org/TR/vc-data-model/", icon: "📜" },
+          { label: "W3C DID Core", url: "https://www.w3.org/TR/did-core/", icon: "🧩" },
+          { label: "W3C DID Recommendation Press Release", url: "https://www.w3.org/press-releases/2022/did-rec/", icon: "📣" },
+          { label: "W3C Credentials Community Group Standards", url: "https://w3c-ccg.org/specifications/standards/", icon: "📚" }
+        ]
+      },
+      {
+        id: "documents-who-gdhcn-global-health-credential-trust-network",
+        type: "documents",
+        title: "WHO Global Digital Health Certification Network — Post-COVID Health-Credential Trust Network",
+        date: "2023-06-05",
+        jurisdiction: "World Health Organization / Global Digital Health",
+        description: "WHO's Global Digital Health Certification Network (GDHCN) is a direct bridge from COVID certificate infrastructure into a broader health-credential trust network. WHO frames it as open, interoperable digital public infrastructure for verifying health documents across borders, with possible use cases including vaccination records, prescriptions, International Patient Summary, and public-health professional certification.",
+        tags: ["WHO GDHCN", "Global Digital Health Certification Network", "Digital Public Infrastructure", "Digital Health Certificates", "Trust Network", "COVID Certificates", "Health Credentials", "FHIR"],
+        relatedEntities: ["WHO", "EU Digital COVID Certificate", "WHO DDCC", "SMART Health Cards", "HL7 FHIR", "European Health Data Space", "Digital ID", "Pandemic Agreement"],
+        sourceQuality: "Official WHO initiative page, FAQ, and publication record",
+        facts: [
+          { label: "Launch", value: "WHO announced GDHCN in 2023" },
+          { label: "Architecture", value: "Trust network / trust anchor for digital health credentials" },
+          { label: "Standards", value: "Designed around interoperable certificate and health-record standards" },
+          { label: "Bridge", value: "COVID certificates → broader health-document verification" }
+        ],
+        flags: ["Pandemic-era infrastructure reuse", "Cross-border credential verification", "Digital public health infrastructure", "FHIR/SMART alignment", "Privacy/data-access claims require governance review"],
+        details: [
+          "This card is high-value because it connects the DDCC pandemic certificate card to a standing global health-credential network rather than leaving certificates as a one-off COVID artifact.",
+          "Use with EHDS, WHO Pandemic Agreement/IHR, W3C VC/DID, SMART Health Cards, and DPI identity/payment/data rails."
+        ],
+        links: [
+          { label: "WHO GDHCN Initiative", url: "https://www.who.int/initiatives/global-digital-health-certification-network", icon: "🌐" },
+          { label: "WHO GDHCN FAQ", url: "https://www.who.int/initiatives/global-digital-health-certification-network/global-digital-health-certification-network-faqs", icon: "❓" },
+          { label: "WHO GDHCN Publication Item", url: "https://www.who.int/publications/m/item/global-digital-health-certification-network-%28gdhcn%29", icon: "📄" },
+          { label: "WHO SMART DDCC", url: "https://smart.who.int/ddcc/", icon: "🧾" }
+        ]
+      },
+      {
+        id: "documents-oecd-ai-principles-policy-observatory",
+        type: "documents",
+        title: "OECD AI Principles and Policy Observatory — Intergovernmental AI Governance Backbone",
+        date: "2019-2024",
+        jurisdiction: "OECD / International AI Governance",
+        description: "The OECD AI Principles are an intergovernmental AI governance anchor adopted in 2019 and updated in 2024. They help connect EU AI Act language, G7 Hiroshima AI Process work, NIST AI RMF, national AI strategies, and AI policy observatory datasets into one global policy pipeline for trustworthy AI, risk management, accountability, and human-centric framing.",
+        tags: ["OECD AI Principles", "OECD.AI", "AI Governance", "Trustworthy AI", "G7 Hiroshima AI Process", "AI Policy Observatory", "Intergovernmental Standards"],
+        relatedEntities: ["OECD", "G7", "European Commission", "NIST", "EU AI Act", "Council of Europe AI Convention", "ISO/IEC 42001", "Omar Al Olama", "Michael Kratsios"],
+        sourceQuality: "Official OECD principles, publications, and AI Policy Observatory records",
+        facts: [
+          { label: "Adopted", value: "2019 OECD AI Principles" },
+          { label: "Updated", value: "2024 update for generative AI and evolving risks" },
+          { label: "Policy function", value: "Common AI-governance vocabulary across jurisdictions" },
+          { label: "Bridge", value: "Principles → national laws → standards and management systems" }
+        ],
+        flags: ["Intergovernmental AI policy pipeline", "Trustworthy AI language", "Soft-law-to-hard-law bridge", "Policy observatory dataset", "Useful for comparing EU/NIST/G7/ISO/CoE records"],
+        details: [
+          "This card strengthens AI governance by adding the intergovernmental principles layer that many later laws, standards, and policy dashboards reference.",
+          "Use with EU AI Act, NIST AI RMF, G7 Hiroshima AI Process, ISO/IEC 42001, and Council of Europe AI Convention cards."
+        ],
+        links: [
+          { label: "OECD AI Principles", url: "https://www.oecd.org/en/topics/ai-principles.html", icon: "🏛️" },
+          { label: "OECD AI Principles Topic Page", url: "https://www.oecd.org/en/topics/sub-issues/ai-principles.html", icon: "📚" },
+          { label: "OECD 2024 AI Principles Update", url: "https://www.oecd.org/en/about/news/press-releases/2024/05/oecd-updates-ai-principles-to-stay-abreast-of-rapid-technological-developments.html", icon: "🗞️" },
+          { label: "OECD AI Policy Observatory", url: "https://oecd.ai/", icon: "📊" }
+        ]
+      },
+      {
+        id: "documents-iso-iec-42001-ai-management-system",
+        type: "documents",
+        title: "ISO/IEC 42001:2023 — Artificial Intelligence Management System Standard",
+        date: "2023-12-18",
+        jurisdiction: "ISO / IEC / International Standards",
+        description: "ISO/IEC 42001:2023 adds the organizational management-system layer for AI governance: establishing, implementing, maintaining, and improving an AI management system. It bridges policy principles and legal duties into auditable enterprise processes, making it useful for procurement, vendor due diligence, healthcare AI, critical infrastructure, and public-sector AI deployment.",
+        tags: ["ISO/IEC 42001", "AI Management System", "AIMS", "AI Governance", "Standards", "Risk Management", "Procurement", "Vendor Due Diligence"],
+        relatedEntities: ["ISO", "IEC", "NIST AI RMF", "OECD AI Principles", "EU AI Act", "Council of Europe AI Convention", "AI Governance", "Public Procurement"],
+        sourceQuality: "Official ISO standard page",
+        facts: [
+          { label: "Standard", value: "ISO/IEC 42001:2023" },
+          { label: "Scope", value: "AI management system requirements" },
+          { label: "Operational layer", value: "Governance, risk, lifecycle, accountability processes" },
+          { label: "Bridge", value: "AI policy principles → auditable organizational controls" }
+        ],
+        flags: ["AI governance certification pathway", "Vendor/procurement evidence", "Risk-management operations", "Enterprise deployment layer", "Important comparison to NIST AI RMF and EU AI Act"],
+        details: [
+          "This card fills the standards gap between high-level AI governance principles and day-to-day organizational controls.",
+          "Use with NIST AI RMF, OECD AI Principles, EU AI Act, healthcare AI-device cards, and defense/autonomy procurement records."
+        ],
+        links: [
+          { label: "ISO/IEC 42001:2023 Standard Page", url: "https://www.iso.org/standard/81230.html", icon: "📏" },
+          { label: "ISO AI Topic Page", url: "https://www.iso.org/artificial-intelligence", icon: "🤖" },
+          { label: "IEC AI and Digital Transformation", url: "https://www.iec.ch/artificial-intelligence", icon: "🌐" }
+        ]
+      },
+      {
+        id: "legislation-council-europe-ai-convention-cets225",
+        type: "legislation",
+        title: "Council of Europe AI Convention (CETS No. 225) — Treaty Layer for AI, Human Rights, Democracy, and Rule of Law",
+        date: "2024-09-05",
+        jurisdiction: "Council of Europe / International Treaty",
+        description: "The Council of Europe Framework Convention on Artificial Intelligence and Human Rights, Democracy and the Rule of Law is a treaty-layer AI governance card. It is high value because it connects AI systems to human-rights, democracy, public-sector use, private-sector oversight, risk and impact management, and international legal harmonization beyond the EU AI Act alone.",
+        tags: ["Council of Europe", "Framework Convention on AI", "CETS 225", "AI Governance", "Human Rights", "Democracy", "Rule of Law", "International Treaty"],
+        relatedEntities: ["Council of Europe", "European Union", "OECD AI Principles", "EU AI Act", "NIST AI RMF", "ISO/IEC 42001", "AI Governance"],
+        sourceQuality: "Official Council of Europe treaty page and convention materials",
+        facts: [
+          { label: "Treaty", value: "CETS No. 225" },
+          { label: "Opened", value: "Vilnius, 5 Sept. 2024" },
+          { label: "Governance frame", value: "AI + human rights + democracy + rule of law" },
+          { label: "Bridge", value: "International legal layer above national AI policy" }
+        ],
+        flags: ["AI treaty governance", "Human-rights impact management", "Public/private sector obligations", "International harmonization", "Useful with EU AI Act/OECD/NIST/ISO comparisons"],
+        details: [
+          "This card prevents the AI-governance section from being EU/US-only by adding the treaty framework that sits above national implementation debates.",
+          "Use with OECD AI Principles, EU AI Act, NIST AI RMF, ISO/IEC 42001, and YGL/federal AI-policy actor cards."
+        ],
+        links: [
+          { label: "Council of Europe AI Convention Hub", url: "https://www.coe.int/en/web/artificial-intelligence/the-framework-convention-on-artificial-intelligence", icon: "⚖️" },
+          { label: "Treaty Office Detail CETS 225", url: "https://www.coe.int/web/conventions/full-list?module=treaty-detail&treatynum=225", icon: "📜" },
+          { label: "Council of Europe AI Work", url: "https://www.coe.int/en/web/artificial-intelligence", icon: "🏛️" }
+        ]
+      },
+      {
+        id: "research-ga4gh-genomic-health-data-sharing-standards",
+        type: "research",
+        title: "GA4GH — Genomic and Health-Data Sharing Standards for Global Precision Medicine",
+        date: "2014-Present",
+        jurisdiction: "Global Alliance for Genomics and Health / International Genomics Standards",
+        description: "The Global Alliance for Genomics and Health (GA4GH) is a standards and policy bridge for genomic and health-related data sharing. It connects population genomics, research workbenches, federated analysis, cloud workflows, human-rights framing, consent/data-use policy, and precision-medicine infrastructure into a concrete interoperability layer.",
+        tags: ["GA4GH", "Genomics", "Health Data", "Precision Medicine", "Data Sharing", "Federated Analysis", "FHIR", "Research Workbench", "Human Genome"],
+        relatedEntities: ["GA4GH", "All of Us", "UK Biobank", "Genomics England", "Human Genome Project", "European Health Data Space", "NIH", "WHO Human Genome Editing"],
+        sourceQuality: "Official GA4GH framework and standards pages + peer-reviewed overview",
+        facts: [
+          { label: "Framework", value: "Responsible sharing of genomic and health-related data" },
+          { label: "Standards role", value: "Policy + technical standards for genomic data use" },
+          { label: "Deployment pattern", value: "Federated/cloud genomic analysis and data access" },
+          { label: "Bridge", value: "Population genomics → interoperable health-data infrastructure" }
+        ],
+        flags: ["Genomics interoperability", "Precision medicine infrastructure", "Federated data access", "Research-to-clinical bridge", "Human-rights and consent governance"],
+        details: [
+          "This card strengthens the health-data/genomics route by adding the standards body that helps make national and institutional genomics datasets technically interoperable.",
+          "Use with All of Us, UK Biobank, Genomics England, EHDS, Belmont/Common Rule, and Human Genome Project/ELSI cards."
+        ],
+        links: [
+          { label: "GA4GH Home", url: "https://www.ga4gh.org/", icon: "🧬" },
+          { label: "GA4GH What We Do", url: "https://www.ga4gh.org/what-we-do/", icon: "📚" },
+          { label: "GA4GH Framework", url: "https://www.ga4gh.org/framework/", icon: "📜" },
+          { label: "GA4GH Product: Responsible Data-Sharing Framework", url: "https://www.ga4gh.org/product/framework-for-responsible-sharing-of-genomic-and-health-related-data/", icon: "🧾" },
+          { label: "GA4GH Peer-Reviewed Overview (PMC)", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC8774288/", icon: "🔬" }
+        ]
+      },
+      {
+        id: "players-wef-global-shapers-recruitment-hub",
+        type: "players",
+        title: "WEF Global Shapers Community — Under-30 Leadership Pipeline and Local Hub Network",
+        date: "2011-Present",
+        jurisdiction: "World Economic Forum / Global Youth Leadership Network",
+        description: "Global Shapers is a WEF-linked under-30 local hub network and belongs in the map as a recruitment-hub / leadership-pipeline bridge below Young Global Leaders. It helps connect local civic projects, climate/health/digital policy themes, community governance, and later elite-network pathways without claiming every member advances the same agenda.",
+        tags: ["Global Shapers", "World Economic Forum", "WEF", "Recruitment Hub", "Leadership Pipeline", "Youth Leadership", "Local Hubs", "Public-Private Governance"],
+        relatedEntities: ["World Economic Forum", "Young Global Leaders", "Klaus Schwab", "Global Shapers Community", "YGL Roster", "Public-Private Governance", "Civic Data"],
+        sourceQuality: "Official WEF Global Shapers organization page + annual report",
+        facts: [
+          { label: "Network", value: "WEF-linked Global Shapers Community" },
+          { label: "Model", value: "City/local hubs and youth leadership projects" },
+          { label: "Pipeline role", value: "Contextual predecessor/feeder layer below YGL-level elite rosters" },
+          { label: "Caveat", value: "Membership is a network fact, not proof of uniform intent" }
+        ],
+        flags: ["Recruitment-hub layer", "Local-to-global governance pipeline", "WEF/YGL adjacency", "Civic-project and policy-theme alignment", "Useful for separating documented affiliation from interpretation"],
+        details: [
+          "This card answers the user-requested gap around other relevant networks and recruitment hubs without overclaiming: it documents the network and its relationship to WEF-style leadership ecosystems.",
+          "Use with Young Global Leaders, Global Leaders for Tomorrow archive targets, YGL roster cards, civic-data/public-private partnership records, and AI/digital policy actor profiles."
+        ],
+        links: [
+          { label: "WEF Global Shapers Organization Page", url: "https://www.weforum.org/organizations/global-shapers-community/", icon: "🏛️" },
+          { label: "Global Shapers Website", url: "https://www.globalshapers.org/", icon: "🌐" },
+          { label: "Global Shapers Annual Report 2024-2025 PDF", url: "https://reports.weforum.org/docs/WEF_Global_Shapers_Community_Annual_Report_2024_2025.pdf", icon: "📄" },
+          { label: "WEF Young Global Leaders Community", url: "https://www.weforum.org/communities/young-global-leaders/", icon: "🧭" }
+        ]
       }
-
 
     ];
 
@@ -9959,14 +10185,14 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       { id: 'legacy', label: 'Legacy Roots', terms: ['Julian Huxley', 'Rockefeller', 'Eugenics', 'Cybernetics', 'Population Council', 'Bilderberg', 'King John', 'Presidents', 'Bush Family', 'Kennedy Family', 'Hollywood Dynasty', 'Walton Family', 'Epstein', 'Ghislaine Maxwell', 'JPMorgan', 'MIT Media Lab'], types: ['legacy', 'players', 'funding', 'documents'] },
       { id: 'propaganda-roots', label: 'Propaganda / Behaviour Roots', terms: ['Committee on Public Information', 'Edward Bernays', 'Walter Lippmann', 'Milgram', 'Asch', 'Tavistock Institute', 'MINDSPACE', 'Public Opinion', 'Behavioural Insights'], types: ['legacy', 'documents', 'speeches', 'research'] },
       { id: 'infodemic-platform-governance', label: 'Infodemic + Platform Governance', terms: ['WHO Infodemic', 'Surgeon General', 'Health Misinformation', 'CISA', 'MDM', 'EU Code of Practice on Disinformation', 'Digital Services Act'], types: ['documents', 'legislation', 'research', 'leaks', 'corporate'] },
-      { id: 'convergence', label: 'Convergence Stack', terms: ['WEF', 'Digital ID', 'AI', 'Biotechnology', 'World ID', 'Brain'], types: ['players', 'virtual', 'bioengineering', 'documents', 'funding'] },
-      { id: 'ygl-roster', label: 'YGL Roster', terms: ['Young Global Leaders', 'YGL Roster', 'NIST SP 800-63', 'mDL', 'DDCC', 'All of Us', 'Human Genome Project', 'Buck v. Bell', 'Norplant', 'Milgram', 'Asch', 'HAARP', 'Class of 2026', 'Class of 2025', 'Class of 2024', 'Class of 2023', 'Class of 2022', 'Class of 2021', 'Class of 2020', 'Verification Queue'], types: ['players', 'funding', 'documents', 'legacy'] },
+      { id: 'convergence', label: 'Convergence Stack', terms: ['WEF', 'Digital ID', 'AI', 'Biotechnology', 'World ID', 'Brain', 'OECD AI Principles', 'ISO/IEC 42001', 'Council of Europe AI Convention', 'Global Shapers'], types: ['players', 'virtual', 'bioengineering', 'documents', 'funding'] },
+      { id: 'ygl-roster', label: 'YGL Roster', terms: ['Young Global Leaders', 'Global Shapers', 'Recruitment Hubs', 'YGL Roster', 'NIST SP 800-63', 'mDL', 'DDCC', 'All of Us', 'Human Genome Project', 'Buck v. Bell', 'Norplant', 'Milgram', 'Asch', 'HAARP', 'Class of 2026', 'Class of 2025', 'Class of 2024', 'Class of 2023', 'Class of 2022', 'Class of 2021', 'Class of 2020', 'Verification Queue'], types: ['players', 'funding', 'documents', 'legacy'] },
       { id: 'money', label: 'Money & Influence', terms: ['Gates Foundation', 'Pritzker', 'Funding', 'Gavi', 'Microsoft', 'Meta'], types: ['funding', 'players', 'corporate', 'pharma', 'identity'] },
       { id: 'bio', label: 'Bio / Vector / Outbreak', terms: ['DARPA', 'Gene Drive', 'Mosquitoes', 'Hantavirus', 'EcoHealth', 'CRISPR'], types: ['bioengineering', 'outbreaks', 'funding', 'leaks', 'documents'] },
       { id: 'identity', label: 'Identity + Pharma', terms: ['WPATH', 'Puberty Blockers', 'Pritzker', 'Gender', 'Endocrine', 'Cass Review'], types: ['identity', 'pharma', 'legislation', 'documents'] },
       { id: 'virtual', label: 'Virtual Human / Machine', terms: ['Digital Twin', 'Mind Uploading', 'BINA48', 'Human Brain Project', 'Living Heart', 'Metaverse'], types: ['virtual', 'patents', 'human', 'players'] },
-      { id: 'health-data-ai', label: 'Health Data + AI', terms: ['European Health Data Space', 'EHDS', 'All of Us', 'UK Biobank', 'Genomics England', 'Human Genome Project', 'Belmont Report', 'Common Rule', 'HealthData@EU', 'FDA AI', 'AI-Enabled Medical Devices', 'Digital Twin'], types: ['legislation', 'documents', 'research', 'virtual', 'human'] },
-      { id: 'identity-money-age', label: 'Identity + Money + Age Gates', terms: ['REAL ID', 'World Bank ID4D', 'MOSIP', 'Digital Public Infrastructure', 'NIST SP 800-63', 'Passkeys', 'FIDO', 'mDL', 'eIDAS', 'Digital Euro', 'Age Verification', 'California', 'Florida HB 3', 'Australia Social Media'], types: ['legislation', 'documents', 'identity', 'patents'] },
+      { id: 'health-data-ai', label: 'Health Data + AI', terms: ['European Health Data Space', 'EHDS', 'All of Us', 'UK Biobank', 'Genomics England', 'GA4GH', 'Human Genome Project', 'Belmont Report', 'Common Rule', 'HealthData@EU', 'WHO GDHCN', 'FDA AI', 'AI-Enabled Medical Devices', 'Digital Twin'], types: ['legislation', 'documents', 'research', 'virtual', 'human'] },
+      { id: 'identity-money-age', label: 'Identity + Money + Age Gates', terms: ['REAL ID', 'World Bank ID4D', 'MOSIP', 'Digital Public Infrastructure', 'EUDI Wallet', 'Verifiable Credentials', 'Decentralized Identifiers', 'NIST SP 800-63', 'Passkeys', 'FIDO', 'mDL', 'eIDAS', 'Digital Euro', 'Age Verification', 'California', 'Florida HB 3', 'Australia Social Media'], types: ['legislation', 'documents', 'identity', 'patents'] },
       { id: 'defense-autonomy', label: 'Defense Autonomy', terms: ['Replicator', 'NATO DIANA', 'Palantir', 'Anduril', 'Autonomous Systems', 'AI'], types: ['corporate', 'documents', 'funding', 'players', 'patents'] }
     ];
 
@@ -10018,13 +10244,18 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       },
       {
         title: 'Elite governance → technology policy → identity infrastructure',
-        terms: ['WEF', 'Young Global Leaders', 'Klaus Schwab', 'World ID', 'Digital ID', 'AI Act'],
-        why: 'Connects leadership pipelines, 4IR governance language, biometric identity, and AI policy infrastructure.'
+        terms: ['WEF', 'Global Shapers', 'Young Global Leaders', 'Klaus Schwab', 'World ID', 'EUDI Wallet', 'Digital ID', 'AI Act', 'OECD AI Principles'],
+        why: 'Connects leadership pipelines, 4IR governance language, biometric identity, credential wallets, and AI policy infrastructure.'
       },
       {
         title: 'YGL technology bridge → AI policy, platforms, digital state, neurotech, bioengineering',
         terms: ['Young Global Leaders', 'Michael Kratsios', 'Omar Al Olama', 'Aakrit Vaish', 'Marissa Giustina', 'Miku Hirano', 'Camille François', 'May Habib', 'Sofia Elizondo', 'Vilas Dhar', 'Shou Zi Chew', 'Mykhailo Fedorov', 'BrainCo', 'Kaitlyn Sadtler', 'Joy Buolamwini', 'Annalena Baerbock', 'Alicia Garza'],
         why: 'Turns the roster into a concrete convergence pathway: federal AI policy, state AI ministry, algorithmic platform governance, digital public services, conversational AI, quantum computing, enterprise generative AI, information integrity, AI-bio discovery, AI philanthropy, non-invasive BCI, biometric-AI oversight, NIH immunoengineering, climate/security diplomacy, and civic-data organizing.'
+      },
+      {
+        title: 'Credential standards → health certificates → wallet deployment',
+        terms: ['W3C Verifiable Credentials', 'Decentralized Identifiers', 'EUDI Wallet', 'WHO GDHCN', 'WHO DDCC', 'SMART Health Cards', 'mDL', 'NIST SP 800-63'],
+        why: 'Connects the standards layer to deployment: issuer-holder-verifier credentials, digital identity wallets, mobile driver licenses, pandemic/health certificates, and relying-party trust all use similar portable-proof patterns.'
       },
       {
         title: 'Philanthropy → global health → gene-based interventions',
@@ -10048,7 +10279,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       },
       {
         title: 'Health-data space → AI medicine → digital-body operations',
-        terms: ['European Health Data Space', 'EHDS', 'HealthData@EU', 'FDA AI', 'AI-Enabled Medical Devices', 'Digital Twin', 'WHO AI'],
+        terms: ['European Health Data Space', 'EHDS', 'HealthData@EU', 'WHO GDHCN', 'GA4GH', 'FDA AI', 'AI-Enabled Medical Devices', 'Digital Twin', 'WHO AI'],
         why: 'Tracks the medical-data branch: interoperable health records, secondary-use research access, AI device regulation, and digital twins make patients and organs more model-readable.'
       },
       {
@@ -10230,12 +10461,12 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
         id: 'health-data-ai-digital-twin',
         title: 'Health-data space → AI medicine → digital-body operations',
         arc: 'A trajectory from health-record interoperability and secondary-use data access into AI/ML medical devices and digital twins of organs, patients, and care pathways.',
-        terms: ['European Health Data Space', 'EHDS', 'HealthData@EU', 'FDA AI', 'AI-Enabled Medical Devices', 'Digital Twin', 'WHO AI'],
+        terms: ['European Health Data Space', 'EHDS', 'HealthData@EU', 'WHO GDHCN', 'GA4GH', 'FDA AI', 'AI-Enabled Medical Devices', 'Digital Twin', 'WHO AI'],
         dominoes: [
           { date: '2016-2021', label: 'Health-data access rails', summary: 'Cures Act information-blocking rules and patient-access policy create the U.S. data-access layer.', terms: ['21st Century Cures Act', 'Information Blocking', 'Health Data'] },
           { date: '2019-2024', label: 'AI-enabled medical-device growth', summary: 'FDA lists and guidance turn AI/ML medical software into a regulated device category.', terms: ['FDA AI', 'AI-Enabled Medical Devices', 'Predetermined Change Control Plan'] },
           { date: '2021-2025', label: 'Virtual organs and digital twins', summary: 'Living Heart and digital-twin records frame organs and bodies as operational simulation environments.', terms: ['Digital Twin', 'Living Heart', 'Virtual Human'] },
-          { date: '2023-2025', label: 'WHO + EU health-data governance', summary: 'WHO AI health guidance and the EHDS make data governance, secondary use, and AI health rules part of the same reading chain.', terms: ['WHO AI', 'European Health Data Space', 'EHDS'] },
+          { date: '2023-2025', label: 'WHO + EU health-data and credential governance', summary: 'WHO AI health guidance, GDHCN, GA4GH standards, and the EHDS make data governance, secondary use, credential verification, and AI health rules part of the same reading chain.', terms: ['WHO AI', 'WHO GDHCN', 'GA4GH', 'European Health Data Space', 'EHDS'] },
           { date: '2029+', label: 'EHDS implementation milestones', summary: 'MyHealth@EU and HealthData@EU phases point toward cross-border data exchange and research access implementation.', terms: ['MyHealth@EU', 'HealthData@EU', 'Secondary Use'] }
         ]
       },
@@ -10243,12 +10474,12 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
         id: 'identity-money-age-assurance',
         title: 'Digital ID → payment rails → age-assurance gates',
         arc: 'A trajectory joining biometric ID experiments, EU wallet law, digital-euro proposals, child-online-safety regimes, and age-verification statutes.',
-        terms: ['Digital ID', 'eIDAS', 'Digital Euro', 'World ID', 'Age Verification', 'California', 'Florida HB 3', 'Australia Social Media'],
+        terms: ['Digital ID', 'EUDI Wallet', 'W3C Verifiable Credentials', 'eIDAS', 'Digital Euro', 'World ID', 'Age Verification', 'California', 'Florida HB 3', 'Australia Social Media'],
         dominoes: [
           { date: '2018-2021', label: 'Digital traveller / health credential experiments', summary: 'KTDI and CommonPass show travel and health credentials as early identity-wallet use cases.', terms: ['Known Traveller Digital Identity', 'CommonPass', 'WEF'] },
           { date: '2022-2024', label: 'Age-appropriate design and child-safety codes', summary: 'California and IEEE age-design records normalize design-risk assessments for minors.', terms: ['California', 'Age Appropriate Design Code', 'IEEE 2089'] },
           { date: '2023', label: 'Digital euro legal package', summary: 'The EU proposes the legal framework for a possible digital euro alongside cash-access language.', terms: ['Digital Euro', 'European Commission', 'CBDC'] },
-          { date: '2024', label: 'eIDAS 2.0 wallet law', summary: 'EU digital identity wallet regulation creates a legal identity-wallet layer that can connect to public and private services.', terms: ['eIDAS', 'Digital Identity Wallet', 'EU'] },
+          { date: '2024-2025', label: 'eIDAS 2.0 wallet architecture', summary: 'EU wallet regulation and ARF documents create a legal and technical identity-wallet layer for public/private services, attestations, and relying parties.', terms: ['eIDAS', 'EUDI Wallet', 'Digital Identity Wallet', 'W3C Verifiable Credentials', 'EU'] },
           { date: '2024-2025', label: 'Age-verification statutes and social-media bans', summary: 'Florida, Australia, Utah-style rules add concrete pressure for age assurance across online platforms.', terms: ['Florida HB 3', 'Australia Social Media', 'Age Verification'] }
         ]
       },
@@ -10642,7 +10873,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     ];
 
 
-    const quickSearches = ['Microsoft Antitrust', 'Timing Pattern', 'Gavi', 'Gates Institute', 'Media Funding', 'Rockefeller Foundation', 'Investment Convergence', 'Founders Fund', 'Breakthrough Energy', 'BlackRock', 'a16z', 'Eric Schmidt', 'Palantir', 'Anduril', 'Event 201', 'Crimson Contagion', 'SPARS', 'Milken', 'Wuhan Games', 'Universal Flu Vaccine', 'Jeffrey Epstein', 'Ghislaine Maxwell', 'Epstein Emails', 'JPMorgan', 'MIT Media Lab', 'Maxwell Family', 'Les Wexner', 'Bush Family', 'Kennedy Family', 'Roosevelt Family', 'Gates Family', 'Walton Family', 'Hollywood Dynasty', 'Coppola Family', 'King John', 'Presidents', 'Plantagenet', 'Royal Descent', 'Julian Huxley', 'Rockefeller', 'Eugenics', 'Cybernetics', 'Population Council', 'Bilderberg', 'Klaus Schwab', 'Bill Gates', 'Yuval Harari', 'Sam Altman', 'Pritzker', 'Young Global Leaders', 'YGL Roster', 'YGL Archive Targets', 'Global Leaders for Tomorrow', 'Predecessor GLT Targets', 'Exposé Reports', 'Social Engineering', 'Comparative Religion', 'Jesus Parallels', 'Savior Hero', 'Dying and Rising', 'Prophet Lawgiver', 'Monomyth', 'Apocalypse', 'Mythos', 'Folklore', 'Lost Civilisations', 'Atlantis', 'Tartaria', 'Tartary', 'Lemuria', 'Mu', 'Gilgamesh', 'Prometheus', 'Golem', 'Pygmalion', 'Frankenstein', 'R.U.R.', 'War of the Worlds', 'Plato Cave', 'H. G. Wells', 'World Brain', 'Open Conspiracy', 'Things to Come', 'Haldane', 'Daedalus', 'Ectogenesis', 'Bernal', 'Stapledon', 'Metropolis', 'Propaganda', 'Indoctrination', 'Machine Empathy', 'Human Devaluation', 'Future Warfare', 'Dennis Bushnell', 'Bio-Nano Age', 'Earth as Farm', 'Planetary Extraction', 'Entertainment Conditioning', 'Civilisational Stages', 'YGL Tech Bridge', 'Federal AI Policy', 'Platform Governance', 'Immunoengineering', 'Conversational AI', 'Quantum Computing', 'Civic Data', 'Aakrit Vaish', 'Marissa Giustina', 'Miku Hirano', 'Annalena Baerbock', 'Alicia Garza', 'Camille François', 'May Habib', 'Sofia Elizondo', 'Vilas Dhar', 'Information Integrity', 'AI Bioactives', 'AI Philanthropy', 'Omar Al Olama', 'Mykhailo Fedorov', 'Joy Buolamwini', 'Sanna Marin', 'Michael Kratsios', 'Shou Zi Chew', 'Chew Shou Zi', 'Han Bicheng', 'Bicheng Han', 'BrainCo', 'Kaitlyn Sadtler', 'Class of 2026', 'Class of 2025', 'Class of 2022', 'Class of 2021', 'Class of 2020', 'Verification Queue', 'Digital Twin', 'Mind Uploading', 'Brain Transparency', 'Israel', 'World ID', 'Gene Drive', 'Committee on Public Information', 'Edward Bernays', 'Walter Lippmann', 'Milgram', 'Asch', 'Tavistock Institute', 'MINDSPACE', 'Ultimate Stack', 'WHO Infodemic', 'Health Misinformation', 'CISA MDM', 'EU Disinformation Code', 'Belmont Report', 'Common Rule', 'UK Biobank', 'Passkeys', 'FIDO', 'Fusion Centers', 'Real-Time Crime Centers', 'REAL ID', 'Genomics England', 'EdTech', 'COPPA', 'Axon', 'Fusus', 'World Bank ID4D', 'MOSIP', 'Digital Public Infrastructure', '50-in-5', 'GovStack', 'DPI'];
+    const quickSearches = ['Microsoft Antitrust', 'Timing Pattern', 'Gavi', 'Gates Institute', 'Media Funding', 'Rockefeller Foundation', 'Investment Convergence', 'Founders Fund', 'Breakthrough Energy', 'BlackRock', 'a16z', 'Eric Schmidt', 'Palantir', 'Anduril', 'Event 201', 'Crimson Contagion', 'SPARS', 'Milken', 'Wuhan Games', 'Universal Flu Vaccine', 'Jeffrey Epstein', 'Ghislaine Maxwell', 'Epstein Emails', 'JPMorgan', 'MIT Media Lab', 'Maxwell Family', 'Les Wexner', 'Bush Family', 'Kennedy Family', 'Roosevelt Family', 'Gates Family', 'Walton Family', 'Hollywood Dynasty', 'Coppola Family', 'King John', 'Presidents', 'Plantagenet', 'Royal Descent', 'Julian Huxley', 'Rockefeller', 'Eugenics', 'Cybernetics', 'Population Council', 'Bilderberg', 'Klaus Schwab', 'Bill Gates', 'Yuval Harari', 'Sam Altman', 'Pritzker', 'Young Global Leaders', 'YGL Roster', 'YGL Archive Targets', 'Global Leaders for Tomorrow', 'Predecessor GLT Targets', 'Exposé Reports', 'Social Engineering', 'Comparative Religion', 'Jesus Parallels', 'Savior Hero', 'Dying and Rising', 'Prophet Lawgiver', 'Monomyth', 'Apocalypse', 'Mythos', 'Folklore', 'Lost Civilisations', 'Atlantis', 'Tartaria', 'Tartary', 'Lemuria', 'Mu', 'Gilgamesh', 'Prometheus', 'Golem', 'Pygmalion', 'Frankenstein', 'R.U.R.', 'War of the Worlds', 'Plato Cave', 'H. G. Wells', 'World Brain', 'Open Conspiracy', 'Things to Come', 'Haldane', 'Daedalus', 'Ectogenesis', 'Bernal', 'Stapledon', 'Metropolis', 'Propaganda', 'Indoctrination', 'Machine Empathy', 'Human Devaluation', 'Future Warfare', 'Dennis Bushnell', 'Bio-Nano Age', 'Earth as Farm', 'Planetary Extraction', 'Entertainment Conditioning', 'Civilisational Stages', 'YGL Tech Bridge', 'Federal AI Policy', 'Platform Governance', 'Immunoengineering', 'Conversational AI', 'Quantum Computing', 'Civic Data', 'Aakrit Vaish', 'Marissa Giustina', 'Miku Hirano', 'Annalena Baerbock', 'Alicia Garza', 'Camille François', 'May Habib', 'Sofia Elizondo', 'Vilas Dhar', 'Information Integrity', 'AI Bioactives', 'AI Philanthropy', 'Omar Al Olama', 'Mykhailo Fedorov', 'Joy Buolamwini', 'Sanna Marin', 'Michael Kratsios', 'Shou Zi Chew', 'Chew Shou Zi', 'Han Bicheng', 'Bicheng Han', 'BrainCo', 'Kaitlyn Sadtler', 'Class of 2026', 'Class of 2025', 'Class of 2022', 'Class of 2021', 'Class of 2020', 'Verification Queue', 'Digital Twin', 'Mind Uploading', 'Brain Transparency', 'Israel', 'World ID', 'Gene Drive', 'Committee on Public Information', 'Edward Bernays', 'Walter Lippmann', 'Milgram', 'Asch', 'Tavistock Institute', 'MINDSPACE', 'Ultimate Stack', 'WHO Infodemic', 'Health Misinformation', 'CISA MDM', 'EU Disinformation Code', 'Belmont Report', 'Common Rule', 'UK Biobank', 'Passkeys', 'FIDO', 'Fusion Centers', 'Real-Time Crime Centers', 'REAL ID', 'Genomics England', 'EdTech', 'COPPA', 'Axon', 'Fusus', 'World Bank ID4D', 'MOSIP', 'Digital Public Infrastructure', '50-in-5', 'GovStack', 'DPI', 'EUDI Wallet', 'Verifiable Credentials', 'Decentralized Identifiers', 'WHO GDHCN', 'OECD AI Principles', 'ISO 42001', 'Council of Europe AI Convention', 'GA4GH', 'Global Shapers', 'Recruitment Hubs'];
 
     const workspacePanels = [
       { id: 'workspacePagesPanel', label: 'Workspace Pages', group: 'Workspace', desc: 'Saved views and page comparisons' },
@@ -10680,13 +10911,13 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       {
         title: 'DPI identity/payment/data rails',
         summary: 'Shows the missing architecture layer between identity cards and deployment: ID4D, MOSIP, GovStack, 50-in-5, digital payments, data exchange, health certificates, and national service delivery.',
-        terms: ['World Bank ID4D', 'MOSIP', '50-in-5', 'GovStack', 'Digital Public Infrastructure', 'Aadhaar', 'Digital Euro', 'WHO DDCC'],
+        terms: ['World Bank ID4D', 'MOSIP', '50-in-5', 'GovStack', 'Digital Public Infrastructure', 'Aadhaar', 'EUDI Wallet', 'W3C Verifiable Credentials', 'Digital Euro', 'WHO DDCC', 'WHO GDHCN'],
         domains: ['Digital ID', 'Payments', 'Data exchange', 'Health credentials', 'Government services']
       },
       {
         title: 'Health-genomics → AI medicine → identity proofs',
         summary: 'Connects HGP/ELSI, All of Us, UK Biobank, Genomics England, EHDS, Palantir NHS FDP, WHO DDCC, and AI medical-device governance into one health-data pathway.',
-        terms: ['Human Genome Project', 'All of Us', 'UK Biobank', 'Genomics England', 'European Health Data Space', 'Palantir NHS', 'WHO DDCC', 'FDA AI'],
+        terms: ['Human Genome Project', 'All of Us', 'UK Biobank', 'Genomics England', 'GA4GH', 'European Health Data Space', 'Palantir NHS', 'WHO DDCC', 'WHO GDHCN', 'FDA AI'],
         domains: ['Genomics', 'Health data', 'AI medicine', 'Certificates', 'Research governance']
       },
       {
@@ -10704,8 +10935,20 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       {
         title: 'Early ideology → bioethics safeguards → modern enhancement research',
         summary: 'Keeps the roots-to-guardrails route visible: eugenics, Buck v. Bell, Population Council, Belmont/Common Rule, HGP/ELSI, genome editing, BRAIN Initiative, and neurotechnology.',
-        terms: ['Eugenics', 'Buck v. Bell', 'Population Council', 'Belmont Report', 'Common Rule', 'Human Genome Project ELSI', 'WHO Human Genome Editing', 'NIH BRAIN'],
+        terms: ['Eugenics', 'Buck v. Bell', 'Population Council', 'Belmont Report', 'Common Rule', 'Human Genome Project ELSI', 'GA4GH', 'WHO Human Genome Editing', 'NIH BRAIN'],
         domains: ['Eugenics history', 'Bioethics', 'Genomics', 'Enhancement', 'Neurotechnology']
+      },
+      {
+        title: 'Credential standards → wallet trust → health/document verification',
+        summary: 'Connects W3C VC/DID, EUDI Wallet ARF, mDL, NIST 800-63, WHO DDCC/GDHCN, and SMART Health Cards into one portable-credential trust architecture.',
+        terms: ['W3C Verifiable Credentials', 'Decentralized Identifiers', 'EUDI Wallet', 'mDL', 'NIST SP 800-63', 'WHO DDCC', 'WHO GDHCN', 'SMART Health Cards'],
+        domains: ['Credential standards', 'Wallets', 'Health certificates', 'Mobile IDs', 'Relying parties']
+      },
+      {
+        title: 'AI principles → treaties → management systems → procurement controls',
+        summary: 'Connects OECD AI Principles, G7 Hiroshima, NIST AI RMF, EU AI Act, ISO/IEC 42001, and the Council of Europe AI Convention into a governance-to-operations pathway.',
+        terms: ['OECD AI Principles', 'G7 Hiroshima AI Process', 'NIST AI RMF', 'EU AI Act', 'ISO/IEC 42001', 'Council of Europe AI Convention'],
+        domains: ['AI principles', 'Risk frameworks', 'Treaties', 'Management systems', 'Procurement']
       }
     ];
 
@@ -11160,6 +11403,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       renderFilterBar();
       renderQuickLinks();
       renderCards();
+      renderSupportPanels(getVisibleEvidence());
       updateStats();
       setupEventListeners();
     }
@@ -11506,8 +11750,13 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
 
     function setAllWorkspacePanels(open) {
       collapsedWorkspacePanels = open ? new Set() : new Set(workspacePanels.map(item => item.id));
-      applyWorkspacePanelShells();
-      renderWorkspaceIndex();
+      if (document.getElementById('entityPanel')) {
+        renderSupportPanels(getVisibleEvidence(), { preserveShells: true });
+      } else {
+        applyWorkspacePanelShells();
+        renderWorkspaceIndex();
+      }
+      renderStateBar(getVisibleEvidence());
     }
 
     function renderQuickLinks() {
@@ -13649,11 +13898,13 @@ Provenance risk: ${audit.riskLabel}`);
     }
 
     function setWorkspaceDrawer(open) {
+      if (open) renderWorkspaceIndex();
       document.body.classList.toggle('workspace-drawer-open', open);
       document.getElementById('workspaceIndexDrawer')?.setAttribute('aria-hidden', String(!open));
       const tab = document.getElementById('workspaceDrawerTab');
       tab?.setAttribute('aria-expanded', String(open));
       tab?.setAttribute('aria-label', open ? 'Close workspace index' : 'Open workspace index');
+      tab?.classList.toggle('is-open', open);
     }
 
     function toggleWorkspaceDrawer() {
@@ -13797,7 +14048,7 @@ Provenance risk: ${audit.riskLabel}`);
       });
     }
 
-    function renderSupportPanels(items = getVisibleEvidence()) {
+    function renderSupportPanels(items = getVisibleEvidence(), options = {}) {
       renderWorkspaceIndex();
       renderWorkspacePagesPanel();
       renderEntityPanel(items);
@@ -14257,6 +14508,7 @@ Provenance risk: ${audit.riskLabel}`);
       });
 
       document.getElementById('workspaceDrawerTab')?.addEventListener('click', event => {
+        event.preventDefault();
         event.stopPropagation();
         toggleWorkspaceDrawer();
       });
