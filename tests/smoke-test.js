@@ -47,9 +47,10 @@ globalThis.__APP_TEST__ = {
   evidence, allTypes, defaultCategoryOrder, categorySummaries,
   workspacePanels, workspacePanelOrder, bridgeConvergenceMaps,
   get categoryOrder() { return categoryOrder; },
+  get workspacePanelOrderList() { return workspacePanelOrder; },
   get collapsedWorkspacePanelCount() { return collapsedWorkspacePanels.size; },
   get openCategoryCount() { return openCategories.size; },
-  moveCategory, setAllCategories, setAllWorkspacePanels, getBridgeDominoLinks,
+  moveCategory, setAllCategories, setAllWorkspacePanels, getBridgeDominoLinks, moveWorkspacePanel,
   formatFilterLabel, formatTypePlural
 };`, context, { filename: 'index.inline.js' });
 
@@ -101,6 +102,12 @@ app.moveCategory(second, first);
 assert.strictEqual(app.categoryOrder[0], second, 'dragged category should move before target');
 assert(localStore.has('evidenceCategoryOrder'), 'category order should persist to localStorage');
 
+const firstPanel = app.workspacePanelOrderList[0];
+const secondPanel = app.workspacePanelOrderList[1];
+app.moveWorkspacePanel(secondPanel, firstPanel);
+assert.strictEqual(app.workspacePanelOrderList[0], secondPanel, 'dragged workspace index item should move before target');
+assert(localStore.has('evidenceWorkspacePanelOrder'), 'workspace index order should persist to localStorage');
+
 assert(html.includes('.workspace-section.is-collapsed > :not(.workspace-section-toggle)'), 'collapsed panel content CSS guard missing');
 assert(html.includes('padding: 0 !important;'), 'collapsed workspace panels should not leave padded blank rows');
 assert(html.includes('content: attr(data-panel-label);'), 'collapsed workspace panels should render visible label fallback text');
@@ -115,6 +122,8 @@ assert(html.includes('#sourceDrawerToggle:checked ~ #sourceDrawer'), 'source dra
 assert(/workspaceDrawerToggle[\s\S]*addEventListener\('change'[\s\S]*setWorkspaceDrawer\(event\.target\.checked\)/.test(html), 'workspace drawer checkbox change should sync JS state');
 assert(/workspaceDrawerTab[\s\S]*addEventListener\('keydown'[\s\S]*toggleWorkspaceDrawer\(\);/.test(html), 'workspace drawer tab should remain keyboard-toggleable');
 assert(html.includes('id="impactDrawerTab"') && html.includes('id="sourceDrawerTab"'), 'impact/source side drawer tabs missing');
+assert(html.includes('function refreshOpenSideDrawers'), 'side drawers should only refresh when open for performance');
+assert(html.includes('top: calc(34% + 84px);') && html.includes('top: calc(34% + 168px);'), 'left drawer tabs should be vertically aligned as a stack');
 assert(html.includes("setSideDrawer('impact'") && html.includes("setSideDrawer('source'"), 'impact/source drawer sync handlers missing');
 
 console.log(`Smoke tests passed: ${app.evidence.length} cards, ${app.allTypes.length} categories, ${app.workspacePanels.length} workspace panels.`);
