@@ -45,11 +45,11 @@ renderWorkspaceIndex = () => {};
 updateExpandButton = () => {};
 globalThis.__APP_TEST__ = {
   evidence, allTypes, defaultCategoryOrder, categorySummaries,
-  workspacePanels, workspacePanelOrder,
+  workspacePanels, workspacePanelOrder, bridgeConvergenceMaps,
   get categoryOrder() { return categoryOrder; },
   get collapsedWorkspacePanelCount() { return collapsedWorkspacePanels.size; },
   get openCategoryCount() { return openCategories.size; },
-  moveCategory, setAllCategories, setAllWorkspacePanels,
+  moveCategory, setAllCategories, setAllWorkspacePanels, getBridgeDominoLinks,
   formatFilterLabel, formatTypePlural
 };`, context, { filename: 'index.inline.js' });
 
@@ -103,7 +103,9 @@ assert(localStore.has('evidenceCategoryOrder'), 'category order should persist t
 
 assert(html.includes('.workspace-section.is-collapsed > :not(.workspace-section-toggle)'), 'collapsed panel content CSS guard missing');
 assert(html.includes('padding: 0 !important;'), 'collapsed workspace panels should not leave padded blank rows');
-assert(/renderCards\(\);\s*renderSupportPanels\(getVisibleEvidence\(\)\);\s*updateStats\(\);/.test(html), 'init should render and collapse workspace support panels before first paint');
+assert(/setupEventListeners\(\);\s*try \{\s*renderSupportPanels\(getVisibleEvidence\(\)\);/.test(html), 'init should bind core listeners before support-panel rendering can fail');
+assert(html.includes('function matchesTerm'), 'Bridge Map domino matching helper missing');
+assert(app.getBridgeDominoLinks(app.bridgeConvergenceMaps[0]).length > 0, 'Bridge Map to Domino links should render without missing helper errors');
 assert(html.includes('function scrollToElementTop'), 'top-aligned scroll helper missing');
 assert(html.includes('workspaceDrawerTab'), 'workspace drawer tab missing');
 assert(/workspaceDrawerTab[\s\S]*event\.preventDefault\(\);[\s\S]*event\.stopPropagation\(\);[\s\S]*toggleWorkspaceDrawer\(\);/.test(html), 'workspace drawer tab click should not be swallowed by outside-click handling');

@@ -11403,9 +11403,15 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       renderFilterBar();
       renderQuickLinks();
       renderCards();
-      renderSupportPanels(getVisibleEvidence());
       updateStats();
       setupEventListeners();
+      try {
+        renderSupportPanels(getVisibleEvidence());
+      } catch (error) {
+        console.error('Support panel render failed; keeping core navigation active.', error);
+        applyWorkspacePanelShells();
+        renderWorkspaceIndex();
+      }
     }
 
     function getVisibleEvidence() {
@@ -12638,6 +12644,11 @@ Provenance risk: ${audit.riskLabel}`);
         requestAnimationFrame(() => scrollToElementTop(document.querySelector(`[data-category-section="${ranked[0]?.type}"]`)));
       });
     }
+
+    function matchesTerm(item, term) {
+      return getInlineMatches(term, [item]).length > 0;
+    }
+
 
     function getBridgeDominoLinks(map) {
       return dominoTrajectories.map(trajectory => {
