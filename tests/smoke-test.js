@@ -50,7 +50,7 @@ globalThis.__APP_TEST__ = {
   get workspacePanelOrderList() { return workspacePanelOrder; },
   get collapsedWorkspacePanelCount() { return collapsedWorkspacePanels.size; },
   get openCategoryCount() { return openCategories.size; },
-  moveCategory, setAllCategories, setAllWorkspacePanels, getBridgeDominoLinks, moveWorkspacePanel,
+  moveCategory, setAllCategories, setAllWorkspacePanels, getBridgeDominoLinks, moveWorkspacePanel, reorderWorkspacePanels,
   formatFilterLabel, formatTypePlural
 };`, context, { filename: 'index.inline.js' });
 
@@ -107,6 +107,23 @@ const secondPanel = app.workspacePanelOrderList[1];
 app.moveWorkspacePanel(secondPanel, firstPanel);
 assert.strictEqual(app.workspacePanelOrderList[0], secondPanel, 'dragged workspace index item should move before target');
 assert(localStore.has('evidenceWorkspacePanelOrder'), 'workspace index order should persist to localStorage');
+assert(html.includes('${ordered.map((item, index) => `'), 'Workspace Index should render the exact saved order without regrouping it');
+assert(!html.includes('${grouped.map(group => `'), 'Workspace Index grouping must not distort the saved physical order');
+
+const cardsGridNode = { id: 'cardsGrid' };
+const panelNodes = Object.fromEntries(workspaceIds.map(id => [id, { id }]));
+const pageParent = {
+  children: [...workspaceIds.map(id => panelNodes[id]), cardsGridNode],
+  insertBefore(node, reference) {
+    this.children = this.children.filter(item => item !== node);
+    const index = this.children.indexOf(reference);
+    this.children.splice(index < 0 ? this.children.length : index, 0, node);
+  }
+};
+cardsGridNode.parentElement = pageParent;
+context.document.getElementById = id => id === 'cardsGrid' ? cardsGridNode : panelNodes[id] || null;
+app.reorderWorkspacePanels();
+assert.deepStrictEqual(pageParent.children.slice(0, workspaceIds.length).map(node => node.id), Array.from(app.workspacePanelOrderList), 'saved Workspace Index order must physically reorder main-page sections');
 
 assert(html.includes('.workspace-section.is-collapsed > :not(.workspace-section-toggle)'), 'collapsed panel content CSS guard missing');
 assert(html.includes('padding: 0 !important;'), 'collapsed workspace panels should not leave padded blank rows');
@@ -119,6 +136,11 @@ assert(html.includes('workspaceDrawerToggle'), 'workspace drawer checkbox fallba
 assert(html.includes('#workspaceDrawerToggle:checked ~ #workspaceIndexDrawer'), 'workspace drawer should have a CSS-only checked fallback');
 assert(html.includes('#impactDrawerToggle:checked ~ #impactDrawer'), 'impact drawer should have a CSS-only checked fallback');
 assert(html.includes('#sourceDrawerToggle:checked ~ #sourceDrawer'), 'source drawer should have a CSS-only checked fallback');
+assert(!html.includes('body.workspace-drawer-open .workspace-index-drawer'), 'opening Index must not open every side drawer');
+assert(html.includes('body.workspace-drawer-open #workspaceIndexDrawer'), 'Index state must target only the Index drawer');
+assert(html.includes("function renderBriefPanel(items = getVisibleEvidence(), panelId = 'sourceDrawerPanel')"), 'Sources must render into its own panel');
+assert(html.includes("function renderImpactPanel(items = getVisibleEvidence(), panelId = 'impactDrawerPanel')"), 'Impact must render into its own panel');
+assert(/setWorkspaceDrawer\(open\)[\s\S]*setSideDrawer\('impact', false\);[\s\S]*setSideDrawer\('source', false\);/.test(html), 'opening Index should close Impact and Sources drawers');
 assert(/workspaceDrawerToggle[\s\S]*addEventListener\('change'[\s\S]*setWorkspaceDrawer\(event\.target\.checked\)/.test(html), 'workspace drawer checkbox change should sync JS state');
 assert(/workspaceDrawerTab[\s\S]*addEventListener\('keydown'[\s\S]*toggleWorkspaceDrawer\(\);/.test(html), 'workspace drawer tab should remain keyboard-toggleable');
 assert(html.includes('id="impactDrawerTab"') && html.includes('id="sourceDrawerTab"'), 'impact/source side drawer tabs missing');

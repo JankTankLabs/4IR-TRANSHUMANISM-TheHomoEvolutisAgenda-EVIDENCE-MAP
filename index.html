@@ -692,7 +692,7 @@
       z-index: 1400;
     }
 
-    body.workspace-drawer-open .workspace-index-drawer,
+    body.workspace-drawer-open #workspaceIndexDrawer,
     #workspaceDrawerToggle:checked ~ #workspaceIndexDrawer,
     #impactDrawerToggle:checked ~ #impactDrawer,
     #sourceDrawerToggle:checked ~ #sourceDrawer {
@@ -943,6 +943,12 @@
     .workspace-index-chip.is-open {
       border-color: var(--link-color);
       color: var(--text-primary);
+    }
+
+    .workspace-index-chip.is-drop-target {
+      border-color: var(--warning);
+      box-shadow: 0 0 0 2px rgba(255, 209, 102, 0.16) inset;
+      transform: translateX(4px);
     }
 
     .workspace-index-chip:hover {
@@ -13985,7 +13991,11 @@ Provenance risk: ${audit.riskLabel}`);
     }
 
     function setWorkspaceDrawer(open) {
-      if (open) renderWorkspaceIndex();
+      if (open) {
+        setSideDrawer('impact', false);
+        setSideDrawer('source', false);
+        renderWorkspaceIndex();
+      }
       document.body.classList.toggle('workspace-drawer-open', open);
       document.getElementById('workspaceIndexDrawer')?.setAttribute('aria-hidden', String(!open));
       const checkbox = document.getElementById('workspaceDrawerToggle');
@@ -14062,7 +14072,6 @@ Provenance risk: ${audit.riskLabel}`);
       const panel = document.getElementById('workspaceIndexPanel');
       if (!panel) return;
       const ordered = workspacePanelOrder.map(id => workspacePanels.find(panel => panel.id === id)).filter(Boolean);
-      const grouped = groupedWorkspaceIndexItems(ordered);
       panel.innerHTML = `
         <div class="workspace-index-header">
           <div>
@@ -14084,14 +14093,11 @@ Provenance risk: ${audit.riskLabel}`);
           `).join('')}
         </div>
         <div class="workspace-index-list">
-          ${grouped.map(group => `
-            <div class="workspace-group-heading">${group.group}</div>
-            ${group.items.map(item => `
-              <button class="workspace-index-chip ${collapsedWorkspacePanels.has(item.id) ? '' : 'is-open'}" type="button" draggable="true" data-workspace-chip="${item.id}">
-                <span class="workspace-chip-line"><span>${item.index + 1}. ${item.label}</span><span class="discovery-meta">${collapsedWorkspacePanels.has(item.id) ? 'closed' : 'open'}</span></span>
-                <span class="workspace-chip-desc">${item.desc}</span>
-              </button>
-            `).join('')}
+          ${ordered.map((item, index) => `
+            <button class="workspace-index-chip ${collapsedWorkspacePanels.has(item.id) ? '' : 'is-open'}" type="button" draggable="true" data-workspace-chip="${item.id}">
+              <span class="workspace-chip-line"><span>${index + 1}. ${item.label}</span><span class="discovery-meta">${collapsedWorkspacePanels.has(item.id) ? 'closed' : 'open'}</span></span>
+              <span class="workspace-chip-desc">${item.group} · ${item.desc}</span>
+            </button>
           `).join('')}
         </div>
       `;
@@ -14100,10 +14106,19 @@ Provenance risk: ${audit.riskLabel}`);
       });
       panel.querySelectorAll('[data-workspace-chip]').forEach(chip => {
         chip.addEventListener('click', () => toggleWorkspacePanel(chip.dataset.workspaceChip, true));
-        chip.addEventListener('dragstart', event => event.dataTransfer.setData('text/plain', chip.dataset.workspaceChip));
-        chip.addEventListener('dragover', event => event.preventDefault());
+        chip.addEventListener('dragstart', event => {
+          event.dataTransfer.effectAllowed = 'move';
+          event.dataTransfer.setData('text/plain', chip.dataset.workspaceChip);
+        });
+        chip.addEventListener('dragover', event => {
+          event.preventDefault();
+          event.dataTransfer.dropEffect = 'move';
+          chip.classList.add('is-drop-target');
+        });
+        chip.addEventListener('dragleave', () => chip.classList.remove('is-drop-target'));
         chip.addEventListener('drop', event => {
           event.preventDefault();
+          chip.classList.remove('is-drop-target');
           moveWorkspacePanel(event.dataTransfer.getData('text/plain'), chip.dataset.workspaceChip);
         });
       });
