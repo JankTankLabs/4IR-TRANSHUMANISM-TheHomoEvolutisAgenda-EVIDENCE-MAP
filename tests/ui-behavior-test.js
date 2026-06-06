@@ -6,6 +6,7 @@ const assert = require('assert');
 const html = fs.readFileSync('index.html', 'utf8');
 const script = html.match(/<script>([\s\S]*)<\/script>\s*<\/body>/)?.[1];
 assert(script, 'inline application script missing');
+const filterButtons = [];
 
 class ClassList {
   constructor() { this.values = new Set(); }
@@ -31,12 +32,40 @@ class ElementMock {
     this.attributes = {};
     this._html = '';
     this.value = '';
+    this.rect = { left: 0, right: 0, top: 0, bottom: 0, width: 0, height: 0 };
   }
-  set innerHTML(value) { this._html = String(value); }
+  set innerHTML(value) {
+    this._html = String(value);
+    if (this.id === 'filterBar') {
+      filterButtons.length = 0;
+      [...this._html.matchAll(/class="([^"]*filter-btn[^"]*)"[^>]*data-filter="([^"]+)"/g)].forEach((match, index) => {
+        const button = new ElementMock(`filter-${match[2]}`);
+        button.dataset.filter = match[2];
+        button.parentElement = this;
+        match[1].split(/\s+/).filter(Boolean).forEach(name => button.classList.add(name));
+        const width = 120;
+        const gap = 10;
+        const columns = 4;
+        const row = Math.floor(index / columns);
+        const column = index % columns;
+        const left = column * (width + gap);
+        const top = row * 46;
+        button.rect = { left, right: left + width, top, bottom: top + 36, width, height: 36 };
+        filterButtons.push(button);
+      });
+      this.children = [...filterButtons];
+    }
+  }
   get innerHTML() { return this._html; }
   setAttribute(name, value) { this.attributes[name] = String(value); }
   addEventListener(name, handler) { (this.listeners[name] ||= []).push(handler); }
-  querySelectorAll() { return []; }
+  removeEventListener(name, handler) {
+    this.listeners[name] = (this.listeners[name] || []).filter(listener => listener !== handler);
+  }
+  querySelectorAll(selector) {
+    if (this.id === 'filterBar' && selector === '[data-filter]') return [...filterButtons];
+    return [];
+  }
   querySelector() { return null; }
   appendChild(node) { node.parentElement = this; this.children.push(node); }
   insertBefore(node, reference) {
@@ -46,7 +75,14 @@ class ElementMock {
     this.children.splice(index < 0 ? this.children.length : index, 0, node);
   }
   contains(target) { return target === this || this.children.includes(target); }
-  closest() { return null; }
+  closest(selector) {
+    if (selector === '[data-filter]') return this.dataset.filter ? this : null;
+    if (selector === '[data-drawer-view]') return this.dataset.drawerView ? this : null;
+    return null;
+  }
+  getBoundingClientRect() { return this.rect; }
+  setPointerCapture() {}
+  releasePointerCapture() {}
   remove() {}
 }
 
@@ -61,10 +97,15 @@ pageParent.appendChild(cardsGrid);
 const documentMock = {
   body: new ElementMock('body'),
   getElementById(id) { return elements.get(id) || null; },
-  querySelectorAll(selector) { return selector === '[data-drawer-view]' ? drawerTabs.map(id => elements.get(id)) : []; },
+  querySelectorAll(selector) {
+    if (selector === '[data-drawer-view]') return drawerTabs.map(id => elements.get(id));
+    if (selector === '.filter-btn' || selector === '#filterBar [data-filter]') return [...filterButtons];
+    return [];
+  },
   querySelector() { return null; },
   createElement() { return new ElementMock('created'); },
-  addEventListener(name, handler) { this.body.addEventListener(name, handler); }
+  addEventListener(name, handler) { this.body.addEventListener(name, handler); },
+  removeEventListener(name, handler) { this.body.removeEventListener(name, handler); }
 };
 const localStore = new Map();
 const context = {
@@ -78,15 +119,25 @@ const context = {
     removeItem(key) { localStore.delete(key); }
   },
   setTimeout, clearTimeout,
-  requestAnimationFrame(callback) { return callback(); }
+  requestAnimationFrame(callback) { return callback(); },
+  cancelAnimationFrame() {}
 };
 context.globalThis = context;
-vm.runInNewContext(script, context, { filename: 'index.inline.js' });
+vm.runInNewContext(`${script}
+globalThis.__APP_UI_TEST__ = {
+  get activeFilters() { return activeFilters; },
+  get categoryOrder() { return categoryOrder; }
+};`, context, { filename: 'index.inline.js' });
+const app = context.__APP_UI_TEST__;
 
 function click(id) {
   const target = elements.get(id);
   assert(target.listeners.click?.length, `${id} click listener missing`);
   target.listeners.click[0]({ preventDefault() {}, stopPropagation() {}, target });
+}
+
+function categorySectionOrder() {
+  return [...elements.get('cardsGrid').innerHTML.matchAll(/data-category-section="([^"]+)"/g)].map(match => match[1]);
 }
 
 click('sourceDrawerTab');
@@ -117,4 +168,39 @@ escapeHandler({ key: 'Escape' });
 assert.strictEqual(elements.get('sideDrawer').dataset.drawerActive, '', 'Escape should close any drawer view');
 assert.strictEqual((html.match(/id="sideDrawer"/g) || []).length, 1, 'multiple drawer shells found');
 
-console.log('UI behavior tests passed: isolated drawer views, deterministic content, and close policies.');
+const filterBar = elements.get('filterBar');
+assert(filterBar.listeners.click?.length, 'filterBar click listener missing');
+assert(filterBar.listeners.pointerdown?.length, 'filterBar pointerdown listener missing');
+const filterButton = filterButtons.find(button => button.dataset.filter === 'patents');
+filterBar.listeners.click[0]({ preventDefault() {}, stopPropagation() {}, target: filterButton });
+assert(!app.activeFilters.includes('patents'), 'normal category click should still toggle the filter off');
+filterBar.listeners.click[0]({ preventDefault() {}, stopPropagation() {}, target: filterButton });
+assert(app.activeFilters.includes('patents'), 'second normal category click should toggle the filter back on');
+
+const legislationButton = filterButtons.find(button => button.dataset.filter === 'legislation');
+filterBar.listeners.pointerdown[0]({
+  target: filterButton,
+  pointerId: 7,
+  pointerType: 'mouse',
+  button: 0,
+  clientX: filterButton.rect.left + 8,
+  clientY: filterButton.rect.top + 10
+});
+const pointerMove = documentMock.body.listeners.pointermove[0];
+const pointerUp = documentMock.body.listeners.pointerup[0];
+assert(pointerMove && pointerUp, 'category drag listeners should attach to document during pointer drag');
+pointerMove({
+  pointerId: 7,
+  clientX: legislationButton.rect.right - 6,
+  clientY: legislationButton.rect.top + 10,
+  cancelable: true,
+  preventDefault() {}
+});
+pointerUp({ pointerId: 7 });
+assert.deepStrictEqual(Array.from(app.categoryOrder).slice(0, 2), ['legislation', 'patents'], 'dragging a category chip should reorder the persisted category sequence');
+assert.deepStrictEqual(categorySectionOrder().slice(0, 2), ['legislation', 'patents'], 'card section DOM order should follow the reordered chip order');
+filterBar.listeners.click[0]({ preventDefault() {}, stopPropagation() {}, target: filterButtons.find(button => button.dataset.filter === 'patents') });
+assert(app.activeFilters.includes('patents'), 'post-drag click suppression should prevent the drag gesture from toggling filters');
+assert.strictEqual(localStore.get('evidenceCategoryOrder'), JSON.stringify(Array.from(app.categoryOrder)), 'drag reorder should persist the new chip order');
+
+console.log('UI behavior tests passed: isolated drawer views, deterministic content, drag-safe filter reordering, and close policies.');

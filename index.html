@@ -145,13 +145,31 @@
       color: var(--text-primary);
     }
 
-    .filter-btn[draggable="true"] {
+    .filter-btn.reorderable {
       cursor: grab;
+      touch-action: none;
     }
 
     .filter-btn.is-drop-target {
       border-color: var(--warning);
       box-shadow: 0 0 0 2px rgba(255, 209, 102, 0.14) inset;
+    }
+
+    .filter-btn.is-drop-before {
+      box-shadow: -3px 0 0 0 rgba(255, 209, 102, 0.8), 0 0 0 2px rgba(255, 209, 102, 0.14) inset;
+    }
+
+    .filter-btn.is-drop-after {
+      box-shadow: 3px 0 0 0 rgba(255, 209, 102, 0.8), 0 0 0 2px rgba(255, 209, 102, 0.14) inset;
+    }
+
+    .filter-btn.is-dragging {
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.32);
+      cursor: grabbing;
+      opacity: 0.96;
+      position: relative;
+      transition: none;
+      z-index: 4;
     }
 
     .filter-btn.active {
@@ -10998,6 +11016,8 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     let sortMode = 'newest';
     let expandedCards = new Set();
     let highlightedCards = new Set();
+    let categoryDragState = null;
+    let suppressFilterClick = false;
     let selectedThread = null;
     let selectedEntity = null;
     let selectedComparisonEntity = null;
@@ -11723,6 +11743,14 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       saveJsonPreference('evidenceCategoryOrder', categoryOrder);
     }
 
+    function reorderItems(order, sourceId, targetId, placeAfter = false) {
+      if (!sourceId || !targetId || sourceId === targetId || !order.includes(sourceId) || !order.includes(targetId)) return order;
+      const next = order.filter(id => id !== sourceId);
+      const targetIndex = next.indexOf(targetId);
+      next.splice(targetIndex < 0 ? next.length : targetIndex + (placeAfter ? 1 : 0), 0, sourceId);
+      return next;
+    }
+
     function syncFilterButtons() {
       document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.classList.toggle('active', activeFilters.includes(btn.dataset.filter));
@@ -11758,34 +11786,123 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       const bar = document.getElementById('filterBar');
       if (!bar) return;
       bar.innerHTML = categoryOrder.map(type => `
-        <button class="filter-btn ${activeFilters.includes(type) ? 'active' : ''} ${type}" type="button" draggable="true" data-filter="${type}">
+        <button class="filter-btn reorderable ${activeFilters.includes(type) ? 'active' : ''} ${type}" type="button" data-filter="${type}" title="Click to toggle this section. Drag to reorder sections on the page.">
           <span class="filter-dot ${type}"></span> ${formatFilterLabel(type)}
         </button>
       `).join('');
-      bar.querySelectorAll('[data-filter]').forEach(btn => {
-        btn.addEventListener('dragstart', event => event.dataTransfer.setData('text/plain', btn.dataset.filter));
-        btn.addEventListener('dragover', event => {
-          event.preventDefault();
-          btn.classList.add('is-drop-target');
-        });
-        btn.addEventListener('dragleave', () => btn.classList.remove('is-drop-target'));
-        btn.addEventListener('drop', event => {
-          event.preventDefault();
-          btn.classList.remove('is-drop-target');
-          moveCategory(event.dataTransfer.getData('text/plain'), btn.dataset.filter);
-        });
-      });
     }
 
-    function moveCategory(sourceType, targetType) {
-      if (!sourceType || !targetType || sourceType === targetType) return;
-      categoryOrder = categoryOrder.filter(type => type !== sourceType);
-      const targetIndex = categoryOrder.indexOf(targetType);
-      categoryOrder.splice(targetIndex < 0 ? categoryOrder.length : targetIndex, 0, sourceType);
+    function moveCategory(sourceType, targetType, placeAfter = false) {
+      const nextOrder = reorderItems(categoryOrder, sourceType, targetType, placeAfter);
+      if (nextOrder === categoryOrder) return;
+      categoryOrder = nextOrder;
       saveCategoryOrder();
       renderFilterBar();
       renderCards();
       updateStats();
+    }
+
+    function clearCategoryDropIndicators() {
+      document.querySelectorAll('#filterBar [data-filter]').forEach(btn => {
+        btn.classList.remove('is-drop-target', 'is-drop-before', 'is-drop-after');
+      });
+    }
+
+    function resolveCategoryDropTarget(buttons, clientX, clientY, sourceType) {
+      const candidates = buttons
+        .filter(btn => btn?.dataset?.filter && btn.dataset.filter !== sourceType)
+        .map(btn => ({ btn, rect: btn.getBoundingClientRect() }))
+        .filter(({ rect }) => Number.isFinite(rect.left) && Number.isFinite(rect.top));
+      if (!candidates.length) return null;
+
+      const inside = candidates.find(({ rect }) => clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom);
+      if (inside) {
+        return {
+          targetType: inside.btn.dataset.filter,
+          placeAfter: clientX > inside.rect.left + inside.rect.width / 2
+        };
+      }
+
+      let best = null;
+      let bestDistance = Infinity;
+      candidates.forEach(candidate => {
+        const { rect } = candidate;
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const distance = Math.abs(clientY - centerY) * 1.4 + Math.abs(clientX - centerX);
+        if (distance < bestDistance) {
+          best = candidate;
+          bestDistance = distance;
+        }
+      });
+
+      if (!best) return null;
+      return {
+        targetType: best.btn.dataset.filter,
+        placeAfter: clientX > best.rect.left + best.rect.width / 2
+      };
+    }
+
+    function updateCategoryDragPreview() {
+      if (!categoryDragState?.started || !categoryDragState.sourceButton) return;
+      categoryDragState.frame = 0;
+      categoryDragState.sourceButton.style.transform = `translate(${categoryDragState.currentX - categoryDragState.startX}px, ${categoryDragState.currentY - categoryDragState.startY}px)`;
+      const buttons = [...document.querySelectorAll('#filterBar [data-filter]')];
+      const target = resolveCategoryDropTarget(buttons, categoryDragState.currentX, categoryDragState.currentY, categoryDragState.sourceType);
+      categoryDragState.targetType = target?.targetType || null;
+      categoryDragState.placeAfter = Boolean(target?.placeAfter);
+      clearCategoryDropIndicators();
+      const targetButton = target ? buttons.find(btn => btn.dataset.filter === target.targetType) : null;
+      if (targetButton) {
+        targetButton.classList.add('is-drop-target', target.placeAfter ? 'is-drop-after' : 'is-drop-before');
+      }
+    }
+
+    function stopCategoryPointerDrag(commit = false) {
+      const state = categoryDragState;
+      if (!state) return;
+      if (state.frame && typeof cancelAnimationFrame === 'function') cancelAnimationFrame(state.frame);
+      document.removeEventListener('pointermove', handleCategoryPointerMove);
+      document.removeEventListener('pointerup', handleCategoryPointerEnd);
+      document.removeEventListener('pointercancel', handleCategoryPointerCancel);
+      state.sourceButton?.releasePointerCapture?.(state.pointerId);
+      if (state.sourceButton) {
+        state.sourceButton.classList.remove('is-dragging');
+        state.sourceButton.style.transform = '';
+      }
+      clearCategoryDropIndicators();
+      if (state.started && commit && state.targetType) {
+        moveCategory(state.sourceType, state.targetType, state.placeAfter);
+      }
+      suppressFilterClick = state.started;
+      categoryDragState = null;
+    }
+
+    function handleCategoryPointerMove(event) {
+      if (!categoryDragState || event.pointerId !== categoryDragState.pointerId) return;
+      categoryDragState.currentX = event.clientX;
+      categoryDragState.currentY = event.clientY;
+      if (!categoryDragState.started) {
+        const movedX = Math.abs(categoryDragState.currentX - categoryDragState.startX);
+        const movedY = Math.abs(categoryDragState.currentY - categoryDragState.startY);
+        if (Math.max(movedX, movedY) < 8) return;
+        categoryDragState.started = true;
+        categoryDragState.sourceButton.classList.add('is-dragging');
+      }
+      if (event.cancelable) event.preventDefault();
+      if (!categoryDragState.frame) {
+        categoryDragState.frame = requestAnimationFrame(updateCategoryDragPreview);
+      }
+    }
+
+    function handleCategoryPointerEnd(event) {
+      if (!categoryDragState || event.pointerId !== categoryDragState.pointerId) return;
+      stopCategoryPointerDrag(true);
+    }
+
+    function handleCategoryPointerCancel(event) {
+      if (!categoryDragState || event.pointerId !== categoryDragState.pointerId) return;
+      stopCategoryPointerDrag(false);
     }
 
     function setAllCategories(open) {
@@ -14654,9 +14771,37 @@ Provenance risk: ${audit.riskLabel}`);
         if (chip) showDiscovery(chip.dataset.searchTerm);
       });
 
+      document.getElementById('filterBar').addEventListener('pointerdown', event => {
+        const btn = event.target.closest('[data-filter]');
+        if (!btn || (event.pointerType === 'mouse' && event.button !== 0)) return;
+        categoryDragState = {
+          pointerId: event.pointerId,
+          sourceType: btn.dataset.filter,
+          sourceButton: btn,
+          startX: event.clientX,
+          startY: event.clientY,
+          currentX: event.clientX,
+          currentY: event.clientY,
+          targetType: null,
+          placeAfter: false,
+          started: false,
+          frame: 0
+        };
+        btn.setPointerCapture?.(event.pointerId);
+        document.addEventListener('pointermove', handleCategoryPointerMove);
+        document.addEventListener('pointerup', handleCategoryPointerEnd);
+        document.addEventListener('pointercancel', handleCategoryPointerCancel);
+      });
+
       document.getElementById('filterBar').addEventListener('click', event => {
         const btn = event.target.closest('[data-filter]');
         if (!btn) return;
+        if (suppressFilterClick) {
+          suppressFilterClick = false;
+          event.preventDefault?.();
+          event.stopPropagation?.();
+          return;
+        }
         const filter = btn.dataset.filter;
         if (activeFilters.includes(filter)) {
           activeFilters = activeFilters.filter(f => f !== filter);
