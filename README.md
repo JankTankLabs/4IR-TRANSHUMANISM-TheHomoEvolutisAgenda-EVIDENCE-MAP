@@ -53,9 +53,10 @@ Run the static smoke suite with:
 
 ```bash
 node tests/smoke-test.js
+node tests/ui-behavior-test.js
 ```
 
-The smoke suite checks the inline JavaScript syntax path, dataset/card schema, source-link shape, category/workspace defaults, open/close helpers, persisted category reordering, required workspace panel elements, and key UX guard markers.
+The smoke suites check inline JavaScript, dataset/card schema, persisted category/workspace ordering, physical section reordering, lazy collapsed-panel rendering, and deterministic Index/Impact/Sources drawer content.
 
 ## Notes
 

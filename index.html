@@ -667,14 +667,6 @@
     }
 
 
-    .workspace-drawer-toggle {
-      height: 1px;
-      left: -9999px;
-      opacity: 0;
-      position: fixed;
-      width: 1px;
-    }
-
     .workspace-index-drawer {
       background: radial-gradient(circle at top left, rgba(93, 173, 226, 0.16), transparent 36%), rgba(15, 18, 24, 0.98);
       border-right: 1px solid rgba(93, 173, 226, 0.35);
@@ -687,17 +679,12 @@
       position: fixed;
       top: 0;
       transform: translateX(-100%);
-      transition: transform 220ms ease, box-shadow 220ms ease;
+      transition: transform 180ms ease;
       width: 320px;
       z-index: 1400;
     }
 
-    body.workspace-drawer-open #workspaceIndexDrawer,
-    #workspaceDrawerToggle:checked ~ #workspaceIndexDrawer,
-    #impactDrawerToggle:checked ~ #impactDrawer,
-    #sourceDrawerToggle:checked ~ #sourceDrawer {
-      transform: translateX(0);
-    }
+    body.side-drawer-open #sideDrawer { transform: translateX(0); }
 
     .workspace-drawer-tab {
       align-items: center;
@@ -712,7 +699,6 @@
       font-family: 'IBM Plex Mono', monospace;
       font-size: 0.78rem;
       font-weight: 800;
-      gap: 7px;
       left: 0;
       letter-spacing: 0.08em;
       padding: 13px 10px;
@@ -733,13 +719,7 @@
       outline-offset: 3px;
     }
 
-    body.workspace-drawer-open #workspaceDrawerTab,
-    #workspaceDrawerToggle:checked ~ #workspaceDrawerTab,
-    #impactDrawerToggle:checked ~ #impactDrawerTab,
-    #sourceDrawerToggle:checked ~ #sourceDrawerTab {
-      left: 320px;
-    }
-
+    body.side-drawer-open .workspace-drawer-tab.is-active { left: 320px; }
     .impact-drawer-tab { top: calc(34% + 84px); }
     .source-drawer-tab { top: calc(34% + 168px); }
 
@@ -2859,10 +2839,7 @@
         width: 286px;
       }
 
-      body.workspace-drawer-open #workspaceDrawerTab,
-      #workspaceDrawerToggle:checked ~ #workspaceDrawerTab,
-      #impactDrawerToggle:checked ~ #impactDrawerTab,
-      #sourceDrawerToggle:checked ~ #sourceDrawerTab {
+      body.side-drawer-open .workspace-drawer-tab.is-active {
         left: min(286px, calc(100vw - 52px));
       }
 
@@ -2881,32 +2858,15 @@
   </style>
 </head>
 <body>
-  <input class="workspace-drawer-toggle" id="workspaceDrawerToggle" type="checkbox" aria-hidden="true">
-  <input class="workspace-drawer-toggle" id="impactDrawerToggle" type="checkbox" aria-hidden="true">
-  <input class="workspace-drawer-toggle" id="sourceDrawerToggle" type="checkbox" aria-hidden="true">
-  <label class="workspace-drawer-tab" id="workspaceDrawerTab" for="workspaceDrawerToggle" role="button" tabindex="0" aria-controls="workspaceIndexDrawer" aria-expanded="false" aria-label="Open workspace index">Index</label>
-  <label class="workspace-drawer-tab impact-drawer-tab" id="impactDrawerTab" for="impactDrawerToggle" role="button" tabindex="0" aria-controls="impactDrawer" aria-expanded="false" aria-label="Open impact matrix">Impact</label>
-  <label class="workspace-drawer-tab source-drawer-tab" id="sourceDrawerTab" for="sourceDrawerToggle" role="button" tabindex="0" aria-controls="sourceDrawer" aria-expanded="false" aria-label="Open source provenance">Sources</label>
-  <aside class="workspace-index-drawer" id="workspaceIndexDrawer" aria-hidden="true">
+  <button class="workspace-drawer-tab" id="workspaceDrawerTab" type="button" data-drawer-view="index" aria-controls="sideDrawer" aria-expanded="false">Index</button>
+  <button class="workspace-drawer-tab impact-drawer-tab" id="impactDrawerTab" type="button" data-drawer-view="impact" aria-controls="sideDrawer" aria-expanded="false">Impact</button>
+  <button class="workspace-drawer-tab source-drawer-tab" id="sourceDrawerTab" type="button" data-drawer-view="source" aria-controls="sideDrawer" aria-expanded="false">Sources</button>
+  <aside class="workspace-index-drawer" id="sideDrawer" aria-hidden="true" data-drawer-active="">
     <div class="workspace-drawer-top">
-      <div class="workspace-index-title">Main sections</div>
-      <label class="workspace-drawer-close" id="workspaceDrawerClose" for="workspaceDrawerToggle" role="button" tabindex="0" aria-label="Close workspace index">×</label>
+      <div class="workspace-index-title" id="sideDrawerTitle">Workspace Index</div>
+      <button class="workspace-drawer-close" id="sideDrawerClose" type="button" aria-label="Close side drawer">×</button>
     </div>
-    <section class="workspace-index-panel" id="workspaceIndexPanel"></section>
-  </aside>
-  <aside class="workspace-index-drawer" id="impactDrawer" aria-hidden="true">
-    <div class="workspace-drawer-top">
-      <div class="workspace-index-title">Impact Matrix</div>
-      <label class="workspace-drawer-close" id="impactDrawerClose" for="impactDrawerToggle" role="button" tabindex="0" aria-label="Close impact matrix">×</label>
-    </div>
-    <section class="impact-panel" id="impactDrawerPanel"></section>
-  </aside>
-  <aside class="workspace-index-drawer" id="sourceDrawer" aria-hidden="true">
-    <div class="workspace-drawer-top">
-      <div class="workspace-index-title">Sources</div>
-      <label class="workspace-drawer-close" id="sourceDrawerClose" for="sourceDrawerToggle" role="button" tabindex="0" aria-label="Close source provenance">×</label>
-    </div>
-    <section class="brief-panel" id="sourceDrawerPanel"></section>
+    <section class="workspace-index-panel" id="sideDrawerPanel"></section>
   </aside>
   <div class="container">
     <header>
@@ -11484,14 +11444,12 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       renderFilterBar();
       renderQuickLinks();
       renderCards();
-      updateStats();
       setupEventListeners();
       try {
-        renderSupportPanels(getVisibleEvidence());
+        updateStats();
       } catch (error) {
         console.error('Support panel render failed; keeping core navigation active.', error);
         applyWorkspacePanelShells();
-        renderWorkspaceIndex();
       }
     }
 
@@ -11615,16 +11573,18 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
             <span class="category-count">${items.length} cards · ${linkCount} links</span>
             <span class="category-chevron">›</span>
           </button>
-          <div class="category-body">
-            <div class="category-actions">
-              <button class="toolbar-btn" type="button" data-category-open="${type}">Enlarge this tab</button>
-              <button class="toolbar-btn" type="button" data-category-close="${type}">Shrink this tab</button>
-              <button class="toolbar-btn" type="button" data-search-term="${type}">Isolate ${formatType(type)}</button>
+          ${isOpen ? `
+            <div class="category-body">
+              <div class="category-actions">
+                <button class="toolbar-btn" type="button" data-category-open="${type}">Enlarge this tab</button>
+                <button class="toolbar-btn" type="button" data-category-close="${type}">Shrink this tab</button>
+                <button class="toolbar-btn" type="button" data-search-term="${type}">Isolate ${formatType(type)}</button>
+              </div>
+              <div class="cards-grid">
+                ${items.map(e => renderCard(e)).join('')}
+              </div>
             </div>
-            <div class="cards-grid">
-              ${items.map(e => renderCard(e)).join('')}
-            </div>
-          </div>
+          ` : ''}
         </section>
       `;
     }
@@ -11838,7 +11798,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     function setAllWorkspacePanels(open) {
       collapsedWorkspacePanels = open ? new Set() : new Set(workspacePanels.map(item => item.id));
       if (document.getElementById('entityPanel')) {
-        renderSupportPanels(getVisibleEvidence(), { preserveShells: true });
+        renderSupportPanels(getVisibleEvidence());
       } else {
         applyWorkspacePanelShells();
         renderWorkspaceIndex();
@@ -12592,7 +12552,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       document.getElementById('threadCopyBtn')?.addEventListener('click', () => copyText(formatLinksForClipboard(matches)));
     }
 
-    function renderBriefPanel(items = getVisibleEvidence(), panelId = 'sourceDrawerPanel') {
+    function renderBriefPanel(items = getVisibleEvidence(), panelId = 'sideDrawerPanel') {
       const panel = document.getElementById(panelId);
       if (!panel) return;
       const audit = getSourceAudit(items);
@@ -12678,7 +12638,7 @@ Provenance risk: ${audit.riskLabel}`);
       }).sort((a, b) => b.score - a.score);
     }
 
-    function renderImpactPanel(items = getVisibleEvidence(), panelId = 'impactDrawerPanel') {
+    function renderImpactPanel(items = getVisibleEvidence(), panelId = 'sideDrawerPanel') {
       const panel = document.getElementById(panelId);
       if (!panel) return;
       const ranked = getCategoryImpact(items).slice(0, 8);
@@ -13990,56 +13950,50 @@ Provenance risk: ${audit.riskLabel}`);
       });
     }
 
-    function setWorkspaceDrawer(open) {
-      if (open) {
-        setSideDrawer('impact', false);
-        setSideDrawer('source', false);
-        renderWorkspaceIndex();
+    let activeDrawerView = null;
+
+    function renderDrawerView(view) {
+      const panel = document.getElementById('sideDrawerPanel');
+      const title = document.getElementById('sideDrawerTitle');
+      if (!panel || !title) return;
+      panel.className = view === 'index' ? 'workspace-index-panel' : view === 'impact' ? 'impact-panel' : 'brief-panel';
+      if (view === 'index') {
+        title.textContent = 'Workspace Index';
+        renderWorkspaceIndex('sideDrawerPanel');
+      } else if (view === 'impact') {
+        title.textContent = 'Impact Matrix';
+        renderImpactPanel(getVisibleEvidence(), 'sideDrawerPanel');
+      } else {
+        title.textContent = 'Source provenance';
+        renderBriefPanel(getVisibleEvidence(), 'sideDrawerPanel');
       }
-      document.body.classList.toggle('workspace-drawer-open', open);
-      document.getElementById('workspaceIndexDrawer')?.setAttribute('aria-hidden', String(!open));
-      const checkbox = document.getElementById('workspaceDrawerToggle');
-      if (checkbox) checkbox.checked = open;
-      const tab = document.getElementById('workspaceDrawerTab');
-      tab?.setAttribute('aria-expanded', String(open));
-      tab?.setAttribute('aria-label', open ? 'Close workspace index' : 'Open workspace index');
-      tab?.classList.toggle('is-open', open);
     }
 
-    function toggleWorkspaceDrawer() {
-      setWorkspaceDrawer(!document.body.classList.contains('workspace-drawer-open'));
+    function setDrawerView(view, open = true) {
+      const drawer = document.getElementById('sideDrawer');
+      if (!drawer) return;
+      activeDrawerView = open ? view : null;
+      document.body.classList.toggle('side-drawer-open', Boolean(activeDrawerView));
+      drawer.setAttribute('aria-hidden', String(!activeDrawerView));
+      drawer.dataset.drawerActive = activeDrawerView || '';
+      document.querySelectorAll('[data-drawer-view]').forEach(tab => {
+        const active = tab.dataset.drawerView === activeDrawerView;
+        tab.classList.toggle('is-active', active);
+        tab.setAttribute('aria-expanded', String(active));
+      });
+      if (activeDrawerView) renderDrawerView(activeDrawerView);
     }
 
-    function setSideDrawer(name, open) {
-      const configs = {
-        impact: { toggle: 'impactDrawerToggle', drawer: 'impactDrawer', tab: 'impactDrawerTab', render: (items = getVisibleEvidence()) => renderImpactPanel(items, 'impactDrawerPanel') },
-        source: { toggle: 'sourceDrawerToggle', drawer: 'sourceDrawer', tab: 'sourceDrawerTab', render: (items = getVisibleEvidence()) => renderBriefPanel(items, 'sourceDrawerPanel') }
-      };
-      const config = configs[name];
-      if (!config) return;
-      if (open) {
-        setWorkspaceDrawer(false);
-        Object.entries(configs).forEach(([otherName, otherConfig]) => {
-          if (otherName === name) return;
-          const otherCheckbox = document.getElementById(otherConfig.toggle);
-          if (otherCheckbox) otherCheckbox.checked = false;
-          document.getElementById(otherConfig.drawer)?.setAttribute('aria-hidden', 'true');
-          document.getElementById(otherConfig.tab)?.setAttribute('aria-expanded', 'false');
-          document.getElementById(otherConfig.tab)?.classList.remove('is-open');
-        });
-        config.render();
-      }
-      const checkbox = document.getElementById(config.toggle);
-      if (checkbox) checkbox.checked = open;
-      document.getElementById(config.drawer)?.setAttribute('aria-hidden', String(!open));
-      const tab = document.getElementById(config.tab);
-      tab?.setAttribute('aria-expanded', String(open));
-      tab?.classList.toggle('is-open', open);
+    function toggleDrawerView(view) {
+      setDrawerView(view, activeDrawerView !== view);
     }
 
-    function refreshOpenSideDrawers(items = getVisibleEvidence()) {
-      if (document.getElementById('impactDrawerToggle')?.checked) renderImpactPanel(items, 'impactDrawerPanel');
-      if (document.getElementById('sourceDrawerToggle')?.checked) renderBriefPanel(items, 'sourceDrawerPanel');
+    function setWorkspaceDrawer(open) { setDrawerView('index', open); }
+    function toggleWorkspaceDrawer() { toggleDrawerView('index'); }
+    function setSideDrawer(name, open) { setDrawerView(name === 'source' ? 'source' : 'impact', open); }
+
+    function refreshOpenSideDrawers() {
+      if (activeDrawerView) renderDrawerView(activeDrawerView);
     }
 
     function openWorkspacePreset(id) {
@@ -14068,8 +14022,9 @@ Provenance risk: ${audit.riskLabel}`);
       return groups;
     }
 
-    function renderWorkspaceIndex() {
-      const panel = document.getElementById('workspaceIndexPanel');
+    function renderWorkspaceIndex(panelId = 'sideDrawerPanel') {
+      if (panelId === 'sideDrawerPanel' && activeDrawerView !== 'index') return;
+      const panel = document.getElementById(panelId);
       if (!panel) return;
       const ordered = workspacePanelOrder.map(id => workspacePanels.find(panel => panel.id === id)).filter(Boolean);
       panel.innerHTML = `
@@ -14155,8 +14110,10 @@ Provenance risk: ${audit.riskLabel}`);
     }
 
     function toggleWorkspacePanel(id, scroll = false) {
-      if (collapsedWorkspacePanels.has(id)) collapsedWorkspacePanels.delete(id);
+      const opening = collapsedWorkspacePanels.has(id);
+      if (opening) collapsedWorkspacePanels.delete(id);
       else collapsedWorkspacePanels.add(id);
+      if (opening) renderWorkspacePanelById(id, getVisibleEvidence());
       applyWorkspacePanelShells();
       renderWorkspaceIndex();
       if (scroll && !collapsedWorkspacePanels.has(id)) {
@@ -14186,27 +14143,36 @@ Provenance risk: ${audit.riskLabel}`);
       });
     }
 
-    function renderSupportPanels(items = getVisibleEvidence(), options = {}) {
-      renderWorkspaceIndex();
-      renderWorkspacePagesPanel();
-      renderEntityPanel(items);
-      refreshOpenSideDrawers(items);
-      renderBridgeMapPanel(items);
-      renderInvestmentPanel(items);
-      renderPathwayPanel(items);
-      renderDominoPanel(items);
-      renderYglRosterPanel();
-      renderLineagePanel(items);
-      renderMissionPanel(items);
-      renderConnectionConstellation(items);
-      renderQuoteVault(items);
-      renderExposeReportsPanel();
-      renderTrackRouterPanel(items);
-      renderSignalStackPanel(items);
-      renderNarrativePanel(items);
+    function renderWorkspacePanelById(id, items = getVisibleEvidence()) {
+      const renderers = {
+        workspacePagesPanel: () => renderWorkspacePagesPanel(),
+        entityPanel: () => renderEntityPanel(items),
+        bridgeMapPanel: () => renderBridgeMapPanel(items),
+        investmentPanel: () => renderInvestmentPanel(items),
+        pathwayPanel: () => renderPathwayPanel(items),
+        dominoPanel: () => renderDominoPanel(items),
+        yglRosterPanel: () => renderYglRosterPanel(),
+        lineagePanel: () => renderLineagePanel(items),
+        reportPanel: () => renderExposeReportsPanel(),
+        trackRouterPanel: () => renderTrackRouterPanel(items),
+        signalStackPanel: () => renderSignalStackPanel(items),
+        narrativePanel: () => renderNarrativePanel(items),
+        researchConsoleGrid: () => { renderMissionPanel(items); renderConnectionConstellation(items); },
+        quotePanel: () => renderQuoteVault(items),
+        timelinePanel: () => renderTimeline(items),
+        threadPanel: () => renderThreadPanel(items)
+      };
+      renderers[id]?.();
+    }
+
+    function renderSupportPanels(items = getVisibleEvidence()) {
+      workspacePanelOrder.forEach(id => {
+        if (!collapsedWorkspacePanels.has(id)) renderWorkspacePanelById(id, items);
+      });
+      refreshOpenSideDrawers();
       renderDiscoveryPanel();
       applyWorkspacePanelShells();
-      renderWorkspaceIndex();
+      if (activeDrawerView === 'index') renderWorkspaceIndex();
     }
 
     function recordInteraction(id) {
@@ -14517,10 +14483,6 @@ Provenance risk: ${audit.riskLabel}`);
 
       renderSupportPanels(visible);
       renderStateBar(visible);
-      renderTimeline(visible);
-      renderThreadPanel(visible);
-      applyWorkspacePanelShells();
-      renderWorkspaceIndex();
       updateExpandButton(visible);
     }
 
@@ -14644,45 +14606,23 @@ Provenance risk: ${audit.riskLabel}`);
         scrollToElementTop('workspacePagesPanel');
       });
 
-      document.getElementById('workspaceDrawerToggle')?.addEventListener('change', event => {
-        setWorkspaceDrawer(event.target.checked);
-      });
-      document.getElementById('impactDrawerToggle')?.addEventListener('change', event => {
-        setSideDrawer('impact', event.target.checked);
-      });
-      document.getElementById('sourceDrawerToggle')?.addEventListener('change', event => {
-        setSideDrawer('source', event.target.checked);
-      });
-      document.getElementById('workspaceDrawerTab')?.addEventListener('keydown', event => {
-        if (event.key !== 'Enter' && event.key !== ' ') return;
-        event.preventDefault();
-        toggleWorkspaceDrawer();
-      });
-      document.getElementById('workspaceDrawerClose')?.addEventListener('keydown', event => {
-        if (event.key !== 'Enter' && event.key !== ' ') return;
-        event.preventDefault();
-        setWorkspaceDrawer(false);
-      });
-      [['impactDrawerTab', 'impact', true], ['impactDrawerClose', 'impact', false], ['sourceDrawerTab', 'source', true], ['sourceDrawerClose', 'source', false]].forEach(([id, name, toggle]) => {
-        document.getElementById(id)?.addEventListener('keydown', event => {
-          if (event.key !== 'Enter' && event.key !== ' ') return;
+      document.querySelectorAll('[data-drawer-view]').forEach(tab => {
+        tab.addEventListener('click', event => {
           event.preventDefault();
-          const checkbox = document.getElementById(`${name}DrawerToggle`);
-          setSideDrawer(name, toggle ? !(checkbox?.checked) : false);
+          event.stopPropagation();
+          toggleDrawerView(tab.dataset.drawerView);
         });
       });
+      document.getElementById('sideDrawerClose')?.addEventListener('click', () => setDrawerView(null, false));
       document.addEventListener('click', event => {
-        if (!document.body.classList.contains('workspace-drawer-open')) return;
-        const drawer = document.getElementById('workspaceIndexDrawer');
-        const tab = document.getElementById('workspaceDrawerTab');
-        if (drawer?.contains(event.target) || tab?.contains(event.target)) return;
-        setWorkspaceDrawer(false);
+        if (!activeDrawerView) return;
+        const drawer = document.getElementById('sideDrawer');
+        const clickedTab = event.target.closest?.('[data-drawer-view]');
+        if (drawer?.contains(event.target) || clickedTab) return;
+        if (activeDrawerView === 'index') setDrawerView(null, false);
       });
       document.addEventListener('keydown', event => {
-        if (event.key !== 'Escape') return;
-        setWorkspaceDrawer(false);
-        setSideDrawer('impact', false);
-        setSideDrawer('source', false);
+        if (event.key === 'Escape') setDrawerView(null, false);
       });
 
       document.getElementById('openWorkspaceTopBtn')?.addEventListener('click', () => setAllWorkspacePanels(true));
