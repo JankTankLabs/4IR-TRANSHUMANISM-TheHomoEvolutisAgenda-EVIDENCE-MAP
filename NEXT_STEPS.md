@@ -15,12 +15,11 @@ These are internal follow-up tasks for future edits. They are intentionally not 
 
 ## Next logical tasks
 
-1. Deepen Entity Intelligence into full entity-specific timeline overlays for the highest-convergence nodes (Bill Gates, Rockefeller Foundation, WEF/Klaus Schwab, Epstein/Maxwell, EcoHealth/NIH, Palantir/Thiel, Pritzker/TAWANI, World ID/OpenAI).
+1. Deepen Entity Intelligence into full entity-specific timeline overlays for the highest-convergence nodes (Bill Gates, Rockefeller Foundation, WEF/Klaus Schwab, Epstein/Maxwell, EcoHealth/NIH, Pritzker, Rothblatt, etc.).
 2. Add a source-quality audit pass that flags dead links, archive alternatives, primary vs secondary sources, and quote provenance.
 3. Move the dataset into a standalone JSON module so cards, timelines, and narrative chains can be validated separately from the UI.
 4. Add a relationship graph export (nodes/edges JSON) for the existing Thread Explorer and Trajectory Domino Map.
 5. Add per-card source snapshots/archival links where official pages are unstable.
-
 
 ## Internal presentation notes removed from user-facing UI
 
@@ -42,13 +41,11 @@ These ideas were previously visible as a strategy-style brief. Keep them as inte
 4. Lens presets: one-click views for convergence, money, identity/pharma, virtual humans, bioengineering, and key players.
 5. Cognitive wayfinding: keep discovery local, preserve scroll context, and offer close/copy/open actions at the point of need.
 
-
 ## Completed in this enrichment pass
 
-1. Added additional official-source cards for the European Health Data Space, digital euro package, NATO DIANA, DoD Replicator, California Age-Appropriate Design Code, and Florida online protections for minors.
+1. Added additional official-source cards for the European Health Data Space, digital euro package, NATO DIANA, DoD Replicator, California Age-Appropriate Design Code, and Florida online protection rules.
 2. Added Health Data + AI, Identity + Money + Age Gates, and Defense Autonomy lens presets.
 3. Added new trajectory/domino maps for health-data/AI medicine, digital ID/payment/age assurance, and defence-autonomy procurement.
-
 
 ## Completed in this foundations pass
 
@@ -57,13 +54,11 @@ These ideas were previously visible as a strategy-style brief. Keep them as inte
 3. Added an ultimate transhuman-stack domino trajectory that nests ideology, persuasion, systems, foundations, health/identity data layers, bio/vector engineering, and autonomy procurement.
 4. Added a dedicated propaganda/behaviour-governance domino trajectory from WWI public information through PR, group relations, behavioural policy, and platform/age-governance systems.
 
-
 ## Completed in this information-governance pass
 
 1. Added WHO infodemic management, U.S. Surgeon General health misinformation advisory, CISA MDM/foreign influence, and EU Code of Practice on Disinformation cards.
 2. Added an Infodemic + Platform Governance lens and narrative pathway.
 3. Added an Infodemic → MDM security → platform governance domino trajectory tying health, security, elections, online safety, and platform accountability into one source-grounded chain.
-
 
 ## Completed in this workspace-pages pass
 
@@ -77,7 +72,6 @@ These ideas were previously visible as a strategy-style brief. Keep them as inte
 2. Added a separated older/high-interest verification queue so speculative or commonly cited alumni names are not mixed with confirmed official cohort lists.
 3. Added user-facing YGL roster copy/export actions and a YGL lens/quick-search path for discovery without hijacking the global search state.
 
-
 ## Expanded in this YGL roster follow-up
 
 1. Added official WEF 2020, 2021, and 2022 YGL cohorts to the roster panel, increasing source-tiered coverage beyond the 2023-2026 groups.
@@ -86,7 +80,7 @@ These ideas were previously visible as a strategy-style brief. Keep them as inte
 
 ## Completed in this YGL deepening pass
 
-1. Added high-value YGL-linked profile cards for Omar Al Olama, Mykhailo Fedorov, Joy Buolamwini, and Sanna Marin because they connect the roster to concrete AI-governance, digital-state, biometric-AI oversight, and executive political domains already represented in the map.
+1. Added high-value YGL-linked profile cards for Omar Al Olama, Mykhailo Fedorov, Joy Buolamwini, and Sanna Marin because they connect the roster to concrete AI-governance, digital-state, biometric, and public-policy domains.
 2. Updated YGL roster metadata and quick-search terms so these deeper cards are discoverable from the roster layer.
 3. Maintained the all-time coverage caveat: the app has strong official 2020-2026 cohort coverage, but older Global Leaders for Tomorrow / early YGL archives still need a dedicated source-harvesting pass.
 
@@ -141,7 +135,7 @@ These ideas were previously visible as a strategy-style brief. Keep them as inte
 ## Completed in this Mythos & Folklore deepening pass
 
 1. Added a new top-level Mythos & Folklore category with filter, taxonomy color, quick-search terms, lens preset, type labels, and category summary.
-2. Added ancient and early-media source-aware cards for Gilgamesh, Prometheus/Icarus/Faust, Plato cave/Atlantis, Pygmalion/Golem, Frankenstein/R.U.R., War of the Worlds radio/media panic, and harvest/reset/underworld cycle motifs.
+2. Added ancient and early-media source-aware cards for Gilgamesh, Prometheus/Icarus/Faust, Plato cave/Atlantis, Pygmalion/Golem, Frankenstein/R.U.L., War of the Worlds radio/media panic, and harvest/reset/underworld cycle motifs.
 3. Added mythos-to-machine-empathy narrative and domino trajectory plus a Signal Stack Radar entry so the oldest archetypal patterns appear alongside modern Social Engineering signals.
 
 ## Completed in this lost-civilisation / track-router pass
@@ -158,9 +152,9 @@ These ideas were previously visible as a strategy-style brief. Keep them as inte
 
 ## Completed in this comparative belief-systems pass
 
-1. Added Mythos & Folklore cards for comparative religion / savior-hero archetypes, contested Jesus-parallels claim sets, dying/rising and descent-return figures, prophet/lawgiver/civilizer archetypes, hero-pattern scholarship, and apocalypse/world-renewal scripts.
-2. Added comparative-belief narrative, domino trajectory, Signal Stack Radar entry, quick-search terms, and Mythos track terms so the section is connected to existing discovery rather than isolated.
-3. Preserved source and respect guardrails: living religious traditions are treated as distinct contexts, broad motifs are separated from one-to-one sameness claims, and viral parallel lists are marked contested unless primary-source evidence supports them.
+1. Added Mythos & Folklore cards for comparative religion / savior-hero archetypes, contested Jesus-parallels claim sets, dying/rising and descent-return figures, prophet/lawgiver/civilizer archetypes, and apocalypse / world-renewal scripts.
+2. Added comparative-belief narrative, domino trajectory, Signal Stack Radar entry, quick-search terms, and Mythos track terms so the section is connected to existing discovery rather than isolated from it.
+3. Preserved source and respect guardrails: living religious traditions are treated as distinct contexts, broad motifs are separated from one-to-one sameness claims, and viral parallel lists are not treated as evidence without source hardening.
 
 ## Completed in this card-focus affordance pass
 
@@ -178,7 +172,7 @@ These ideas were previously visible as a strategy-style brief. Keep them as inte
 
 1. Added high-value bridge cards for HGP/ELSI, NIH All of Us, NIST SP 800-63, mDL/ISO 18013-5, WHO DDCC, Buck v. Bell, Population Council/Norplant, authority/conformity experiments, and HAARP.
 2. Strengthened thin categories: human, research, identity, documents, environment, pharma, social, and legacy now have more primary-source anchors and better cross-domain connective value.
-3. Added quick-search/lens bridge terms for digital identity standards, health certificates, precision-medicine datasets, forced-sterilization precedent, contraceptive implants, classic compliance studies, and ionospheric boundary-case research.
+3. Added quick-search/lens bridge terms for digital identity standards, health certificates, precision-medicine datasets, forced-sterilization precedent, contraceptive implants, classic compliance experiments, and atmospheric-ionospheric manipulation.
 
 ## Completed in this second dataset hardening pass
 
@@ -248,6 +242,6 @@ These ideas were previously visible as a strategy-style brief. Keep them as inte
 
 ## Completed in this standards/interconnection enrichment pass
 
-1. Added high-value primary-source cards for EUDI Wallet ARF, W3C VC/DID credential standards, WHO GDHCN, OECD AI Principles, ISO/IEC 42001, Council of Europe AI Convention, GA4GH, and WEF Global Shapers.
+1. Added high-value primary-source cards for EUDI Wallet ARF, W3C VC/DID credential standards, WHO GDHCN, OECD AI Principles, ISO/IEC 42001, Council of Europe AI Convention, GA4GH, and WEF Global Future Councils.
 2. Strengthened bridge routes linking DPI identity/payment/data rails, health-genomics/AI medicine, credential wallets, health certificates, AI governance standards, and recruitment-hub networks.
-3. Extended quick searches, lens presets, narrative pathways, Bridge Map terms, and Domino route terms so the new cards connect to existing identity, health-data, AI governance, YGL/WEF, and genomics tracks.
+3. Extended quick searches, lens presets, narrative pathways, Bridge Map terms, and Domino route terms so the new cards connect to existing identity, health-data, AI governance, YGL/WEF, and genomics pathways.
