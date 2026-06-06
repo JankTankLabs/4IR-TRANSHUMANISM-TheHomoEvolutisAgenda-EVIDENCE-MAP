@@ -51,6 +51,7 @@ globalThis.__APP_TEST__ = {
   get collapsedWorkspacePanelCount() { return collapsedWorkspacePanels.size; },
   get openCategoryCount() { return openCategories.size; },
   moveCategory, setAllCategories, setAllWorkspacePanels, getBridgeDominoLinks, moveWorkspacePanel, reorderWorkspacePanels,
+  normalizeSavedOrder, loadSavedCategoryOrder, reorderItems, resolveCategoryDropTarget,
   formatFilterLabel, formatTypePlural
 };`, context, { filename: 'index.inline.js' });
 
@@ -101,6 +102,23 @@ const second = app.categoryOrder[1];
 app.moveCategory(second, first);
 assert.strictEqual(app.categoryOrder[0], second, 'dragged category should move before target');
 assert(localStore.has('evidenceCategoryOrder'), 'category order should persist to localStorage');
+app.moveCategory(second, app.categoryOrder[1], true);
+assert.strictEqual(app.categoryOrder[1], second, 'dragged category should also support dropping after the target midpoint');
+localStore.set('evidenceCategoryOrder', JSON.stringify(['social', 'missing', 'patents']));
+app.loadSavedCategoryOrder();
+assert.deepStrictEqual(Array.from(app.categoryOrder).slice(0, 3), ['social', 'patents', 'legislation'], 'stale saved category order should discard missing categories and append new defaults safely');
+assert.deepStrictEqual(Array.from(app.reorderItems(['a', 'b', 'c'], 'a', 'b', true)), ['b', 'a', 'c'], 'generic reorder helper should support after-target placement');
+const mockFilterButton = (type, left, top, width = 100, height = 30) => ({
+  dataset: { filter: type },
+  getBoundingClientRect() {
+    return { left, right: left + width, top, bottom: top + height, width, height };
+  }
+});
+assert.deepStrictEqual(JSON.parse(JSON.stringify(app.resolveCategoryDropTarget([
+  mockFilterButton('patents', 0, 0),
+  mockFilterButton('legislation', 110, 0),
+  mockFilterButton('documents', 0, 40)
+], 85, 50, 'patents'))), { targetType: 'documents', placeAfter: true }, 'wrapped-row drop targeting should prefer the nearest overlapping chip and its midpoint');
 
 const firstPanel = app.workspacePanelOrderList[0];
 const secondPanel = app.workspacePanelOrderList[1];
