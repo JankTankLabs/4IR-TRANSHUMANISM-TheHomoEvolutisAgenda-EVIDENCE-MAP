@@ -12102,6 +12102,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       if (!openable.length) return [];
       if (replaceExpanded) expandedCards = new Set();
       const ids = expandAndHighlightCards(openable);
+      if (!ids.length) return ids;
       if (interactionId) recordInteraction(interactionId);
       renderCards();
       scrollToCardTop(ids[0]);
@@ -14321,11 +14322,11 @@ Provenance risk: ${audit.riskLabel}`);
       renderMissionPanel(getVisibleEvidence());
     }
 
-    function openCardById(id, { replaceExpanded = false, interactionId = null, rerenderSupport = false } = {}) {
+    function openCardById(id, { replaceExpanded = false, interactionId = null, refreshSupportPanels = false } = {}) {
       const item = evidence.find(entry => entry.id === id);
       if (!item) return;
       openEvidenceItems([item], { replaceExpanded, interactionId });
-      if (rerenderSupport) renderSupportPanels(getVisibleEvidence());
+      if (refreshSupportPanels) renderSupportPanels(getVisibleEvidence());
     }
 
     function pullRandomThread() {
@@ -14398,8 +14399,7 @@ Provenance risk: ${audit.riskLabel}`);
         renderCards();
         renderSupportPanels(getVisibleEvidence());
       } else {
-        openCardById(id, { interactionId: 'deep-diver', rerenderSupport: true });
-        return;
+        openCardById(id, { interactionId: 'deep-diver', refreshSupportPanels: true });
       }
     }
 
