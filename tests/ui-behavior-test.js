@@ -146,12 +146,15 @@ function click(id) {
 }
 
 function triggerKey(handler, key) {
+  let prevented = false;
   handler({
     key,
     target: documentMock.body,
-    preventDefault() {},
+    get defaultPrevented() { return prevented; },
+    preventDefault() { prevented = true; },
     stopPropagation() {}
   });
+  return prevented;
 }
 
 function categorySectionOrder() {
@@ -247,4 +250,4 @@ triggerKey(escapeHandler, 'r');
 assert(!app.activeFilters.includes('patents'), 'R should redo the most recently undone UI action');
 assert(scrollCalls.length >= 3, 'navigation controls should invoke lightweight scroll operations');
 
-console.log('UI behavior tests passed: isolated drawer views, deterministic content, drag-safe filter reordering, and close policies.');
+console.log('UI behavior tests passed: isolated drawer views, deterministic content, drag-safe filter reordering, close policies, and navigation controls.');

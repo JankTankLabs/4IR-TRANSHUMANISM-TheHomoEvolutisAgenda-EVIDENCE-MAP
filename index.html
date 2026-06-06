@@ -2921,11 +2921,11 @@
     <section class="workspace-index-panel" id="sideDrawerPanel"></section>
   </aside>
   <nav class="nav-controls" id="navControls" aria-label="Navigation controls">
-    <button class="nav-btn" id="navTopBtn" type="button" title="Top">Top</button>
-    <button class="nav-btn" id="navBackBtn" type="button" title="Back (A / ←)">Back</button>
-    <button class="nav-btn" id="navForwardBtn" type="button" title="Forward (D / →)">Fwd</button>
-    <button class="nav-btn" id="navUndoBtn" type="button" title="Undo (U)">Undo</button>
-    <button class="nav-btn" id="navRedoBtn" type="button" title="Redo (R)">Redo</button>
+    <button class="nav-btn" id="navTopBtn" type="button" title="Top" aria-label="Scroll to top">Top</button>
+    <button class="nav-btn" id="navBackBtn" type="button" title="Back (A / ←)" aria-label="Go back to previous view">Back</button>
+    <button class="nav-btn" id="navForwardBtn" type="button" title="Forward (D / →)" aria-label="Go forward to next view">Fwd</button>
+    <button class="nav-btn" id="navUndoBtn" type="button" title="Undo (U)" aria-label="Undo last reversible action">Undo</button>
+    <button class="nav-btn" id="navRedoBtn" type="button" title="Redo (R)" aria-label="Redo last undone action">Redo</button>
   </nav>
   <div class="container">
     <header>
@@ -11795,9 +11795,33 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       if (stack.length > limit) stack.splice(0, stack.length - limit);
     }
 
+    function arraysEqual(a = [], b = []) {
+      if (a.length !== b.length) return false;
+      for (let i = 0; i < a.length; i += 1) {
+        if (a[i] !== b[i]) return false;
+      }
+      return true;
+    }
+
     function snapshotsEqual(a, b) {
       if (!a || !b) return false;
-      return JSON.stringify(a) === JSON.stringify(b);
+      return a.scrollY === b.scrollY &&
+        a.searchQuery === b.searchQuery &&
+        a.sortMode === b.sortMode &&
+        a.viewDensity === b.viewDensity &&
+        a.focusMode === b.focusMode &&
+        a.selectedThread === b.selectedThread &&
+        a.selectedEntity === b.selectedEntity &&
+        a.selectedComparisonEntity === b.selectedComparisonEntity &&
+        a.selectedDominoTrajectory === b.selectedDominoTrajectory &&
+        a.discoveryTerm === b.discoveryTerm &&
+        a.discoveryGuidance === b.discoveryGuidance &&
+        a.activeDrawerView === b.activeDrawerView &&
+        arraysEqual(a.activeFilters, b.activeFilters) &&
+        arraysEqual(a.expandedCardIds, b.expandedCardIds) &&
+        arraysEqual(a.openCategoryIds, b.openCategoryIds) &&
+        arraysEqual(a.discoveryIds, b.discoveryIds) &&
+        arraysEqual(a.collapsedWorkspacePanelIds, b.collapsedWorkspacePanelIds);
     }
 
     function resolveEvidenceIds(ids = []) {
@@ -11932,7 +11956,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     }
 
     function shouldHandleGlobalShortcut(event) {
-      if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return false;
+      if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return false;
       const node = event.target;
       if (!node) return true;
       const tag = (node.tagName || '').toLowerCase();
