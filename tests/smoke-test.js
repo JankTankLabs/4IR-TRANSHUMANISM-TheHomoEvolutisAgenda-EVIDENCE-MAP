@@ -153,6 +153,13 @@ assert.ok(!initBody.includes('renderSupportPanels('), 'init should not duplicate
 assert(html.includes('function matchesTerm'), 'Bridge Map domino matching helper missing');
 assert(app.getBridgeDominoLinks(app.bridgeConvergenceMaps[0]).length > 0, 'Bridge Map to Domino links should render without missing helper errors');
 assert(html.includes('function scrollToElementTop'), 'top-aligned scroll helper missing');
+assert(html.includes('function openEvidenceItems'), 'shared open-evidence helper missing');
+assert(/function scrollToCardTop\(id\)\s*\{\s*if \(!id\) return;\s*requestAnimationFrame\(\(\) => scrollToElementTop\(document\.querySelector\(`\[data-id="\$\{id\}"\]`\)\)\);\s*\}/.test(html), 'card top-align scroll should be deferred through requestAnimationFrame');
+assert(html.includes('openEvidenceItems(activeProfile.allMatches);'), 'entity dossier open-all should use shared open helper');
+assert(html.includes('openEvidenceItems(matches);'), 'thread open-all should use shared open helper');
+assert(html.includes('openEvidenceItems(opened);'), 'bridge expand should use shared open helper');
+assert(html.includes("openEvidenceItems(opened, { interactionId: 'deep-diver' });"), 'discovery open-all should use shared open helper');
+assert(html.includes("openCardById(item.dataset.timelineId, { replaceExpanded: true, interactionId: 'deep-diver' });"), 'timeline card click should route through shared open-card logic');
 assert(html.includes('id="sideDrawer"') && html.includes('id="sideDrawerPanel"'), 'single shared side drawer shell missing');
 assert.strictEqual((html.match(/id="sideDrawer"/g) || []).length, 1, 'only one side drawer shell should exist');
 assert(!html.includes('workspaceDrawerToggle') && !html.includes('sourceDrawerToggle') && !html.includes('impactDrawerToggle'), 'legacy overlapping drawer toggles must be removed');
