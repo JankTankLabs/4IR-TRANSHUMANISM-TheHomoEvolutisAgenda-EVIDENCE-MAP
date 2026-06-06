@@ -108,10 +108,16 @@ localStore.set('evidenceCategoryOrder', JSON.stringify(['social', 'missing', 'pa
 app.loadSavedCategoryOrder();
 assert.deepStrictEqual(Array.from(app.categoryOrder).slice(0, 3), ['social', 'patents', 'legislation'], 'stale saved category order should discard missing categories and append new defaults safely');
 assert.deepStrictEqual(Array.from(app.reorderItems(['a', 'b', 'c'], 'a', 'b', true)), ['b', 'a', 'c'], 'generic reorder helper should support after-target placement');
+const mockFilterButton = (type, left, top, width = 100, height = 30) => ({
+  dataset: { filter: type },
+  getBoundingClientRect() {
+    return { left, right: left + width, top, bottom: top + height, width, height };
+  }
+});
 assert.deepStrictEqual(JSON.parse(JSON.stringify(app.resolveCategoryDropTarget([
-  { dataset: { filter: 'patents' }, getBoundingClientRect() { return { left: 0, right: 100, top: 0, bottom: 30, width: 100, height: 30 }; } },
-  { dataset: { filter: 'legislation' }, getBoundingClientRect() { return { left: 110, right: 210, top: 0, bottom: 30, width: 100, height: 30 }; } },
-  { dataset: { filter: 'documents' }, getBoundingClientRect() { return { left: 0, right: 100, top: 40, bottom: 70, width: 100, height: 30 }; } }
+  mockFilterButton('patents', 0, 0),
+  mockFilterButton('legislation', 110, 0),
+  mockFilterButton('documents', 0, 40)
 ], 85, 50, 'patents'))), { targetType: 'documents', placeAfter: true }, 'wrapped-row drop targeting should prefer the nearest overlapping chip and its midpoint');
 
 const firstPanel = app.workspacePanelOrderList[0];

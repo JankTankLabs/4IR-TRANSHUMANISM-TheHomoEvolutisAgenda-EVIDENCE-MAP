@@ -7,6 +7,9 @@ const html = fs.readFileSync('index.html', 'utf8');
 const script = html.match(/<script>([\s\S]*)<\/script>\s*<\/body>/)?.[1];
 assert(script, 'inline application script missing');
 const filterButtons = [];
+const FILTER_BUTTON_WIDTH = 120;
+const FILTER_BUTTON_GAP = 10;
+const FILTER_BUTTON_COLUMNS = 4;
 
 class ClassList {
   constructor() { this.values = new Set(); }
@@ -38,19 +41,17 @@ class ElementMock {
     this._html = String(value);
     if (this.id === 'filterBar') {
       filterButtons.length = 0;
+      // renderFilterBar() emits class before data-filter; keep this lightweight parser aligned with that stable output shape.
       [...this._html.matchAll(/class="([^"]*filter-btn[^"]*)"[^>]*data-filter="([^"]+)"/g)].forEach((match, index) => {
         const button = new ElementMock(`filter-${match[2]}`);
         button.dataset.filter = match[2];
         button.parentElement = this;
         match[1].split(/\s+/).filter(Boolean).forEach(name => button.classList.add(name));
-        const width = 120;
-        const gap = 10;
-        const columns = 4;
-        const row = Math.floor(index / columns);
-        const column = index % columns;
-        const left = column * (width + gap);
+        const row = Math.floor(index / FILTER_BUTTON_COLUMNS);
+        const column = index % FILTER_BUTTON_COLUMNS;
+        const left = column * (FILTER_BUTTON_WIDTH + FILTER_BUTTON_GAP);
         const top = row * 46;
-        button.rect = { left, right: left + width, top, bottom: top + 36, width, height: 36 };
+        button.rect = { left, right: left + FILTER_BUTTON_WIDTH, top, bottom: top + 36, width: FILTER_BUTTON_WIDTH, height: 36 };
         filterButtons.push(button);
       });
       this.children = [...filterButtons];

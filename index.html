@@ -10961,6 +10961,10 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       { id: 'reports', label: 'Report path', desc: 'Pathways + exposé + narratives + quotes', panels: ['pathwayPanel', 'reportPanel', 'narrativePanel', 'quotePanel'], target: 'pathwayPanel' },
       { id: 'cards', label: 'Evidence cards', desc: 'Jump to source-card accordion', panels: [], target: 'cardsGrid', preservePanels: true }
     ];
+    const CATEGORY_DRAG_THRESHOLD_PX = 8;
+    const CATEGORY_DROP_VERTICAL_WEIGHT = 1.4;
+    const requestFrame = typeof requestAnimationFrame === 'function' ? requestAnimationFrame : callback => callback();
+    const cancelFrame = typeof cancelAnimationFrame === 'function' ? cancelAnimationFrame : () => {};
 
     let workspacePanelOrder = workspacePanels.map(panel => panel.id);
     let categoryOrder = [...defaultCategoryOrder];
@@ -11744,7 +11748,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     }
 
     function reorderItems(order, sourceId, targetId, placeAfter = false) {
-      if (!sourceId || !targetId || sourceId === targetId || !order.includes(sourceId) || !order.includes(targetId)) return order;
+      if (!sourceId || !targetId || sourceId === targetId || !order.includes(sourceId) || !order.includes(targetId)) return null;
       const next = order.filter(id => id !== sourceId);
       const targetIndex = next.indexOf(targetId);
       next.splice(targetIndex < 0 ? next.length : targetIndex + (placeAfter ? 1 : 0), 0, sourceId);
@@ -11786,7 +11790,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       const bar = document.getElementById('filterBar');
       if (!bar) return;
       bar.innerHTML = categoryOrder.map(type => `
-        <button class="filter-btn reorderable ${activeFilters.includes(type) ? 'active' : ''} ${type}" type="button" data-filter="${type}" title="Click to toggle this section. Drag to reorder sections on the page.">
+        <button class="filter-btn reorderable ${activeFilters.includes(type) ? 'active' : ''} ${type}" type="button" data-filter="${type}" title="Click to toggle this section, then drag to reorder sections on the page.">
           <span class="filter-dot ${type}"></span> ${formatFilterLabel(type)}
         </button>
       `).join('');
@@ -11794,7 +11798,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
 
     function moveCategory(sourceType, targetType, placeAfter = false) {
       const nextOrder = reorderItems(categoryOrder, sourceType, targetType, placeAfter);
-      if (nextOrder === categoryOrder) return;
+      if (!nextOrder) return;
       categoryOrder = nextOrder;
       saveCategoryOrder();
       renderFilterBar();
@@ -11829,7 +11833,8 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
         const { rect } = candidate;
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
-        const distance = Math.abs(clientY - centerY) * 1.4 + Math.abs(clientX - centerX);
+        // Give row changes a slightly higher cost so wrapped chips still prefer nearby horizontal neighbors.
+        const distance = Math.abs(clientY - centerY) * CATEGORY_DROP_VERTICAL_WEIGHT + Math.abs(clientX - centerX);
         if (distance < bestDistance) {
           best = candidate;
           bestDistance = distance;
@@ -11861,7 +11866,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     function stopCategoryPointerDrag(commit = false) {
       const state = categoryDragState;
       if (!state) return;
-      if (state.frame && typeof cancelAnimationFrame === 'function') cancelAnimationFrame(state.frame);
+      if (state.frame) cancelFrame(state.frame);
       document.removeEventListener('pointermove', handleCategoryPointerMove);
       document.removeEventListener('pointerup', handleCategoryPointerEnd);
       document.removeEventListener('pointercancel', handleCategoryPointerCancel);
@@ -11874,6 +11879,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       if (state.started && commit && state.targetType) {
         moveCategory(state.sourceType, state.targetType, state.placeAfter);
       }
+      // Pointer drags still emit a click afterward; suppress it so the drag does not toggle the filter state.
       suppressFilterClick = state.started;
       categoryDragState = null;
     }
@@ -11885,13 +11891,13 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       if (!categoryDragState.started) {
         const movedX = Math.abs(categoryDragState.currentX - categoryDragState.startX);
         const movedY = Math.abs(categoryDragState.currentY - categoryDragState.startY);
-        if (Math.max(movedX, movedY) < 8) return;
+        if (Math.max(movedX, movedY) < CATEGORY_DRAG_THRESHOLD_PX) return;
         categoryDragState.started = true;
         categoryDragState.sourceButton.classList.add('is-dragging');
       }
       if (event.cancelable) event.preventDefault();
       if (!categoryDragState.frame) {
-        categoryDragState.frame = requestAnimationFrame(updateCategoryDragPreview);
+        categoryDragState.frame = requestFrame(updateCategoryDragPreview);
       }
     }
 
