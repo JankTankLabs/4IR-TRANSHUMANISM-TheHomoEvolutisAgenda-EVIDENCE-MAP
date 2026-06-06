@@ -12097,6 +12097,18 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       return ids;
     }
 
+    function openEvidenceItems(items = [], { replaceExpanded = false, interactionId = null } = {}) {
+      const openable = items.filter(item => item?.id && item?.type);
+      if (!openable.length) return [];
+      if (replaceExpanded) expandedCards = new Set();
+      const ids = expandAndHighlightCards(openable);
+      if (!ids.length) return ids;
+      if (interactionId) recordInteraction(interactionId);
+      renderCards();
+      scrollToCardTop(ids[0]);
+      return ids;
+    }
+
     function scrollToElementTop(target, offset = 12) {
       const element = typeof target === 'string' ? document.getElementById(target) : target;
       if (!element) return;
@@ -12105,7 +12117,8 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     }
 
     function scrollToCardTop(id) {
-      scrollToElementTop(document.querySelector(`[data-id="${id}"]`));
+      if (!id) return;
+      requestAnimationFrame(() => scrollToElementTop(document.querySelector(`[data-id="${id}"]`)));
     }
 
     function openDiscoverySet(term, items = [], guidance = '') {
@@ -12573,13 +12586,8 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       });
       document.getElementById('entityDiscoverBtn')?.addEventListener('click', () => showDiscovery(activeProfile.entity));
       document.getElementById('entityOpenCardsBtn')?.addEventListener('click', () => {
-        activeProfile.allMatches.forEach(item => {
-          openCategories.add(item.type);
-          expandedCards.add(item.id);
-        });
-        renderCards();
+        openEvidenceItems(activeProfile.allMatches);
         renderStateBar(getVisibleEvidence());
-        scrollToCardTop(activeProfile.allMatches[0]?.id);
       });
       document.getElementById('entityThreadBtn')?.addEventListener('click', () => {
         selectedThread = activeProfile.entity;
@@ -12668,9 +12676,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
 
       document.getElementById('threadSearchBtn')?.addEventListener('click', () => showDiscovery(active));
       document.getElementById('threadExpandBtn')?.addEventListener('click', () => {
-        expandAndHighlightCards(matches);
-        renderCards();
-        scrollToCardTop(matches[0]?.id);
+        openEvidenceItems(matches);
       });
       document.getElementById('threadCopyBtn')?.addEventListener('click', () => copyText(formatLinksForClipboard(matches)));
     }
@@ -12935,9 +12941,7 @@ Provenance risk: ${audit.riskLabel}`);
         btn.addEventListener('click', () => {
           const map = ranked[Number(btn.dataset.bridgeExpand)];
           const opened = map.matches.slice(0, 20);
-          expandAndHighlightCards(opened);
-          renderCards();
-          scrollToCardTop(opened[0]?.id);
+          openEvidenceItems(opened);
         });
       });
       document.getElementById('copyBridgeMapBtn')?.addEventListener('click', () => {
@@ -13188,10 +13192,7 @@ Provenance risk: ${audit.riskLabel}`);
       });
       document.getElementById('openDiscoveryBtn')?.addEventListener('click', () => {
         const opened = discoveryMatches.slice(0, 24);
-        expandAndHighlightCards(opened);
-        recordInteraction('deep-diver');
-        renderCards();
-        scrollToCardTop(opened[0]?.id);
+        openEvidenceItems(opened, { interactionId: 'deep-diver' });
       });
       document.getElementById('copyDiscoveryBtn')?.addEventListener('click', () => copyText(formatLinksForClipboard(discoveryMatches)));
       document.getElementById('exportDiscoveryChecklistBtn')?.addEventListener('click', () => exportSourceHardeningChecklist(discoveryMatches, discoveryTerm, discoveryGuidance));
@@ -14321,14 +14322,11 @@ Provenance risk: ${audit.riskLabel}`);
       renderMissionPanel(getVisibleEvidence());
     }
 
-    function openCardById(id) {
+    function openCardById(id, { replaceExpanded = false, interactionId = null, refreshSupportPanels = false } = {}) {
       const item = evidence.find(entry => entry.id === id);
       if (!item) return;
-      openCategories.add(item.type);
-      expandedCards.add(id);
-      highlightOpenedCards([id]);
-      renderCards();
-      scrollToCardTop(id);
+      openEvidenceItems([item], { replaceExpanded, interactionId });
+      if (refreshSupportPanels) renderSupportPanels(getVisibleEvidence());
     }
 
     function pullRandomThread() {
@@ -14389,11 +14387,7 @@ Provenance risk: ${audit.riskLabel}`);
       });
       panel.querySelectorAll('[data-timeline-id]').forEach(item => {
         item.addEventListener('click', () => {
-          expandedCards = new Set([item.dataset.timelineId]);
-          highlightOpenedCards([item.dataset.timelineId]);
-          recordInteraction('deep-diver');
-          renderCards();
-          scrollToCardTop(item.dataset.timelineId);
+          openCardById(item.dataset.timelineId, { replaceExpanded: true, interactionId: 'deep-diver' });
         });
       });
     }
@@ -14402,13 +14396,11 @@ Provenance risk: ${audit.riskLabel}`);
       if (expandedCards.has(id)) {
         expandedCards.delete(id);
         highlightedCards.delete(id);
+        renderCards();
+        renderSupportPanels(getVisibleEvidence());
       } else {
-        expandedCards.add(id);
-        highlightOpenedCards([id]);
-        recordInteraction('deep-diver');
+        openCardById(id, { interactionId: 'deep-diver', refreshSupportPanels: true });
       }
-      renderCards();
-      renderSupportPanels(getVisibleEvidence());
     }
 
     function formatType(type) {
