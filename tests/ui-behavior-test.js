@@ -172,7 +172,7 @@ globalThis.__APP_UI_TEST__ = {
   get discoveryNavigationLabel() { return discoveryNavigationLabel; },
   get discoveryLeadCardId() { return discoveryLeadCardId; },
   openCardById,
-  openMatchedEvidenceExperience,
+  openLeadCardWithContext,
   clearDiscoveryState,
   getTermMatches
 };`, context, { filename: 'index.inline.js' });
@@ -301,7 +301,7 @@ assert(dominoMatches.length > 1, 'domino lead-card test needs multiple linked ca
 const dominoLabel = `${multiMatchDomino.trajectory.title} · ${multiMatchDomino.step.label}`;
 
 context.window.pageYOffset = 512;
-const openedFromDomino = app.openMatchedEvidenceExperience(dominoLabel, dominoMatches, 'Domino step cards opened without changing the global search.', {
+const openedFromDomino = app.openLeadCardWithContext(dominoLabel, dominoMatches, 'Domino step cards opened without changing the global search.', {
   navigationTarget: 'dominoPanel',
   navigationLabel: 'trajectory domino map'
 });
@@ -316,7 +316,7 @@ assert.strictEqual(app.discoveryMatchIds.length, dominoMatches.length, 'domino d
 assert(context.window.pageYOffset > 0, 'domino flow should scroll the opened lead card into view');
 
 const repeatedDominoScrollCount = scrollCalls.length;
-app.openMatchedEvidenceExperience(dominoLabel, dominoMatches, 'Domino step cards opened without changing the global search.', {
+app.openLeadCardWithContext(dominoLabel, dominoMatches, 'Domino step cards opened without changing the global search.', {
   navigationTarget: 'dominoPanel',
   navigationLabel: 'trajectory domino map'
 });
@@ -333,7 +333,7 @@ assert.deepStrictEqual(Array.from(app.openCardById('missing-card-id', { replaceE
 assert.deepStrictEqual(Array.from(app.expandedCardIds), expandedBeforeInvalidOpen, 'invalid card ids should not disturb the current open-card state');
 
 const emptyDominoScrollCount = scrollCalls.length;
-assert.deepStrictEqual(Array.from(app.openMatchedEvidenceExperience('Ghost domino step', [], 'No directly linked evidence cards are currently available for this step.', {
+assert.deepStrictEqual(Array.from(app.openLeadCardWithContext('Ghost domino step', [], 'No directly linked evidence cards are currently available for this step.', {
   navigationTarget: 'timelinePanel',
   navigationLabel: 'big trajectory timeline'
 })), [], 'domino steps without linked cards should not force-open a larger card');
@@ -346,7 +346,7 @@ assert(scrollCalls.length > emptyDominoScrollCount, 'empty domino steps should s
 
 app.clearDiscoveryState();
 context.window.pageYOffset = 640;
-app.openMatchedEvidenceExperience(dominoLabel, dominoMatches, 'Domino step cards opened without changing the global search.', {
+app.openLeadCardWithContext(dominoLabel, dominoMatches, 'Domino step cards opened without changing the global search.', {
   navigationTarget: 'dominoPanel',
   navigationLabel: 'trajectory domino map'
 });

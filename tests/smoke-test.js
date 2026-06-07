@@ -154,7 +154,7 @@ assert(html.includes('function matchesTerm'), 'Bridge Map domino matching helper
 assert(app.getBridgeDominoLinks(app.bridgeConvergenceMaps[0]).length > 0, 'Bridge Map to Domino links should render without missing helper errors');
 assert(html.includes('function scrollToElementTop'), 'top-aligned scroll helper missing');
 assert(html.includes('function openEvidenceItems'), 'shared open-evidence helper missing');
-assert(html.includes('function openMatchedEvidenceExperience'), 'shared domino/timeline lead-card opener missing');
+assert(html.includes('function openLeadCardWithContext'), 'shared domino/timeline lead-card opener missing');
 assert(/function\s+scrollToCardTop\s*\(\s*id\s*\)/.test(html), 'card top-align helper missing');
 assert(html.includes('if (!id) return;'), 'card top-align helper should guard missing ids');
 assert(html.includes('requestAnimationFrame('), 'card top-align should defer scrolling until after DOM updates');

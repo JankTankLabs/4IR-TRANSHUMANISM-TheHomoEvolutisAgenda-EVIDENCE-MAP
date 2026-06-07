@@ -11844,8 +11844,9 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
 
     function resolveOpenableItems(items = []) {
       return [...new Map(items
-        .filter(item => item?.id && item?.type && evidenceIdSet.has(item.id))
-        .map(item => [item.id, evidenceById.get(item.id) || item])).values()];
+        .map(item => evidenceById.get(item?.id))
+        .filter(item => item?.id && item?.type)
+        .map(item => [item.id, item])).values()];
     }
 
     function setDiscoveryState(term, items = [], guidance = '', { navigationTarget = '', navigationLabel = '', leadCardId = '' } = {}) {
@@ -11855,7 +11856,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       discoveryNavigationTarget = typeof navigationTarget === 'string' ? navigationTarget : '';
       discoveryNavigationLabel = typeof navigationLabel === 'string' ? navigationLabel : '';
       const fallbackLeadCardId = evidenceIdSet.has(leadCardId) ? leadCardId : (discoveryMatches[0]?.id || '');
-      discoveryLeadCardId = evidenceIdSet.has(fallbackLeadCardId) ? fallbackLeadCardId : '';
+      discoveryLeadCardId = fallbackLeadCardId;
       renderDiscoveryPanel();
     }
 
@@ -13296,7 +13297,7 @@ Provenance risk: ${audit.riskLabel}`);
       return getTermMatches(terms, items);
     }
 
-    function openMatchedEvidenceExperience(term, items = [], guidance = '', { replaceExpanded = true, interactionId = 'deep-diver', navigationTarget = '', navigationLabel = '' } = {}) {
+    function openLeadCardWithContext(term, items = [], guidance = '', { replaceExpanded = true, interactionId = 'deep-diver', navigationTarget = '', navigationLabel = '' } = {}) {
       const matches = resolveOpenableItems(items);
       if (!matches.length) {
         openDiscoverySet(term, [], guidance || 'No directly linked evidence cards are currently available for this step.', { navigationTarget, navigationLabel });
@@ -13369,7 +13370,7 @@ Provenance risk: ${audit.riskLabel}`);
       panel.querySelectorAll('[data-domino-step]').forEach(btn => {
         btn.addEventListener('click', () => {
           const step = selected.dominoes[Number(btn.dataset.dominoStep)];
-          openMatchedEvidenceExperience(`${selected.title} · ${step.label}`, getTermMatches(step?.terms || []), 'Domino step cards opened without changing the global search.', {
+          openLeadCardWithContext(`${selected.title} · ${step.label}`, getTermMatches(step?.terms || []), 'Domino step cards opened without changing the global search.', {
             navigationTarget: 'dominoPanel',
             navigationLabel: 'trajectory domino map'
           });
@@ -14698,7 +14699,7 @@ Provenance risk: ${audit.riskLabel}`);
       panel.querySelectorAll('[data-timeline-domino-step]').forEach(item => {
         item.addEventListener('click', () => {
           const step = selected.dominoes[Number(item.dataset.timelineDominoStep)];
-          openMatchedEvidenceExperience(`${selected.title} · ${step.label}`, getTermMatches(step?.terms || []), 'Timeline domino cards opened without changing the global search.', {
+          openLeadCardWithContext(`${selected.title} · ${step.label}`, getTermMatches(step?.terms || []), 'Timeline domino cards opened without changing the global search.', {
             navigationTarget: 'timelinePanel',
             navigationLabel: 'big trajectory timeline'
           });
