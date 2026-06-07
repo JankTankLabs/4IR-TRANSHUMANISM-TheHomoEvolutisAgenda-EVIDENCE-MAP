@@ -2845,6 +2845,40 @@
       display: inline-block;
     }
 
+    .nav-controls {
+      position: fixed;
+      right: 12px;
+      bottom: 12px;
+      z-index: 260;
+      display: flex;
+      gap: 6px;
+      padding: 6px;
+      border-radius: 12px;
+      background: color-mix(in srgb, var(--bg-secondary) 88%, transparent);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(8px);
+    }
+
+    .nav-btn {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      border-radius: 8px;
+      min-width: 34px;
+      height: 30px;
+      padding: 0 8px;
+      font-size: 0.72rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+
     /* Scrollbar */
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: var(--bg-primary); }
@@ -2886,6 +2920,13 @@
     </div>
     <section class="workspace-index-panel" id="sideDrawerPanel"></section>
   </aside>
+  <nav class="nav-controls" id="navControls" aria-label="Navigation controls">
+    <button class="nav-btn" id="navTopBtn" type="button" title="Top" aria-label="Scroll to top">Top</button>
+    <button class="nav-btn" id="navBackBtn" type="button" title="Back (A / ←)" aria-label="Go back to previous view">Back</button>
+    <button class="nav-btn" id="navForwardBtn" type="button" title="Forward (D / →)" aria-label="Go forward to next view">Fwd</button>
+    <button class="nav-btn" id="navUndoBtn" type="button" title="Undo (U)" aria-label="Undo last reversible action">Undo</button>
+    <button class="nav-btn" id="navRedoBtn" type="button" title="Redo (R)" aria-label="Redo last undone action">Redo</button>
+  </nav>
   <div class="container">
     <header>
       <div class="header-top">
@@ -11049,6 +11090,16 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     let savedFloatingLayout = null;
     let persistFloatingLayout = false;
     let bridgeGraphZoom = 1;
+    const NAVIGATION_HISTORY_LIMIT = 64;
+    const ACTION_HISTORY_LIMIT = 64;
+    const validSortModes = ['newest', 'oldest', 'title', 'sources', 'category'];
+    const evidenceIdSet = new Set(evidence.map(item => item.id));
+    const workspacePanelIdSet = new Set(workspacePanels.map(panel => panel.id));
+    let viewBackStack = [];
+    let viewForwardStack = [];
+    let undoStack = [];
+    let redoStack = [];
+    let isApplyingStateSnapshot = false;
 
 
 
@@ -11468,6 +11519,8 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       renderFilterBar();
       renderQuickLinks();
       renderCards();
+      updateFocusMode();
+      updateNavigationControlState();
       setupEventListeners();
       try {
         updateStats();
@@ -11614,12 +11667,14 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     }
 
     function toggleCategory(type) {
+      const beforeSnapshot = captureViewSnapshot();
       if (openCategories.has(type)) {
         openCategories.delete(type);
       } else {
         openCategories.add(type);
       }
       renderCards();
+      registerReversibleChange(beforeSnapshot);
     }
 
     function renderCard(e) {
@@ -11729,6 +11784,183 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
 
     function saveJsonPreference(key, value) {
       localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function clampScrollY(value) {
+      return Math.max(0, Number.isFinite(value) ? value : 0);
+    }
+
+    function pushBounded(stack, value, limit) {
+      stack.push(value);
+      if (stack.length > limit) stack.splice(0, stack.length - limit);
+    }
+
+    function arraysEqual(a = [], b = []) {
+      if (a.length !== b.length) return false;
+      for (let i = 0; i < a.length; i += 1) {
+        if (a[i] !== b[i]) return false;
+      }
+      return true;
+    }
+
+    function snapshotsEqual(a, b) {
+      if (!a || !b) return false;
+      return a.scrollY === b.scrollY &&
+        a.searchQuery === b.searchQuery &&
+        a.sortMode === b.sortMode &&
+        a.viewDensity === b.viewDensity &&
+        a.focusMode === b.focusMode &&
+        a.selectedThread === b.selectedThread &&
+        a.selectedEntity === b.selectedEntity &&
+        a.selectedComparisonEntity === b.selectedComparisonEntity &&
+        a.selectedDominoTrajectory === b.selectedDominoTrajectory &&
+        a.discoveryTerm === b.discoveryTerm &&
+        a.discoveryGuidance === b.discoveryGuidance &&
+        a.activeDrawerView === b.activeDrawerView &&
+        arraysEqual(a.activeFilters, b.activeFilters) &&
+        arraysEqual(a.expandedCardIds, b.expandedCardIds) &&
+        arraysEqual(a.openCategoryIds, b.openCategoryIds) &&
+        arraysEqual(a.discoveryIds, b.discoveryIds) &&
+        arraysEqual(a.collapsedWorkspacePanelIds, b.collapsedWorkspacePanelIds);
+    }
+
+    function resolveEvidenceIds(ids = []) {
+      return ids.filter(id => evidenceIdSet.has(id));
+    }
+
+    function resolveDiscoveryMatches(ids = []) {
+      return resolveEvidenceIds(ids)
+        .map(id => evidence.find(item => item.id === id))
+        .filter(Boolean);
+    }
+
+    function captureViewSnapshot() {
+      return {
+        scrollY: clampScrollY(window.pageYOffset || window.scrollY || 0),
+        activeFilters: [...activeFilters],
+        searchQuery,
+        sortMode,
+        viewDensity,
+        focusMode,
+        expandedCardIds: [...expandedCards],
+        openCategoryIds: [...openCategories],
+        selectedThread,
+        selectedEntity,
+        selectedComparisonEntity,
+        selectedDominoTrajectory,
+        discoveryTerm,
+        discoveryGuidance,
+        discoveryIds: discoveryMatches.map(item => item.id),
+        collapsedWorkspacePanelIds: [...collapsedWorkspacePanels],
+        activeDrawerView: activeDrawerView || null
+      };
+    }
+
+    function updateNavigationControlState() {
+      const backBtn = document.getElementById('navBackBtn');
+      const forwardBtn = document.getElementById('navForwardBtn');
+      const undoBtn = document.getElementById('navUndoBtn');
+      const redoBtn = document.getElementById('navRedoBtn');
+      if (backBtn) backBtn.disabled = viewBackStack.length === 0;
+      if (forwardBtn) forwardBtn.disabled = viewForwardStack.length === 0;
+      if (undoBtn) undoBtn.disabled = undoStack.length === 0;
+      if (redoBtn) redoBtn.disabled = redoStack.length === 0;
+    }
+
+    function applyViewSnapshot(snapshot, { behavior = 'auto' } = {}) {
+      if (!snapshot) return;
+      isApplyingStateSnapshot = true;
+      try {
+        activeFilters = allTypes.filter(type => snapshot.activeFilters?.includes(type));
+        searchQuery = typeof snapshot.searchQuery === 'string' ? snapshot.searchQuery : '';
+        sortMode = validSortModes.includes(snapshot.sortMode) ? snapshot.sortMode : 'newest';
+        viewDensity = snapshot.viewDensity === 'comfortable' ? 'comfortable' : 'compact';
+        focusMode = Boolean(snapshot.focusMode);
+        expandedCards = new Set(resolveEvidenceIds(snapshot.expandedCardIds || []));
+        openCategories = new Set((snapshot.openCategoryIds || []).filter(type => allTypes.includes(type)));
+        selectedThread = snapshot.selectedThread || null;
+        selectedEntity = snapshot.selectedEntity || null;
+        selectedComparisonEntity = snapshot.selectedComparisonEntity || null;
+        selectedDominoTrajectory = snapshot.selectedDominoTrajectory || selectedDominoTrajectory;
+        discoveryTerm = snapshot.discoveryTerm || '';
+        discoveryGuidance = snapshot.discoveryGuidance || '';
+        discoveryMatches = resolveDiscoveryMatches(snapshot.discoveryIds || []);
+        collapsedWorkspacePanels = new Set((snapshot.collapsedWorkspacePanelIds || []).filter(id => workspacePanelIdSet.has(id)));
+        renderFilterBar();
+        renderCards();
+        updateStats();
+        updateFocusMode();
+        document.getElementById('searchInput').value = searchQuery;
+        document.getElementById('sortSelect').value = sortMode;
+        document.getElementById('densitySelect').value = viewDensity;
+        setDrawerView(snapshot.activeDrawerView || 'index', Boolean(snapshot.activeDrawerView));
+        window.scrollTo({ top: clampScrollY(snapshot.scrollY), behavior });
+      } finally {
+        isApplyingStateSnapshot = false;
+      }
+      updateNavigationControlState();
+    }
+
+    function recordNavigationState({ clearForward = true } = {}) {
+      if (isApplyingStateSnapshot) return;
+      const current = captureViewSnapshot();
+      const last = viewBackStack[viewBackStack.length - 1];
+      if (!last || !snapshotsEqual(last, current)) {
+        pushBounded(viewBackStack, current, NAVIGATION_HISTORY_LIMIT);
+      }
+      if (clearForward) viewForwardStack = [];
+      updateNavigationControlState();
+    }
+
+    function registerReversibleChange(beforeSnapshot) {
+      if (isApplyingStateSnapshot || !beforeSnapshot) return;
+      const afterSnapshot = captureViewSnapshot();
+      if (snapshotsEqual(beforeSnapshot, afterSnapshot)) return;
+      pushBounded(undoStack, { before: beforeSnapshot, after: afterSnapshot }, ACTION_HISTORY_LIMIT);
+      redoStack = [];
+      updateNavigationControlState();
+    }
+
+    function goBackInViewHistory() {
+      if (!viewBackStack.length) return;
+      const current = captureViewSnapshot();
+      const target = viewBackStack.pop();
+      pushBounded(viewForwardStack, current, NAVIGATION_HISTORY_LIMIT);
+      applyViewSnapshot(target, { behavior: 'auto' });
+      updateNavigationControlState();
+    }
+
+    function goForwardInViewHistory() {
+      if (!viewForwardStack.length) return;
+      const current = captureViewSnapshot();
+      const target = viewForwardStack.pop();
+      pushBounded(viewBackStack, current, NAVIGATION_HISTORY_LIMIT);
+      applyViewSnapshot(target, { behavior: 'auto' });
+      updateNavigationControlState();
+    }
+
+    function undoLastAction() {
+      if (!undoStack.length) return;
+      const action = undoStack.pop();
+      pushBounded(redoStack, action, ACTION_HISTORY_LIMIT);
+      applyViewSnapshot(action.before, { behavior: 'auto' });
+      updateNavigationControlState();
+    }
+
+    function redoLastAction() {
+      if (!redoStack.length) return;
+      const action = redoStack.pop();
+      pushBounded(undoStack, action, ACTION_HISTORY_LIMIT);
+      applyViewSnapshot(action.after, { behavior: 'auto' });
+      updateNavigationControlState();
+    }
+
+    function shouldHandleGlobalShortcut(event) {
+      if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return false;
+      const node = event.target;
+      if (!node) return true;
+      const tag = (node.tagName || '').toLowerCase();
+      return !(node.isContentEditable || tag === 'input' || tag === 'textarea' || tag === 'select');
     }
 
     function loadSavedWorkspaceOrder() {
@@ -12100,33 +12332,37 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     function openEvidenceItems(items = [], { replaceExpanded = false, interactionId = null } = {}) {
       const openable = items.filter(item => item?.id && item?.type);
       if (!openable.length) return [];
+      recordNavigationState();
       if (replaceExpanded) expandedCards = new Set();
       const ids = expandAndHighlightCards(openable);
       if (!ids.length) return ids;
       if (interactionId) recordInteraction(interactionId);
       renderCards();
-      scrollToCardTop(ids[0]);
+      scrollToCardTop(ids[0], { trackHistory: false });
       return ids;
     }
 
-    function scrollToElementTop(target, offset = 12) {
+    function scrollToElementTop(target, offset = 12, { trackHistory = true } = {}) {
       const element = typeof target === 'string' ? document.getElementById(target) : target;
       if (!element) return;
+      if (trackHistory) recordNavigationState();
       const top = element.getBoundingClientRect().top + window.pageYOffset - offset;
       window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
     }
 
     function scrollToCardTop(id) {
       if (!id) return;
-      requestAnimationFrame(() => scrollToElementTop(document.querySelector(`[data-id="${id}"]`)));
+      const options = arguments[1] || {};
+      requestAnimationFrame(() => scrollToElementTop(document.querySelector(`[data-id="${id}"]`), 12, options));
     }
 
     function openDiscoverySet(term, items = [], guidance = '') {
+      recordNavigationState();
       discoveryTerm = term;
       discoveryMatches = [...items].sort(sortEvidence);
       discoveryGuidance = guidance;
       renderDiscoveryPanel();
-      scrollToElementTop('discoveryPanel');
+      scrollToElementTop('discoveryPanel', 12, { trackHistory: false });
     }
 
     function openEntityComparisonSet(items = []) {
@@ -14123,13 +14359,14 @@ Provenance risk: ${audit.riskLabel}`);
     function openWorkspacePreset(id) {
       const preset = workspaceNavigationPresets.find(item => item.id === id);
       if (!preset) return;
+      recordNavigationState();
       if (!preset.preservePanels) {
         collapsedWorkspacePanels = new Set(workspacePanels.map(item => item.id).filter(panelId => !preset.panels.includes(panelId)));
         applyWorkspacePanelShells();
         renderWorkspaceIndex();
       }
       const target = document.getElementById(preset.target) || document.getElementById('cardsGrid');
-      scrollToElementTop(target);
+      scrollToElementTop(target, 12, { trackHistory: false });
       setWorkspaceDrawer(false);
     }
 
@@ -14393,6 +14630,7 @@ Provenance risk: ${audit.riskLabel}`);
     }
 
     function toggleCard(id) {
+      const beforeSnapshot = captureViewSnapshot();
       if (expandedCards.has(id)) {
         expandedCards.delete(id);
         highlightedCards.delete(id);
@@ -14401,6 +14639,7 @@ Provenance risk: ${audit.riskLabel}`);
       } else {
         openCardById(id, { interactionId: 'deep-diver', refreshSupportPanels: true });
       }
+      registerReversibleChange(beforeSnapshot);
     }
 
     function formatType(type) {
@@ -14738,7 +14977,37 @@ Provenance risk: ${audit.riskLabel}`);
       });
       document.addEventListener('keydown', event => {
         if (event.key === 'Escape') setDrawerView(null, false);
+        if (!shouldHandleGlobalShortcut(event)) return;
+        const key = event.key.toLowerCase();
+        if (key === 'a' || event.key === 'ArrowLeft') {
+          event.preventDefault();
+          goBackInViewHistory();
+          return;
+        }
+        if (key === 'd' || event.key === 'ArrowRight') {
+          event.preventDefault();
+          goForwardInViewHistory();
+          return;
+        }
+        if (key === 'u') {
+          event.preventDefault();
+          undoLastAction();
+          return;
+        }
+        if (key === 'r') {
+          event.preventDefault();
+          redoLastAction();
+        }
       });
+
+      document.getElementById('navTopBtn')?.addEventListener('click', () => {
+        recordNavigationState();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+      document.getElementById('navBackBtn')?.addEventListener('click', goBackInViewHistory);
+      document.getElementById('navForwardBtn')?.addEventListener('click', goForwardInViewHistory);
+      document.getElementById('navUndoBtn')?.addEventListener('click', undoLastAction);
+      document.getElementById('navRedoBtn')?.addEventListener('click', redoLastAction);
 
       document.getElementById('openWorkspaceTopBtn')?.addEventListener('click', () => setAllWorkspacePanels(true));
 
@@ -14800,6 +15069,7 @@ Provenance risk: ${audit.riskLabel}`);
           event.stopPropagation?.();
           return;
         }
+        const beforeSnapshot = captureViewSnapshot();
         const filter = btn.dataset.filter;
         if (activeFilters.includes(filter)) {
           activeFilters = activeFilters.filter(f => f !== filter);
@@ -14812,6 +15082,7 @@ Provenance risk: ${audit.riskLabel}`);
         expandedCards.clear();
         renderCards();
         updateStats();
+        registerReversibleChange(beforeSnapshot);
       });
     }
 

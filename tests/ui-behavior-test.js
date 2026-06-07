@@ -109,10 +109,18 @@ const documentMock = {
   removeEventListener(name, handler) { this.body.removeEventListener(name, handler); }
 };
 const localStore = new Map();
+const scrollCalls = [];
 const context = {
   console, URL, Blob,
   document: documentMock,
-  window: { pageYOffset: 0, scrollTo() {} },
+  window: {
+    pageYOffset: 0,
+    scrollTo(options) {
+      const top = typeof options === 'number' ? options : Number(options?.top || 0);
+      this.pageYOffset = top;
+      scrollCalls.push(top);
+    }
+  },
   navigator: { clipboard: { writeText() { return Promise.resolve(); } } },
   localStorage: {
     getItem(key) { return localStore.get(key) || null; },
@@ -135,6 +143,18 @@ function click(id) {
   const target = elements.get(id);
   assert(target.listeners.click?.length, `${id} click listener missing`);
   target.listeners.click[0]({ preventDefault() {}, stopPropagation() {}, target });
+}
+
+function triggerKey(handler, key) {
+  let prevented = false;
+  handler({
+    key,
+    target: documentMock.body,
+    get defaultPrevented() { return prevented; },
+    preventDefault() { prevented = true; },
+    stopPropagation() {}
+  });
+  return prevented;
 }
 
 function categorySectionOrder() {
@@ -168,6 +188,11 @@ assert(escapeHandler, 'Escape drawer handler missing');
 escapeHandler({ key: 'Escape' });
 assert.strictEqual(elements.get('sideDrawer').dataset.drawerActive, '', 'Escape should close any drawer view');
 assert.strictEqual((html.match(/id="sideDrawer"/g) || []).length, 1, 'multiple drawer shells found');
+assert(elements.get('navTopBtn').listeners.click?.length, 'Top button click listener missing');
+assert(elements.get('navBackBtn').listeners.click?.length, 'Back button click listener missing');
+assert(elements.get('navForwardBtn').listeners.click?.length, 'Forward button click listener missing');
+assert(elements.get('navUndoBtn').listeners.click?.length, 'Undo button click listener missing');
+assert(elements.get('navRedoBtn').listeners.click?.length, 'Redo button click listener missing');
 
 const filterBar = elements.get('filterBar');
 assert(filterBar.listeners.click?.length, 'filterBar click listener missing');
@@ -204,4 +229,25 @@ filterBar.listeners.click[0]({ preventDefault() {}, stopPropagation() {}, target
 assert(app.activeFilters.includes('patents'), 'post-drag click suppression should prevent the drag gesture from toggling filters');
 assert.strictEqual(localStore.get('evidenceCategoryOrder'), JSON.stringify(Array.from(app.categoryOrder)), 'drag reorder should persist the new chip order');
 
-console.log('UI behavior tests passed: isolated drawer views, deterministic content, drag-safe filter reordering, and close policies.');
+context.window.pageYOffset = 240;
+click('navTopBtn');
+assert.strictEqual(context.window.pageYOffset, 0, 'Top should scroll to the top');
+triggerKey(escapeHandler, 'ArrowLeft');
+assert.strictEqual(context.window.pageYOffset, 240, 'ArrowLeft should navigate back to prior scroll/view state');
+triggerKey(escapeHandler, 'ArrowRight');
+assert.strictEqual(context.window.pageYOffset, 0, 'ArrowRight should navigate forward again');
+triggerKey(escapeHandler, 'a');
+assert.strictEqual(context.window.pageYOffset, 240, 'A should also trigger back navigation');
+click('navTopBtn');
+triggerKey(escapeHandler, 'd');
+assert.strictEqual(context.window.pageYOffset, 0, 'Forward history should clear after taking a new path');
+
+filterBar.listeners.click[0]({ preventDefault() {}, stopPropagation() {}, target: filterButtons.find(button => button.dataset.filter === 'patents') });
+assert(!app.activeFilters.includes('patents'), 'Filter toggle should remove category before undo');
+triggerKey(escapeHandler, 'u');
+assert(app.activeFilters.includes('patents'), 'U should undo the most recent reversible UI action');
+triggerKey(escapeHandler, 'r');
+assert(!app.activeFilters.includes('patents'), 'R should redo the most recently undone UI action');
+assert(scrollCalls.length >= 3, 'navigation controls should invoke lightweight scroll operations');
+
+console.log('UI behavior tests passed: isolated drawer views, deterministic content, drag-safe filter reordering, close policies, and navigation controls.');
