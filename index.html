@@ -5,25 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>THE EVIDENCE — Source Documentation Database</title>
   <script>
-    // Function to update the hit counters
+    // Function to create or update cookie
+    function setCookie(name, value, days) {
+      const date = new Date();
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+      const expires = "expires=" + date.toUTCString();
+      document.cookie = name + "=" + value + ";" + expires + ";path=/";
+    }
+
+    // Function to get a cookie by name
+    function getCookie(name) {
+      const nameEQ = name + "=";
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        let c = cookies[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
+
+    // Function to update and display hit counters
     function updateHitCounters() {
-      // Total visits
+      // Update total visits
       let totalVisits = localStorage.getItem('totalVisits') || 0;
       totalVisits++;
       localStorage.setItem('totalVisits', totalVisits);
+      document.getElementById('total-visits-counter').textContent = totalVisits;
 
-      // Unique visits
-      const uniqueVisitKey = 'uniqueVisit';
-      let uniqueVisits = localStorage.getItem('uniqueVisits') || 0;
-      if (!sessionStorage.getItem(uniqueVisitKey)) {
+      // Update unique visitors
+      if (!getCookie('uniqueVisitor')) {
+        let uniqueVisits = localStorage.getItem('uniqueVisits') || 0;
         uniqueVisits++;
         localStorage.setItem('uniqueVisits', uniqueVisits);
-        sessionStorage.setItem(uniqueVisitKey, true);
+        setCookie('uniqueVisitor', 'true', 365); // Mark visitor as unique for 1 year
+        document.getElementById('unique-visits-counter').textContent = uniqueVisits;
+      } else {
+        const uniqueVisits = localStorage.getItem('uniqueVisits');
+        document.getElementById('unique-visits-counter').textContent = uniqueVisits;
       }
-
-      // Display the values
-      document.getElementById('total-visits-counter').textContent = totalVisits;
-      document.getElementById('unique-visits-counter').textContent = uniqueVisits;
     }
 
     document.addEventListener('DOMContentLoaded', updateHitCounters);
@@ -39,6 +59,10 @@
       border-radius: 5px;
       font-family: Arial, sans-serif;
       font-size: 14px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
+    .hit-counter h2 {
+      margin: 5px 0;
     }
   </style>
 </head>
@@ -46,8 +70,8 @@
   <!-- Rest of your content -->
 
   <div class="hit-counter">
-    <div>Total Visits: <span id="total-visits-counter">0</span></div>
-    <div>Unique Visitors: <span id="unique-visits-counter">0</span></div>
+    <h2>Total Visits: <span id="total-visits-counter">0</span></h2>
+    <h2>Unique Visitors: <span id="unique-visits-counter">0</span></h2>
   </div>
 </body>
 </html>
