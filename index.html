@@ -11855,8 +11855,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       discoveryGuidance = guidance || '';
       discoveryNavigationTarget = typeof navigationTarget === 'string' ? navigationTarget : '';
       discoveryNavigationLabel = typeof navigationLabel === 'string' ? navigationLabel : '';
-      const fallbackLeadCardId = evidenceIdSet.has(leadCardId) ? leadCardId : (discoveryMatches[0]?.id || '');
-      discoveryLeadCardId = fallbackLeadCardId;
+      discoveryLeadCardId = evidenceIdSet.has(leadCardId) ? leadCardId : (discoveryMatches[0]?.id || '');
       renderDiscoveryPanel();
     }
 
@@ -13300,7 +13299,7 @@ Provenance risk: ${audit.riskLabel}`);
     function openLeadCardWithContext(term, items = [], guidance = '', { replaceExpanded = true, interactionId = 'deep-diver', navigationTarget = '', navigationLabel = '' } = {}) {
       const matches = resolveOpenableItems(items);
       if (!matches.length) {
-        openDiscoverySet(term, [], guidance || 'No directly linked evidence cards are currently available for this step.', { navigationTarget, navigationLabel });
+        openDiscoverySet(term, [], guidance || 'No directly linked evidence cards are currently available for this selection.', { navigationTarget, navigationLabel });
         return [];
       }
       return openCardById(matches[0].id, {
