@@ -11080,6 +11080,9 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     let discoveryTerm = '';
     let discoveryMatches = [];
     let discoveryGuidance = '';
+    let discoveryNavigationTarget = '';
+    let discoveryNavigationLabel = '';
+    let discoveryLeadCardId = '';
     let workspacePages = [];
     let activeWorkspacePageId = null;
     let comparedWorkspacePageIds = [];
@@ -11093,6 +11096,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     const NAVIGATION_HISTORY_LIMIT = 64;
     const ACTION_HISTORY_LIMIT = 64;
     const validSortModes = ['newest', 'oldest', 'title', 'sources', 'category'];
+    const evidenceById = new Map(evidence.map(item => [item.id, item]));
     const evidenceIdSet = new Set(evidence.map(item => item.id));
     const workspacePanelIdSet = new Set(workspacePanels.map(panel => panel.id));
     let viewBackStack = [];
@@ -11816,6 +11820,9 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
         a.selectedDominoTrajectory === b.selectedDominoTrajectory &&
         a.discoveryTerm === b.discoveryTerm &&
         a.discoveryGuidance === b.discoveryGuidance &&
+        a.discoveryNavigationTarget === b.discoveryNavigationTarget &&
+        a.discoveryNavigationLabel === b.discoveryNavigationLabel &&
+        a.discoveryLeadCardId === b.discoveryLeadCardId &&
         a.activeDrawerView === b.activeDrawerView &&
         arraysEqual(a.activeFilters, b.activeFilters) &&
         arraysEqual(a.expandedCardIds, b.expandedCardIds) &&
@@ -11830,8 +11837,36 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
 
     function resolveDiscoveryMatches(ids = []) {
       return resolveEvidenceIds(ids)
-        .map(id => evidence.find(item => item.id === id))
-        .filter(Boolean);
+        .map(id => evidenceById.get(id))
+        .filter(Boolean)
+        .sort(sortEvidence);
+    }
+
+    function resolveOpenableItems(items = []) {
+      return [...new Map(items
+        .map(item => evidenceById.get(item?.id))
+        .filter(item => item?.id && item?.type)
+        .map(item => [item.id, item])).values()];
+    }
+
+    function setDiscoveryState(term, items = [], guidance = '', { navigationTarget = '', navigationLabel = '', leadCardId = '' } = {}) {
+      discoveryTerm = term || '';
+      discoveryMatches = resolveOpenableItems(items).sort(sortEvidence);
+      discoveryGuidance = guidance || '';
+      discoveryNavigationTarget = typeof navigationTarget === 'string' ? navigationTarget : '';
+      discoveryNavigationLabel = typeof navigationLabel === 'string' ? navigationLabel : '';
+      discoveryLeadCardId = evidenceIdSet.has(leadCardId) ? leadCardId : (discoveryMatches[0]?.id || '');
+      renderDiscoveryPanel();
+    }
+
+    function clearDiscoveryState() {
+      discoveryTerm = '';
+      discoveryMatches = [];
+      discoveryGuidance = '';
+      discoveryNavigationTarget = '';
+      discoveryNavigationLabel = '';
+      discoveryLeadCardId = '';
+      renderDiscoveryPanel();
     }
 
     function captureViewSnapshot() {
@@ -11851,6 +11886,9 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
         discoveryTerm,
         discoveryGuidance,
         discoveryIds: discoveryMatches.map(item => item.id),
+        discoveryNavigationTarget,
+        discoveryNavigationLabel,
+        discoveryLeadCardId,
         collapsedWorkspacePanelIds: [...collapsedWorkspacePanels],
         activeDrawerView: activeDrawerView || null
       };
@@ -11885,6 +11923,9 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
         discoveryTerm = snapshot.discoveryTerm || '';
         discoveryGuidance = snapshot.discoveryGuidance || '';
         discoveryMatches = resolveDiscoveryMatches(snapshot.discoveryIds || []);
+        discoveryNavigationTarget = snapshot.discoveryNavigationTarget || '';
+        discoveryNavigationLabel = snapshot.discoveryNavigationLabel || '';
+        discoveryLeadCardId = evidenceIdSet.has(snapshot.discoveryLeadCardId) ? snapshot.discoveryLeadCardId : (discoveryMatches[0]?.id || '');
         collapsedWorkspacePanels = new Set((snapshot.collapsedWorkspacePanelIds || []).filter(id => workspacePanelIdSet.has(id)));
         renderFilterBar();
         renderCards();
@@ -12330,7 +12371,7 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
     }
 
     function openEvidenceItems(items = [], { replaceExpanded = false, interactionId = null } = {}) {
-      const openable = items.filter(item => item?.id && item?.type);
+      const openable = resolveOpenableItems(items);
       if (!openable.length) return [];
       recordNavigationState();
       if (replaceExpanded) expandedCards = new Set();
@@ -12356,12 +12397,9 @@ Mathieu Flamini — noted by WEF as a YGL community member; attach individual pr
       requestAnimationFrame(() => scrollToElementTop(document.querySelector(`[data-id="${id}"]`), 12, options));
     }
 
-    function openDiscoverySet(term, items = [], guidance = '') {
+    function openDiscoverySet(term, items = [], guidance = '', options = {}) {
       recordNavigationState();
-      discoveryTerm = term;
-      discoveryMatches = [...items].sort(sortEvidence);
-      discoveryGuidance = guidance;
-      renderDiscoveryPanel();
+      setDiscoveryState(term, items, guidance, options);
       scrollToElementTop('discoveryPanel', 12, { trackHistory: false });
     }
 
@@ -13247,9 +13285,33 @@ Provenance risk: ${audit.riskLabel}`);
     }
 
 
+    function getTermMatches(terms = [], items = evidence) {
+      return [...new Map((terms || [])
+        .flatMap(term => getInlineMatches(term, items))
+        .map(item => [item.id, item])).values()].sort(sortEvidence);
+    }
+
     function getDominoMatches(trajectory, items = evidence) {
       const terms = [...trajectory.terms, ...trajectory.dominoes.flatMap(step => step.terms || [])];
-      return [...new Map(terms.flatMap(term => getInlineMatches(term, items)).map(item => [item.id, item])).values()].sort(sortEvidence);
+      return getTermMatches(terms, items);
+    }
+
+    function openLeadCardWithContext(term, items = [], guidance = '', { replaceExpanded = true, interactionId = 'deep-diver', navigationTarget = '', navigationLabel = '' } = {}) {
+      const matches = resolveOpenableItems(items);
+      if (!matches.length) {
+        openDiscoverySet(term, [], guidance || 'No directly linked evidence cards are currently available for this selection.', { navigationTarget, navigationLabel });
+        return [];
+      }
+      return openCardById(matches[0].id, {
+        replaceExpanded,
+        interactionId,
+        discoveryItems: matches,
+        discoveryLabel: term,
+        discoveryGuidance: guidance,
+        discoveryNavigationTarget: navigationTarget,
+        discoveryNavigationLabel: navigationLabel,
+        leadCardId: matches[0].id
+      });
     }
 
     function renderDominoPanel(items = getVisibleEvidence()) {
@@ -13307,7 +13369,10 @@ Provenance risk: ${audit.riskLabel}`);
       panel.querySelectorAll('[data-domino-step]').forEach(btn => {
         btn.addEventListener('click', () => {
           const step = selected.dominoes[Number(btn.dataset.dominoStep)];
-          openDiscoverySet(`${selected.title} · ${step.label}`, [...new Map(step.terms.flatMap(term => getInlineMatches(term)).map(item => [item.id, item])).values()], 'Domino step cards opened without changing the global search.');
+          openLeadCardWithContext(`${selected.title} · ${step.label}`, getTermMatches(step?.terms || []), 'Domino step cards opened without changing the global search.', {
+            navigationTarget: 'dominoPanel',
+            navigationLabel: 'trajectory domino map'
+          });
         });
       });
       document.getElementById('copyDominoBtn')?.addEventListener('click', () => {
@@ -13411,6 +13476,8 @@ Provenance risk: ${audit.riskLabel}`);
           `).join('')}
         </div>
         <div class="discovery-actions">
+          ${discoveryLeadCardId ? '<button class="toolbar-btn" type="button" id="openDiscoveryLeadBtn">Open lead card</button>' : ''}
+          ${discoveryNavigationTarget ? `<button class="toolbar-btn" type="button" id="jumpDiscoveryTargetBtn">Jump to ${escapeHtml(discoveryNavigationLabel || 'source panel')}</button>` : ''}
           <button class="toolbar-btn" type="button" id="openDiscoveryBtn">Open matching cards</button>
           <button class="toolbar-btn" type="button" id="copyDiscoveryBtn">Copy matching links</button>
           <button class="toolbar-btn" type="button" id="exportDiscoveryChecklistBtn">Export hardening checklist</button>
@@ -13418,13 +13485,16 @@ Provenance risk: ${audit.riskLabel}`);
         </div>
       `;
       document.getElementById('closeDiscoveryBtn')?.addEventListener('click', () => {
-        discoveryTerm = '';
-        discoveryMatches = [];
-        discoveryGuidance = '';
-        renderDiscoveryPanel();
+        clearDiscoveryState();
       });
       panel.querySelectorAll('[data-discovery-card]').forEach(btn => {
         btn.addEventListener('click', () => openCardById(btn.dataset.discoveryCard));
+      });
+      document.getElementById('openDiscoveryLeadBtn')?.addEventListener('click', () => {
+        openCardById(discoveryLeadCardId, { replaceExpanded: true, interactionId: 'deep-diver' });
+      });
+      document.getElementById('jumpDiscoveryTargetBtn')?.addEventListener('click', () => {
+        scrollToElementTop(discoveryNavigationTarget);
       });
       document.getElementById('openDiscoveryBtn')?.addEventListener('click', () => {
         const opened = discoveryMatches.slice(0, 24);
@@ -14559,11 +14629,20 @@ Provenance risk: ${audit.riskLabel}`);
       renderMissionPanel(getVisibleEvidence());
     }
 
-    function openCardById(id, { replaceExpanded = false, interactionId = null, refreshSupportPanels = false } = {}) {
-      const item = evidence.find(entry => entry.id === id);
-      if (!item) return;
-      openEvidenceItems([item], { replaceExpanded, interactionId });
+    function openCardById(id, { replaceExpanded = false, interactionId = null, refreshSupportPanels = false, discoveryItems = null, discoveryLabel = '', discoveryGuidance = '', discoveryNavigationTarget = '', discoveryNavigationLabel = '', leadCardId = '' } = {}) {
+      const item = evidenceById.get(id);
+      if (!item) return [];
+      const opened = openEvidenceItems([item], { replaceExpanded, interactionId });
+      if (!opened.length) return opened;
+      if (Array.isArray(discoveryItems)) {
+        setDiscoveryState(discoveryLabel || item.title, discoveryItems, discoveryGuidance, {
+          navigationTarget: discoveryNavigationTarget,
+          navigationLabel: discoveryNavigationLabel,
+          leadCardId: leadCardId || item.id
+        });
+      }
       if (refreshSupportPanels) renderSupportPanels(getVisibleEvidence());
+      return opened;
     }
 
     function pullRandomThread() {
@@ -14619,7 +14698,10 @@ Provenance risk: ${audit.riskLabel}`);
       panel.querySelectorAll('[data-timeline-domino-step]').forEach(item => {
         item.addEventListener('click', () => {
           const step = selected.dominoes[Number(item.dataset.timelineDominoStep)];
-          openDiscoverySet(`${selected.title} · ${step.label}`, [...new Map(step.terms.flatMap(term => getInlineMatches(term)).map(card => [card.id, card])).values()], 'Timeline domino cards opened without changing the global search.');
+          openLeadCardWithContext(`${selected.title} · ${step.label}`, getTermMatches(step?.terms || []), 'Timeline domino cards opened without changing the global search.', {
+            navigationTarget: 'timelinePanel',
+            navigationLabel: 'big trajectory timeline'
+          });
         });
       });
       panel.querySelectorAll('[data-timeline-id]').forEach(item => {
@@ -14769,10 +14851,7 @@ Provenance risk: ${audit.riskLabel}`);
             applySearch('');
           }
           if (btn.dataset.clearState === 'discovery') {
-            discoveryTerm = '';
-            discoveryMatches = [];
-            discoveryGuidance = '';
-            renderDiscoveryPanel();
+            clearDiscoveryState();
             renderStateBar(getVisibleEvidence());
           }
         });

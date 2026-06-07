@@ -154,6 +154,7 @@ assert(html.includes('function matchesTerm'), 'Bridge Map domino matching helper
 assert(app.getBridgeDominoLinks(app.bridgeConvergenceMaps[0]).length > 0, 'Bridge Map to Domino links should render without missing helper errors');
 assert(html.includes('function scrollToElementTop'), 'top-aligned scroll helper missing');
 assert(html.includes('function openEvidenceItems'), 'shared open-evidence helper missing');
+assert(html.includes('function openLeadCardWithContext'), 'shared domino/timeline lead-card opener missing');
 assert(/function\s+scrollToCardTop\s*\(\s*id\s*\)/.test(html), 'card top-align helper missing');
 assert(html.includes('if (!id) return;'), 'card top-align helper should guard missing ids');
 assert(html.includes('requestAnimationFrame('), 'card top-align should defer scrolling until after DOM updates');
@@ -162,6 +163,10 @@ assert(html.includes('openEvidenceItems(activeProfile.allMatches);'), 'entity do
 assert(html.includes('openEvidenceItems(matches);'), 'thread open-all should use shared open helper');
 assert(html.includes('openEvidenceItems(opened);'), 'bridge expand should use shared open helper');
 assert(html.includes("openEvidenceItems(opened, { interactionId: 'deep-diver' });"), 'discovery open-all should use shared open helper');
+assert(html.includes("navigationTarget: 'dominoPanel'"), 'domino flow should preserve a jump-back target');
+assert(html.includes("navigationTarget: 'timelinePanel'"), 'timeline domino flow should preserve a jump-back target');
+assert(html.includes('id="openDiscoveryLeadBtn"'), 'discovery panel should provide a lead-card navigation button');
+assert(html.includes('id="jumpDiscoveryTargetBtn"'), 'discovery panel should provide a jump-back navigation button');
 assert(html.includes('openCardById(item.dataset.timelineId'), 'timeline card click should route through shared open-card logic');
 assert(html.includes('replaceExpanded: true'), 'timeline open-card flow should request replacement expansion mode');
 assert(html.includes("interactionId: 'deep-diver'"), 'timeline open-card flow should preserve deep-diver interaction attribution');

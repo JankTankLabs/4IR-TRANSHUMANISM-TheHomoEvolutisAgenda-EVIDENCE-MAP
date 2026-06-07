@@ -7,6 +7,8 @@ const html = fs.readFileSync('index.html', 'utf8');
 const script = html.match(/<script>([\s\S]*)<\/script>\s*<\/body>/)?.[1];
 assert(script, 'inline application script missing');
 const filterButtons = [];
+const renderedCardNodes = new Map();
+const renderedCategorySectionNodes = new Map();
 const FILTER_BUTTON_WIDTH = 120;
 const FILTER_BUTTON_GAP = 10;
 const FILTER_BUTTON_COLUMNS = 4;
@@ -56,6 +58,24 @@ class ElementMock {
       });
       this.children = [...filterButtons];
     }
+    if (this.id === 'cardsGrid') {
+      renderedCardNodes.clear();
+      renderedCategorySectionNodes.clear();
+      [...this._html.matchAll(/data-category-section="([^"]+)"/g)].forEach((match, index) => {
+        const section = new ElementMock(`category-${match[1]}`);
+        section.dataset.categorySection = match[1];
+        section.parentElement = this;
+        section.rect = { left: 0, right: 800, top: 260 + (index * 280), bottom: 500 + (index * 280), width: 800, height: 240 };
+        renderedCategorySectionNodes.set(match[1], section);
+      });
+      [...this._html.matchAll(/<article class="evidence-card[^"]*" id="([^"]+)" data-id="([^"]+)"/g)].forEach((match, index) => {
+        const card = new ElementMock(match[1]);
+        card.dataset.id = match[2];
+        card.parentElement = this;
+        card.rect = { left: 0, right: 800, top: 360 + (index * 140), bottom: 480 + (index * 140), width: 800, height: 120 };
+        renderedCardNodes.set(match[2], card);
+      });
+    }
   }
   get innerHTML() { return this._html; }
   setAttribute(name, value) { this.attributes[name] = String(value); }
@@ -103,7 +123,13 @@ const documentMock = {
     if (selector === '.filter-btn' || selector === '#filterBar [data-filter]') return [...filterButtons];
     return [];
   },
-  querySelector() { return null; },
+  querySelector(selector) {
+    const cardMatch = selector.match(/^\[data-id="([^"]+)"\]$/);
+    if (cardMatch) return renderedCardNodes.get(cardMatch[1]) || null;
+    const categoryMatch = selector.match(/^\[data-category-section="([^"]+)"\]$/);
+    if (categoryMatch) return renderedCategorySectionNodes.get(categoryMatch[1]) || null;
+    return null;
+  },
   createElement() { return new ElementMock('created'); },
   addEventListener(name, handler) { this.body.addEventListener(name, handler); },
   removeEventListener(name, handler) { this.body.removeEventListener(name, handler); }
@@ -134,8 +160,21 @@ const context = {
 context.globalThis = context;
 vm.runInNewContext(`${script}
 globalThis.__APP_UI_TEST__ = {
+  evidence,
+  dominoTrajectories,
   get activeFilters() { return activeFilters; },
-  get categoryOrder() { return categoryOrder; }
+  get categoryOrder() { return categoryOrder; },
+  get expandedCardIds() { return [...expandedCards]; },
+  get discoveryTerm() { return discoveryTerm; },
+  get discoveryGuidance() { return discoveryGuidance; },
+  get discoveryMatchIds() { return discoveryMatches.map(item => item.id); },
+  get discoveryNavigationTarget() { return discoveryNavigationTarget; },
+  get discoveryNavigationLabel() { return discoveryNavigationLabel; },
+  get discoveryLeadCardId() { return discoveryLeadCardId; },
+  openCardById,
+  openLeadCardWithContext,
+  clearDiscoveryState,
+  getTermMatches
 };`, context, { filename: 'index.inline.js' });
 const app = context.__APP_UI_TEST__;
 
@@ -248,6 +287,75 @@ triggerKey(escapeHandler, 'u');
 assert(app.activeFilters.includes('patents'), 'U should undo the most recent reversible UI action');
 triggerKey(escapeHandler, 'r');
 assert(!app.activeFilters.includes('patents'), 'R should redo the most recently undone UI action');
+
+const multiMatchDomino = app.dominoTrajectories
+  .map(trajectory => ({
+    trajectory,
+    step: trajectory.dominoes.find(entry => app.getTermMatches(entry.terms).length > 1)
+  }))
+  .find(entry => entry.step);
+assert(multiMatchDomino, 'expected at least one domino step with multiple linked cards');
+
+const dominoMatches = app.getTermMatches(multiMatchDomino.step.terms);
+assert(dominoMatches.length > 1, 'domino lead-card test needs multiple linked cards');
+const dominoLabel = `${multiMatchDomino.trajectory.title} · ${multiMatchDomino.step.label}`;
+
+context.window.pageYOffset = 512;
+const openedFromDomino = app.openLeadCardWithContext(dominoLabel, dominoMatches, 'Domino step cards opened without changing the global search.', {
+  navigationTarget: 'dominoPanel',
+  navigationLabel: 'trajectory domino map'
+});
+assert.deepStrictEqual(Array.from(openedFromDomino), [dominoMatches[0].id], 'domino flow should open the lead card through the shared helper');
+assert.deepStrictEqual(Array.from(app.expandedCardIds), [dominoMatches[0].id], 'domino flow should replace expansion with the focused lead card');
+assert.strictEqual(app.discoveryLeadCardId, dominoMatches[0].id, 'domino flow should remember the lead card for quick reopening');
+assert.strictEqual(app.discoveryTerm, dominoLabel, 'domino flow should keep the related discovery drawer context');
+assert.strictEqual(app.discoveryGuidance, 'Domino step cards opened without changing the global search.');
+assert.strictEqual(app.discoveryNavigationTarget, 'dominoPanel', 'domino discovery should expose a jump-back target');
+assert.strictEqual(app.discoveryNavigationLabel, 'trajectory domino map');
+assert.strictEqual(app.discoveryMatchIds.length, dominoMatches.length, 'domino discovery should retain the full matching set');
+assert(context.window.pageYOffset > 0, 'domino flow should scroll the opened lead card into view');
+
+const repeatedDominoScrollCount = scrollCalls.length;
+app.openLeadCardWithContext(dominoLabel, dominoMatches, 'Domino step cards opened without changing the global search.', {
+  navigationTarget: 'dominoPanel',
+  navigationLabel: 'trajectory domino map'
+});
+assert.deepStrictEqual(Array.from(app.expandedCardIds), [dominoMatches[0].id], 'repeated domino clicks should not create duplicate expanded-card state');
+assert(scrollCalls.length > repeatedDominoScrollCount, 'repeated domino clicks should still refocus the lead card');
+
+const alreadyOpenScrollCount = scrollCalls.length;
+assert.deepStrictEqual(Array.from(app.openCardById(dominoMatches[0].id, { replaceExpanded: true, interactionId: 'deep-diver' })), [dominoMatches[0].id], 'direct openCardById should continue returning the opened card id');
+assert.deepStrictEqual(Array.from(app.expandedCardIds), [dominoMatches[0].id], 'opening an already-open card should keep a single focused card');
+assert(scrollCalls.length > alreadyOpenScrollCount, 'opening an already-open card should still scroll to it');
+
+const expandedBeforeInvalidOpen = [...app.expandedCardIds];
+assert.deepStrictEqual(Array.from(app.openCardById('missing-card-id', { replaceExpanded: true })), [], 'missing card ids should no-op safely');
+assert.deepStrictEqual(Array.from(app.expandedCardIds), expandedBeforeInvalidOpen, 'invalid card ids should not disturb the current open-card state');
+
+const emptyDominoScrollCount = scrollCalls.length;
+assert.deepStrictEqual(Array.from(app.openLeadCardWithContext('Ghost domino step', [], 'No directly linked evidence cards are currently available for this step.', {
+  navigationTarget: 'timelinePanel',
+  navigationLabel: 'big trajectory timeline'
+})), [], 'domino steps without linked cards should not force-open a larger card');
+assert.strictEqual(app.discoveryTerm, 'Ghost domino step', 'empty domino steps should still provide discovery context');
+assert.strictEqual(app.discoveryMatchIds.length, 0, 'empty domino steps should not fabricate discovery matches');
+assert.strictEqual(app.discoveryLeadCardId, '', 'empty domino steps should not retain a stale lead-card target');
+assert.strictEqual(app.discoveryNavigationTarget, 'timelinePanel', 'empty domino steps should preserve the requested jump target');
+assert.strictEqual(app.discoveryNavigationLabel, 'big trajectory timeline');
+assert(scrollCalls.length > emptyDominoScrollCount, 'empty domino steps should still navigate to the discovery panel instead of failing silently');
+
+app.clearDiscoveryState();
+context.window.pageYOffset = 640;
+app.openLeadCardWithContext(dominoLabel, dominoMatches, 'Domino step cards opened without changing the global search.', {
+  navigationTarget: 'dominoPanel',
+  navigationLabel: 'trajectory domino map'
+});
+triggerKey(escapeHandler, 'ArrowLeft');
+assert.strictEqual(context.window.pageYOffset, 640, 'back navigation should restore pre-domino scroll position');
+triggerKey(escapeHandler, 'ArrowRight');
+assert.strictEqual(app.discoveryLeadCardId, dominoMatches[0].id, 'forward navigation should restore the domino lead-card context');
+assert.strictEqual(app.discoveryNavigationTarget, 'dominoPanel', 'forward navigation should preserve discovery jump targets');
+
 assert(scrollCalls.length >= 3, 'navigation controls should invoke lightweight scroll operations');
 
-console.log('UI behavior tests passed: isolated drawer views, deterministic content, drag-safe filter reordering, close policies, and navigation controls.');
+console.log('UI behavior tests passed: isolated drawer views, deterministic content, drag-safe filter reordering, close policies, navigation controls, and domino lead-card focus flows.');
